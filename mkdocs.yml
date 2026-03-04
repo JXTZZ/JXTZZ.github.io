@@ -1,0 +1,6 @@
+site_name: LoTusY的学习笔记
+site_author: LoTusY
+theme:
+  name: material
+  palette:
+    primary: indigo # 网站主色调
