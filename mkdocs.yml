@@ -4,3 +4,26 @@ theme:
   name: material
   palette:
     primary: indigo # 网站主色调
+
+# 在 mkdocs.yml 中添加或修改 nav 结构
+nav:
+  - 首页: index.md
+  - 大模型理论基础:
+    - 注意力机制解析: theory/attention.md
+  - 学习经验:
+    - python 内存处理: attention/python.md
+
+# 在 mkdocs.yml 中追加以下内容
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
