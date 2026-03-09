@@ -5,15 +5,14 @@ theme:
   palette:
     primary: indigo # 网站主色调
 
-# 在 mkdocs.yml 中添加或修改 nav 结构
 nav:
   - 首页: index.md
   - 大模型理论基础:
     - 注意力机制解析: theory/attention.md
-  - 学习经验:
-    - python 内存处理: attention/python.md
+  - PyTorch 开发笔记:
+    - Tensor 原地操作与内存优化: attention/python.md
+    - 张量维度与求和: attention/Linear_Algebra.md
 
-# 在 mkdocs.yml 中追加以下内容
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
