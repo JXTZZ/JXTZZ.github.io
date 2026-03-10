@@ -8,7 +8,9 @@ theme:
 nav:
   - 首页: index.md
   - 大模型理论基础:
-    - 注意力机制解析: theory/attention.md
+    - 注意力机制解析: deep-learning/attention.md
+    - 线性回归解析: deep-learning/Linear_Regression.md
+    - Softmax回归解析: deep-learning/Softmax_Regression.md
   - PyTorch 开发笔记:
     - Tensor 原地操作与内存优化: attention/python.md
     - 张量维度与求和: attention/Linear_Algebra.md
