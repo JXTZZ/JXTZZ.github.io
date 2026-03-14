@@ -13,6 +13,8 @@ nav:
     - Softmax回归解析: deep-learning/Softmax_Regression.md
     - 多层感知机解析: deep-learning/MLP.md
     - 权重衰减解析: deep-learning/Weight_Decay.md
+    - Dropout层解析: deep-learning/Dropout.md
+    - 前向传播与反向传播解析: deep-learning\Computational_Graph.md
   - PyTorch 开发笔记:
     - Tensor 原地操作与内存优化: attention/python.md
     - 张量维度与求和: attention/Linear_Algebra.md
