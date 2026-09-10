@@ -75,7 +75,6 @@ nav:
     - π₀: papers/pi0.md
     - SPOT · 深度阅读: papers/spot.md
     - SPOT · 概念笔记: papers/spot-notes.md
-    - MEM: papers/mem.md
     - 论文资料库: papers/library.md
   - 理论基础:
     - deep-learning/index.md
@@ -86,7 +85,8 @@ nav:
     - 权重衰减: deep-learning/Weight_Decay.md
     - Dropout: deep-learning/Dropout.md
     - 注意力机制: deep-learning/attention.md
-    - 计算机视觉学习提纲: deep-learning/cv-roadmap.md
+    - 深度学习计算: deep-learning/base.md
+    - 计算机视觉学习路线: deep-learning/cv-roadmap.md
   - 工程实践:
     - engineering/index.md
     - Tensor 原地操作与内存: attention/python.md

@@ -1,27 +1,39 @@
-# Softmax 回归的简洁实现 (PyTorch)
+# Softmax 回归：从 logits 到多分类概率
 
-在学习了线性回归预测连续数值之后，我们迎来了深度学习中最重要的概念之一——分类问题。**大模型（如 ChatGPT）本质上就是一个超级巨大版的 Softmax 回归模型**。它们的文本生成，其实就是“多分类问题”：根据上文，在几十万个词表中预测下一个词的概率。
+线性回归预测连续值，Softmax 回归处理互斥的多分类问题。模型先给每个类别一个未经归一化的分数（logit），softmax 再把这些分数转成总和为 1 的分布。
 
-本文将演示如何使用 PyTorch 高级 API 简洁地实现 Softmax 回归，并揭示其工程实践中的底层陷阱。
+语言模型的 next-token head 也会对词表 logits 计算 softmax，但完整语言模型还包含大量上下文建模，不能把它简单等同于 Softmax 回归。
 
-## 1. Softmax 与交叉熵核心原理解析
+## 1. Softmax 在算什么
 
-### 1.1 Softmax：概率转换器
-线性回归输出的是没有范围限制的实数（术语叫 *Logits*）。而在分类问题中，我们需要输出概率（严格分布在 0 到 1 之间，且总和为 1）。
-Softmax 函数通过以下三步实现“标准化”：
-1. **指数化 ($e^x$)**：将所有分数变成正数，并拉大差距。
-2. **求和**：计算所有指数值的总和作为分母。
-3. **算百分比**：将每个指数值除以总和。
+对类别分数 (mathbf{o}=[o_1,ldots,o_C])，第 (i) 类概率为
 
-### 1.2 交叉熵损失 (Cross-Entropy)：衡量“打脸程度”
-分类问题中，我们不看均方差，只看模型对“正确答案”给出的概率有多高。
-交叉熵的本质是计算：$-log(正确选项的预测概率)$。
-* 预测概率越高（如 0.9），$-log(0.9) \approx 0.1$，损失很小。
-* 预测概率越低（如 0.0001），$-log(0.0001) \approx 9.2$，损失爆炸（必须重罚！）。
+$$
+p_i=\frac{e^{o_i}}{\sum_{j=1}^{C}e^{o_j}}.
+$$
 
-## 2. 代码实现
+给所有 logits 同时加同一个常数，softmax 输出不变。因此工程实现会先减去最大 logit，降低指数溢出的风险：
 
-我们继续使用 `d2l` 库加载 Fashion-MNIST 图像分类数据集。
+$$
+p_i=
+\frac{e^{o_i-m}}{\sum_j e^{o_j-m}},
+\qquad m=\max_j o_j.
+$$
+
+softmax 会保留类别之间的相对差异，但输出概率不一定经过良好校准。模型给出 0.9，并不自动表示它在真实数据上有 90% 的命中率。
+
+## 2. 交叉熵
+
+若真实类别为 (y)，单样本交叉熵是
+
+$$
+\ell=-\log p_y
+=-o_y+\log\sum_j e^{o_j}.
+$$
+
+PyTorch 的 `nn.CrossEntropyLoss` 直接接收 logits，并在内部组合 `log_softmax` 与负对数似然。不要先对模型输出调用 softmax 再传给它，否则既重复计算，也会让数值稳定性和梯度都变差。
+
+## 3. Fashion-MNIST 示例
 
 ```python
 import torch
@@ -30,74 +42,86 @@ from d2l import torch as d2l
 
 batch_size = 256
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
-```
 
-### 2.1 定义模型并初始化参数
+net = nn.Sequential(
+    nn.Flatten(),
+    nn.Linear(28 * 28, 10),
+)
 
-Softmax 回归的输出层也是一个全连接层。因为我们处理的是 28x28 的图像数据，首先需要用 `nn.Flatten()` 将其展平为 784 维的一维向量。由于有 10 个类别，输出特征维度为 10。
 
-```python
-# PyTorch不会隐式地调整输入的形状
-# nn.Flatten() 将输入的二维图像展平为一维向量
-net = nn.Sequential(nn.Flatten(), nn.Linear(784, 10))
+def init_weights(module):
+    if isinstance(module, nn.Linear):
+        nn.init.normal_(module.weight, mean=0.0, std=0.01)
+        nn.init.zeros_(module.bias)
 
-def init_weights(m):
-    if type(m) == nn.Linear:
-        nn.init.normal_(m.weight, std=0.01)
 
-# 应用初始化函数
 net.apply(init_weights)
 ```
 
-### 2.2 定义损失函数（🚨 工程排坑：LogSumExp 技巧）
-
-**面试极爱考！为什么不先算 `Softmax`，再算 `交叉熵`？**
-
-因为 **数值溢出 (Overflow)**！如果某个 Logit 这个值达到 100，经过 $e^{100}$ 计算后，计算机的 float32 会直接爆表变成 `inf` (无穷大)。接着算百分比的时候就会出现 `inf / inf = NaN`。一旦出现 `NaN`，训练瞬间崩溃。
-
-因此，**绝对不要自己分开写 Softmax 和对数计算**。PyTorch 的 `nn.CrossEntropyLoss()` 把这两个步骤在底层融合成了一个算子，它内置了 **LogSumExp 技巧**（自动减去矩阵中的最大值来保证数值稳定性），完美避开了溢出问题。
-
-总结：永远直接把**没有经过处理的原生态打分 (Logits)** 扔给 `nn.CrossEntropyLoss()`。
+输入形状从 `(B, 1, 28, 28)` 经 `Flatten` 变成 `(B, 784)`，线性层输出 `(B, 10)`。这 10 个数是 logits，不要求落在 0 到 1 之间。
 
 ```python
-# 'none' 表示返回每个样本的单独损失，而不是计算平均值
-loss = nn.CrossEntropyLoss(reduction='none')
-```
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(net.parameters(), lr=0.1)
 
-### 2.3 定义优化算法与训练
-
-使用与线性回归相同的随机梯度下降（SGD）优化器，体现了深度学习优化算法的普适性。
-
-```python
-# 小批量随机梯度下降，学习率设置为 0.1
-trainer = torch.optim.SGD(net.parameters(), lr=0.1)
-
-# 训练模型 10 个 Epoch
 num_epochs = 10
-d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, trainer)
+for epoch in range(num_epochs):
+    net.train()
+    for X, y in train_iter:
+        logits = net(X)
+        loss = loss_fn(logits, y)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
 ```
 
-## 3. 张量切片实战补充 (消灭 for 循环)
-在底层自研或调试损失函数时，常常需要提取真实标签对应的概率值。如果不使用高级 API，而是操作张量，不要用 `for` 循环！使用切片是非常优雅且高效的做法：
+标签 `y` 应是形状 `(B,)` 的整数类别索引，dtype 通常为 `torch.long`。若使用 one-hot 或软标签，需要重新核对损失函数版本和张量格式。
+
+## 4. 手算一遍正确类别的损失
 
 ```python
-# 假设 y_hat 是模型对 2 个样本在 3 个类别上的预测概率矩阵
-y_hat = torch.tensor([[0.1, 0.3, 0.6],
-                      [0.3, 0.2, 0.5]])
+logits = torch.tensor([
+    [1.0, 2.0, 0.5],
+    [0.2, -0.3, 1.4],
+])
+labels = torch.tensor([1, 2])
 
-# y 是真实标签（第0个样本是第0类，第1个样本是第2类）
-y = torch.tensor([0, 2])
+log_probs = torch.log_softmax(logits, dim=1)
+row_ids = torch.arange(logits.shape[0])
+loss_per_sample = -log_probs[row_ids, labels]
 
-# 高级索引提取：生成行号范围 + 列号标签
-# 相当于提取 y_hat[0, 0] 和 y_hat[1, 2]
-correct_probs = y_hat[range(len(y_hat)), y] 
-print(correct_probs) # 输出 tensor([0.1000, 0.5000])
-
-# 计算交叉熵
-cross_entropy_loss = -torch.log(correct_probs)
+print(loss_per_sample)
 ```
 
-## 4. 小结
-1. **大模型的基石**：文本生成就是一个巨大的 Softmax 多分类器任务（Next-token prediction）。
-2. **严防计算陷阱**：在工程实践中，必须直接传递未经 Softmax 处理的 Logits 给 `nn.CrossEntropyLoss` 以保证数值稳定性。
-3. **高级特征**：运用张量的高级切片能力来替代低效的循环操作。
+高级索引 `log_probs[row_ids, labels]` 取出每条样本在真实类别上的 log probability。它比 Python 循环更直接，也能保留批量计算。
+
+等价的框架写法是：
+
+```python
+loss_per_sample_2 = nn.functional.cross_entropy(
+    logits,
+    labels,
+    reduction="none",
+)
+assert torch.allclose(loss_per_sample, loss_per_sample_2)
+```
+
+## 5. 从 logits 得到预测
+
+```python
+predicted_class = logits.argmax(dim=1)
+probabilities = logits.softmax(dim=1)
+```
+
+只要类别排序即可时，直接对 logits 做 `argmax`，结果与先 softmax 再 `argmax` 相同。只有展示概率、采样或计算需要概率的指标时，才必须显式计算 softmax。
+
+## 6. 容易出错的地方
+
+- **softmax 维度。** 分类通常沿最后的类别维计算，batch 维不能参与归一化。
+- **把概率传给 `CrossEntropyLoss`。** 该函数需要 logits。
+- **标签越界或 dtype 不对。** (C) 类问题的整数标签应在 ([0,C-1])。
+- **只看 accuracy。** 类别不平衡时还应看 per-class recall、confusion matrix 等指标。
+- **把 softmax 当作置信度证明。** 分布可能过度自信；温度缩放等方法处理的是校准问题，不是分类能力本身。
+
+Softmax 回归没有隐藏层，决策边界仍是线性的。下一步加入 MLP，是为了让模型先学习非线性表示，再在表示空间里分类。

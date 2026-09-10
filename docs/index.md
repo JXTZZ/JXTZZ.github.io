@@ -73,7 +73,7 @@ hide:
 
 [03　OpenVLA · 视觉语言动作模型](papers/openvla.md)
 
-[04　MEM · 长时程任务与记忆](papers/mem.md)
+[04　SPOT · 从人类演示学习物体轨迹](papers/spot.md)
 </div>
 </aside>
 </div>

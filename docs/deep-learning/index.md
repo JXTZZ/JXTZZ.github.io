@@ -10,9 +10,10 @@
 4. [计算图与反向传播](Computational_Graph.md)：理解梯度如何沿计算过程传递。
 5. [权重衰减](Weight_Decay.md)与 [Dropout](Dropout.md)：学习正则化的思路。
 6. [注意力机制](attention.md)：理解信息的选择与聚合。
+7. [深度学习计算](base.md)：补齐模块、参数、序列化与设备管理。
 
 ## 延伸与实践
 
-- [计算机视觉学习提纲](cv-roadmap.md)：待逐步展开的关键词清单。
+- [计算机视觉学习路线](cv-roadmap.md)：从 2D 基础走到 3D、视频、多模态与具身视觉，并用短项目试方向。
 - [张量维度与求和](../attention/Linear_Algebra.md)：补充代码中的形状与运算细节。
 - [Tensor 原地操作与内存](../attention/python.md)：理解 PyTorch 中的对象与存储。

@@ -1,59 +1,152 @@
-# PyTorch 底层解密：计算图与大模型显存危机的根源
+# 计算图与反向传播：PyTorch 到底保存了什么
 
-很多初学者认为深度学习只需写一句 `loss.backward()` 即可，但如果立志成为大模型算法工程师或研究员，这句代码背后的**计算图 (Computational Graph)** 和**显存管理机制**是绝对不可逾越的核心原理。
+`loss.backward()` 看起来只有一行，背后依赖的是前向计算时动态建立的计算图。理解这张图，主要为了回答三个问题：梯度怎样传回参数，为什么训练比推理占更多显存，以及哪些操作会意外截断梯度。
 
-这一节，我们将用“软件工程”和“内存管理”的视角，揭开正向传播与反向传播的底层秘密，并解释为什么大模型训练常常导致显存爆炸（OOM）。
-
-## 1. 正向传播：执行业务逻辑与“偷偷缓存”
-
-很多人在写 `forward()` 函数时，认为它仅仅是数学公式的执行：
+## 1. 前向计算会建立依赖关系
 
 ```python
-def forward(x, W1, W2):
-    z = torch.matmul(W1, x)   # 第一步：线性前向传播
-    h = torch.relu(z)         # 第二步：激活函数非线性打断
-    o = torch.matmul(W2, h)   # 第三步：线性前向传播输出
-    loss = cross_entropy(o, y)# 第四步：计算最终损失
-    return loss
+def forward(x, y, W1, W2):
+    z = x @ W1
+    h = torch.relu(z)
+    logits = h @ W2
+    return torch.nn.functional.cross_entropy(logits, y)
 ```
 
-**💡 软工视角的真相：**
-对于普通的 Python 代码，当程序执行完第二步 `h = torch.relu(z)` 时，代表历史状态的变量 `z` 就成了垃圾（会被自带的垃圾回收机制销毁）。
-但在 PyTorch 的**训练模式下**（遇到带有 `requires_grad=True` 属性的参数）：
-为了后续能够进行反向传播梯度相乘，**PyTorch 会把 `x`, `z`, `h`, `o` 这些计算的中间变量，全部死死地锁在 GPU 显存里，绝对不释放！！**这就是大模型显卡内存消耗恐怖的根本原因。
+只要参与运算的张量需要梯度，PyTorch autograd 就会记录产生结果的操作。结果张量通过 `grad_fn` 指向相应的反向函数，这些关系组成有向无环图（DAG）。
 
-## 2. 计算图：PyTorch 的后台依赖图 (DAG)
+计算图的节点更适合理解为“张量与产生它的算子之间的依赖”。并不是所有 Python 局部变量都会原样复制进图里。每个算子的 backward 只保存求导所需的张量或元数据；ReLU、矩阵乘法等操作需要保存的内容也不完全相同。
 
-计算图可以被生动地理解为前端工程中的 webpack 依赖树，或是软件构架中的执行 Pipeline 图。它是一种**有向无环图（DAG）**。
+```python
+x = torch.randn(4, 8)
+W = torch.randn(8, 3, requires_grad=True)
+y = x @ W
 
-1. **节点 (Node)**：代表数据张量（如输入 $x$，权重 $W$，以及保存的中间变量 $h$）。
-2. **边 (Edge)**：代表操作符 / 算子（如乘法、加法、ReLU）。
+print(y.requires_grad)  # True
+print(y.grad_fn)        # 矩阵乘法对应的 backward 节点
+```
 
-你在执行 Python 的 `forward()` 计算时，C++ 编写的底层引擎正在**一边算结果，一边动态绘制这张依赖关系图**，记下：“最终的 Loss 是由 $o$ 算的，$o$ 是由 $W_2$ 和 $h$ 算出来的……” 
+## 2. 叶子张量与梯度
 
-## 3. 反向传播：“顺藤摸瓜的分锅大会”
+用户创建、且 `requires_grad=True` 的参数通常是叶子张量（leaf tensor）。调用 backward 后，叶子张量的梯度累加到 `.grad`：
 
-如果前向传播是算出了极大的预测误差（Loss），反向传播就是利用微积分的**链式法则 (Chain Rule)**，顺着计算图依赖树“往回查，开启分锅大会”，查明是哪些参数（$W_1, W_2$）对庞当的误差负有多少“责任”，据此调整该参数（即计算各参数的偏导数或梯度）。
+```python
+W = torch.tensor(2.0, requires_grad=True)
+loss = W ** 2
+loss.backward()
+print(W.grad)  # tensor(4.)
+```
 
-最精彩的一步推导（比如在求 $W_2$ 的梯度时，公式涉及到了上一层的计算结果即 $h^\top$）：
+中间结果默认不会保留 `.grad`，因为反向传播只需把梯度继续传下去。调试时若确实要查看中间张量梯度，可调用 `retain_grad()`。
 
-$$ \frac{\partial J}{\partial W^{(2)}} = \frac{\partial J}{\partial o} \cdot h^\top  $$
+PyTorch 使用“累加”而不是“覆盖”：
 
-**顿悟时刻 🌟：**
-等号右边的 $h$ 恰巧就是前向传播中**隐藏层输出的中间变量数据**！如果此前在前行传播时你释放了 $h$ 的内存，这时候要用，电脑该从哪里掏出来？这就是 PyTorch 哪怕撑爆显卡，也要在构建计算图时把所有中间数据全部妥妥缓存下来的原因。
+```python
+loss = W ** 2
+loss.backward()
+print(W.grad)  # 在旧梯度上继续累加
+```
 
-一旦最后的偏导都已算完并赋给了 `W1.grad` 和 `W2.grad`，PyTorch 侦测到反推完成，这才会把这一张超大的图连带缓存的无数缓存数据变量全部销毁，以腾出 GPU 空间。
+训练循环因此要在适当位置调用 `optimizer.zero_grad()`。有意做 gradient accumulation 时，则每若干个 micro-batch 再清零和更新。
 
-## 4. 大模型面试的满分 “绝杀” 回答
+## 3. 链式法则怎样走过图
 
-**🧨 面试官提问：** “平时大家去网站请求使用 ChatGPT 问答（推理）不需要很好的显卡，但是训练 ChatGPT 这种上千亿参数的模型却动辄需要数千上万张 A100 显卡，为什么训练的显存开销比推理（Inference）大这么多？”
+考虑两层网络：
 
-**🛡️ 满分回答：**
+$$
+Z=XW_1,qquad H=\operatorname{ReLU}(Z),qquad O=HW_2.
+$$
 
-“这源于深度学习神经网络正向传播和反向传播的底层计算图缓存机制差异。
+若损失为 (J)，则
 
-* **在单纯的推理 (Inference) 阶段**：系统只需要得出结果不需要优化，我们通常配合 `with torch.no_grad()` 和 `.eval()` 模式，告诉 PyTorch 别建计算图。程序每执行完一层，就会自动释放上一层的历史中间变量（例如激活值），此时程序的显存占用往往极其小巧，只等于**模型本身参数静态体积**的大小。
-* **在复杂的训练 (Training) 阶段**：因为反向传播的链式导数求解必须要调用前行的数值，系统必须通过大量分配显存缓存记录网络前向的每一层激活输出（Activations）。由于大模型比如 LLaMA 有非常惊人的深层网络（近百层堆叠），这就逼迫它把多达 100 多层计算的所有海量数值结果统统缓存在昂贵的显存中，必须等到完成 `loss.backward()` 后才会销毁释放机制。这也是通常模型在训练峰值时的真实显存通常会翻推理状态 **3 到 4 倍（甚至更多）** 的本质原因。”
+$$
+\frac{\partial J}{\partial W_2}
+=H^\top\frac{\partial J}{\partial O}.
+$$
 
-### 扩展阅读（应对追问）：激活重计算 / 梯度检查点
-为了抵抗动辄破百 G 的中间参数缓存爆发问题，在大语言工程中后期引入了被称之为**梯度检查点 (Gradient Checkpointing)** 的硬核技术——在内存里彻底放弃一部分中间数据的存储！等到进行到对应的反推梯步如果又要调用该数值时，就在后台当场花时间重跑一遍那半截的前向计算网络再求值出来。这是用纯粹牺牲运行时间（Time），来暴力换取显卡极度紧缺的稀缺宝贵空间（Space）的一种宏大权衡！
+求 (W_2) 的梯度需要前向得到的 (H)。继续传到 (W_1) 时，还需要 ReLU 的激活区域和 (X)。这就是训练阶段必须保留一部分 activation 的原因。
+
+反向传播按图的逆拓扑顺序应用局部导数。一个中间张量若流向多个分支，来自各分支的梯度会相加，再继续传向它的父节点。
+
+## 4. 图何时释放
+
+默认情况下，一次 `backward()` 完成后，autograd 会释放为本次反向保存的中间结果。对同一张图第二次 backward 会报错：
+
+```python
+loss.backward()
+# loss.backward()  # RuntimeError: Trying to backward through the graph a second time
+```
+
+确实需要重复使用同一张图时可以传 `retain_graph=True`，但它会延长 activation 的生命周期，容易增加显存。多数训练代码不需要这个参数；如果频繁依赖它，应先检查图是否被不必要地复用。
+
+带历史的张量被 Python 容器长期引用，也可能让整条图无法及时释放。例如把每个 batch 的 `loss` 直接追加到列表中，会保留其图；记录数值时应使用 `loss.item()` 或 `loss.detach()`。
+
+## 5. 训练显存不只有 activation
+
+训练显存通常包含：
+
+- 模型参数；
+- 参数梯度；
+- 优化器状态，例如 Adam 的一阶、二阶矩；
+- 为 backward 保存的 activation；
+- 临时算子工作区、通信缓冲与内存分配器缓存。
+
+推理不保存反向所需的 activation，也没有梯度和优化器状态，所以通常省很多显存。但推理显存不只等于参数大小：batch、中间张量、长上下文的 KV cache 和算子工作区都可能占用大量空间。训练是推理的“固定 3～4 倍”也不是通用规律，比例会随 dtype、优化器、序列长度、batch 和并行方式变化。
+
+## 6. `eval()`、`no_grad()` 与 `inference_mode()`
+
+这三者处理的是不同问题：
+
+```python
+model.eval()  # 改变 Dropout、BatchNorm 等模块的行为
+
+with torch.no_grad():
+    output = model(x)  # 不记录反向图
+```
+
+- `model.eval()` 不会自动关闭 autograd；
+- `torch.no_grad()` 停止记录梯度，但不改变 Dropout/BatchNorm 模式；
+- `torch.inference_mode()` 比 `no_grad()` 约束更强，适合纯推理路径。
+
+验证阶段通常同时使用 `eval()` 和 `no_grad()`。
+
+## 7. 直接调用 `forward()` 会怎样
+
+`model(x)` 会进入 `nn.Module.__call__`，再调用用户实现的 `forward()`。这条路径还负责 forward hooks、pre-hooks 等模块机制。因此正常代码应写 `model(x)`。
+
+直接写 `model.forward(x)` 会绕过这些 module hooks，但其中的张量运算仍由 autograd 记录，不能说它一定导致 `backward()` 失效。问题在于它破坏了 `nn.Module` 的调用约定，可能跳过调试、监控、编译或分布式包装所依赖的逻辑。
+
+## 8. 常见的梯度截断
+
+### 8.1 `detach()` 与 `item()`
+
+```python
+y = model(x)
+z = y.detach()  # z 与 y 共享数据，但不再沿 y 的历史求梯度
+value = y.mean().item()  # 转为 Python 数值，用于日志
+```
+
+`detach()` 适合明确切断梯度的边界；误用会让上游参数收不到梯度。
+
+### 8.2 不可导或离散操作
+
+`argmax`、整数索引选择和大多数离散采样无法提供普通意义上的梯度。训练时常用连续松弛、代理梯度或重新设计目标，而不是期待 autograd 自动处理。
+
+### 8.3 原地修改
+
+某些 backward 需要前向张量的原值。若该值被原地操作改写，PyTorch 可能报 version counter 错误。带下划线的方法不一定都危险，但对参与求导的中间张量做原地修改前要确认 backward 是否依赖旧值。
+
+## 9. 用计算换显存：gradient checkpointing
+
+梯度检查点只保存部分节点。反向传播走到缺失区间时，重新执行那段前向计算，再得到所需 activation。它降低 activation 显存，代价是额外计算时间。
+
+这项技术不会减少参数、梯度和优化器状态，也不会自动解决所有 OOM。定位显存问题时应先判断哪一部分占主要比例，再决定用 checkpoint、混合精度、减小 batch、缩短序列或参数分片。
+
+## 10. 我用来排查 autograd 的顺序
+
+1. 看参数是否在 `model.parameters()` 中，且 `requires_grad=True`；
+2. 看 loss 是否有 `grad_fn`；
+3. 查中途是否出现 `detach()`、`item()`、NumPy 转换或离散操作；
+4. backward 后检查关键参数的 `.grad is None`、梯度范数和有限性；
+5. 若显存持续增长，检查列表、缓存或日志对象是否保存了带历史的张量。
+
+计算图没有把每个前向变量“永久锁住”。它只为当前反向保留必要信息，但这些信息可能很大，也可能因为引用或 `retain_graph=True` 活得比预期更久。

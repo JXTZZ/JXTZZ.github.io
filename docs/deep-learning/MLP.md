@@ -1,56 +1,61 @@
-﻿# 多层感知机 (MLP) 核心解析：维度变换与 ReLU 魔法
+# 多层感知机：维度变换与非线性
 
-多层感知机（Multi-Layer Perceptron，MLP）是迈向大模型（Transformer）的最后一块基础拼图。在未来要学习的大模型（Transformer 架构）中，除了 Attention 机制之外，剩下的大部分代码核心几乎都是 MLP！在大模型应用中，它通常被称为**前馈网络 (FeedForward Network, FFN)**。
+多层感知机（Multi-Layer Perceptron，MLP）可以看成若干线性层与非线性激活的交替组合。它比 Softmax 回归多出的关键一步，是先把输入映射到隐藏表示，再用这个表示完成预测。
 
-本文将用软件工程的数据流（Data Flow）视角，解析 MLP 的层间维度转化，以及为什么 **ReLU 激活函数**是整个神经网络实现非线性的灵魂。
+Transformer 中也有逐 token 的前馈网络（FFN）。它和这里的 MLP 共享“线性层—激活—线性层”的结构，但具体激活、门控方式和宽度会因模型而异。
 
-## 1. 核心理念的软工翻译
+## 1. 先看张量形状
 
-### 1.1 层间转化：维度的连环魔法
-很多同学在学习神经网络时容易被复杂的张量乘法绕晕，其实最关键的切入点是聚焦于**形状（Shape）**。一层神经网络，本质上就是一个用矩阵运算改变数据形状的函数。
+Fashion-MNIST 的单张图像为 (28\times28)，展平后有 784 个特征。设隐藏层宽度为 256，输出为 10 个类别：
 
-以 Fashion-MNIST 图像分类为例，我们需要把 `28x28=784` 像素的图片分类到 10 个类别中。当我们不仅限于直接映射，而是引入一个大小为 256 的**隐藏层 (Hidden Layer)** 时，层间转化的过程如下：
-
-1. **输入数据 X**：形状是 `(BatchSize, 784)`
-2. **第一网络层（权重 W1）**：形状设定为 `(784, 256)`
-   * **转化过程**：`X @ W1` （矩阵乘法）
-   * **结果形状变为**：`(BatchSize, 256)`。此时的物理含义是，784 个原始像素点被揉碎并重新组合成了 256 个更为抽象的高级特征。
-3. **第二网络层（权重 W2）**：形状设定为 `(256, 10)`
-   * **转化过程**：`H @ W2`
-   * **结果形状变为**：`(BatchSize, 10)`。这 256 个高级特征最终在此层向 10 个分类进行结果投票。
-
-** 软工视角**：层与层之间的转化，就像是流水线上前后相连的微服务。第一个微服务吃进去 784 个字段的 JSON，吐出 256 个字段的 JSON；第二个微服务吃进去 256 个，吐出 10 个。只要它们的**接口（也就是维度）对得上**，你想串联多少层微服务进行加工都可以！
-
-### 1.2 为什么必须有 ReLU 激活函数？
-如果只做矩阵乘法（`H = X @ W1`, `O = H @ W2`），从数学上来看 `O = X @ (W1 @ W2)`。由于两个矩阵相乘还是一个新矩阵 `W3`，公式可以简化为 `O = X @ W3`。
-这就是所谓的线性塌陷。如果没有激活函数进行干预，无论你在中间堆叠 100 层还是 1000 层，它在数学上都会**等价于单层的线性回归**。这种网络只能画出直线，彻底丧失了处理复杂非线性逻辑的能力。
-
-**ReLU 激活函数**拯救了这一切：
-```python
-def relu(X):
-    return torch.max(X, 0)
+```text
+(B, 1, 28, 28)
+      ↓ Flatten
+(B, 784)
+      ↓ Linear(784, 256)
+(B, 256)
+      ↓ ReLU
+(B, 256)
+      ↓ Linear(256, 10)
+(B, 10)
 ```
-就是这句极简的代码（把所有负数强行归 0，正数原样保留），强制打断了线性的顺滑传递：
-1. `H = X @ W1 + b1` -> 执行线性转化。
-2. `H = relu(H)` -> **非线性打断！通过折叠或截断特征（负数清零）引入非线性空间**。
-3. `O = H @ W2 + b2` -> 再次进行线性转化。
 
-因为 `relu` 的存在，`W1` 和 `W2` 永远无法再被简单合并。只要这样的中间层足够宽、层数足够深，根据通用近似定理，它就能拟合出任何复杂的边界和曲线。
+对应公式是
 
-### 1.3 LLM 面试加分项：大模型中的 MLP (FFN)
-在 GPT 等大型语言模型中，MLP (FFN) 往往采用非常经典的**升维再降维**结构套路：
-1. 网络接收来自上一层的文本字词向量（例如初始维度为 768）。
-2. 先通过类似于 `nn.Linear(768, 3072)` 的全连接层把维度放大约 4 倍，并伴随一个激活函数（如 GELU）。
-3. 再通过 `nn.Linear(3072, 768)` 将其缩小回 768 维。
+$$
+H=\operatorname{ReLU}(XW_1+b_1),
+$$
 
-**为什么要膨胀再缩小？**
-学术界与业界的普遍共识是：这构成了大模型的**知识记忆库**。中间膨胀放大的 3072 维高维空间，主要用于充分死记硬背海量的世界知识规律；而缩回 768 维，则是为了紧紧与 Attention（注意力）机制的接口对齐，保证网络模块可以像搭积木般深度堆积。
+$$
+O=HW_2+b_2.
+$$
 
----
+隐藏维度 256 是需要实验选择的超参数。它不是“256 种人能理解的高级特征”；单个通道的意义通常依赖整个网络和数据。
 
-## 2. 从零实现 MLP 代码实战
+## 2. 为什么中间需要激活函数
 
-我们将继续使用 Fashion-MNIST 数据集进行测试。
+如果去掉 ReLU：
+
+$$
+H=XW_1+b_1,
+$$
+
+$$
+O=HW_2+b_2
+=X(W_1W_2)+(b_1W_2+b_2).
+$$
+
+多层仿射变换仍可合并成一层仿射变换。堆更多线性层不会增加可表示的函数类别，只会换一种参数化方式。
+
+ReLU 定义为
+
+$$
+\operatorname{ReLU}(x)=\max(x,0).
+$$
+
+它在不同输入区域选择不同的线性分支，使整个网络成为分段线性函数。深度和宽度越大，模型能组合出的分段结构通常越丰富，但训练效果仍取决于数据、优化和正则化。
+
+## 3. 从零写一个单隐藏层 MLP
 
 ```python
 import torch
@@ -59,85 +64,81 @@ from d2l import torch as d2l
 
 batch_size = 256
 train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size)
-```
 
-### 2.1 初始化模型参数
-为了实现具有单隐藏层（256 个隐藏单元）的 MLP，我们需要为第一层和第二层分别声明权重矩阵与偏置向量。
+num_inputs = 784
+num_hiddens = 256
+num_outputs = 10
 
-```python
-num_inputs, num_outputs, num_hiddens = 784, 10, 256
-
-# W1形状: (784, 256)。负责将输入转化至隐藏层维度
-W1 = nn.Parameter(torch.randn(num_inputs, num_hiddens, requires_grad=True) * 0.01)
-b1 = nn.Parameter(torch.zeros(num_hiddens, requires_grad=True))
-
-# W2形状: (256, 10)。负责将隐藏层特征转化为最终类别输出
-W2 = nn.Parameter(torch.randn(num_hiddens, num_outputs, requires_grad=True) * 0.01)
-b2 = nn.Parameter(torch.zeros(num_outputs, requires_grad=True))
-
+W1 = nn.Parameter(torch.randn(num_inputs, num_hiddens) * 0.01)
+b1 = nn.Parameter(torch.zeros(num_hiddens))
+W2 = nn.Parameter(torch.randn(num_hiddens, num_outputs) * 0.01)
+b2 = nn.Parameter(torch.zeros(num_outputs))
 params = [W1, b1, W2, b2]
 ```
 
-### 2.2 实现 ReLU 激活函数和模型前向传播
-
 ```python
-# 1. 激活函数：负数置零，正数保留
 def relu(X):
-    a = torch.zeros_like(X)
-    return torch.max(X, a)
+    return torch.maximum(X, torch.zeros_like(X))
 
-# 2. 模型前向传播定义
+
 def net(X):
-    # 将批量二维的图像强行展平为二维矩阵 (BatchSize, 784)
-    X = X.reshape((-1, num_inputs))
-    # 线性转化 @ 代表矩阵乘法，随后紧跟 relu 切断纯线性映射
-    H = relu(X @ W1 + b1)  
-    # 返回最后的输出层结果
-    return (H @ W2 + b2)
+    X = X.reshape(-1, num_inputs)
+    H = relu(X @ W1 + b1)
+    return H @ W2 + b2
 ```
 
-### 2.3 高级 API 的工程模式对比
-如果是实战开发，使用 PyTorch 高级 API 的 `nn.Sequential` 相当于直接调用了设计模式里的责任链模式（Pipeline）。上面的纯手工代码等价于：
+偏置形状分别为 `(256,)` 和 `(10,)`。与 batch 矩阵相加时，PyTorch 会沿 batch 维广播。这里的输出仍是 logits，交给交叉熵处理。
+
+```python
+loss_fn = nn.CrossEntropyLoss(reduction="none")
+optimizer = torch.optim.SGD(params, lr=0.1)
+d2l.train_ch3(net, train_iter, test_iter, loss_fn, 10, optimizer)
+```
+
+## 4. 用 `nn.Sequential` 表达同一个结构
+
 ```python
 net_concise = nn.Sequential(
     nn.Flatten(),
     nn.Linear(784, 256),
     nn.ReLU(),
-    nn.Linear(256, 10)
+    nn.Linear(256, 10),
 )
 ```
 
-### 2.4 定义损失函数与训练
-这里一如既往地采用内置的 `CrossEntropyLoss`（其内部封装了 LogSumExp，用来防范数值溢出），训练调用流程与 Softmax 回归一致。
+`Sequential` 适合单输入、单输出并按顺序连接的网络。出现残差、多分支、多个输入或中间状态复用时，继承 `nn.Module` 并手写 `forward` 会更清楚。
 
-```python
-loss = nn.CrossEntropyLoss(reduction='none')
+## 5. MLP 在 Transformer 里做什么
 
-num_epochs, lr = 10, 0.1
-# 使用 SGD 优化器
-updater = torch.optim.SGD(params, lr=lr)
+attention 负责 token 之间的信息混合，FFN 则对每个 token 独立使用同一组参数做通道变换。一个基础形式是：
 
-# 调用 d2l 提供的训练函数
-d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, updater)
-```
+$$
+\operatorname{FFN}(x)=W_2\,\sigma(W_1x+b_1)+b_2.
+$$
 
----
+中间维度经常大于 (d_{model})，目的是增加逐位置非线性变换的容量。现代模型还常见 GELU、SiLU、SwiGLU 等激活或门控结构。把 FFN 解释成“知识存储”是一种研究视角，不应当成每个神经元都对应明确事实的字典。
 
-## 3. 全局小结
-1. **维度变换是结构核心**：模型一层层传递，实际上就是寻找规律并进行矩阵形状 (`Shape`) 的连环转化。
-2. **ReLU 是灵魂**：没有非线性的激活函数作为关卡，再深的网络也只会退化和塌陷成一层的线性回归。
-3. **架构的流水线**：利用 `nn.Sequential` 能够优雅和高内聚地管理输入和输出维度对齐的模块。
+## 6. 深度和宽度怎么理解
 
----
+通用近似定理说明，在一定条件下，足够宽的单隐藏层网络能够逼近广泛的连续函数；它没有告诉我们有限数据下哪种结构更容易训练，也没有保证泛化。
 
-## 4. 常见疑问（Q&A）
+实践中：
 
-**1. 为什么深度学习倾向于增加隐藏层的层数（变深），而不是一味增加单层的神经元个数（变宽）？**
-> 单纯依靠极度宽大的单隐层虽然在理论上也能拟合任意函数，但效率极低，而且由于权重都在同一层被更新，往往容易发生严重的 **过拟合 (Overfitting)**。
-> 而增加网络的层数，能促使模型进行 **层次化特征表示 (Hierarchical Feature Representation)**的自主学习。像图像识别任务，浅层（前面几层）可以学习到线条、边缘等基础纹理，中层能够组合成耳朵、脚掌等部件，深层则将这些部件融合成类似猫的整体语义概念。这种深而窄的网络架构，能有效分摊学习压力，所需参数量更少且泛化能力更强。
-![alt text](image.png)
+- 增加宽度会直接增加单层参数和计算；
+- 增加深度能逐层组合特征，但优化更难；
+- residual、normalization 和合适初始化让深层网络更容易训练；
+- 结构选择应通过验证集和资源约束判断，不能只靠“越深越好”。
 
-**2. 在不同任务和模型中，究竟该如何选择各种不同的激活函数（ReLU, Sigmoid, Tanh 等）？**
-> 实际上，在现在的深度学习实践中，针对**中间隐藏层**，**ReLU 及其变种（LeakyReLU, GELU 等）是绝对优先的工业标准**。
-> 原因是：ReLU 计算成本极低（甚至避开了复杂的次幂运算），且它在正数区间导数恒为 1，完美击破了深度网络中可怕的**梯度消失 (Vanishing Gradient) 问题**。
-> 至于 Sigmoid 或 Softmax，更多是被放置在网络的最后输出层用作概率的归一转换操作。总的来说，模型结构的调优（例如架构从 784->64->10 改为 784->128->32->10）往往比纠结于不同的现代激活函数能带来大得多的性能差异。
+对图像来说，MLP 展平像素后忽略了二维局部结构。CNN 用卷积加入局部性和平移共享，ViT 则先把图像划为 patch，再用 attention 建模 patch 之间的关系。
+
+![MLP 与非线性示意](image.png)
+
+## 7. 几个调试检查
+
+1. 在每层后打印 shape，先排除维度错位；
+2. 确认最后一层没有提前加 softmax，`CrossEntropyLoss` 接收 logits；
+3. 观察 ReLU 输出中 0 的比例，长期全为 0 的单元可能没有有效梯度；
+4. 同时看训练集和验证集：两边都差通常是欠拟合或优化问题，只有验证集变差才更像过拟合；
+5. 比较参数量与数据量，增加隐藏层并不自动带来更好的测试表现。
+
+我目前用一句话记 MLP：线性层负责重新组合特征，激活函数让不同输入走不同的线性区域。先沿着 shape 把数据流看明白，再谈网络到底学到了什么。

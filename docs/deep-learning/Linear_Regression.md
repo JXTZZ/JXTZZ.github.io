@@ -1,113 +1,127 @@
-﻿# 线性回归的简洁实现 (PyTorch)
+# 线性回归：用 PyTorch 走完一次训练
 
-本文记录了如何利用深度学习框架（PyTorch）的高级 API 简洁、高效地实现线性回归模型。以下将按照模型训练的标准流程，依次梳理代码实现与核心要点。
+线性回归适合拿来熟悉深度学习框架，因为模型只有一层，数据、损失、梯度和参数更新却一个不少。下面用 (y=Xw+b+epsilon) 生成数据，再用 `nn.Linear` 把参数学回来。
 
-## 1. 生成数据集
-
-在开始搭建模型前，我们先利用 `d2l`（Dive into Deep Learning）库生成带有一定噪声的模拟数据集。
+## 1. 造一组可核对的数据
 
 ```python
-import numpy as np
 import torch
+from torch import nn
 from torch.utils import data
 from d2l import torch as d2l
 
-true_w = torch.tensor([2, -3.4])
+true_w = torch.tensor([2.0, -3.4])
 true_b = 4.2
 features, labels = d2l.synthetic_data(true_w, true_b, 1000)
+
+print(features.shape)  # (1000, 2)
+print(labels.shape)    # (1000, 1)
 ```
 
-## 2. 读取数据集
+`features` 的每一行是一条样本，两个输入特征对应 (w_1,w_2)。`labels` 保留为 `(N, 1)`，和 `nn.Linear(2, 1)` 的输出形状一致。
 
-我们可以借助框架内置的数据处理 API 来高效读取数据。通过组合 `data.TensorDataset` 和 `data.DataLoader`，不仅能快速构建数据迭代器，还能方便地实现打乱数据操作以及指定批量大小（Batch Size）。
+## 2. 小批量读取
 
 ```python
-def load_array(data_arrays, batch_size, is_train=True):  #@save
-    """构造一个PyTorch数据迭代器"""
+def load_array(data_arrays, batch_size, is_train=True):
     dataset = data.TensorDataset(*data_arrays)
-    return data.DataLoader(dataset, batch_size, shuffle=is_train)
+    return data.DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=is_train,
+    )
+
 
 batch_size = 10
 data_iter = load_array((features, labels), batch_size)
-
-# 验证数据迭代器是否正常运行（获取第一批小批量数据）
-next(iter(data_iter))
+X, y = next(iter(data_iter))
+print(X.shape, y.shape)  # (10, 2), (10, 1)
 ```
 
-## 3. 定义模型
+训练集通常设置 `shuffle=True`，避免每轮都用固定顺序组成 batch。验证和测试阶段不依赖随机打乱。
 
-面对复杂的神经网络，手动编写线性代数运算不仅繁琐且容易出错。为此，我们可以直接采用框架预定义好的神经网络层（Layer）。
-
-在 PyTorch 中，全连接层由 `nn.Linear` 类定义。同时，我们可以使用 `nn.Sequential` 容器将多个层按顺序串联，快速构建出标准前向传播的网络结构。
+## 3. 模型与参数
 
 ```python
-# nn (Neural Network) 是神经网络的缩写
-from torch import nn
-
-# 定义包含单层全连接层的网络：输入特征维度为 2，输出维度（标量）为 1
 net = nn.Sequential(nn.Linear(2, 1))
+
+nn.init.normal_(net[0].weight, mean=0.0, std=0.01)
+nn.init.zeros_(net[0].bias)
 ```
 
-## 4. 初始化模型参数
+`nn.Linear(2, 1)` 实现
 
-网络构建完成后，需要对其参数（权重和偏置）进行初始化。
+$$
+\hat y=XW^\top+b.
+$$
 
-深度学习框架通常提供了多种预定义的初始化方法。在 PyTorch 中，我们可以通过网络层实例直接访问参数，并调用带有 `_` 后缀的就地修改（In-place）函数来设定初始值：
+PyTorch 的 `weight` 形状是 `(out_features, in_features)`，这里为 `(1, 2)`。公式中出现转置，正是因为框架用这个布局保存参数。
+
+初始化通常放在 `torch.no_grad()` 语义下完成；`nn.init` 已经处理了这一点。相比直接改 `.data`，这种写法更清楚，也不容易绕开 autograd 后留下难查的问题。
+
+## 4. 损失函数与优化器
 
 ```python
-# net[0] 代表网络中的第一层（即我们定义的 nn.Linear）
-# 将权重参数初始化为均值 0、标准差 0.01 的正态分布
-net[0].weight.data.normal_(0, 0.01)
-
-# 将偏置参数初始化为 0
-net[0].bias.data.fill_(0)
+loss_fn = nn.MSELoss()
+optimizer = torch.optim.SGD(net.parameters(), lr=0.03)
 ```
 
-## 5. 定义损失函数
+均方误差为
 
-在线性回归中，我们通常使用均方误差（Mean Squared Error）作为损失函数。在 PyTorch 的 `nn` 模块中，这一需求由 `MSELoss` 类满足，其默认会返回所有样本损失的平均值（计算平方 $L_2$ 范数）。
+$$
+L=\frac{1}{N}\sum_{i=1}^{N}(\hat y_i-y_i)^2.
+$$
 
-```python
-loss = nn.MSELoss()
-```
+`nn.MSELoss()` 默认对 batch 内所有元素取平均。学习率 `0.03` 只是这组数据上的可用设置，不是线性回归的固定值。
 
-## 6. 定义优化算法
-
-PyTorch 的 `optim` 模块内置了大量主流的神经网络优化算法。这里我们实例化一个小批量随机梯度下降（SGD）优化器，并传入需要优化的参数以及学习率（Learning Rate）超参数。
-
-```python
-# 将模型的所有参数（可通过 net.parameters() 获取）交给优化器管理，并设置学习率为 0.03
-trainer = torch.optim.SGD(net.parameters(), lr=0.03)
-```
-
-## 7. 训练模型
-
-借助于高级 API 提供的高度封装设施，大部分繁琐的底层逻辑和计算被隐蔽，极大简化了我们的训练代码。每个迭代周期（Epoch）的核心步骤如下：
-
-1. **前向传播**：将输入 `X` 喂给模型生成预测，并计算当前损失 `l`。
-2. **梯度清零**：调用 `trainer.zero_grad()` 清空上一次的梯度积压。
-3. **反向传播**：调用 `l.backward()` 根据损失计算网络各参数的梯度。
-4. **参数更新**：调用 `trainer.step()` 根据梯度更新模型参数。
+## 5. 训练循环
 
 ```python
 num_epochs = 3
+
 for epoch in range(num_epochs):
+    net.train()
     for X, y in data_iter:
-        l = loss(net(X), y)
-        trainer.zero_grad() # 1. 梯度清零
-        l.backward()        # 2. 反向传播，计算梯度
-        trainer.step()      # 3. 更新参数
-        
-    # 每个 epoch 结束后，计算当前整个测试集上的损失
-    l = loss(net(features), labels)
-    print(f'Epoch {epoch + 1}, Loss: {l:f}')
+        prediction = net(X)
+        loss = loss_fn(prediction, y)
+
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+    net.eval()
+    with torch.no_grad():
+        epoch_loss = loss_fn(net(features), labels)
+
+    print(f"epoch {epoch + 1}: loss={epoch_loss.item():.6f}")
 ```
 
-## 8. 小结
+四个动作的顺序需要记住：
 
-* **高级 API 的优势**：利用 PyTorch 的高级封装，可以摒弃诸多手动重复性工作，从而更高效、规范地搭建并训练深度学习模型。
-* **核心模块分工明确**：
-    * `torch.utils.data`：负责数据读取与处理流水线构建（如 `TensorDataset`、`DataLoader`）。
-    * `torch.nn`：提供了丰富的网络层组件（如 `Linear`、`Sequential`）和损失函数（如 `MSELoss`）。
-    * `torch.optim`：涵盖了各类主流的优化算法（如 `SGD`、`Adam` 等）。
-* **就地操作语义**：在 PyTorch 中，带有 `_` 结尾的方法通常表示就地修改（In-place Operation），常被用来高效地初始化或重写变量参数。
+1. `net(X)` 做前向计算；
+2. `optimizer.zero_grad()` 清掉上一次累计在 `.grad` 中的梯度；
+3. `loss.backward()` 沿计算图求导；
+4. `optimizer.step()` 用当前梯度更新参数。
+
+PyTorch 默认累加梯度，所以忘记 `zero_grad()` 不等于“完全没有梯度”，而是把多个 batch 的梯度叠在一起。梯度累积训练会有意利用这个行为，普通训练循环则应显式清零。
+
+## 6. 检查学到的参数
+
+```python
+learned_w = net[0].weight.detach().reshape(-1)
+learned_b = net[0].bias.detach()
+
+print("w error:", true_w - learned_w)
+print("b error:", true_b - learned_b)
+```
+
+这一步比只看 loss 更直观：数据本来就是由 (w=[2,-3.4])、(b=4.2) 生成的，训练正常时参数应接近它们。不会完全相等，因为标签里加入了噪声，而且只训练了有限轮。
+
+## 7. 这段代码里最容易忽略的细节
+
+- **标签形状。** `(N,)` 和 `(N,1)` 混用时可能触发广播，代码能跑但损失算错。
+- **训练/评估模式。** 当前模型没有 Dropout 或 BatchNorm，`train()` 与 `eval()` 的输出相同；保留切换能让训练循环以后安全扩展。
+- **验证阶段仍建图。** 不使用 `no_grad()` 虽然通常也能得到结果，但会保存不需要的反向信息。
+- **把 loss 降低当作唯一目标。** 还应检查参数误差、验证集误差和数据生成过程，避免“代码在收敛，任务却定义错了”。
+
+线性回归把训练框架的最小闭环展示得很完整。后面的分类、MLP 和 Transformer 主要是在换模型、损失与数据，训练循环本身变化不大。
