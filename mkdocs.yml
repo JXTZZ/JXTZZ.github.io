@@ -8,6 +8,7 @@ copyright: Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
 theme:
   name: material
   language: zh
+  custom_dir: overrides
   font: false
   logo: assets/logo.svg
   favicon: assets/logo.svg
@@ -55,8 +56,10 @@ extra_css:
   - stylesheets/extra.css
 extra_javascript:
   - javascripts/mathjax.js
+  - javascripts/version-sync.js
   - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
 extra:
+  site_version: !ENV [GITHUB_SHA, local]
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/JXTZZ

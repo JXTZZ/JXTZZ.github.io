@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <meta name="site-version" content="{{ config.extra.site_version }}">
+{% endblock %}

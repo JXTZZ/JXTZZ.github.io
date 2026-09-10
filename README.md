@@ -21,9 +21,9 @@ python -m venv .venv
 .\.venv\Scripts\python.exe scripts/check_site.py .build/site
 ```
 
-`docs/` 是文章与附件源文件，`mkdocs.yml` 管理导航，`docs/stylesheets/extra.css` 管理外观。不要编辑生成的 HTML。仓库中旧的 `site/` 是历史构建产物；当前发布仅使用 `.build/site`。
+`docs/` 是文章与附件源文件，`mkdocs.yml` 管理导航，`docs/stylesheets/extra.css` 管理外观。不要提交或编辑生成的 HTML；本地构建统一输出到被忽略的 `.build/site`。
 
-推送 `main` 后，GitHub Actions 先构建并检查站内链接，再将通过检查的产物发布到 `gh-pages`。GitHub Pages 应使用 `gh-pages` 分支根目录。Pull Request 只执行检查。
+推送 `main` 后，GitHub Actions 先构建并检查站内链接，再将通过检查的产物发布到 `gh-pages`。GitHub Pages 应使用 `gh-pages` 分支根目录。Pull Request 只执行检查。每次线上构建还会写入版本标记；浏览器若短暂拿到旧的 HTML，会自动重新请求同一部署版本，避免不同页面显示两套界面。
 
 ## 本次资料迁移
 
