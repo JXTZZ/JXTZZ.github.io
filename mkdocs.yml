@@ -1,25 +1,49 @@
-site_name: LoTusY的学习笔记
+site_name: LoTusY · 研究与学习笔记
+site_description: 从深度学习基础到具身智能，记录论文阅读、代码实践与每天的新发现。
+site_url: https://jxtzz.github.io/
 site_author: LoTusY
+repo_url: https://github.com/JXTZZ/JXTZZ.github.io
+repo_name: JXTZZ / Notes
+copyright: Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
 theme:
   name: material
+  language: zh
+  font: false
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
   palette:
-    primary: indigo # 网站主色调
-
-nav:
-  - 首页: index.md
-  - 大模型理论基础:
-    - 注意力机制解析: deep-learning/attention.md
-    - 线性回归解析: deep-learning/Linear_Regression.md
-    - Softmax回归解析: deep-learning/Softmax_Regression.md
-    - 多层感知机解析: deep-learning/MLP.md
-    - 权重衰减解析: deep-learning/Weight_Decay.md
-    - Dropout层解析: deep-learning/Dropout.md
-    - 前向传播与反向传播解析: deep-learning\Computational_Graph.md
-  - PyTorch 开发笔记:
-    - Tensor 原地操作与内存优化: attention/python.md
-    - 张量维度与求和: attention/Linear_Algebra.md
-
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: 切换到深色模式
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: 切换到浅色模式
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+plugins:
+  - search:
+      lang: [zh, en]
 markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.details
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
@@ -27,8 +51,48 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.arithmatex:
       generic: true
-
+extra_css:
+  - stylesheets/extra.css
 extra_javascript:
   - javascripts/mathjax.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
-  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/JXTZZ
+      name: LoTusY on GitHub
+nav:
+  - 首页: index.md
+  - 论文阅读:
+    - papers/index.md
+    - ALOHA Unleashed: papers/aloha.md
+    - 3D Diffusion Policy: papers/dp3.md
+    - Octo: papers/octo.md
+    - OpenVLA: papers/openvla.md
+    - π₀: papers/pi0.md
+    - SPOT · 深度阅读: papers/spot.md
+    - SPOT · 概念笔记: papers/spot-notes.md
+    - MEM: papers/mem.md
+    - 论文资料库: papers/library.md
+  - 理论基础:
+    - deep-learning/index.md
+    - 线性回归: deep-learning/Linear_Regression.md
+    - Softmax 回归: deep-learning/Softmax_Regression.md
+    - 多层感知机: deep-learning/MLP.md
+    - 计算图与反向传播: deep-learning/Computational_Graph.md
+    - 权重衰减: deep-learning/Weight_Decay.md
+    - Dropout: deep-learning/Dropout.md
+    - 注意力机制: deep-learning/attention.md
+    - 计算机视觉学习提纲: deep-learning/cv-roadmap.md
+  - 工程实践:
+    - engineering/index.md
+    - Tensor 原地操作与内存: attention/python.md
+    - 张量维度与求和: attention/Linear_Algebra.md
+    - Image-to-ArkTS 项目记录: meeting/image-to-arkts.md
+  - 学习日志:
+    - journal/index.md
+    - 09.10 · Python 堆: journal/2026-09-10.md
+    - 09.08 · RoboSPA 与工具排障: journal/2026-09-08.md
+    - 09.07 · 论文速记与 WSL: journal/2026-09-07.md
+    - 09.04 · 具身智能阅读周记: journal/2026-09-04.md
+  - 关于: about.md

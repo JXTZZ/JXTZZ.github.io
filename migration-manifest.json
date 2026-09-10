@@ -1,0 +1,245 @@
+{
+  "notes": 13,
+  "duplicate_notes": 5,
+  "images": 9,
+  "pdfs": 12,
+  "excluded": [
+    ".obsidian application configuration"
+  ],
+  "files": [
+    {
+      "source": "obsidian/01_Robitic/ALOHA Unleashed.md",
+      "destination": "papers/aloha.md",
+      "source_sha256": "089a132f7286e28d57dbadc276ded15feee7b9d4c5f71ebda3fe797d4971d2bd",
+      "output_sha256": "9f1e112af391187cb6c868e7a2f185027f7583a4e4cec972dd05b85552f0d546"
+    },
+    {
+      "source": "paper/ALOHA Unleashed.md",
+      "destination": "papers/aloha.md",
+      "source_sha256": "089a132f7286e28d57dbadc276ded15feee7b9d4c5f71ebda3fe797d4971d2bd",
+      "output_sha256": "9f1e112af391187cb6c868e7a2f185027f7583a4e4cec972dd05b85552f0d546"
+    },
+    {
+      "source": "obsidian/01_Robitic/DP3_科研汇报深度阅读.md",
+      "destination": "papers/dp3.md",
+      "source_sha256": "c895051e159cdf2355062a9f887f0109d760d521c4f52898f447f2d5e98979bc",
+      "output_sha256": "c46d07ffffb4c229319fe3041d7c0d76ac9abcbfe651461c2a8b446bb968dd68"
+    },
+    {
+      "source": "paper/DP3_科研汇报深度阅读.md",
+      "destination": "papers/dp3.md",
+      "source_sha256": "c895051e159cdf2355062a9f887f0109d760d521c4f52898f447f2d5e98979bc",
+      "output_sha256": "c46d07ffffb4c229319fe3041d7c0d76ac9abcbfe651461c2a8b446bb968dd68"
+    },
+    {
+      "source": "obsidian/01_Robitic/Octo_科研汇报深度阅读.md",
+      "destination": "papers/octo.md",
+      "source_sha256": "31aa3909bb0cdb1497e4536a4fde9d6794d9250849953d80cdc3b420f6a4561c",
+      "output_sha256": "655dff5f323c4ed7f2f9274afee57b5da58023654d80881133ce48208117b047"
+    },
+    {
+      "source": "paper/Octo_科研汇报深度阅读.md",
+      "destination": "papers/octo.md",
+      "source_sha256": "31aa3909bb0cdb1497e4536a4fde9d6794d9250849953d80cdc3b420f6a4561c",
+      "output_sha256": "655dff5f323c4ed7f2f9274afee57b5da58023654d80881133ce48208117b047"
+    },
+    {
+      "source": "obsidian/01_Robitic/OpenVLA_科研汇报深度阅读.md",
+      "destination": "papers/openvla.md",
+      "source_sha256": "0d5d20985a5e2892b1e055eefbaacff29e353fca133a53d47ff5d83ae501d89b",
+      "output_sha256": "5a3ca22a35fa4860f7f8f1493e2dc7e2259a40af93f013b07448d54eaa91fb23"
+    },
+    {
+      "source": "paper/OpenVLA_科研汇报深度阅读.md",
+      "destination": "papers/openvla.md",
+      "source_sha256": "0d5d20985a5e2892b1e055eefbaacff29e353fca133a53d47ff5d83ae501d89b",
+      "output_sha256": "5a3ca22a35fa4860f7f8f1493e2dc7e2259a40af93f013b07448d54eaa91fb23"
+    },
+    {
+      "source": "obsidian/01_Robitic/PI0_科研汇报深度阅读.md",
+      "destination": "papers/pi0.md",
+      "source_sha256": "779222cb47f5d4017515f78f6d234ec9fc677d1d97f016e59df9d7d92f432abb",
+      "output_sha256": "c1f1024b55583064909f61a2a407242f277fe91f629e56d338e832c2c002b64c"
+    },
+    {
+      "source": "paper/PI0_科研汇报深度阅读.md",
+      "destination": "papers/pi0.md",
+      "source_sha256": "779222cb47f5d4017515f78f6d234ec9fc677d1d97f016e59df9d7d92f432abb",
+      "output_sha256": "c1f1024b55583064909f61a2a407242f277fe91f629e56d338e832c2c002b64c"
+    },
+    {
+      "source": "obsidian/01_Robitic/pipeline.png",
+      "destination": "papers/assets/aloha-pipeline.png",
+      "source_sha256": "758ee8c9049a8af7ec0d0651ed2fbc507d9e20fceeb3234a81c3737730794f17",
+      "output_sha256": "758ee8c9049a8af7ec0d0651ed2fbc507d9e20fceeb3234a81c3737730794f17"
+    },
+    {
+      "source": "obsidian/01_Robitic/assignment.png",
+      "destination": "papers/assets/aloha-assignment.png",
+      "source_sha256": "84bd54daf85498d367387f8b6111cf793301091f9753c0cae60ddbbfdc482811",
+      "output_sha256": "84bd54daf85498d367387f8b6111cf793301091f9753c0cae60ddbbfdc482811"
+    },
+    {
+      "source": "obsidian/01_Robitic/SPOT.md",
+      "destination": "papers/spot-notes.md",
+      "source_sha256": "9010f49057d8918545022e38be876967277198739b45c872732af0d64765770e",
+      "output_sha256": "29422de6ddad482ec1c1474c702eb23bebae1d58de96d22a54e0a2e1df4d7c76"
+    },
+    {
+      "source": "obsidian/01_Robitic/Pasted image 20260907193739.png",
+      "destination": "papers/assets/spot-notes.png",
+      "source_sha256": "ece1af9af2881ce41f2d70e8dc9bdfc40fe954e344584f35c69dbe3450f85f42",
+      "output_sha256": "ece1af9af2881ce41f2d70e8dc9bdfc40fe954e344584f35c69dbe3450f85f42"
+    },
+    {
+      "source": "paper/2025 SPOT (ICRA)/图片和附件/image 1.png",
+      "destination": "papers/assets/spot-image-1.png",
+      "source_sha256": "366288533be543a388ae70ee124229b66c80c29de49feebf66dba48ebaf46249",
+      "output_sha256": "366288533be543a388ae70ee124229b66c80c29de49feebf66dba48ebaf46249"
+    },
+    {
+      "source": "paper/2025 SPOT (ICRA)/图片和附件/image 2.png",
+      "destination": "papers/assets/spot-image-2.png",
+      "source_sha256": "5b4f808f50a0924990eac2d0ff81b29fcf416a12c1c6a142048b3679fd61f3b6",
+      "output_sha256": "5b4f808f50a0924990eac2d0ff81b29fcf416a12c1c6a142048b3679fd61f3b6"
+    },
+    {
+      "source": "paper/2025 SPOT (ICRA)/图片和附件/image.png",
+      "destination": "papers/assets/spot-image.png",
+      "source_sha256": "4fc7166b41d76bd426d3327ee2d5564297a0bfb92e203fc53fbe002d94bf1324",
+      "output_sha256": "4fc7166b41d76bd426d3327ee2d5564297a0bfb92e203fc53fbe002d94bf1324"
+    },
+    {
+      "source": "paper/2025 SPOT (ICRA)/2025 SPOT (ICRA).md",
+      "destination": "papers/spot.md",
+      "source_sha256": "c0daf77f28ff04108acce1274c8c1ecf1c0de32ca7056e268d4c6113a828ccd2",
+      "output_sha256": "a81d06521563a9a9a9f5563287ac3e52f6ff1e6fde91709a787428dabdf930cd"
+    },
+    {
+      "source": "paper/2026 MEM (arXiv)/图片和附件/image 1.png",
+      "destination": "papers/assets/mem-image-1.png",
+      "source_sha256": "b1cbc9781663a40d5d938af68b2ed245087c5437176bd450d46f2dc0c6132cc9",
+      "output_sha256": "b1cbc9781663a40d5d938af68b2ed245087c5437176bd450d46f2dc0c6132cc9"
+    },
+    {
+      "source": "paper/2026 MEM (arXiv)/图片和附件/image 2.png",
+      "destination": "papers/assets/mem-image-2.png",
+      "source_sha256": "7f90a52537725bb9487a108e42f99c5e5315297ffc7d8a4fdfedab9791911171",
+      "output_sha256": "7f90a52537725bb9487a108e42f99c5e5315297ffc7d8a4fdfedab9791911171"
+    },
+    {
+      "source": "paper/2026 MEM (arXiv)/图片和附件/image.png",
+      "destination": "papers/assets/mem-image.png",
+      "source_sha256": "202dc10843ad4efea64024b5db833285135a824628cb5ee43a85a9229f8e2b16",
+      "output_sha256": "202dc10843ad4efea64024b5db833285135a824628cb5ee43a85a9229f8e2b16"
+    },
+    {
+      "source": "paper/2026 MEM (arXiv)/2026 MEM (arXiv).md",
+      "destination": "papers/mem.md",
+      "source_sha256": "a1754abcb909a807d4f0bab289579d683537a381b9387527ca3d9fba2676999d",
+      "output_sha256": "5efd4d4ac2d091c80ac21a2db30d27c25cda43900963be8b91085ade26865e55"
+    },
+    {
+      "source": "obsidian/03_weekly/2026.9.4.md",
+      "destination": "journal/2026-09-04.md",
+      "source_sha256": "07d048dbeb5255b5ffa8a3f69b6257c1462c3271fc94da20220326cf03d18744",
+      "output_sha256": "8cd56a600a9e8be68d0c94afbcff15515e59e3d80d01890bd57a1c0317a69616"
+    },
+    {
+      "source": "obsidian/04_daily/2026.9.7.md",
+      "destination": "journal/2026-09-07.md",
+      "source_sha256": "2fb54f3a0d53e8d6cc548d893f2c5388db5e04e4c281d0154d260ace98d14130",
+      "output_sha256": "bb7c99b1985cf11a36b7eb8a5530441e51a618bf20eb96bb15418f51a89ed078"
+    },
+    {
+      "source": "obsidian/04_daily/2026.9.8.md",
+      "destination": "journal/2026-09-08.md",
+      "source_sha256": "39aff8230901911687055158bd38f1fac0fcec6e3a1a9c83d14ad766cf937344",
+      "output_sha256": "f122815278212f956839d3f3ffbf7e7340cef8567df0c997027ce46ec17bbf43"
+    },
+    {
+      "source": "obsidian/04_daily/2026.9.10.md",
+      "destination": "journal/2026-09-10.md",
+      "source_sha256": "4281380ef3ce809b2ebf4c145a55f9397ab94ef967a8de545933217ea63f451c",
+      "output_sha256": "5a8cfd6498009a83180db9abbf6d555207783c818c5f5606932b70f302f9def2"
+    },
+    {
+      "source": "obsidian/02_CV/CV发展.md",
+      "destination": "deep-learning/cv-roadmap.md",
+      "source_sha256": "17f543336aa28c537590cb44540eb65bbbd5a4fb14fa51defca7b658077b4bdc",
+      "output_sha256": "fb8796f3bc237e556a147c3508eaf52ea8cc1385a004ca21eab86ce5f3f3cc21"
+    },
+    {
+      "source": "obsidian/01_Robitic/Zhao 等 - 2024 - ALOHA Unleashed A Simple Recipe for Robot Dexterity.pdf",
+      "destination": "assets/papers/aloha.pdf",
+      "source_sha256": "0fb68a4bf83a61b7049d7d3fda43175141f896098171e140ee21cb08b8ef6444",
+      "output_sha256": "0fb68a4bf83a61b7049d7d3fda43175141f896098171e140ee21cb08b8ef6444"
+    },
+    {
+      "source": "paper/Black 等 - 2026 - $π_0$ A Vision-Language-Action Flow Model for General Robot Control.pdf",
+      "destination": "assets/papers/pi0.pdf",
+      "source_sha256": "fbdfba56258bdbd220207ba63410c6c943e43a73e97a7a5a47ca0bc74204f821",
+      "output_sha256": "fbdfba56258bdbd220207ba63410c6c943e43a73e97a7a5a47ca0bc74204f821"
+    },
+    {
+      "source": "paper/Kim 等 - 2024 - OpenVLA An Open-Source Vision-Language-Action Model.pdf",
+      "destination": "assets/papers/openvla.pdf",
+      "source_sha256": "353c37df34458f12f969b14dfd8b77175b727b9cddea7bb891759beddeefe1be",
+      "output_sha256": "353c37df34458f12f969b14dfd8b77175b727b9cddea7bb891759beddeefe1be"
+    },
+    {
+      "source": "paper/Team 等 - 2024 - Octo An Open-Source Generalist Robot Policy.pdf",
+      "destination": "assets/papers/octo.pdf",
+      "source_sha256": "73bff297cfafe523319162124e6b7f96919c0930e0a380f307255c4c7464ac93",
+      "output_sha256": "73bff297cfafe523319162124e6b7f96919c0930e0a380f307255c4c7464ac93"
+    },
+    {
+      "source": "paper/Ze 等 - 2024 - 3D Diffusion Policy Generalizable Visuomotor Policy Learning via Simple 3D Representations.pdf",
+      "destination": "assets/papers/dp3.pdf",
+      "source_sha256": "916ecb6011e5e311daa9a8ca53d0ec2d8f44f7d2034d9ba368de7102737d9682",
+      "output_sha256": "916ecb6011e5e311daa9a8ca53d0ec2d8f44f7d2034d9ba368de7102737d9682"
+    },
+    {
+      "source": "paper/advanced/1-Teach a Robot to FISH-在线学习.pdf",
+      "destination": "assets/papers/fish.pdf",
+      "source_sha256": "6e74b35acdd0f4d8836c5fdd499fa8f105d25d17c2a457cd715e3e2b278b007d",
+      "output_sha256": "6e74b35acdd0f4d8836c5fdd499fa8f105d25d17c2a457cd715e3e2b278b007d"
+    },
+    {
+      "source": "paper/advanced/2- π0.5- a Vision-Language-Action Model with Open-World Generalization.pdf",
+      "destination": "assets/papers/pi05.pdf",
+      "source_sha256": "f2574b2fad6ecd03ee33c3c97e4038444f50787c1b2388760a12a4d5b5abda57",
+      "output_sha256": "f2574b2fad6ecd03ee33c3c97e4038444f50787c1b2388760a12a4d5b5abda57"
+    },
+    {
+      "source": "paper/advanced/3-π0.6 Model Card.pdf",
+      "destination": "assets/papers/pi06.pdf",
+      "source_sha256": "3de705499867482cf32d86c11009a9598bf6b8b08d250917f4459b02f1549834",
+      "output_sha256": "3de705499867482cf32d86c11009a9598bf6b8b08d250917f4459b02f1549834"
+    },
+    {
+      "source": "paper/advanced/4-VLA-RL.pdf",
+      "destination": "assets/papers/vla-rl.pdf",
+      "source_sha256": "8016399c5af6084fde140d8744df0a49248f69e4af207b15f5b90049f06c056a",
+      "output_sha256": "8016399c5af6084fde140d8744df0a49248f69e4af207b15f5b90049f06c056a"
+    },
+    {
+      "source": "paper/advanced/5-Action-to-Action Flow Matching.pdf",
+      "destination": "assets/papers/action-to-action.pdf",
+      "source_sha256": "84de453d8a97e537d04f7c2587228146eef0ba084a477089c266a5364c0cdb2f",
+      "output_sha256": "84de453d8a97e537d04f7c2587228146eef0ba084a477089c266a5364c0cdb2f"
+    },
+    {
+      "source": "paper/advanced/6-RDT-1B- a Diffusion Foundation Model for Bimanual Manipulation.pdf",
+      "destination": "assets/papers/rdt-1b.pdf",
+      "source_sha256": "52949435f21ee755b4c68ca3bdc3f25f505aefb3ed049bd37397916232ba7ad7",
+      "output_sha256": "52949435f21ee755b4c68ca3bdc3f25f505aefb3ed049bd37397916232ba7ad7"
+    },
+    {
+      "source": "paper/advanced/8-PLD - Self-Improving Vision-Language-Action Models with Data Generation via Residual RL.pdf",
+      "destination": "assets/papers/pld.pdf",
+      "source_sha256": "2a80ef17d397041576d1cc40f6573b4a4d9a7e43f3c6484f57c33c6330a87e7c",
+      "output_sha256": "2a80ef17d397041576d1cc40f6573b4a4d9a7e43f3c6484f57c33c6330a87e7c"
+    }
+  ]
+}
