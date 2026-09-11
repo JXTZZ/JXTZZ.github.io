@@ -24,15 +24,33 @@ hide:
 <svg viewBox="0 0 480 400" xmlns="http://www.w3.org/2000/svg">
 <defs><pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="currentColor" opacity=".09"/></pattern></defs>
 <rect x="20" y="20" width="440" height="360" rx="20" fill="url(#grid)"/>
-<circle cx="250" cy="190" r="130" fill="none" stroke="currentColor" stroke-dasharray="4 8" opacity=".25"/>
-<ellipse cx="244" cy="330" rx="158" ry="23" fill="currentColor" opacity=".06"/>
+<circle class="hero-orbit" cx="250" cy="190" r="130" fill="none" stroke="currentColor" stroke-dasharray="4 8" opacity=".25"/>
+<ellipse class="robot-shadow" cx="244" cy="330" rx="158" ry="23" fill="currentColor" opacity=".06"/>
 <path d="M96 327h254M149 314v-22h86v22" fill="none" stroke="currentColor" stroke-width="3"/>
-<path d="M191 290l-31-98 103-74 68 64" fill="none" stroke="currentColor" stroke-width="22" stroke-linejoin="round"/>
-<path d="M191 290l-31-98 103-74 68 64" fill="none" stroke="#f0f1df" stroke-width="12" stroke-linejoin="round"/>
-<g fill="#dce8aa" stroke="currentColor" stroke-width="3"><circle cx="191" cy="286" r="18"/><circle cx="160" cy="192" r="18"/><circle cx="263" cy="118" r="16"/></g>
-<path d="M320 190l13-13 25 19-9 22m-29-28 2 27 17 8" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M328 275l28-16 28 16v32l-28 16-28-16zM328 275l28 16 28-16m-28 16v32" fill="#dce8aa" stroke="currentColor" stroke-width="2"/>
-<path d="M344 233v15M311 261l-11-7M388 253l12-7" stroke="currentColor" stroke-width="2"/>
+<g class="arm-chain">
+  <path d="M191 286L160 192" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round"/>
+  <path d="M191 286L160 192" fill="none" stroke="var(--hero-arm-fill)" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="160" cy="192" r="18" fill="#dce8aa" stroke="currentColor" stroke-width="3"/>
+  <g class="arm-upper">
+    <path d="M160 192L263 118" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round"/>
+    <path d="M160 192L263 118" fill="none" stroke="var(--hero-arm-fill)" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="263" cy="118" r="16" fill="#dce8aa" stroke="currentColor" stroke-width="3"/>
+    <g class="arm-wrist">
+      <path d="M263 118L331 182" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round"/>
+      <path d="M263 118L331 182" fill="none" stroke="var(--hero-arm-fill)" stroke-width="12" stroke-linecap="round"/>
+      <g class="robot-gripper" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M320 190l13-13 25 19"/>
+        <path class="gripper-jaw gripper-jaw-left" d="M358 196l-9 22"/>
+        <path class="gripper-jaw gripper-jaw-right" d="M320 190l2 27 17 8"/>
+      </g>
+    </g>
+  </g>
+</g>
+<circle cx="191" cy="286" r="18" fill="#dce8aa" stroke="currentColor" stroke-width="3"/>
+<g class="hero-object">
+  <path d="M328 275l28-16 28 16v32l-28 16-28-16zM328 275l28 16 28-16m-28 16v32" fill="#dce8aa" stroke="currentColor" stroke-width="2"/>
+  <path d="M344 233v15M311 261l-11-7M388 253l12-7" stroke="currentColor" stroke-width="2"/>
+</g>
 <g fill="currentColor" font-family="monospace" font-size="10" letter-spacing="2"><text x="42" y="58">OBSERVE → LEARN → ACT</text><text x="48" y="354">FIG. 01 / EMBODIED INTELLIGENCE</text><text x="315" y="100">π(a | o)</text></g>
 <circle cx="410" cy="57" r="5" fill="#176c58"/>
 </svg>
@@ -50,12 +68,12 @@ hide:
 </div>
 
 <div class="home-bottom" markdown>
-<div markdown>
+<div class="recent-notes" markdown>
 <div class="section-heading"><span class="eyebrow">02 / RECENT NOTES</span><h2>最近在学什么</h2></div>
 
-<a class="note-row" href="journal/2026-09-10/"><time datetime="2026-09-10">09.10<small>2026</small></time><div><span class="note-tag">PYTHON / 数据结构</span><h3>重新理解 Python 中的堆</h3><p>从完全二叉树到 heapq，把基础补扎实。</p></div><span class="row-arrow">↗</span></a>
-<a class="note-row" href="journal/2026-09-08/"><time datetime="2026-09-08">09.08<small>2026</small></time><div><span class="note-tag">DAILY / 学习日志</span><h3>RoboSPA 与一次工具排障</h3><p>空间推理的阅读速记，和 Snipaste 自启问题复盘。</p></div><span class="row-arrow">↗</span></a>
-<a class="note-row" href="journal/2026-09-07/"><time datetime="2026-09-07">09.07<small>2026</small></time><div><span class="note-tag">DAILY / 学习日志</span><h3>从动作推理到评估泛化</h3><p>DroneCATS、MINERVA 阅读记录与 WSL 网络配置。</p></div><span class="row-arrow">↗</span></a>
+<a class="note-row" href="journal/2026-09-11/"><time datetime="2026-09-11">09.11<small>2026</small></time><span class="note-copy"><span class="note-tag">PAPER / 阅读线索</span><strong class="note-title">Show-Harness：VLM 如何驱动机器人</strong><span class="note-summary">从一个大胆的标题出发，整理精读前最值得追问的问题。</span></span><span class="row-arrow">↗</span></a>
+<a class="note-row" href="journal/2026-09-10/"><time datetime="2026-09-10">09.10<small>2026</small></time><span class="note-copy"><span class="note-tag">PYTHON / 数据结构</span><strong class="note-title">重新理解 Python 中的堆</strong><span class="note-summary">从完全二叉树到 heapq，把基础补扎实。</span></span><span class="row-arrow">↗</span></a>
+<a class="note-row" href="journal/2026-09-08/"><time datetime="2026-09-08">09.08<small>2026</small></time><span class="note-copy"><span class="note-tag">DAILY / 学习日志</span><strong class="note-title">RoboSPA 与一次工具排障</strong><span class="note-summary">空间推理的阅读速记，和 Snipaste 自启问题复盘。</span></span><span class="row-arrow">↗</span></a>
 
 [全部学习日志 →](journal/index.md){ .text-link }
 </div>
