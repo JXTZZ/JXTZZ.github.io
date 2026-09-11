@@ -39,9 +39,9 @@ hide:
       <path d="M263 118L331 182" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round"/>
       <path d="M263 118L331 182" fill="none" stroke="var(--hero-arm-fill)" stroke-width="12" stroke-linecap="round"/>
       <g class="robot-gripper" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M320 190l13-13 25 19"/>
-        <path class="gripper-jaw gripper-jaw-left" d="M358 196l-9 22"/>
-        <path class="gripper-jaw gripper-jaw-right" d="M320 190l2 27 17 8"/>
+        <path d="M331 182L346 201M331 213L346 201L367 204"/>
+        <path class="gripper-jaw gripper-jaw-left" d="M331 213L336 255"/>
+        <path class="gripper-jaw gripper-jaw-right" d="M367 204L388 242"/>
       </g>
     </g>
   </g>

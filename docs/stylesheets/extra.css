@@ -47,17 +47,17 @@
 .arm-chain { transform-origin: 191px 286px; animation: arm-base-motion 8s ease-in-out infinite; }
 .arm-upper { transform-origin: 160px 192px; animation: arm-elbow-motion 8s ease-in-out infinite; }
 .arm-wrist { transform-origin: 263px 118px; animation: arm-wrist-motion 8s ease-in-out infinite; }
-.gripper-jaw-left { transform-origin: 358px 196px; animation: gripper-left 8s ease-in-out infinite; }
-.gripper-jaw-right { transform-origin: 320px 190px; animation: gripper-right 8s ease-in-out infinite; }
+.gripper-jaw-left { transform-origin: 331px 213px; animation: gripper-left 8s ease-in-out infinite; }
+.gripper-jaw-right { transform-origin: 367px 204px; animation: gripper-right 8s ease-in-out infinite; }
 .hero-object { transform-origin: 356px 291px; animation: object-lift 8s ease-in-out infinite; }
 .robot-shadow { transform-origin: 244px 330px; animation: shadow-breathe 8s ease-in-out infinite; }
 @keyframes orbit-drift { to { stroke-dashoffset: -48; } }
 @keyframes arm-base-motion { 0%, 12%, 100% { transform: rotate(-1deg); } 30%, 38%, 82%, 89% { transform: rotate(8deg); } 54%, 67% { transform: rotate(0); } }
 @keyframes arm-elbow-motion { 0%, 12%, 100% { transform: rotate(1deg); } 30%, 38%, 82%, 89% { transform: rotate(6deg); } 54%, 67% { transform: rotate(-8deg); } }
 @keyframes arm-wrist-motion { 0%, 38%, 82%, 100% { transform: rotate(0); } 54%, 67% { transform: rotate(-2deg); } }
-@keyframes gripper-left { 0%, 28%, 91%, 100% { transform: rotate(-7deg); } 36%, 84% { transform: rotate(5deg); } }
-@keyframes gripper-right { 0%, 28%, 91%, 100% { transform: rotate(7deg); } 36%, 84% { transform: rotate(-5deg); } }
-@keyframes object-lift { 0%, 36%, 89%, 100% { transform: translateY(0); } 54%, 67% { transform: translateY(-58px); } 82% { transform: translateY(0); } }
+@keyframes gripper-left { 0%, 28%, 91%, 100% { transform: rotate(10deg); } 36%, 84% { transform: rotate(0); } }
+@keyframes gripper-right { 0%, 28%, 91%, 100% { transform: rotate(-10deg); } 36%, 84% { transform: rotate(0); } }
+@keyframes object-lift { 0%, 36%, 89%, 100% { transform: translate(0, 0) rotate(0); } 54%, 67% { transform: translate(15.6px, -76.6px) rotate(-24deg); } 82% { transform: translate(0, 0) rotate(0); } }
 @keyframes shadow-breathe { 0%, 36%, 89%, 100% { transform: scaleX(1); opacity: .06; } 54%, 67% { transform: scaleX(.84); opacity: .035; } }
 .home-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .65rem; border-top: 1px solid var(--note-border); border-bottom: 1px solid var(--note-border); padding: .9rem 0; font-size: .59rem; color: var(--md-default-fg-color--light); }
 .section-heading { margin: 2.5rem 0 1.1rem; }
