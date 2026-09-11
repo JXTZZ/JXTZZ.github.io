@@ -52,8 +52,6 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.arithmatex:
       generic: true
-extra_css:
-  - stylesheets/extra.css
 extra_javascript:
   - javascripts/mathjax.js
   - javascripts/version-sync.js

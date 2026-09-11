@@ -3,4 +3,5 @@
 {% block extrahead %}
   {{ super() }}
   <meta name="site-version" content="{{ config.extra.site_version }}">
+  <link rel="stylesheet" href="{{ 'stylesheets/extra.css' | url }}?v={{ config.extra.site_version }}">
 {% endblock %}

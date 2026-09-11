@@ -27,7 +27,7 @@ hide:
 <circle class="hero-orbit" cx="250" cy="190" r="130" fill="none" stroke="currentColor" stroke-dasharray="4 8" opacity=".25"/>
 <ellipse class="robot-shadow" cx="244" cy="330" rx="158" ry="23" fill="currentColor" opacity=".06"/>
 <path d="M96 327h254M149 314v-22h86v22" fill="none" stroke="currentColor" stroke-width="3"/>
-<g class="arm-chain">
+<g class="arm-chain robot-motion">
   <path d="M191 286L160 192" fill="none" stroke="currentColor" stroke-width="22" stroke-linecap="round"/>
   <path d="M191 286L160 192" fill="none" stroke="var(--hero-arm-fill)" stroke-width="12" stroke-linecap="round"/>
   <circle cx="160" cy="192" r="18" fill="#dce8aa" stroke="currentColor" stroke-width="3"/>
@@ -51,7 +51,7 @@ hide:
   <path d="M328 275l28-16 28 16v32l-28 16-28-16zM328 275l28 16 28-16m-28 16v32" fill="#dce8aa" stroke="currentColor" stroke-width="2"/>
   <path d="M344 233v15M311 261l-11-7M388 253l12-7" stroke="currentColor" stroke-width="2"/>
 </g>
-<g fill="currentColor" font-family="monospace" font-size="10" letter-spacing="2"><text x="42" y="58">OBSERVE → LEARN → ACT</text><text x="48" y="354">FIG. 01 / EMBODIED INTELLIGENCE</text><text x="315" y="100">π(a | o)</text></g>
+<g fill="currentColor" font-family="monospace" font-size="10" letter-spacing="2"><text x="42" y="58">OBSERVE → LEARN → ACT</text><text x="315" y="100">π(a | o)</text></g>
 <circle cx="410" cy="57" r="5" fill="#176c58"/>
 </svg>
 </div>
@@ -71,9 +71,11 @@ hide:
 <div class="recent-notes" markdown>
 <div class="section-heading"><span class="eyebrow">02 / RECENT NOTES</span><h2>最近在学什么</h2></div>
 
-<a class="note-row" href="journal/2026-09-11/"><time datetime="2026-09-11">09.11<small>2026</small></time><span class="note-copy"><span class="note-tag">PAPER / 阅读线索</span><strong class="note-title">Show-Harness：VLM 如何驱动机器人</strong><span class="note-summary">从一个大胆的标题出发，整理精读前最值得追问的问题。</span></span><span class="row-arrow">↗</span></a>
-<a class="note-row" href="journal/2026-09-10/"><time datetime="2026-09-10">09.10<small>2026</small></time><span class="note-copy"><span class="note-tag">PYTHON / 数据结构</span><strong class="note-title">重新理解 Python 中的堆</strong><span class="note-summary">从完全二叉树到 heapq，把基础补扎实。</span></span><span class="row-arrow">↗</span></a>
-<a class="note-row" href="journal/2026-09-08/"><time datetime="2026-09-08">09.08<small>2026</small></time><span class="note-copy"><span class="note-tag">DAILY / 学习日志</span><strong class="note-title">RoboSPA 与一次工具排障</strong><span class="note-summary">空间推理的阅读速记，和 Snipaste 自启问题复盘。</span></span><span class="row-arrow">↗</span></a>
+<div class="note-list">
+<a class="note-row" href="journal/2026-09-11/"><time datetime="2026-09-11"><span>09.11</span><small>2026</small></time><span class="note-tag">PAPER / 阅读线索</span><span class="note-title">Show-Harness：VLM 如何驱动机器人</span><span class="row-arrow">↗</span></a>
+<a class="note-row" href="journal/2026-09-10/"><time datetime="2026-09-10"><span>09.10</span><small>2026</small></time><span class="note-tag">PYTHON / 数据结构</span><span class="note-title">重新理解 Python 中的堆</span><span class="row-arrow">↗</span></a>
+<a class="note-row" href="journal/2026-09-08/"><time datetime="2026-09-08"><span>09.08</span><small>2026</small></time><span class="note-tag">DAILY / 学习日志</span><span class="note-title">RoboSPA 与一次工具排障</span><span class="row-arrow">↗</span></a>
+</div>
 
 [全部学习日志 →](journal/index.md){ .text-link }
 </div>
