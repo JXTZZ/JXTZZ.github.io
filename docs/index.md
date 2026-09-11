@@ -72,7 +72,7 @@ hide:
 <div class="section-heading"><span class="eyebrow">02 / RECENT NOTES</span><h2>最近在学什么</h2></div>
 
 <div class="note-list">
-<a class="note-row" href="journal/2026-09-11/"><time datetime="2026-09-11"><span>09.11</span><small>2026</small></time><span class="note-tag">PAPER / 阅读线索</span><span class="note-title">Show-Harness：VLM 如何驱动机器人</span><span class="row-arrow">↗</span></a>
+<a class="note-row" href="journal/2026-09-11/"><time datetime="2026-09-11"><span>09.11</span><small>2026</small></time><span class="note-tag">PAPER / 中间表示</span><span class="note-title">从语义动作到对象交互</span><span class="row-arrow">↗</span></a>
 <a class="note-row" href="journal/2026-09-10/"><time datetime="2026-09-10"><span>09.10</span><small>2026</small></time><span class="note-tag">PYTHON / 数据结构</span><span class="note-title">重新理解 Python 中的堆</span><span class="row-arrow">↗</span></a>
 <a class="note-row" href="journal/2026-09-08/"><time datetime="2026-09-08"><span>09.08</span><small>2026</small></time><span class="note-tag">DAILY / 学习日志</span><span class="note-title">RoboSPA 与一次工具排障</span><span class="row-arrow">↗</span></a>
 </div>

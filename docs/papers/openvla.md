@@ -400,4 +400,4 @@ LoRA 大幅减少可训练参数，但论文中 batch 16 仍报告约 59.7 GB �
 
 ---
 
-[阅读论文 PDF](../assets/papers/openvla.pdf) · [返回论文阅读](index.md)
+[阅读论文 PDF](../assets/papers/openVLA.pdf) · [返回论文阅读](index.md)

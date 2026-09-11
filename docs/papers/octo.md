@@ -547,4 +547,4 @@ Octo 是 93M 模块化策略，支持多相机、两帧历史、goal image 和�
 
 ---
 
-[阅读论文 PDF](../assets/papers/octo.pdf) · [返回论文阅读](index.md)
+[阅读论文 PDF](../assets/papers/OCTo.pdf) · [返回论文阅读](index.md)

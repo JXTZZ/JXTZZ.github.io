@@ -73,6 +73,7 @@ nav:
     - π₀: papers/pi0.md
     - SPOT · 深度阅读: papers/spot.md
     - SPOT · 概念笔记: papers/spot-notes.md
+    - ORION · 单视频开放世界模仿: papers/orion.md
     - 论文资料库: papers/library.md
   - 理论基础:
     - deep-learning/index.md
@@ -92,7 +93,7 @@ nav:
     - Image-to-ArkTS 项目记录: meeting/image-to-arkts.md
   - 学习日志:
     - journal/index.md
-    - 09.11 · Show-Harness: journal/2026-09-11.md
+    - 09.11 · Show-Harness 与 ORION: journal/2026-09-11.md
     - 09.10 · Python 堆: journal/2026-09-10.md
     - 09.08 · RoboSPA 与工具排障: journal/2026-09-08.md
     - 09.07 · 论文速记与 WSL: journal/2026-09-07.md

@@ -6,7 +6,7 @@
 
 | 日期 | 记录 | 关键词 |
 | --- | --- | --- |
-| 09.11 | [Show-Harness：VLM 如何驱动机器人](2026-09-11.md) | VLM Agent、机器人控制、阅读问题 |
+| 09.11 | [从语义动作到对象交互：Show-Harness 与 ORION](2026-09-11.md) | VLM Agent、OOG、中间表示 |
 | 09.10 | [补充 Python 堆相关知识](2026-09-10.md) | Heap、heapq、数据结构 |
 | 09.08 | [RoboSPA 与 Snipaste 自启排障](2026-09-08.md) | 空间推理、Windows 工具 |
 | 09.07 | [论文速记与 WSL 网络配置](2026-09-07.md) | DroneCATS、MINERVA、WSL |

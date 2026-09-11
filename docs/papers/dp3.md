@@ -381,4 +381,4 @@ DP3 不是每项都赢。DexDeform 平均略低，部分简单任务也接近性
 
 ---
 
-[阅读论文 PDF](../assets/papers/dp3.pdf) · [返回论文阅读](index.md)
+[阅读论文 PDF](../assets/papers/DP3.pdf) · [返回论文阅读](index.md)
