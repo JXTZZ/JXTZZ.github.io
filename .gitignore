@@ -4,3 +4,5 @@ __pycache__/
 .build/
 site/
 *.log
+docs/journal/idea/
+docs/papers/human-depth-ambiguity.md

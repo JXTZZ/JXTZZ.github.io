@@ -74,6 +74,7 @@ nav:
     - SPOT · 深度阅读: papers/spot.md
     - SPOT · 概念笔记: papers/spot-notes.md
     - ORION · 单视频开放世界模仿: papers/orion.md
+    - EgoInfinity · 互联网视频到机器人动作: papers/egoinfinity.md
     - 论文资料库: papers/library.md
   - 理论基础:
     - deep-learning/index.md
@@ -93,6 +94,7 @@ nav:
     - Image-to-ArkTS 项目记录: meeting/image-to-arkts.md
   - 学习日志:
     - journal/index.md
+    - 09.15 · WSL 离线安装与 Conda: journal/2026-09-15.md
     - 09.11 · Show-Harness 与 ORION: journal/2026-09-11.md
     - 09.10 · Python 堆: journal/2026-09-10.md
     - 09.08 · RoboSPA 与工具排障: journal/2026-09-08.md

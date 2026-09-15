@@ -10,6 +10,7 @@
 | OpenVLA | [阅读笔记](openvla.md) | [PDF · 12.6 MB](../assets/papers/openVLA.pdf) |
 | Octo | [阅读笔记](octo.md) | [PDF · 3.5 MB](../assets/papers/OCTo.pdf) |
 | 3D Diffusion Policy | [阅读笔记](dp3.md) | [PDF · 13.5 MB](../assets/papers/DP3.pdf) |
+| EgoInfinity | [阅读笔记](egoinfinity.md) | [PDF · 13.8 MB](../assets/papers/EgoInfinity.pdf) |
 | Teach a Robot to FISH | 待整理 | [PDF · 48.8 MB](../assets/papers/FISH.pdf) |
 | π₀.₅ | 待整理 | [PDF · 15.8 MB](../assets/papers/pi05.pdf) |
 | π₀.₆ Model Card | 待整理 | [PDF · 1.2 MB](../assets/papers/pi06.pdf) |
