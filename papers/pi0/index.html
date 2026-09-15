@@ -1,0 +1,3069 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="从深度学习基础到具身智能，记录论文阅读、代码实践与每天的新发现。">
+      
+      
+        <meta name="author" content="LoTusY">
+      
+      
+        <link rel="canonical" href="https://jxtzz.github.io/papers/pi0/">
+      
+      
+        <link rel="prev" href="../openvla/">
+      
+      
+        <link rel="next" href="../spot/">
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>π₀ - LoTusY · 研究与学习笔记</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  <meta name="site-version" content="842f9154bb48a9d31e672749806fbbc58194e9b3">
+  <link rel="stylesheet" href="../../stylesheets/extra.css?v=842f9154bb48a9d31e672749806fbbc58194e9b3">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#0-flow-matching" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="LoTusY · 研究与学习笔记" class="md-header__button md-logo" aria-label="LoTusY · 研究与学习笔记" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LoTusY · 研究与学习笔记
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              π₀
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  论文阅读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deep-learning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  理论基础
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../engineering/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工程实践
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../journal/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  学习日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LoTusY · 研究与学习笔记" class="md-nav__button md-logo" aria-label="LoTusY · 研究与学习笔记" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    LoTusY · 研究与学习笔记
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aloha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ALOHA Unleashed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dp3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3D Diffusion Policy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../octo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openvla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenVLA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    π₀
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    π₀
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#task" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、论文对应的 Task 是什么？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、论文对应的 Task 是什么？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 任务定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 实际任务的输入
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 实际任务的输出
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 为什么值得研究？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、这个任务有哪些数据集，本文用了什么数据？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、这个任务有哪些数据集，本文用了什么数据？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 预训练数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 数据怎样平衡？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 后训练数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 一条原始数据包含什么？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、已有工作怎样解决这个 Task？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、已有工作怎样解决这个 Task？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-openvla" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. OpenVLA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-octo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Octo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-0-small" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. π₀-small
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-act-diffusion-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. ACT 和 Diffusion Policy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、本文方案有什么特点和创新？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、本文的具体方案
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、本文的具体方案">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 整体流程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 双专家结构是什么？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 输入 token 怎样组织？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-flow-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Flow Matching 的直觉
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 一个 batch 怎样训练？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 推理怎样运行？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 用一条折衣数据走完整流程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      六、本文效果如何？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、本文效果如何？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-out-of-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Out-of-box 基础模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 语言跟随
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-1510" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 1、5、10 小时后训练
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 复杂长任务
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 实验真正证明了什么？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      七、论文的不足和改进方向
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、论文的不足和改进方向">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 作者明确指出的不足
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 我们还应注意什么？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 可以怎样改进？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      汇报时最值得讲的 3 个点
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      常见问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="常见问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1：π₀ 输出一个动作还是一段动作？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2：它是自回归模型吗？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3flow-matching-diffusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3：Flow Matching 和 Diffusion 有什么关系？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-action-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4：为什么 action token 可以互相看见未来位置？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5figure-7-zero-shot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5：Figure 7 是真正的新任务 zero-shot 吗？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6：预训练一定有帮助吗？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      附录：术语表
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      阅读说明
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT · 深度阅读
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spot-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT · 概念笔记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../orion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ORION · 单视频开放世界模仿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../egoinfinity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EgoInfinity · 互联网视频到机器人动作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文资料库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../deep-learning/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    理论基础
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            理论基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Linear_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Softmax_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Softmax 回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/MLP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多层感知机
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Computational_Graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算图与反向传播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Weight_Decay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    权重衰减
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Dropout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dropout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    注意力机制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深度学习计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/cv-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机视觉学习路线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../engineering/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    工程实践
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            工程实践
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../attention/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tensor 原地操作与内存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../attention/Linear_Algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    张量维度与求和
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meeting/image-to-arkts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Image-to-ArkTS 项目记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../journal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    学习日志
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            学习日志
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.15 · WSL 离线安装与 Conda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.11 · Show-Harness 与 ORION
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.10 · Python 堆
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.08 · RoboSPA 与工具排障
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.07 · 论文速记与 WSL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.04 · 具身智能阅读周记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    关于
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#task" class="md-nav__link">
+    <span class="md-ellipsis">
+      一、论文对应的 Task 是什么？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="一、论文对应的 Task 是什么？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 任务定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 实际任务的输入
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 实际任务的输出
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 为什么值得研究？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      二、这个任务有哪些数据集，本文用了什么数据？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二、这个任务有哪些数据集，本文用了什么数据？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 预训练数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 数据怎样平衡？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 后训练数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 一条原始数据包含什么？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      三、已有工作怎样解决这个 Task？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="三、已有工作怎样解决这个 Task？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-openvla" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. OpenVLA
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-octo" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Octo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-0-small" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. π₀-small
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-act-diffusion-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. ACT 和 Diffusion Policy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      四、本文方案有什么特点和创新？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      五、本文的具体方案
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="五、本文的具体方案">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 整体流程
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 双专家结构是什么？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 输入 token 怎样组织？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-flow-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Flow Matching 的直觉
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-batch" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 一个 batch 怎样训练？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 推理怎样运行？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. 用一条折衣数据走完整流程
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      六、本文效果如何？
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="六、本文效果如何？">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-out-of-box" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Out-of-box 基础模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 语言跟随
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-1510" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 1、5、10 小时后训练
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 复杂长任务
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 实验真正证明了什么？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      七、论文的不足和改进方向
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="七、论文的不足和改进方向">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 作者明确指出的不足
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 我们还应注意什么？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 可以怎样改进？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      汇报时最值得讲的 3 个点
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      常见问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="常见问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#q10" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q1：π₀ 输出一个动作还是一段动作？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q2：它是自回归模型吗？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q3flow-matching-diffusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q3：Flow Matching 和 Diffusion 有什么关系？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q4-action-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q4：为什么 action token 可以互相看见未来位置？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q5figure-7-zero-shot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q5：Figure 7 是真正的新任务 zero-shot 吗？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#q6" class="md-nav__link">
+    <span class="md-ellipsis">
+      Q6：预训练一定有帮助吗？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      附录：术语表
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      阅读说明
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="0-flow-matching">π₀：用视觉语言模型和 Flow Matching 控制多种机器人<a class="headerlink" href="#0-flow-matching" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>论文：Physical Intelligence，arXiv:2410.24164v4，PDF 版本日期 2026-01-08。</p>
+<p>先记住三句话：</p>
+<ol>
+<li>π₀ 输入多张 RGB 图、语言命令和机器人关节状态，一次输出未来 50 步连续动作。</li>
+<li>PaliGemma 负责理解视觉和语言，新增的 action expert 负责生成精细动作。</li>
+<li>大规模预训练让机器人见过更多状态，高质量后训练让它把某个任务做得更流畅。</li>
+</ol>
+</blockquote>
+<h2 id="task">一、论文对应的 Task 是什么？<a class="headerlink" href="#task" title="Permanent link">&para;</a></h2>
+<h3 id="1">1. 任务定义<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<p>论文研究的是通用机器人控制：希望一个基础模型能够控制单臂、双臂和移动机器人，并完成从短技能到长时程操作的多种任务。</p>
+<p>代表性任务包括：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>机器人需要完成什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Shirt Folding</td>
+<td>折叠摊平的 T-shirt</td>
+</tr>
+<tr>
+<td>Table Bussing</td>
+<td>区分垃圾和餐具，放入不同容器</td>
+</tr>
+<tr>
+<td>Grocery Bagging</td>
+<td>把不同形状的商品依次装袋</td>
+</tr>
+<tr>
+<td>Laundry Folding</td>
+<td>从随机皱褶状态拿出多件衣物并折好</td>
+</tr>
+<tr>
+<td>Box Building</td>
+<td>双臂折叠并组装纸盒</td>
+</tr>
+<tr>
+<td>Packing Eggs</td>
+<td>把 6 枚鸡蛋放进蛋盒并关盒</td>
+</tr>
+<tr>
+<td>Mobile Laundry</td>
+<td>移动双臂机器人边移动边整理衣物</td>
+</tr>
+</tbody>
+</table>
+<p>长任务可能持续 5–20 分钟，并包含抓取、分类、堆叠、折叠、压平和失败重试等许多子行为（Figure 1；Figure 12，p. 11）。</p>
+<h3 id="2">2. 实际任务的输入<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>机器人在每次决策时获得：</p>
+<ul>
+<li>2 或 3 张当前 RGB 图像，例如腕部和外部相机；</li>
+<li>一句语言命令，例如“bus the table”；</li>
+<li>当前关节角向量 <code>q_t</code>。</li>
+</ul>
+<p>部分复杂任务还可以由上层 VLM 把大目标拆成文字子命令，例如：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>“清理桌面”
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>↓
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>“拿起餐巾”
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>↓
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>“把餐巾扔进垃圾桶”
+</code></pre></div>
+<p>这个上层 VLM 是可选的系统组件，不是 π₀ 内部自己输出的动作规划器。论文没有说明它的具体型号和 prompt。</p>
+<p>π₀ 的标准输入不含深度、点云、触觉、力反馈或显式历史窗口。</p>
+<h3 id="3">3. 实际任务的输出<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>π₀ 一次生成未来 50 步连续动作：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>A_t = [a_t, a_{t+1}, ..., a_{t+49}]
+</code></pre></div>
+<p>不同机器人动作维度不同。模型内部统一补零到 18 维，因此输出 tensor 是 <code>50×18</code>；真正执行时只取该机器人对应的有效维度（Section IV，p. 4；Section V-C，p. 6）。</p>
+<p>它不会始终执行完 50 步：</p>
+<ul>
+<li>20 Hz 的 UR5e/Franka：执行前 16 步，即 0.8 秒；</li>
+<li>50 Hz 的其它机器人：执行前 25 步，即 0.5 秒；</li>
+<li>然后重新观察并生成新动作块（Appendix D，p. 16）。</li>
+</ul>
+<p>论文给出了动作维度，但没有统一说明每一维是绝对位置、增量、速度还是其它控制量。</p>
+<h3 id="4">4. 为什么值得研究？<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>通用机器人同时面临三个难题：</p>
+<ol>
+<li><strong>语义问题</strong>：清桌时要知道哪些是垃圾、哪些是餐具。</li>
+<li><strong>控制问题</strong>：折衣、装蛋等任务需要高频、连续、双臂协调动作。</li>
+<li><strong>数据问题</strong>：少量高质量演示能教会固定流程，却很难覆盖抓取失败、物体滑落和异常初态。</li>
+</ol>
+<p>π₀ 希望把 VLM 的语义知识、生成式连续控制和大规模多机器人数据结合起来。</p>
+<p><strong>一句话 Task：给定多视角 RGB、语言目标和机器人当前关节状态，生成未来连续动作块并周期性重规划，使多种机器人完成精细、长时程操作。</strong></p>
+<h2 id="_1">二、这个任务有哪些数据集，本文用了什么数据？<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="1_1">1. 预训练数据<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>作者把自采数据与开源数据混合训练：</p>
+<ul>
+<li>自采 π dataset：903M timesteps；</li>
+<li>其中 106M 来自单臂，797M 来自双臂；</li>
+<li>覆盖 7 种机器人配置和 68 个宽任务；</li>
+<li>论文把总体规模概括为超过 10,000 小时；</li>
+<li>开源数据占训练采样权重的 9.1%，包括 OXE/OXE Magic Soup、Bridge v2 和 DROID（Section V-A，p. 5；Figure 4）。</li>
+</ul>
+<p>这里的“68 个任务”不是 68 个简单“动词+物体”。例如 bussing 算一个任务，但里面已经包含许多餐具、垃圾、遮挡和分类行为。</p>
+<p>论文 Section III 一处写“entire OXE”，Figure 4 和 Section V-A 又明确写“OXE subset/OXE Magic Soup”。两处不一致，汇报时应采用更具体的“使用 OXE 子集”。</p>
+<h3 id="2_1">2. 数据怎样平衡？<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<p>不同机器人数据量差异很大。作者把每个“任务—机器人”组合的样本量记为 <code>n</code>，采样权重设为：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>weight ∝ n^0.43
+</code></pre></div>
+<p>指数小于 1，因此数据越多，权重仍增加，但不会按原始数量线性增长。Figure 4 中，Bimanual ARX 约占原始步数 51%，训练权重降到约 34.2%。</p>
+<p>状态和动作统一补到 18 维；相机最多 3 个，缺少的相机槽被 mask。</p>
+<h3 id="3_1">3. 后训练数据<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<p>预训练数据强调任务和状态多样性，质量可以不完全一致。后训练数据则要求动作流畅、执行策略一致。</p>
+<ul>
+<li>简单任务可能使用约 5 小时；</li>
+<li>最复杂任务超过 100 小时；</li>
+<li>数据量实验使用 1、5、10 小时子集（Section V-A，p. 5；Figure 11，p. 10）。</li>
+</ul>
+<p>论文没有系统说明遥操作设备、操作者数量、失败轨迹比例、筛选标准、标注一致性和训练/验证 episode 划分。</p>
+<h3 id="4_1">4. 一条原始数据包含什么？<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h3>
+<p>以 50 Hz 双臂 ARX 的折衣轨迹为例：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>episode = {
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  rgb:       [T, 3, H, W, 3],
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  q:         [T, 14],
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  action:    [T, 14],
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  task_text: "fold the shirt",
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  segment_text: 约2秒片段的细粒度文字标注
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>}
+</code></pre></div>
+<p>从这条轨迹在时刻 <code>t</code> 取出的训练 sample 是：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>o_t = {
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  当前3张RGB,
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  当前语言,
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  当前14维q_t → 补到18维
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>}
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>target = 未来50个动作
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>         原始50×14 → 补到50×18
+</code></pre></div>
+<p>训练时还会加入随机噪声和 flow timestep。它们是算法产生的变量，不是原始数据字段。</p>
+<p>图像分辨率、action normalization、轨迹末尾不足 50 步怎样处理，论文中未明确说明。</p>
+<h2 id="task_1">三、已有工作怎样解决这个 Task？<a class="headerlink" href="#task_1" title="Permanent link">&para;</a></h2>
+<h3 id="1-openvla">1. OpenVLA<a class="headerlink" href="#1-openvla" title="Permanent link">&para;</a></h3>
+<p>OpenVLA 是 7B VLA，把连续动作离散成 token，再按顺序生成。它有较强语义能力，但不支持 action chunk，也不适合 20–50 Hz 高频动作。</p>
+<p>在双臂折衣或复杂清桌中，机器人需要连续协调多关节。逐 token 生成既有量化误差，也增加延迟。Figure 7 中 OpenVLA 在五个 out-of-box 任务上大多接近零。</p>
+<h3 id="2-octo">2. Octo<a class="headerlink" href="#2-octo" title="Permanent link">&para;</a></h3>
+<p>Octo 是 93M 通用机器人策略，可以用 diffusion 生成连续动作。它解决了连续动作形式，但模型容量和开放语言语义较弱。</p>
+<p>当任务要求识别新物品、按语言分类垃圾与餐具时，仅有连续动作生成还不够。Figure 7 中 Octo 同样接近零。</p>
+<h3 id="3-0-small">3. π₀-small<a class="headerlink" href="#3-0-small" title="Permanent link">&para;</a></h3>
+<p>π₀-small 是 470M 非 VLM 对照。它用 DistilBERT 处理语言、较小视觉 encoder 处理图像，也用 10 步 flow matching 生成 50 步动作。</p>
+<p>Figure 9 中，它在 bussing、grocery bagging 和 table setting 的语言跟随准确率明显低于完整 π₀。即使上层 VLM 给出子命令，它也未必能可靠执行。</p>
+<p>但这个对照同时改变了参数量、语言模型、视觉模型和 transformer 结构，因此不能把全部差距只归因于“有没有 VLM 预训练”。</p>
+<h3 id="4-act-diffusion-policy">4. ACT 和 Diffusion Policy<a class="headerlink" href="#4-act-diffusion-policy" title="Permanent link">&para;</a></h3>
+<p>它们从目标任务数据单独训练，是精细操作中的强基线。</p>
+<p>问题在于，小规模高质量演示通常只覆盖正确流程。遇到随机皱衣、遮挡或抓取失败后，策略可能不知道怎样恢复。π₀ 用大规模预训练补充这些多样状态，再用后训练学习流畅策略。</p>
+<h2 id="_2">四、本文方案有什么特点和创新？<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Baseline 的问题</th>
+<th>π₀ 的设计</th>
+<th>为什么有帮助</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VLM 语义与连续控制难统一</td>
+<td>VLM expert + action expert</td>
+<td>一套权重理解图文，另一套专门处理状态和动作</td>
+<td>Fig. 3、Fig. 9</td>
+</tr>
+<tr>
+<td>离散单步动作慢且不连续</td>
+<td>对 50 步动作做 flow matching</td>
+<td>联合生成连续动作块，避免动作 token 量化</td>
+<td>Fig. 7、Table I</td>
+</tr>
+<tr>
+<td>多机器人输入输出维度不同</td>
+<td>3 相机槽、18 维 padding</td>
+<td>一个模型可以共享跨平台数据</td>
+<td>Fig. 4–5</td>
+</tr>
+<tr>
+<td>大数据源支配训练</td>
+<td><code>n^0.43</code> 重采样</td>
+<td>保留大数据价值，同时提高小任务出现概率</td>
+<td>Fig. 4</td>
+</tr>
+<tr>
+<td>预训练不够熟练，scratch 又脆弱</td>
+<td>多样预训练 + 高质量后训练</td>
+<td>前者学覆盖和恢复，后者学一致执行流程</td>
+<td>Fig. 11、13</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">五、本文的具体方案<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1_2">1. 整体流程<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>大规模多机器人数据
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>↓ 预训练
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>通用 π₀ 基础策略
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>↓ 目标任务高质量数据后训练
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>熟练的任务策略
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>部署时：
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>2/3张RGB + 语言 + q_t
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>↓ 双专家 Transformer
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>从随机噪声生成未来50步动作
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>↓ 执行前16或25步
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>重新观察，再次生成
+</code></pre></div>
+<p>它是离线模仿学习，不是 RL；action chunk 一次联合生成，不是按时间自回归。</p>
+<h3 id="2_2">2. 双专家结构是什么？<a class="headerlink" href="#2_2" title="Permanent link">&para;</a></h3>
+<p>主模型以 PaliGemma 3B 为基础：</p>
+<ul>
+<li>VLM expert：处理图像和语言，继承互联网视觉语言预训练；</li>
+<li>action expert：处理关节状态和带噪动作，从头训练，约 300M 参数；</li>
+<li>总参数约 3.3B（Figure 3；Section IV，pp. 3–4）。</li>
+</ul>
+<p>这里的“专家”不是传统 MoE 的动态选择。token 类型已经决定走哪套权重：图像/语言走 VLM，状态/动作走 action expert。两者通过 self-attention 交换信息。</p>
+<p>action expert 更窄，hidden width 为 1024，MLP 为 4096；VLM width 为 2048。这样做可以减少 10 次 flow 推理的计算量（Appendix B，p. 15）。</p>
+<h3 id="3-token">3. 输入 token 怎样组织？<a class="headerlink" href="#3-token" title="Permanent link">&para;</a></h3>
+<p>输入分成三个 block：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Block 1：[图像patch tokens + 语言tokens]
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Block 2：[机器人状态q token]
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Block 3：[50个带噪action tokens]
+</code></pre></div>
+<p>attention 规则是：</p>
+<ul>
+<li>图像和语言只看图像/语言；</li>
+<li>q 可以看图像、语言和自身；</li>
+<li>action 可以看全部观察，也可以看其它所有 action slots。</li>
+</ul>
+<p>action block 内是双向 attention，因此 50 步动作可以共同协调。前面的 observation 不看 action，便于在 10 次 flow 迭代中缓存它的 key/value。</p>
+<h3 id="4-flow-matching">4. Flow Matching 的直觉<a class="headerlink" href="#4-flow-matching" title="Permanent link">&para;</a></h3>
+<p>训练时有真实动作块 <code>A</code>。作者随机生成同样大小的高斯噪声 <code>ε</code>，再按 <code>τ</code> 混合：</p>
+<div class="arithmatex">\[
+A^\tau=\tau A+(1-\tau)\epsilon
+\]</div>
+<ul>
+<li><code>τ=0</code>：几乎是纯噪声；</li>
+<li><code>τ=1</code>：就是真实动作；</li>
+<li>中间值：噪声和真实动作的混合。</li>
+</ul>
+<p>模型不直接预测最终动作，也不预测噪声，而是预测“当前应该往哪个方向移动”：</p>
+<div class="arithmatex">\[
+v_{target}=A-\epsilon
+\]</div>
+<p>预测速度与真实速度之间计算 MSE。可以把它想成：训练模型学习一张导航地图，让随机动作沿着正确方向流向专家动作。</p>
+<p>作者让训练更多采样低 <code>τ</code>、高噪声区域，因为从几乎随机的动作中根据观察恢复合理动作更困难（Appendix B/Figure 14，p. 15）。但论文没有与 uniform timestep 做性能消融。</p>
+<h3 id="5-batch">5. 一个 batch 怎样训练？<a class="headerlink" href="#5-batch" title="Permanent link">&para;</a></h3>
+<p>如果 batch size 是 <code>B</code>，逻辑形状为：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>RGB：       B组，每组2或3张图
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>language：  B条文本
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>q_t：       B×18
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>GT action： B×50×18
+</code></pre></div>
+<p>训练步骤：</p>
+<ol>
+<li>读取 observation 和未来 50 步专家动作。</li>
+<li>采样 <code>τ</code> 和高斯噪声 <code>ε</code>。</li>
+<li>构造带噪动作 <code>A^τ</code>。</li>
+<li>双专家 transformer 输出 <code>50×18</code> 的速度场。</li>
+<li>与目标 <code>A−ε</code> 计算 MSE。</li>
+<li>反向传播更新模型。</li>
+</ol>
+<p>full π₀ 预训练 700k steps；为了和基线近似算力公平，作者还训练了 160k-step π₀。batch size、optimizer、学习率和后训练 steps 未明确说明。</p>
+<p>论文把概率路径写成 <code>N(τA,(1−τ)I)</code>，但采样式对应的协方差应是 <code>(1−τ)^2I</code>。若第二项表示标准差则没有矛盾；若表示协方差则记号不一致。论文未澄清。</p>
+<h3 id="6">6. 推理怎样运行？<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>当前观察编码一次，并缓存KV
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>↓
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>随机初始化 A^0，shape=50×18
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>↓ 10次
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>A^(τ+0.1) = A^τ + 0.1 × 模型预测速度
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>↓
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>得到 A^1，即50步动作块
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>↓
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>裁掉无效padding维并执行前一部分
+</code></pre></div>
+<p>RTX 4090、3 相机下的时间为（Appendix Table I，p. 16）：</p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th style="text-align: right;">时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>图像编码</td>
+<td style="text-align: right;">14 ms</td>
+</tr>
+<tr>
+<td>observation forward</td>
+<td style="text-align: right;">32 ms</td>
+</tr>
+<tr>
+<td>10 次 action flow</td>
+<td style="text-align: right;">27 ms</td>
+</tr>
+<tr>
+<td>onboard 总计</td>
+<td style="text-align: right;">73 ms</td>
+</tr>
+<tr>
+<td>加 Wi-Fi 的 offboard 总计</td>
+<td style="text-align: right;">86 ms</td>
+</tr>
+</tbody>
+</table>
+<p>模型不是每个 20 ms 都推理一次，而是预测较长动作块，每 0.5 或 0.8 秒更新一次。</p>
+<h3 id="7">7. 用一条折衣数据走完整流程<a class="headerlink" href="#7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>原始时刻：3张RGB + 14维q + 未来50×14专家动作
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>↓ 跨机器人标准化
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>3张RGB + 18维q + 50×18动作
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>↓ 训练时加入τ和噪声
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>50个带噪action tokens
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>↓ VLM/action双专家
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>预测50×18速度场
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>↓ 与A-ε计算MSE
+</code></pre></div>
+<p>部署时则从 <code>50×18</code> 随机噪声开始，做 10 次 Euler 更新，取前 14 个有效维度。ARX 以 50 Hz 执行前 25 步，也就是 0.5 秒，再根据新的衣物形态重新规划。</p>
+<h2 id="_4">六、本文效果如何？<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<h3 id="1-out-of-box">1. Out-of-box 基础模型<a class="headerlink" href="#1-out-of-box" title="Permanent link">&para;</a></h3>
+<p>作者在 5 个预训练中出现过的宽任务上直接测试，每个方法每任务 10 次。下表是根据 Figure 7（p. 8）人工读图的近似值：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align: right;">折衣</th>
+<th style="text-align: right;">简单清桌</th>
+<th style="text-align: right;">困难清桌</th>
+<th style="text-align: right;">杂货装袋</th>
+<th style="text-align: right;">取吐司</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>π₀ full</td>
+<td style="text-align: right;">1.00</td>
+<td style="text-align: right;">0.97</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">0.79</td>
+<td style="text-align: right;">0.75</td>
+</tr>
+<tr>
+<td>π₀ 160k</td>
+<td style="text-align: right;">0.90</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.40</td>
+</tr>
+<tr>
+<td>π₀-small</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">0.27</td>
+<td style="text-align: right;">接近 0</td>
+</tr>
+<tr>
+<td>OpenVLA / Octo</td>
+<td style="text-align: right;">多数接近 0</td>
+<td style="text-align: right;">低</td>
+<td style="text-align: right;">接近 0</td>
+<td style="text-align: right;">接近 0</td>
+<td style="text-align: right;">接近 0</td>
+</tr>
+</tbody>
+</table>
+<p>这些任务并非全新任务，因此更准确的说法是“预训练后无需专门微调即可调用”，而不是严格的 zero-shot 新任务泛化。</p>
+<h3 id="2_3">2. 语言跟随<a class="headerlink" href="#2_3" title="Permanent link">&para;</a></h3>
+<p>Figure 9 左侧人工读图约为：</p>
+<table>
+<thead>
+<tr>
+<th>任务</th>
+<th style="text-align: right;">π₀-small</th>
+<th style="text-align: right;">π₀</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bussing</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.95</td>
+</tr>
+<tr>
+<td>Grocery Bagging</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">0.70</td>
+</tr>
+<tr>
+<td>Table Setting</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">0.90</td>
+</tr>
+</tbody>
+</table>
+<p>完整 π₀ 更能听懂语言。上层 VLM 子命令也能提高 π₀ 的任务进度；π₀-small 因低层 grounding 不可靠，未能稳定利用上层命令（Section VI-B，pp. 8–9）。</p>
+<h3 id="3-1510">3. 1、5、10 小时后训练<a class="headerlink" href="#3-1510" title="Permanent link">&para;</a></h3>
+<p>Figure 11（p. 10）显示：</p>
+<ul>
+<li>五任务平均：π₀ 约为 0.56/0.84/0.85；scratch 约为 0.38/0.76/0.72。</li>
+<li>Towel Folding 和 Stack Bowls 的预训练收益明显。</li>
+<li>Items in Drawer 在 5/10h 时 π₀ 与 scratch 都约 0.9，预训练几乎没有额外收益。</li>
+<li>Tupperware in Microwave 的部分数据量点，scratch 或任务专用 baseline 与 π₀ 接近甚至略高。</li>
+</ul>
+<p>所以结论应是：预训练经常提高小数据效率，尤其当新任务与旧技能相似；它不是在所有任务都必然有益。</p>
+<h3 id="4_2">4. 复杂长任务<a class="headerlink" href="#4_2" title="Permanent link">&para;</a></h3>
+<p>下表同样是 Figure 13（p. 11）的近似读图：</p>
+<table>
+<thead>
+<tr>
+<th>任务</th>
+<th style="text-align: right;">full：预训练+后训练</th>
+<th style="text-align: right;">scratch</th>
+<th style="text-align: right;">只预训练</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Laundry Folding</td>
+<td style="text-align: right;">0.82</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.30</td>
+</tr>
+<tr>
+<td>Table Bussing</td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">0.49</td>
+</tr>
+<tr>
+<td>Mobile Laundry</td>
+<td style="text-align: right;">0.93</td>
+<td style="text-align: right;">0.33</td>
+<td style="text-align: right;">0.55</td>
+</tr>
+<tr>
+<td>Dryer Unloading</td>
+<td style="text-align: right;">0.72</td>
+<td style="text-align: right;">0.38</td>
+<td style="text-align: right;">0.16</td>
+</tr>
+<tr>
+<td>Box Building</td>
+<td style="text-align: right;">0.64</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">接近 0</td>
+</tr>
+<tr>
+<td>To-go Box</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.46</td>
+<td style="text-align: right;">接近 0</td>
+</tr>
+<tr>
+<td>Packing Eggs</td>
+<td style="text-align: right;">0.84</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">接近 0</td>
+</tr>
+</tbody>
+</table>
+<p>full 在所有任务都超过 0.5，并在多数任务领先。但 Packing Eggs 的 scratch 略高，因此正文“best across the board”的说法与图中结果不完全一致；Figure 13 caption 使用的“typically outperforms”更准确。</p>
+<h3 id="5">5. 实验真正证明了什么？<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p>证据较强：</p>
+<ul>
+<li>完整系统比 OpenVLA、Octo 和 π₀-small 更适合这些高频复杂任务；</li>
+<li>预训练与后训练通常缺一不可；</li>
+<li>VLM 路线改善语言跟随；</li>
+<li>700k steps 显著好于 160k，训练规模重要。</li>
+</ul>
+<p>仍未单独证明：</p>
+<ul>
+<li>双 expert 是否优于相同参数的单 expert；</li>
+<li>flow matching 是否优于相同 backbone 的 diffusion/regression；</li>
+<li>shifted-beta 是否优于 uniform；</li>
+<li><code>n^0.43</code> 是否是最佳采样指数；</li>
+<li>50 步 chunk 和 10 次积分是否最优。</li>
+</ul>
+<p>因此最稳妥的结论是“完整 recipe 有效”，而不是每个组件都已有严格因果证据。</p>
+<h2 id="_5">七、论文的不足和改进方向<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="1_3">1. 作者明确指出的不足<a class="headerlink" href="#1_3" title="Permanent link">&para;</a></h3>
+<ol>
+<li>不知道怎样选择最优数据混合和采样权重。</li>
+<li>并非所有任务都能稳定完成，也无法预先判断需要多少后训练数据。</li>
+<li>跨任务、跨机器人何时正迁移仍不清楚。</li>
+<li>没有验证驾驶、导航和足式运动等其它控制领域。</li>
+<li>只用高质量目标数据会脆弱，只用预训练又不够流畅。</li>
+</ol>
+<h3 id="2_4">2. 我们还应注意什么？<a class="headerlink" href="#2_4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>903M timestep 大多是私有数据，采集和筛选过程不透明，外部难复现。</li>
+<li>没有明确 validation split，也没有完整 held-out 物体/环境清单。</li>
+<li>每组通常只有 10 次测试，没有误差条或显著性检验。</li>
+<li>π₀-small 同时改变模型大小和多项结构，不是干净的 VLM 消融。</li>
+<li>OpenVLA/Octo 没有训练到 full π₀ 相同 epoch，公平性有限。</li>
+<li>3.3B 模型仍依赖高端 GPU，Wi-Fi 尾延迟和断网策略未评估。</li>
+<li>chunk 内仍开环 0.5/0.8 秒，环境突然变化时不能立刻响应。</li>
+<li>没有系统报告碰撞、夹持力、人工接管和安全停止。</li>
+</ul>
+<h3 id="3_2">3. 可以怎样改进？<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>现有问题</th>
+<th>改进思路</th>
+<th>怎样验证</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据混合靠经验，可能负迁移</td>
+<td>根据技能相似度和梯度冲突学习数据权重</td>
+<td>固定算力，测试完全未见任务/机器人</td>
+</tr>
+<tr>
+<td>组件贡献混在一起</td>
+<td>同 backbone 比较 regression、DDPM、flow</td>
+<td>同时报告成功率、动作平滑和推理次数</td>
+</tr>
+<tr>
+<td>固定执行 16/25 步反应不够快</td>
+<td>用生成不确定性决定何时提前重规划</td>
+<td>中途移动物体、制造滑落和碰撞风险</td>
+</tr>
+<tr>
+<td>单帧视觉无法判断接触</td>
+<td>加短历史、触觉和力信息</td>
+<td>构造视觉相同但接触状态不同的场景</td>
+</tr>
+<tr>
+<td>上层 VLM 可能给错子目标</td>
+<td>为子目标加入前置条件、安全检查和拒绝机制</td>
+<td>注入错误、含糊或不可执行命令</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3_3">汇报时最值得讲的 3 个点<a class="headerlink" href="#3_3" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>双专家如何分工。</strong> PaliGemma 保留视觉语言知识，较小 action expert 专门建模连续动作，两者通过 attention 交流。</li>
+<li><strong>Flow Matching 到底预测什么。</strong> 输入带噪动作，输出从噪声走向专家动作的速度 <code>A−ε</code>；推理从纯噪声做 10 次 Euler。</li>
+<li><strong>预训练和后训练各解决什么。</strong> 预训练提供多样状态与恢复能力，后训练提供稳定、流畅的目标任务策略。</li>
+</ol>
+<h2 id="_6">常见问题<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<h3 id="q10">Q1：π₀ 输出一个动作还是一段动作？<a class="headerlink" href="#q10" title="Permanent link">&para;</a></h3>
+<p>一段未来 50 步动作。实际只执行前 16 或 25 步，再重新观察。</p>
+<h3 id="q2">Q2：它是自回归模型吗？<a class="headerlink" href="#q2" title="Permanent link">&para;</a></h3>
+<p>语言 backbone 来自自回归 VLM，但 50 个动作位置不是按时间逐个生成，而是在 flow 中联合更新。</p>
+<h3 id="q3flow-matching-diffusion">Q3：Flow Matching 和 Diffusion 有什么关系？<a class="headerlink" href="#q3flow-matching-diffusion" title="Permanent link">&para;</a></h3>
+<p>都从噪声生成数据。π₀ 学的是连续路径上的速度场，并用 ODE/Euler 积分；传统 DDPM 常预测噪声并按离散反向过程采样。</p>
+<h3 id="q4-action-token">Q4：为什么 action token 可以互相看见未来位置？<a class="headerlink" href="#q4-action-token" title="Permanent link">&para;</a></h3>
+<p>测试时所有 action slots 都从噪声开始，并没有真实未来动作可以偷看。双向 attention 只是让整段动作共同协调。</p>
+<h3 id="q5figure-7-zero-shot">Q5：Figure 7 是真正的新任务 zero-shot 吗？<a class="headerlink" href="#q5figure-7-zero-shot" title="Permanent link">&para;</a></h3>
+<p>不是。任务类型存在于预训练中，它主要证明无需任务专门后训练的直接调用和初态/物体泛化。</p>
+<h3 id="q6">Q6：预训练一定有帮助吗？<a class="headerlink" href="#q6" title="Permanent link">&para;</a></h3>
+<p>不一定。Items in Drawer 几乎无增益，Packing Eggs 的 scratch 还略高。迁移取决于任务和平台相似性。</p>
+<hr />
+<h2 id="_7">附录：术语表<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Action Expert：专门处理机器人状态和连续动作 token 的 transformer 权重。</li>
+<li>Flow Matching：学习一个速度场，把随机噪声连续变换成数据样本。</li>
+<li>Vector Field（向量场）：在当前 noisy action 上，模型预测下一步应该往哪个方向移动。</li>
+<li>Euler Integration：按“小步前进 = 当前值 + 步长×速度”重复更新。</li>
+<li>Action Chunk：一次生成多个未来动作。</li>
+<li>Open-loop Chunk：执行动作块内部时不重新调用模型。</li>
+<li>Closed-loop/Receding Horizon：执行一部分后重新观察并规划。</li>
+<li>Padding：给低维状态或动作末尾补零，使不同机器人具有相同输入形状。</li>
+<li>Language Grounding：把语言中的对象和目标对应到当前场景和动作。</li>
+<li>Pre-training / Post-training：先用多样大数据学通用能力，再用高质量目标数据学熟练策略。</li>
+</ul>
+<h2 id="_8">阅读说明<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Python 环境可在 PowerShell 中用 <code>conda activate robotic</code> 激活。</li>
+<li>ARS <code>pdf_read_preflight.py</code> 结构预检为 <strong>PASS</strong>，17/17 页，warnings 为空。</li>
+<li>图表中的“约”表示人工读图，不是作者提供的精确数值表。</li>
+<li>本报告中的页码、表格和结论来自论文原文；【我的分析】和【推断】不是作者明确结论。</li>
+</ul>
+<hr />
+<p><a href="../../assets/papers/pi0.pdf">阅读论文 PDF</a> · <a href="../">返回论文阅读</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../openvla/" class="md-footer__link md-footer__link--prev" aria-label="上一页: OpenVLA">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                OpenVLA
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../spot/" class="md-footer__link md-footer__link--next" aria-label="下一页: SPOT · 深度阅读">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                SPOT · 深度阅读
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/JXTZZ" target="_blank" rel="noopener" title="LoTusY on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="../../javascripts/version-sync.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
