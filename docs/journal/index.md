@@ -6,6 +6,7 @@
 
 | 日期 | 记录 | 关键词 |
 | --- | --- | --- |
+| 09.16 | [从人类示范筛选到 Git 原生实验树](2026-09-16.md) | ReWeight、OpenResearch、跨本体学习、实验管理 |
 | 09.15 | [WSL 离线安装与 Miniconda 初始化记录](2026-09-15.md) | WSL、403、离线安装、Conda |
 | 09.11 | [从语义动作到对象交互：Show-Harness 与 ORION](2026-09-11.md) | VLM Agent、OOG、中间表示 |
 | 09.10 | [补充 Python 堆相关知识](2026-09-10.md) | Heap、heapq、数据结构 |

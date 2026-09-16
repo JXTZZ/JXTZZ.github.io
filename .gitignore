@@ -6,3 +6,9 @@ site/
 *.log
 docs/journal/idea/
 docs/papers/human-depth-ambiguity.md
+
+# ARIS managed local installation
+/.agents/skills/
+/.aris/
+/AGENTS.md
+/review-stage/
