@@ -75,6 +75,7 @@ nav:
     - SPOT · 概念笔记: papers/spot-notes.md
     - ORION · 单视频开放世界模仿: papers/orion.md
     - EgoInfinity · 互联网视频到机器人动作: papers/egoinfinity.md
+    - RoboTok · 互联网示范检索: papers/robotok.md
     - 论文资料库: papers/library.md
   - 理论基础:
     - deep-learning/index.md
@@ -94,6 +95,8 @@ nav:
     - Image-to-ArkTS 项目记录: meeting/image-to-arkts.md
   - 学习日志:
     - journal/index.md
+    - 09.22 · 正运动学与 DH 参数法: journal/2026-09-22.md
+    - 09.16 · ReWeight 与 OpenResearch: journal/2026-09-16.md
     - 09.15 · WSL 离线安装与 Conda: journal/2026-09-15.md
     - 09.11 · Show-Harness 与 ORION: journal/2026-09-11.md
     - 09.10 · Python 堆: journal/2026-09-10.md

@@ -14,6 +14,7 @@
 | 人类演示与迁移 | [SPOT 深度阅读](spot.md) · [概念随记](spot-notes.md) | 怎样用物体轨迹连接人类演示与机器人执行？ |
 | 单视频开放世界模仿 | [ORION](orion.md) | 如何用对象图把一段人类视频转化为机器人策略？ |
 | 互联网视频到机器人动作 | [EgoInfinity](egoinfinity.md) | 如何把野外 RGB 视频转化为度量 4D 手物数据与可执行轨迹？ |
+| 互联网示范检索 | [RoboTok](robotok.md) | 如何用 actor-relative 3D hand trajectory 从网页视频中找到可用于灵巧操作的示范？ |
 
 ## 阅读方式
 
