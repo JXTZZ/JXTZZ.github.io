@@ -1,0 +1,2145 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="从深度学习基础到具身智能，记录论文阅读、代码实践与每天的新发现。">
+      
+      
+        <meta name="author" content="LoTusY">
+      
+      
+        <link rel="canonical" href="https://jxtzz.github.io/papers/robotok/">
+      
+      
+        <link rel="prev" href="../egoinfinity/">
+      
+      
+        <link rel="next" href="../library/">
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>RoboTok · 互联网示范检索 - LoTusY · 研究与学习笔记</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  <meta name="site-version" content="57893a2f0356e4f8ecd85143cb3dc255ebb038f5">
+  <link rel="stylesheet" href="../../stylesheets/extra.css?v=57893a2f0356e4f8ecd85143cb3dc255ebb038f5">
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2026-robotokarxiv" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="LoTusY · 研究与学习笔记" class="md-header__button md-logo" aria-label="LoTusY · 研究与学习笔记" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            LoTusY · 研究与学习笔记
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RoboTok · 互联网示范检索
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  论文阅读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deep-learning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  理论基础
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../engineering/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工程实践
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../journal/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  学习日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LoTusY · 研究与学习笔记" class="md-nav__button md-logo" aria-label="LoTusY · 研究与学习笔记" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    LoTusY · 研究与学习笔记
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aloha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ALOHA Unleashed
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dp3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3D Diffusion Policy
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../octo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openvla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenVLA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pi0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    π₀
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT · 深度阅读
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spot-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT · 概念笔记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../orion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ORION · 单视频开放世界模仿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../egoinfinity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EgoInfinity · 互联网视频到机器人动作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboTok · 互联网示范检索
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文资料库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../deep-learning/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    理论基础
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            理论基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Linear_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Softmax_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Softmax 回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/MLP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多层感知机
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Computational_Graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算图与反向传播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Weight_Decay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    权重衰减
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Dropout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dropout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    注意力机制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深度学习计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/cv-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机视觉学习路线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../engineering/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    工程实践
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            工程实践
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../attention/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tensor 原地操作与内存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../attention/Linear_Algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    张量维度与求和
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../meeting/image-to-arkts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Image-to-ArkTS 项目记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../journal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    学习日志
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            学习日志
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.22 · 正运动学与 DH 参数法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.16 · ReWeight 与 OpenResearch
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.15 · WSL 离线安装与 Conda
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.11 · Show-Harness 与 ORION
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.10 · Python 堆
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.08 · RoboSPA 与工具排障
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.07 · 论文速记与 WSL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    09.04 · 具身智能阅读周记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    关于
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="2026-robotokarxiv">2026 RoboTok（arXiv）<a class="headerlink" href="#2026-robotokarxiv" title="Permanent link">&para;</a></h1>
+<h1 id="robotok-an-internet-scale-data-engine-for-human-demonstration-retrieval-and-dexterous-manipulation-learning">RoboTok: An Internet-Scale Data Engine for Human Demonstration Retrieval and Dexterous Manipulation Learning<a class="headerlink" href="#robotok-an-internet-scale-data-engine-for-human-demonstration-retrieval-and-dexterous-manipulation-learning" title="Permanent link">&para;</a></h1>
+<p><strong>作者与机构</strong>：Howard Qian、Yiting Chen、Yunfei Xie、Kejia Ren、Podshara Chanrungmaneekul、Gaotian Wang、Bowen Wen、Chen Wei、Kaiyu Hang；作者来自 <strong>Rice University、NVIDIA</strong>。</p>
+<p><strong>发表信息</strong>：2026 年 arXiv 预印本，arXiv:2609.03199。本文按当前预印本版本记录，不把排版模板视为正式录用信息。</p>
+<p><strong>资料链接</strong>：<a href="https://rice-robotpi-lab.github.io/RoboTok/">项目主页</a> · <a href="https://arxiv.org/abs/2609.03199">arXiv</a> · <a href="https://github.com/Rice-RobotPI-Lab/RoboTok-Code">代码</a> · <a href="https://huggingface.co/Rice-RobotPI-Lab/robotok-public">数据与模型</a> · <a href="../../assets/papers/RoboTok.pdf">本地 PDF</a></p>
+<h1 id="1">1. 研究意义<a class="headerlink" href="#1" title="Permanent link">&para;</a></h1>
+<h2 id="a">a. 研究背景：所描述的场景、背景<a class="headerlink" href="#a" title="Permanent link">&para;</a></h2>
+<p>机器人学习需要覆盖大量任务、物体与环境的示范，但直接采集机器人数据成本很高，也很难覆盖真实世界中的长尾操作。与之相比，互联网视频持续产生切菜、搅拌、拧瓶盖、钻孔、编织等人类操作，其中包含大量潜在的动作监督。</p>
+<p>真正困难的不是“网上有没有视频”，而是<strong>怎样从海量、无结构的视频中找到与目标操作真正相关的示范</strong>。同一种切割动作可能出现在不同厨房、视角与物体上；相反，两段画面都出现刀和砧板，也不代表手部动作相同。只看语义、场景或视觉外观，很容易检索到“看起来像”，但运动过程并不适合指导机器人的片段。</p>
+<p>RoboTok 将这个问题改写为手部运动检索：先把视频转化为以人体躯干为参考系的三维手部轨迹，再学习一个紧凑的 latent motion space。给定一段人类 query video，系统通过向量近邻搜索找到手部运动相似的互联网示范，最后将这些示范用于灵巧手策略学习。</p>
+<p><img alt="RoboTok 手部运动嵌入空间" src="../assets/robotok-embedding-space.png" /></p>
+<p>上图是 learned embedding 的 t-SNE 可视化。语义标签没有参与训练或检索，但搅拌、切割、钻孔、绘画等动作仍形成了较连贯的区域。这说明三维手轨迹中确实包含可用于区分操作行为的结构。不过，t-SNE 只是二维可视化，不能单独证明高维空间中的所有邻域都具有同样清晰的类别边界。</p>
+<h2 id="b">b. 问题及挑战：核心、重要、未解决的问题是什么<a class="headerlink" href="#b" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>视觉相似不等于操作相似。</strong> 背景、物体类别与动作语义可能相似，但手的运动方向、双手配合和操作节奏不同；反之，同一种动作也可能发生在完全不同的场景中。检索表示需要弱化外观，保留 manipulation motion。</p>
+</li>
+<li>
+<p><strong>相机坐标中的轨迹不可直接比较。</strong> 同一个动作从正面、侧面或俯视拍摄，会产生不同的 camera-space trajectory。系统需要估计一个 actor-centered reference frame，尽量将相机视角变化从动作表示中分离出来。</p>
+</li>
+<li>
+<p><strong>视频时长和动作速度不同。</strong> 两个人完成同一操作时，可能一个快、一个慢，阶段持续时间也不同。逐帧欧氏距离无法处理这种时间错位，因此需要允许局部拉伸与压缩的时序对齐。</p>
+</li>
+<li>
+<p><strong>精确轨迹比较难以扩展到大规模数据库。</strong> Dynamic Time Warping（DTW）适合比较两条变长轨迹，却不适合在每次查询时与十万乃至更多视频逐一计算。需要将昂贵的轨迹距离蒸馏到可预计算、可索引的向量表示中。</p>
+</li>
+<li>
+<p><strong>检索质量必须落实到机器人学习。</strong> 在自定义轨迹指标上得分高，并不自动说明数据对机器人有用。必须进一步验证检索结果能否改善下游策略的任务成功率。</p>
+</li>
+</ul>
+<h1 id="2">2. 研究现状<a class="headerlink" href="#2" title="Permanent link">&para;</a></h1>
+<h2 id="a_1">a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术<a class="headerlink" href="#a_1" title="Permanent link">&para;</a></h2>
+<p>面向机器人示范检索，可以按主要匹配信号分为三类。</p>
+<ul>
+<li>
+<p><strong>视觉或语义检索</strong>使用图像特征、视觉语言模型或语言指令寻找相关视频。R+X、RfV 等工作说明互联网人类视频可以作为机器人经验来源，但语义相关只表示“可能在做同一类事”，未必保留具体手部运动。</p>
+</li>
+<li>
+<p><strong>图像空间的运动检索</strong>显式利用时间信息。FlowRetrieval 比较 optical flow，HAND 比较二维人手路径与机器人末端路径，STRAP 对视觉特征序列做 subsequence DTW。这类方法比单帧外观更接近行为，却仍可能受视角、遮挡和图像尺度影响。</p>
+</li>
+<li>
+<p><strong>结构化三维轨迹检索</strong>先恢复三维运动，再在统一参考系中比较。RoboTok 属于这一类：它使用最多两只手、每只手 21 个关节的三维轨迹，并转换到估计的躯干坐标系中，用 DTW 提供运动相似度监督。</p>
+</li>
+</ul>
+<p>与 SPOT、EgoInfinity 等从人类视频提取结构化运动的工作相比，RoboTok 的重点不是直接生成机器人动作，而是解决更前置的 <strong>discovery and curation</strong> 问题：在大规模网页视频中，哪些片段值得进入下游训练集？</p>
+<h2 id="b_1">b. 问题的现状：现有技术有哪些不足<a class="headerlink" href="#b_1" title="Permanent link">&para;</a></h2>
+<p>语义与外观特征容易受到场景和物体类别主导；光流与二维路径虽然包含运动，却把相机运动、投影尺度和真实三维动作混在一起。直接使用 DTW 比较三维轨迹更接近问题定义，但每条 query 与整个库逐一对齐，计算成本会随数据规模快速增长。</p>
+<p>RoboTok 的取舍是把感知与规范化放在检索之前，让轻量 encoder 主要学习 DTW 邻域结构。这降低了模型负担，也把系统瓶颈转移到了三维手部重建、深度估计和 torso frame estimation。换言之，<strong>检索器变简单的前提，是上游已经提供可靠的结构化轨迹。</strong></p>
+<h1 id="3">3. 技术路线<a class="headerlink" href="#3" title="Permanent link">&para;</a></h1>
+<h2 id="a_2">a. 问题与技术映射：针对上述问题，采用了哪些技术手段<a class="headerlink" href="#a_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>RoboTok 的技术手段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>网页视频无结构、质量差异大</td>
+<td>筛选 4–8 秒、手部可见且相机近似静止的片段</td>
+</tr>
+<tr>
+<td>只有 RGB 视频，没有可靠三维手轨迹</td>
+<td>WiLoR 手姿估计 + MoGe-2 metric depth + HaWoR 缺失轨迹补全</td>
+</tr>
+<tr>
+<td>视角与演员位置不同</td>
+<td>仅由 wrist-frame trajectory 估计静态 torso frame，并转成 actor-relative 3D trajectory</td>
+</tr>
+<tr>
+<td>动作速度与时序不同</td>
+<td>使用 DTW 构造长度归一化的运动相似度</td>
+</tr>
+<tr>
+<td>全库 DTW 查询不可扩展</td>
+<td>用 DTW 邻域监督轻量 encoder，离线建立向量索引，在线做 cosine nearest-neighbor search</td>
+</tr>
+<tr>
+<td>检索指标未必代表机器人价值</td>
+<td>将检索示范 retarget 为灵巧手状态，以奖励塑形指导 PPO，并比较任务成功率</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="RoboTok 数据处理与检索流程" src="../assets/robotok-method.png" /></p>
+<h2 id="b_2">b. 技术详述：对每个技术方法进行详细介绍<a class="headerlink" href="#b_2" title="Permanent link">&para;</a></h2>
+<p><strong>数据处理：把网页片段变成 metric 3D hand trajectories。</strong> RoboTok 从 Action100M 中处理已经初步筛选为人类活动的视频，再保留 4–8 秒、相机近似静止、手部具有一定可见性、每帧最多一只左手和一只右手的片段，并优先保留较长片段以去除重叠。最终语料库包含 100,000 条轨迹，其中 90,000 条用于训练检索器，10,000 条作为 held-out query。</p>
+<p>系统以 5 fps 使用 WiLoR 估计三维手部关键点。由于 WiLoR 基于 weak-perspective camera model，所得深度不天然是 metric scale，RoboTok 再使用 MoGe-2 估计度量深度，将手部姿态转换到 metric camera coordinates；缺失手姿由 HaWoR 补全。每只手使用 21 个关节，因此一段双手视频最终对应一条变长的三维关节序列。</p>
+<p>这条流水线比“从普通 RGB 视频直接得到可靠动作”更复杂：手检测、handedness linking、单目深度、遮挡补全中的误差都会进入最终轨迹。论文的贡献重点是检索表示与数据引擎，而不是证明上述感知模块在所有网页视频中都足够准确。</p>
+<p><strong>躯干相对表示：将相机运动坐标改写为 actor-centered motion。</strong> Camera-space trajectory 会随视角、拍摄距离和演员位置变化。RoboTok 训练一个轻量 torso-frame estimator，只输入手腕坐标系随时间的变化，预测演示者的静态躯干参考系；即使身体没有出现在画面中，也可以尝试恢复 actor-centered coordinates。该过程沿用并适配了 EgoInfinity 的 torso estimation 思路。</p>
+<p>规范化后，检索比较的是手相对于人体如何运动，而不是手在图像中位于哪里。这能削弱相机视角差异，但并不等于完全的 viewpoint invariance：如果三维重建或 torso frame 本身估计错误，规范化也会错误；移动相机更是作者明确留给后续工作的场景。</p>
+<p><strong>DTW 相似度：让相同动作允许不同速度。</strong> 对长度分别为 <span class="arithmatex">\(L_i\)</span> 与 <span class="arithmatex">\(L_j\)</span> 的 21 关节手姿轨迹 <span class="arithmatex">\(x_i\)</span>、<span class="arithmatex">\(x_j\)</span>，DTW 在合法对齐路径 <span class="arithmatex">\(\pi\)</span> 中寻找累计 pose distance 最小的路径：</p>
+<div class="arithmatex">\[
+\operatorname{DTW}(x_i,x_j)
+=
+\min_{\pi \in \Pi}
+\sum_{(t,u)\in\pi}\lVert x_i^t-x_j^u\rVert_2.
+\]</div>
+<p>论文进一步按两条轨迹的平均长度归一化，并取负数作为相似度：</p>
+<div class="arithmatex">\[
+s(i,j)
+=
+-\frac{\operatorname{DTW}(x_i,x_j)}{\tfrac{1}{2}(L_i+L_j)}.
+\]</div>
+<p>这样，同一动作中较慢的准备阶段可以与另一视频中较短的准备阶段对齐。不过，DTW 只会在给定关节距离下寻找最佳时间对应，它不能自动理解物体、接触、任务阶段或因果关系。</p>
+<p><strong>学习检索 embedding：把昂贵的 DTW 蒸馏为向量近邻。</strong> 理想检索需要对 query 与整个数据库计算 DTW。RoboTok 改为学习映射 <span class="arithmatex">\(\Gamma(x)\)</span>，将每条轨迹变成单位超球面上的 <span class="arithmatex">\(d\)</span> 维向量，使 DTW 更相似的轨迹具有更高 inner product。</p>
+<p>Encoder 对逐帧手姿加入 positional encoding，再用轻量 cross-attention pooling 得到 L2-normalized embedding。训练批次不是随机抽样，而是围绕 anchor 构造：从 DTW top-20 relevant set 中采两个 positive，再取一个刚好位于相关集合之外的 boundary negative；49 组组成 batch size 196。边界负样本比完全无关的随机负样本更能约束检索决策面。</p>
+<p>目标函数为：</p>
+<div class="arithmatex">\[
+\mathcal{L}=\mathcal{L}_{\mathrm{set}}+\lambda\mathcal{L}_{\mathrm{rank}}.
+\]</div>
+<p>Set loss 让 top-<span class="arithmatex">\(K\)</span> 邻居排在边界与负样本之前，rank loss 则使正样本内部的相对顺序符合 DTW 排名。训练完成后，每条 corpus trajectory 只编码一次并存入 inner-product index；查询时只需编码 query，再做 cosine similarity search。新视频可以继续编码并加入索引，不必为每次扩库重新训练 encoder。</p>
+<p><img alt="不同方法对切割动作的检索结果" src="../assets/robotok-retrieval-examples.png" /></p>
+<p>上图中，query 是刀具切割。Flow、HAND 和 STRAP 的部分结果在外观、局部运动或场景上与 query 接近，却没有稳定返回相同的手部操作；RoboTok 的前三项都表现出相似切割运动。该案例直观展示了 actor-relative 3D trajectory 的作用，但仍只是一个定性例子，不能替代全量检索指标。</p>
+<p><strong>下游策略：检索视频通过 reward 引导 PPO，而不是直接提供 robot actions。</strong> 论文先将人类手姿 retarget 到灵巧机器人手的状态空间，再将检索到的 demonstrations 构成状态库。策略从头使用 PPO 训练，输入只有 proprioception、fingertip force，以及长度为 3 的 observation window；展示 rollout 的相机画面不进入策略。</p>
+<p>记 <span class="arithmatex">\(\Phi(s)\)</span> 为当前 hand state 到 retargeted demonstration bank 的加权 <span class="arithmatex">\(k\)</span>-NN 距离的负值。训练奖励既包含鼓励状态停留在示范流形附近的 <span class="arithmatex">\(\beta\Phi(s)\)</span>，也包含 potential-based shaping：</p>
+<div class="arithmatex">\[
+w\bigl(\gamma\Phi(s')-\Phi(s)\bigr).
+\]</div>
+<p>因此，实验验证的是“RoboTok 检索出的示范是否能构造更有用的策略引导”，不是“RoboTok 能否直接把 query video 翻译成机器人动作”。这一边界对理解论文非常重要。</p>
+<h2 id="c">c. 创新之处：最关键的技术是什么<a class="headerlink" href="#c" title="Permanent link">&para;</a></h2>
+<p>我认为最关键的是<strong>将 actor-relative 3D hand trajectory 作为互联网人类示范的检索键，并把 DTW 的精细时序相似度蒸馏到可扩展的向量空间中</strong>。</p>
+<p>三维手轨迹、DTW、metric learning 和 PPO reward shaping 都不是首次出现，创新在于围绕“从网页发现可用操作示范”把它们组织成完整数据引擎：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>互联网视频
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  ↓
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>三维手姿恢复与躯干坐标规范化
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  ↓
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>DTW 定义局部运动邻域
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  ↓
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>轻量 encoder 学习可索引 embedding
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  ↓
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>query video 检索相关示范
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  ↓
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>retarget + reward shaping + robot policy learning
+</code></pre></div>
+<p>它把昂贵的 pairwise trajectory alignment 留在离线监督阶段，把在线查询压缩为一次编码和向量近邻搜索。相比固定收集一个数据集，RoboTok 更强调持续索引新网页视频的 data engine 视角。</p>
+<h1 id="4">4. 实验分析<a class="headerlink" href="#4" title="Permanent link">&para;</a></h1>
+<h2 id="a_3">a. 实验数据：论文中使用了哪些实验数据<a class="headerlink" href="#a_3" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>评测</th>
+<th>数据与规模</th>
+<th>评估目标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RoboTok retrieval corpus</td>
+<td>100,000 条 Action100M 片段；90,000 条训练，10,000 条 held-out query；检索库为除 query 外的其余片段</td>
+<td>检查 learned embedding 是否复现 DTW top-20 邻域；公开代码说明划分单位是片段而非来源视频</td>
+</tr>
+<tr>
+<td>AssemblyHands</td>
+<td>831 条双手装配片段，使用 sensor-grade 3D hand annotations；每条依次作为 query</td>
+<td>检查跨数据集、较高质量三维手姿下的检索泛化</td>
+</tr>
+<tr>
+<td>原始 VTDexManip</td>
+<td>6 项灵巧操作任务，seen／unseen object split</td>
+<td>与原 benchmark 和不同检索方法比较下游成功率</td>
+</tr>
+<tr>
+<td>修改后的 HARDER VTDexManip</td>
+<td>BottleCap Turning、Faucet Screwing、Lever Sliding；恢复自由三维手部运动并移除多项 dense reward</td>
+<td>在更依赖检索示范的设置中比较 PPO；每种方法 8 个 policy，每个物体 100 次尝试</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="修改后的 VTDexManip 灵巧操作任务" src="../assets/robotok-vtdex-tasks.png" /></p>
+<p>论文同时报告 in-domain retrieval、out-of-domain retrieval 和 downstream policy performance，这比只展示检索可视化更完整。不过，真实机器人实验尚未给出，当前 downstream evidence 全部来自仿真灵巧手。</p>
+<h2 id="b_3">b. 对比实验：检索质量的数值变化<a class="headerlink" href="#b_3" title="Permanent link">&para;</a></h2>
+<p><strong>RoboTok corpus：对 DTW pseudo-ground truth 的 top-20 检索。</strong> 数值来自本地 PDF Table 2。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align: right;">mAP@20 ↑</th>
+<th style="text-align: right;">nDCG@20 ↑</th>
+<th style="text-align: right;">CKNNA@20 ↑</th>
+<th style="text-align: right;">MRR@20 ↑</th>
+<th style="text-align: right;">Kendall <span class="arithmatex">\(\tau\)</span> ↑</th>
+<th style="text-align: right;">DTW cost@20 ↓</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0001</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">0.0005</td>
+<td style="text-align: right;">0.0000</td>
+<td style="text-align: right;">4.776</td>
+</tr>
+<tr>
+<td>Flow</td>
+<td style="text-align: right;">0.0004</td>
+<td style="text-align: right;">0.0017</td>
+<td style="text-align: right;">0.0007</td>
+<td style="text-align: right;">0.0045</td>
+<td style="text-align: right;">0.0031</td>
+<td style="text-align: right;">6.612</td>
+</tr>
+<tr>
+<td>HAND</td>
+<td style="text-align: right;">0.0009</td>
+<td style="text-align: right;">0.0040</td>
+<td style="text-align: right;">0.0024</td>
+<td style="text-align: right;">0.0122</td>
+<td style="text-align: right;">0.0118</td>
+<td style="text-align: right;">4.528</td>
+</tr>
+<tr>
+<td>STRAP</td>
+<td style="text-align: right;">0.0071</td>
+<td style="text-align: right;">0.0257</td>
+<td style="text-align: right;">0.0217</td>
+<td style="text-align: right;">0.0824</td>
+<td style="text-align: right;">0.0137</td>
+<td style="text-align: right;">4.044</td>
+</tr>
+<tr>
+<td><strong>RoboTok</strong></td>
+<td style="text-align: right;"><strong>0.3531</strong></td>
+<td style="text-align: right;"><strong>0.5836</strong></td>
+<td style="text-align: right;"><strong>0.4853</strong></td>
+<td style="text-align: right;"><strong>0.8576</strong></td>
+<td style="text-align: right;"><strong>0.4867</strong></td>
+<td style="text-align: right;"><strong>1.333</strong></td>
+</tr>
+<tr>
+<td>GT DTW upper bound</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.145</td>
+</tr>
+</tbody>
+</table>
+<p>RoboTok 的 Recall@20 为 0.996，表示几乎每个 query 的前 20 个返回结果中都至少出现一个 DTW true neighbor。其 top-20 平均 DTW cost 为 1.333 m，距 oracle neighbor 的 1.145 m 高约 16%，显著低于 Random 的 4.776 m。</p>
+<p>这些数字证明 encoder 很好地拟合了 DTW 定义的邻域，但需要注意：训练监督与评估相关集合都来自同一个 DTW oracle，因此这部分实验主要验证“embedding 能否近似 DTW”，而不是独立的人类语义相关性判断。</p>
+<p><strong>AssemblyHands：跨数据集检索。</strong> 数值来自 Table 3，relevant set 为 DTW top-5。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align: right;">mAP@5 ↑</th>
+<th style="text-align: right;">nDCG@5 ↑</th>
+<th style="text-align: right;">CKNNA@5 ↑</th>
+<th style="text-align: right;">MRR@5 ↑</th>
+<th style="text-align: right;">Kendall <span class="arithmatex">\(\tau\)</span> ↑</th>
+<th style="text-align: right;">DTW cost@5 ↓</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random</td>
+<td style="text-align: right;">0.0025</td>
+<td style="text-align: right;">0.0042</td>
+<td style="text-align: right;">-0.0010</td>
+<td style="text-align: right;">0.0126</td>
+<td style="text-align: right;">0.0062</td>
+<td style="text-align: right;">1.911</td>
+</tr>
+<tr>
+<td>Flow</td>
+<td style="text-align: right;">0.0131</td>
+<td style="text-align: right;">0.0263</td>
+<td style="text-align: right;">0.0176</td>
+<td style="text-align: right;">0.0588</td>
+<td style="text-align: right;">0.0897</td>
+<td style="text-align: right;">1.850</td>
+</tr>
+<tr>
+<td>HAND</td>
+<td style="text-align: right;">0.0214</td>
+<td style="text-align: right;">0.0427</td>
+<td style="text-align: right;">0.0256</td>
+<td style="text-align: right;">0.0964</td>
+<td style="text-align: right;">0.0799</td>
+<td style="text-align: right;">1.830</td>
+</tr>
+<tr>
+<td>STRAP</td>
+<td style="text-align: right;">0.1330</td>
+<td style="text-align: right;">0.2293</td>
+<td style="text-align: right;">0.1812</td>
+<td style="text-align: right;">0.3968</td>
+<td style="text-align: right;">0.1569</td>
+<td style="text-align: right;">1.304</td>
+</tr>
+<tr>
+<td><strong>RoboTok</strong></td>
+<td style="text-align: right;"><strong>0.2614</strong></td>
+<td style="text-align: right;"><strong>0.3868</strong></td>
+<td style="text-align: right;"><strong>0.3358</strong></td>
+<td style="text-align: right;"><strong>0.6215</strong></td>
+<td style="text-align: right;"><strong>0.2679</strong></td>
+<td style="text-align: right;"><strong>1.095</strong></td>
+</tr>
+<tr>
+<td>GT DTW upper bound</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">1.000</td>
+<td style="text-align: right;">0.966</td>
+</tr>
+</tbody>
+</table>
+<p>RoboTok 在外部数据集的每项指标上仍领先，mAP@5 约为 STRAP 的 1.97 倍，说明 learned motion space 不只记住 Action100M 的具体样本。不过，AssemblyHands 的“相关性真值”仍由同一 DTW 规则产生；sensor-grade annotation 提高的是轨迹质量，不会消除评价定义与训练目标之间的关联。</p>
+<h2 id="c_1">c. 下游机器人策略：检索结果是否真的有用<a class="headerlink" href="#c_1" title="Permanent link">&para;</a></h2>
+<p><strong>原始 VTDexManip 已接近饱和。</strong> RoboTok-guided policy 在六个任务中的五个取得最高成功率；作者按六项任务平均后，报告其相对最佳已发表 baseline 在 seen objects 上高 7.45 个百分点，在 unseen objects 上高 5.83 个百分点。</p>
+<p>但并非所有任务都领先：Table Reorientation 的 seen／unseen 结果分别为 82.6%／76.2%，低于 VT-JointPretrain 的 85.0%／84.6%；Bimanual Hand-over 的 unseen 成功率为 34.8%，低于 Random retrieval 的 42.1%。因此，结论应是整体平均更强，而不是所有任务都由 motion retrieval 获益。</p>
+<p><strong>HARDER setting 更能体现检索差异。</strong> 下表将 RoboTok 与每行最强的其他 retrieval-guided 方法比较，单位为成功率 %。</p>
+<table>
+<thead>
+<tr>
+<th>任务</th>
+<th>Split</th>
+<th style="text-align: right;">最强其他检索方法</th>
+<th style="text-align: right;">RoboTok</th>
+<th style="text-align: right;">提升</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BottleCap Turning</td>
+<td>Seen</td>
+<td style="text-align: right;">59.5（HAND）</td>
+<td style="text-align: right;"><strong>77.3</strong></td>
+<td style="text-align: right;">+17.8</td>
+</tr>
+<tr>
+<td>BottleCap Turning</td>
+<td>Unseen</td>
+<td style="text-align: right;">27.0（HAND）</td>
+<td style="text-align: right;"><strong>38.1</strong></td>
+<td style="text-align: right;">+11.1</td>
+</tr>
+<tr>
+<td>Faucet Screwing</td>
+<td>Seen</td>
+<td style="text-align: right;">6.8（HAND）</td>
+<td style="text-align: right;"><strong>44.8</strong></td>
+<td style="text-align: right;">+38.0</td>
+</tr>
+<tr>
+<td>Faucet Screwing</td>
+<td>Unseen</td>
+<td style="text-align: right;">2.6（HAND）</td>
+<td style="text-align: right;"><strong>10.9</strong></td>
+<td style="text-align: right;">+8.3</td>
+</tr>
+<tr>
+<td>Lever Sliding</td>
+<td>Seen</td>
+<td style="text-align: right;">19.5（HAND）</td>
+<td style="text-align: right;"><strong>79.3</strong></td>
+<td style="text-align: right;">+59.8</td>
+</tr>
+<tr>
+<td>Lever Sliding</td>
+<td>Unseen</td>
+<td style="text-align: right;">25.2（HAND）</td>
+<td style="text-align: right;"><strong>58.3</strong></td>
+<td style="text-align: right;">+33.1</td>
+</tr>
+</tbody>
+</table>
+<p>在自由三维运动、较少人工 dense reward 的设置中，BottleCap Turning 与 Lever Sliding 的提升较明显，符合这些任务依赖手腕路径、手指形态和阶段性接近方式的判断。Faucet Screwing 的 unseen 成功率虽然仍为最高，但只有 10.9%，说明检索示范改善了探索方向，却没有解决新物体上的全部控制难题。</p>
+<h2 id="d">d. 消融实验：证据还缺什么<a class="headerlink" href="#d" title="Permanent link">&para;</a></h2>
+<p><strong>当前论文没有对核心模块做完整的独立消融。</strong> 对比实验整体替换了检索方法，能够说明最终 retrieval pipeline 有用，却没有隔离每个设计的贡献。</p>
+<table>
+<thead>
+<tr>
+<th>需要验证的设计</th>
+<th>当前证据边界</th>
+<th>建议补充的对照，非论文已有结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Torso-relative coordinates</td>
+<td>有跨数据集结果与定性案例，无 camera-frame 对照</td>
+<td>Camera frame、root-relative hand frame、estimated torso frame</td>
+</tr>
+<tr>
+<td>Metric 3D hand pose</td>
+<td>与 2D／visual baselines 比较时，上游与 encoder 同时变化</td>
+<td>固定 encoder 与训练目标，仅替换 2D、relative 3D、metric 3D 输入</td>
+</tr>
+<tr>
+<td>Set loss + rank loss</td>
+<td>无单独 loss ablation</td>
+<td>仅 set、仅 rank、二者组合</td>
+</tr>
+<tr>
+<td>Boundary negatives</td>
+<td>无随机负样本对照</td>
+<td>Random negatives、semi-hard negatives、boundary negatives</td>
+</tr>
+<tr>
+<td>DTW supervision</td>
+<td>检索评价也以 DTW 为真值</td>
+<td>人工行为相关标注、task label、下游成功率驱动的 relevance</td>
+</tr>
+<tr>
+<td>检索数量与数据规模</td>
+<td>主要采用固定 top-<span class="arithmatex">\(K\)</span> 设置</td>
+<td>不同 <span class="arithmatex">\(K\)</span>、不同 corpus size 和数据质量曲线</td>
+</tr>
+</tbody>
+</table>
+<p>因此，不能把 downstream 提升单独归因于 torso frame、DTW、cross-attention 或某个 loss。现有实验支持的是整套系统相对所选 baselines 的有效性。</p>
+<h2 id="e">e. 实验总结<a class="headerlink" href="#e" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>对技术方法的重新认识：</strong> 数据检索不是简单的预处理。选择哪些示范会改变策略看到的运动先验，并在 sparse-reward setting 中显著影响探索与最终成功率。</p>
+</li>
+<li>
+<p><strong>最有说服力的证据：</strong> 不只是 DTW retrieval metric，而是 HARDER VTDexManip 中不同检索方法在完全相同 PPO 框架下产生明显成功率差异。论文声明没有使用 robot demonstrations 或 action labels，因此这些差异主要来自 retrieved clips。</p>
+</li>
+<li>
+<p><strong>仍需谨慎的地方：</strong> retrieval benchmark 的 ground truth 与训练 oracle 同源，真实机器人结果缺失，且 downstream 只覆盖仿真 anthropomorphic hand。当前证据说明 motion-aware retrieval 有潜力，但还不足以证明网页视频数据引擎已经解决真实部署的数据瓶颈。</p>
+</li>
+</ul>
+<h1 id="5">5. 不足之处<a class="headerlink" href="#5" title="Permanent link">&para;</a></h1>
+<ol>
+<li>
+<p><strong>检索评估与训练目标共享 DTW 定义。</strong> RoboTok 用 DTW 生成 positives、ranking 与 boundary negatives，又用 DTW top-<span class="arithmatex">\(K\)</span> 定义测试 relevant set。高 mAP 可靠地说明模型近似了 teacher metric，却不能独立证明结果最符合人类对任务相关性的判断。AssemblyHands 使用更可靠的三维手姿，但 relevance 仍由 DTW 定义。此外，<a href="https://github.com/Rice-RobotPI-Lab/RoboTok-Code">公开代码说明</a>训练与评估采用片段级随机划分，并非按来源视频划分；同一来源视频的其他片段可能跨越两组。后续应补充按来源视频划分、人工标注和 task success 驱动的相关性测试。</p>
+</li>
+<li>
+<p><strong>真实机器人证据缺失。</strong> 当前策略评测全部来自 VTDexManip 仿真，项目页的 real-world tasks/results 仍标为 coming soon。人手轨迹 retarget 到真实灵巧手后会遇到关节极限、接触摩擦、标定误差、执行延迟和安全约束，这些都没有被现有结果覆盖。</p>
+</li>
+<li>
+<p><strong>只检索手部运动，可能忽略决定任务成败的物体与接触信息。</strong> 相同手轨迹作用于不同形状、尺度或关节结构的物体，效果可能不同；仅靠关节位置也无法表达接触力、滑移与材质。可以把 RoboTok 的 motion embedding 与 object pose、contact state、hand-object graph 或视觉语义联合使用，而不是完全回到外观检索。</p>
+</li>
+<li>
+<p><strong>“互联网视频”仍有较强输入筛选条件。</strong> 论文只保留 4–8 秒、相机近似静止、手部可见且每侧最多一只手的片段，作者也将 moving-camera third-person／egocentric video 留作未来工作。复杂剪辑、长时任务、多人协作和严重遮挡仍在适用范围之外。</p>
+</li>
+<li>
+<p><strong>上游感知误差会被规范化与检索继续放大。</strong> WiLoR、MoGe-2、HaWoR 和 torso estimator 串联后，错误的 handedness、metric depth 或 actor frame 都可能让相同动作被分开，或让无关动作靠近。论文缺少基于 sensor ground truth 的模块级噪声敏感性实验。</p>
+</li>
+<li>
+<p><strong>“Internet-scale”更多是架构目标，而不是已经验证的无限扩展能力。</strong> 当前 corpus 为 100,000 条片段，已经足以检验向量索引相对全库 DTW 的必要性，但距离开放互联网的规模、分布漂移、重复内容和长期增量维护仍有距离。新片段可以直接加入现有 index，不代表 encoder 面对全新动作分布时永远不需更新。</p>
+</li>
+</ol>
+<h1 id="6"><strong>6. 基于本文扩展到的其他论文</strong><a class="headerlink" href="#6" title="Permanent link">&para;</a></h1>
+<ol>
+<li>
+<p><a href="../egoinfinity/">EgoInfinity: A Web-Scale 4D Hand-Object Interaction Data Engine for Any-View Robot Retargeting and Video-to-Action Robot Learning</a>，2026。</p>
+<ol>
+<li>
+<p>RoboTok 的 torso-frame estimation 沿用了 EgoInfinity 的思路，但两者目标不同：EgoInfinity 强调从野外视频恢复 metric 4D hand-object interaction 并支持 retargeting，RoboTok 强调用 actor-relative hand trajectory 建立可扩展检索索引。</p>
+</li>
+<li>
+<p>可以把 EgoInfinity 更丰富的 hand-object representation 用作 RoboTok 的检索键，测试 object motion、contact 与 hand motion 的组合是否能减少“手势相似但物理任务不同”的误检。</p>
+</li>
+</ol>
+</li>
+<li>
+<p><a href="../spot/">SPOT: SE<span class="arithmatex">\(3\)</span> Pose Trajectory Diffusion for Object-Centric Manipulation</a>，ICRA 2025。</p>
+<ol>
+<li>
+<p>SPOT 以目标相对的 object pose trajectory 连接人类演示与机器人执行，RoboTok 则用 torso-relative hand pose trajectory 解决互联网示范发现。前者更接近任务物体运动，后者更适合描述灵巧手形态与双手协同。</p>
+</li>
+<li>
+<p>一个自然组合是先用 RoboTok 从互联网找到手部运动相似的视频，再用 SPOT 式 object-centric trajectory 过滤或组织执行目标，使 retrieval 与 control 使用互补表示。</p>
+</li>
+</ol>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/2609.13851">ReWeight: Leveraging Human Data for VLA Post-Training via Demonstration Retrieval and Sample Weighting</a>，2026。</p>
+<ol>
+<li>
+<p>ReWeight 同样反对将所有 human demonstrations 等量混入训练，但它依据目标机器人数据进行 demonstration retrieval 与 sample weighting，用于 VLA post-training；RoboTok 则在人体运动空间中检索，再用结果引导灵巧手 PPO。</p>
+</li>
+<li>
+<p>可以进一步研究两阶段选择：先用 RoboTok 从网页库中做 motion-aware coarse retrieval，再用 ReWeight 式 robot-conditioned discrepancy 对候选样本重新加权。</p>
+</li>
+</ol>
+</li>
+<li>
+<p><a href="https://liralab.usc.edu/handretrieval/">HAND Me the Data: Fast Robot Adaptation via Hand Path Retrieval</a>，ICRA 2026。</p>
+<ol>
+<li>
+<p>HAND 先按视觉相似性过滤 self-collected robot play，再匹配二维相对手路径与机器人末端路径；RoboTok 则直接索引 internet human video，并比较 torso-relative 3D hand joint trajectories。</p>
+</li>
+<li>
+<p>HAND 在部分 VTDexManip 任务上是最强 retrieval baseline，也提醒我们不能只比较表示精细程度，还应控制数据来源、机器人 embodiment 与下游 reward construction。</p>
+</li>
+</ol>
+</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../egoinfinity/" class="md-footer__link md-footer__link--prev" aria-label="上一页: EgoInfinity · 互联网视频到机器人动作">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                EgoInfinity · 互联网视频到机器人动作
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../library/" class="md-footer__link md-footer__link--next" aria-label="下一页: 论文资料库">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                论文资料库
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/JXTZZ" target="_blank" rel="noopener" title="LoTusY on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="../../javascripts/version-sync.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
