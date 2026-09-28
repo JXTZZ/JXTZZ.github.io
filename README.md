@@ -24,15 +24,3 @@ python -m venv .venv
 `docs/` 是文章与附件源文件，`mkdocs.yml` 管理导航，`docs/stylesheets/extra.css` 管理外观。不要提交或编辑生成的 HTML；本地构建统一输出到被忽略的 `.build/site`。
 
 推送 `main` 后，GitHub Actions 先构建并检查站内链接，再将通过检查的产物发布到 `gh-pages`。GitHub Pages 应使用 `gh-pages` 分支根目录。Pull Request 只执行检查。每次线上构建还会写入版本标记；浏览器若短暂拿到旧的 HTML，会自动重新请求同一部署版本，避免不同页面显示两套界面。
-
-## 本次资料迁移
-
-迁移了 13 篇独立笔记、9 张图片、12 份论文 PDF；两个来源中相同的 5 篇论文笔记合并展示。未导入 `.obsidian` 应用配置；原始目录未作修改。
-
-`migration-manifest.json` 记录来源相对路径、目标路径及文件哈希。`scripts/import_notes.py` 仅处理本次明确选择的资料集，会拒绝覆盖已编辑的文章。重复导入前请检查博客内的后续修改；新文章可直接写入 `docs/` 并添加导航。
-
-```powershell
-.\.venv\Scripts\python.exe scripts/import_notes.py --obsidian 'D:\AppData\Document\Obsidian' --papers 'D:\Project\paper'
-```
-
-导入时修正了图片链接、部分标题层级、列表格式及一处包含本机用户名的路径。论文内容保留原有笔记，不代表已经完成逐项学术核验。PDF 原文版权归作者与出版方所有。
