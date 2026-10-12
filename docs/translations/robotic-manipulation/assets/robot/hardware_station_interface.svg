@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="926" height="514" viewBox="0 0 926 514">
+<!-- Port names and connections reproduced from the original chapter; layout adjusted to avoid PDF clipping. -->
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#46566a"/></marker></defs>
+<rect width="926" height="514" fill="white"/>
+<rect x="321.0" y="18" width="270" height="478" rx="5" fill="#f6f9fc" stroke="#46566a" stroke-width="2"/>
+<text x="456.0" y="42" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#173f5f">HardwareStationInterface</text>
+<text x="279.0" y="66" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">iiwa.position</text>
+<path d="M 285.0 61 H 318.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="279.0" y="100" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">iiwa.feedforward_torque</text>
+<path d="M 285.0 95 H 318.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="279.0" y="134" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">wsg.position</text>
+<path d="M 285.0 129 H 318.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="279.0" y="168" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">wsg.force_limit (optional)</text>
+<path d="M 285.0 163 H 318.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<path d="M 593.0 61 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="66" font-family="monospace" font-size="15" fill="#273444">iiwa.position_commanded</text>
+<path d="M 593.0 95 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="100" font-family="monospace" font-size="15" fill="#273444">iiwa.position_measured</text>
+<path d="M 593.0 129 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="134" font-family="monospace" font-size="15" fill="#273444">iiwa.velocity_estimated</text>
+<path d="M 593.0 163 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="168" font-family="monospace" font-size="15" fill="#273444">iiwa.torque_commanded</text>
+<path d="M 593.0 197 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="202" font-family="monospace" font-size="15" fill="#273444">iiwa.torque_measured</text>
+<path d="M 593.0 231 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="236" font-family="monospace" font-size="15" fill="#273444">iiwa.torque_external</text>
+<path d="M 593.0 265 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="270" font-family="monospace" font-size="15" fill="#273444">wsg.state_measured</text>
+<path d="M 593.0 299 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="304" font-family="monospace" font-size="15" fill="#273444">wsg.force_measured</text>
+<path d="M 593.0 333 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="338" font-family="monospace" font-size="15" fill="#273444">camera_[NAME].rgb_image</text>
+<path d="M 593.0 367 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="372" font-family="monospace" font-size="15" fill="#273444">camera_[NAME].depth_image</text>
+<path d="M 593.0 401 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="406" font-family="monospace" font-size="15" fill="#273444">...</text>
+<path d="M 593.0 435 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="440" font-family="monospace" font-size="15" fill="#273444">camera_[NAME].rgb_image</text>
+<path d="M 593.0 469 H 635.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="643.0" y="474" font-family="monospace" font-size="15" fill="#273444">camera_[NAME].depth_image</text>
+</svg>

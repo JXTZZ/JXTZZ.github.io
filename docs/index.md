@@ -33,7 +33,7 @@ MIT《Robotic Manipulation》<br>从感知、规划到控制，理解机器人�
 [打开中文讲义 →](translations/robotic-manipulation/index.md){ .md-button .md-button--primary }
 [浏览课程目录](translations/robotic-manipulation/preface.md#all-chapters){ .quiet-link }
 </div>
-<span class="feature-detail">RUSS TEDRAKE · 前言与第 1 章已上线</span>
+<span class="feature-detail">RUSS TEDRAKE · 前言与第 1–2 章已上线</span>
 </div>
 <div class="feature-visual"><img src="assets/robot-arm.svg" alt="机器人机械臂与物体交互的示意图" width="640" height="520"><div class="visual-caption"><span>PERCEPTION</span><span>PLANNING</span><span>CONTROL</span></div></div>
 </div>

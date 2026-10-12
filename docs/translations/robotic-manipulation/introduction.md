@@ -269,5 +269,5 @@ Drake 是一个成熟、功能强大的软件库，能够支持许多先进的�
 
 ---
 
-**继续阅读**：[全书目录与前言（中文）](preface.md) · [下一章：先给你准备一个机器人（英文）](https://manipulation.mit.edu/robot.html)
+**继续阅读**：[全书目录与前言（中文）](preface.md) · [下一章：先给你准备一个机器人（中文）](robot.md)
 [无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

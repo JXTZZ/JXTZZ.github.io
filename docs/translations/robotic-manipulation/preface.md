@@ -43,7 +43,7 @@ description: MIT《机器人操作：感知、规划与控制》全书目录与�
 
 ### 第 2 章　先给你准备一个机器人
 
-[在线原文](https://manipulation.mit.edu/robot.html)
+[在线原文](https://manipulation.mit.edu/robot.html) · [中文译文](robot.md)
 
 - [机器人描述文件](https://manipulation.mit.edu/robot.html#section1)
 - [机械臂](https://manipulation.mit.edu/robot.html#section2)

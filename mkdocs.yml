@@ -35,6 +35,7 @@ theme:
     - search.highlight
     - content.code.copy
     - toc.follow
+    - toc.integrate
 plugins:
   - search:
       lang: [zh, en]
@@ -70,6 +71,7 @@ nav:
       - translations/robotic-manipulation/index.md
       - 全书目录与前言: translations/robotic-manipulation/preface.md
       - 第 1 章 · 引言: translations/robotic-manipulation/introduction.md
+      - 第 2 章 · 先给你准备一个机器人: translations/robotic-manipulation/robot.md
   - 论文阅读:
     - papers/index.md
     - ALOHA Unleashed: papers/aloha.md
