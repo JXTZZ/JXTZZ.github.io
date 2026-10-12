@@ -177,6 +177,12 @@
 .translation-meta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem 1.25rem; padding: 1.2rem; background: var(--note-surface); border-radius: 14px; margin: 1.25rem 0; }
 .translation-meta p { margin: 0; font-size: .68rem; line-height: 1.75; }
 .translation-meta strong { display: block; font-size: .55rem; font-weight: 500; color: var(--md-default-fg-color--light); margin-bottom: .15rem; }
+.md-typeset .book-contents { line-height: 1.6; }
+.md-typeset .book-contents h3 { margin: 1.3rem 0 .4rem; }
+.md-typeset .book-contents p { margin: .3rem 0 .5rem; }
+.md-typeset .book-contents ul { margin: .3rem 0 .5rem; padding-left: 1.4rem; list-style-type: circle; }
+.md-typeset .book-contents ul ul { margin: .1rem 0 .2rem; list-style-type: square; }
+.md-typeset .book-contents ul li { margin: .1rem 0; }
 .plate-sequence { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; margin: 1.3rem 0 .5rem; }
 .plate-sequence p { margin: 0; background: #fff; border: 1px solid var(--note-border); border-radius: 12px; overflow: hidden; }
 .plate-sequence img { width: 100%; display: block; height: auto; border-radius: 0; }
