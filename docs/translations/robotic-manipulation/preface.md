@@ -33,39 +33,39 @@ description: MIT《机器人操作：感知、规划与控制》全书目录与�
 
 [在线原文](https://manipulation.mit.edu/intro.html) · [中文译文](introduction.md)
 
-- [操作不止于抓取与放置](https://manipulation.mit.edu/intro.html#section1)
-- [开放世界中的操作](https://manipulation.mit.edu/intro.html#section2)
-- [仿真](https://manipulation.mit.edu/intro.html#section3)
-- [这份讲义是交互式的](https://manipulation.mit.edu/intro.html#section4)
-- [基于模型的设计与分析](https://manipulation.mit.edu/intro.html#section5)
-- [讲义的组织方式](https://manipulation.mit.edu/intro.html#section6)
-- [练习](https://manipulation.mit.edu/intro.html#section7)
+- [操作不止于抓取与放置](introduction.md#section-1-1)
+- [开放世界中的操作](introduction.md#section-1-2)
+- [仿真](introduction.md#section-1-3)
+- [这份讲义是交互式的](introduction.md#section-1-4)
+- [基于模型的设计与分析](introduction.md#section-1-5)
+- [讲义的组织方式](introduction.md#section-1-6)
+- [练习](introduction.md#section-1-7)
 
 ### 第 2 章　先给你准备一个机器人
 
 [在线原文](https://manipulation.mit.edu/robot.html) · [中文译文](robot.md)
 
-- [机器人描述文件](https://manipulation.mit.edu/robot.html#section1)
-- [机械臂](https://manipulation.mit.edu/robot.html#section2)
-  - 位置控制机器人
-    - 位置控制
-    - 补充：带传动机构的连杆动力学
-  - 力矩控制机器人
-  - 日益丰富的硬件
-  - Kuka iiwa 仿真
-- [机械手](https://manipulation.mit.edu/robot.html#section3)
-  - 灵巧手
-  - 简单夹爪
-  - 柔性／欠驱动机械手
-  - 其他末端执行器
-  - 如果你还没见过……
-- [传感器](https://manipulation.mit.edu/robot.html#section4)
-- [将各部分整合起来](https://manipulation.mit.edu/robot.html#hardware_station)
-  - `HardwareStation`
-  - `HardwareStationInterface`
-  - `HardwareStation` 独立仿真
-- [更多 `HardwareStation` 示例](https://manipulation.mit.edu/robot.html#section6)
-- [练习](https://manipulation.mit.edu/robot.html#section7)
+- [机器人描述文件](robot.md#section1)
+- [机械臂](robot.md#section2)
+  - [位置控制机器人](robot.md#position-controlled)
+    - [位置控制](robot.md#position-control)
+    - [补充：带传动机构的连杆动力学](robot.md#transmission-dynamics)
+  - [力矩控制机器人](robot.md#torque-controlled)
+  - [日益丰富的硬件](robot.md#hardware-options)
+  - [Kuka iiwa 仿真](robot.md#iiwa-simulation)
+- [机械手](robot.md#section3)
+  - [灵巧手](robot.md#dexterous-hands)
+  - [简单夹爪](robot.md#simple-grippers)
+  - [柔性／欠驱动机械手](robot.md#underactuated-hands)
+  - [其他末端执行器](robot.md#other-end-effectors)
+  - [如果你还没见过……](robot.md#high-speed-hand)
+- [传感器](robot.md#section4)
+- [将各部分整合起来](robot.md#hardware_station)
+  - [`HardwareStation`](robot.md#hardware-station)
+  - [`HardwareStationInterface`](robot.md#hardware-station-interface)
+  - [`HardwareStation` 独立仿真](robot.md#hardware-sim)
+- [更多 `HardwareStation` 示例](robot.md#section6)
+- [练习](robot.md#section7)
 
 ### 第 3 章　基本的抓取与放置
 
