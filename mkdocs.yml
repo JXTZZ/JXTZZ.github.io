@@ -35,7 +35,6 @@ theme:
     - search.highlight
     - content.code.copy
     - toc.follow
-    - toc.integrate
 plugins:
   - search:
       lang: [zh, en]

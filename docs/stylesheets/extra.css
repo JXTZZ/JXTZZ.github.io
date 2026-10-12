@@ -59,6 +59,8 @@
 .md-search__overlay { background: rgba(0, 0, 0, .25); }
 .md-grid { max-width: 64rem; }
 .md-content { min-width: 0; }
+.md-sidebar--primary { order: 2; }
+.md-sidebar--secondary { order: -1; }
 .md-content__inner { padding-bottom: 2.5rem; }
 .md-typeset { font-size: .82rem; line-height: 1.95; }
 .md-typeset h1, .md-typeset h2, .md-typeset h3 { color: var(--md-default-fg-color); font-weight: 650; letter-spacing: -.035em; }
@@ -179,6 +181,17 @@
 a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--md-accent-fg-color); outline-offset: 4px; }
 @media (max-width: 76.234375em) {
   .md-nav--primary .md-nav__title[for="__drawer"] { background: var(--note-surface); color: var(--md-default-fg-color); }
+}
+/* Keep the independent article TOC visible even when side-by-side columns do not fit. */
+@media (max-width: 59.984375em) {
+  .md-main__inner { flex-wrap: wrap; }
+  .md-sidebar--secondary:not([hidden]) { display: block; position: static; width: 100%; height: auto; padding: 0 .8rem; margin-bottom: 1rem; }
+  .md-sidebar--secondary .md-sidebar__scrollwrap { height: auto !important; max-height: 16rem; margin: 0; overflow-y: auto; }
+  .md-sidebar--secondary .md-sidebar__inner { width: auto; padding: 1rem; background: var(--note-surface); border-radius: 14px; }
+  .md-sidebar--secondary .md-nav--secondary { display: block; }
+  .md-sidebar--secondary .md-nav__title { display: block; background: var(--note-surface); }
+  .md-sidebar--secondary .md-nav__list { display: block; }
+  .md-sidebar--secondary .md-nav--secondary { border-left: 0; }
 }
 @media (max-width: 960px) {
   .feature-copy { padding: 2rem 0 2rem 2rem; }
