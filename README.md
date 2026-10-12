@@ -1,8 +1,18 @@
 # LoTusY · 研究与学习笔记
 
-个人技术博客：具身智能论文阅读、深度学习基础、工程实践与学习日志。
+个人技术博客：具身智能论文阅读、MIT 课程翻译、深度学习基础、工程实践与学习日志。
 
 在线地址：https://jxtzz.github.io/
+
+## 课程翻译
+
+[MIT《机器人操作》中文讲义](https://jxtzz.github.io/translations/robotic-manipulation/)目前包含全书目录与前言、第 1 章引言。译文与资源统一放在 `docs/translations/robotic-manipulation/`：
+
+- `index.md`：专题首页与翻译进度。
+- `preface.md`、`introduction.md`：中文译稿。
+- `assets/`：原文插图；`pdfs/`：译稿对应的英文原文 PDF。
+
+增加新章节时，在该目录添加 Markdown，并更新专题首页和 `mkdocs.yml` 中的课程导航。原作者署名、原文链接和版本日期请保留。
 
 ## 本地预览
 

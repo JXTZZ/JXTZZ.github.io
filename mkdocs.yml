@@ -1,4 +1,4 @@
-site_name: LoTusY · 研究与学习笔记
+site_name: LoTusY
 site_description: 从深度学习基础到具身智能，记录论文阅读、代码实践与每天的新发现。
 site_url: https://jxtzz.github.io/
 site_author: LoTusY
@@ -64,6 +64,12 @@ extra:
       name: LoTusY on GitHub
 nav:
   - 首页: index.md
+  - 课程翻译:
+    - translations/index.md
+    - 机器人操作 · 中文讲义:
+      - translations/robotic-manipulation/index.md
+      - 全书目录与前言: translations/robotic-manipulation/preface.md
+      - 第 1 章 · 引言: translations/robotic-manipulation/introduction.md
   - 论文阅读:
     - papers/index.md
     - ALOHA Unleashed: papers/aloha.md

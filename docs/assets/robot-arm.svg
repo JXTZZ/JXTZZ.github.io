@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" fill="none">
+  <defs>
+    <linearGradient id="metal" x1="180" y1="140" x2="410" y2="370" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset=".4" stop-color="#e6ebf1"/><stop offset="1" stop-color="#a2aec0"/></linearGradient>
+    <linearGradient id="joint" x2="1" y2="1"><stop stop-color="#697b96"/><stop offset="1" stop-color="#26374d"/></linearGradient>
+    <linearGradient id="cube" x1="403" y1="296" x2="474" y2="397" gradientUnits="userSpaceOnUse"><stop stop-color="#8ebcff"/><stop offset="1" stop-color="#0065db"/></linearGradient>
+    <radialGradient id="halo"><stop stop-color="#b9d5ff" stop-opacity=".5"/><stop offset="1" stop-color="#b9d5ff" stop-opacity="0"/></radialGradient>
+    <filter id="shadow" x="-50%" y="-100%" width="200%" height="300%"><feGaussianBlur stdDeviation="12"/></filter>
+  </defs>
+  <circle cx="335" cy="253" r="232" fill="url(#halo)"/>
+  <g stroke="#a9bed8" opacity=".36"><ellipse cx="329" cy="372" rx="241" ry="78"/><ellipse cx="329" cy="372" rx="177" ry="57"/><path d="M88 372h482M329 294v156"/><ellipse cx="329" cy="372" rx="112" ry="36" stroke-dasharray="3 7"/></g>
+  <ellipse cx="290" cy="391" rx="127" ry="20" fill="#637da2" opacity=".2" filter="url(#shadow)"/>
+  <ellipse cx="445" cy="395" rx="40" ry="10" fill="#196bce" opacity=".16" filter="url(#shadow)"/>
+  <path d="M168 375v-21c0-12 21-22 47-22s47 10 47 22v21c0 12-21 22-47 22s-47-10-47-22Z" fill="url(#metal)" stroke="#93a3b9" stroke-width="1.5"/>
+  <ellipse cx="215" cy="353" rx="47" ry="21" fill="#edf1f7" stroke="#93a3b9" stroke-width="1.5"/>
+  <path d="m215 338-34-102" stroke="#8392a9" stroke-width="49" stroke-linecap="round"/>
+  <path d="m215 338-34-102" stroke="url(#metal)" stroke-width="44" stroke-linecap="round"/>
+  <path d="m187 230 109-112" stroke="#8392a9" stroke-width="45" stroke-linecap="round"/>
+  <path d="m187 230 109-112" stroke="url(#metal)" stroke-width="40" stroke-linecap="round"/>
+  <circle cx="184" cy="233" r="29" fill="url(#joint)" stroke="#8b9ab0" stroke-width="2"/>
+  <circle cx="184" cy="233" r="17" fill="#c5cfdd"/><circle cx="184" cy="233" r="7" fill="#647792"/>
+  <path d="m299 119 103 95" stroke="#8392a9" stroke-width="35" stroke-linecap="round"/>
+  <path d="m299 119 103 95" stroke="url(#metal)" stroke-width="30" stroke-linecap="round"/>
+  <circle cx="298" cy="119" r="25" fill="url(#joint)" stroke="#8b9ab0" stroke-width="2"/>
+  <circle cx="298" cy="119" r="13" fill="#d1d9e6"/><circle cx="298" cy="119" r="5" fill="#647792"/>
+  <circle cx="402" cy="214" r="19" fill="url(#joint)" stroke="#8b9ab0" stroke-width="2"/><circle cx="402" cy="214" r="9" fill="#c5cfdd"/>
+  <path d="m410 229 17 23" stroke="#75869f" stroke-width="18"/>
+  <path d="m412 268 15-16 30 5" stroke="#344760" stroke-width="10" stroke-linejoin="round"/>
+  <path d="m412 268 8 39m37-50 20 34" stroke="#657892" stroke-width="9" stroke-linecap="round"/>
+  <path d="m420 307 8-4m49-12-8 5" stroke="#344760" stroke-width="7" stroke-linecap="round"/>
+  <path d="m407 339 39-23 39 23v43l-39 23-39-23Z" fill="url(#cube)" stroke="#2d80e7" stroke-width="1.5"/>
+  <path d="m407 339 39 23 39-23-39-23Z" fill="#a4cbff"/><path d="m446 362 39-23v43l-39 23Z" fill="#0067d9"/><path d="M446 362v43" stroke="#b8d8ff" stroke-opacity=".45"/>
+  <path d="M446 284v20" stroke="#0071e3" stroke-dasharray="2 4"/>
+  <circle cx="215" cy="335" r="12" fill="url(#joint)"/><circle cx="215" cy="335" r="5" fill="#cfdae8"/>
+  <g fill="#54708e" font-family="-apple-system,Segoe UI,sans-serif" font-size="11" letter-spacing="2"><text x="117" y="92">OBSERVE.</text><text x="434" y="147">UNDERSTAND.</text><text x="465" y="430">ACT.</text></g>
+  <g fill="#0071e3"><circle cx="99" cy="88" r="3"/><circle cx="417" cy="143" r="3"/><circle cx="450" cy="426" r="3"/></g>
+</svg>
