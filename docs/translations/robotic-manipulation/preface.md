@@ -47,23 +47,23 @@ description: MIT《机器人操作：感知、规划与控制》全书目录与�
 
 - [机器人描述文件](robot.md#section1)
 - [机械臂](robot.md#section2)
-  - [位置控制机器人](robot.md#position-controlled)
-    - [位置控制](robot.md#position-control)
-    - [补充：带传动机构的连杆动力学](robot.md#transmission-dynamics)
-  - [力矩控制机器人](robot.md#torque-controlled)
-  - [日益丰富的硬件](robot.md#hardware-options)
-  - [Kuka iiwa 仿真](robot.md#iiwa-simulation)
+  - 位置控制机器人
+    - 位置控制
+    - 补充：带传动机构的连杆动力学
+  - 力矩控制机器人
+  - 日益丰富的硬件
+  - Kuka iiwa 仿真
 - [机械手](robot.md#section3)
-  - [灵巧手](robot.md#dexterous-hands)
-  - [简单夹爪](robot.md#simple-grippers)
-  - [柔性／欠驱动机械手](robot.md#underactuated-hands)
-  - [其他末端执行器](robot.md#other-end-effectors)
-  - [如果你还没见过……](robot.md#high-speed-hand)
+  - 灵巧手
+  - 简单夹爪
+  - 柔性／欠驱动机械手
+  - 其他末端执行器
+  - 如果你还没见过……
 - [传感器](robot.md#section4)
 - [将各部分整合起来](robot.md#hardware_station)
-  - [`HardwareStation`](robot.md#hardware-station)
-  - [`HardwareStationInterface`](robot.md#hardware-station-interface)
-  - [`HardwareStation` 独立仿真](robot.md#hardware-sim)
+  - `HardwareStation`
+  - `HardwareStationInterface`
+  - `HardwareStation` 独立仿真
 - [更多 `HardwareStation` 示例](robot.md#section6)
 - [练习](robot.md#section7)
 
