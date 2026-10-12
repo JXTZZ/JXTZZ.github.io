@@ -48,6 +48,8 @@
 }
 .md-header__inner { height: 3.2rem; }
 .md-header__topic { font-weight: 650; letter-spacing: -.03em; }
+.header-home-link { color: inherit; }
+.header-home-link:hover { color: var(--md-typeset-a-color); }
 .md-header__button.md-logo img { width: 1.6rem; height: 1.6rem; }
 .md-tabs { background: var(--md-default-bg-color); color: var(--md-default-fg-color); border-bottom: 1px solid var(--note-border); }
 .md-tabs__link { font-size: .67rem; opacity: 1; color: var(--md-default-fg-color--light); }
