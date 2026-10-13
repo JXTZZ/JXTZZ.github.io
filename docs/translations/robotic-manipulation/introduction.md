@@ -1,6 +1,6 @@
 ---
 title: 第 1 章 · 引言
-description: MIT《机器人操作》第一章中文翻译：开放世界、仿真、交互式讲义、基于模型的设计与 Drake 练习。
+description: MIT《机器人操作：感知、规划与控制》中文翻译：第 1 章 · 引言。
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 01</div>
@@ -16,10 +16,10 @@ description: MIT《机器人操作》第一章中文翻译：开放世界、仿�
 
 **原文版权** © Russ Tedrake, 2020–2026
 
-**对照阅读** [原文 PDF](pdfs/introduction-original.pdf) · [第 1 章在线原文](https://manipulation.mit.edu/intro.html)
+**对照阅读** [原文 PDF](pdfs/introduction-original.pdf) · [在线原文](https://manipulation.mit.edu/intro.html)
 </div>
 
-[如何引用讲义、使用批注和提供反馈](https://manipulation.mit.edu/misc.html)
+[如何引用讲义、使用批注和提供反馈](miscellaneous.md)
 
 ---
 
@@ -90,7 +90,7 @@ description: MIT《机器人操作》第一章中文翻译：开放世界、仿�
 
 如果想看看双手究竟能完成哪些任务，我推荐了解一下[南安普顿手功能评估程序（Southampton Hand Assessment Procedure，SHAP）](https://web.archive.org/web/20200222023924/http://www.shap.ecs.soton.ac.uk/index.php)。其中收录了一组我很喜欢的任务示例，最初是为了通过实验评估假肢手的功能。Matt Mason 在 2018 年综述论文的开篇，也对“操作”给出了一个涵盖面广、颇有启发性的定义。[参考文献 1](#reference-1)
 
-还要注意，今天的操作研究，与 20 世纪八九十年代已经大不相同。当时，研究者主要从抓取的角度理解操作，并在这一方向上取得了许多精彩的奠基性成果。例如，在能够稳定抓住物体的前提下，研究多指机械手的运动学和动力学。直到现在，我有时还会听到有人把“抓取”（grasping）与“操作”几乎当作同一回事。
+还要注意，今天的操作研究，与 20 世纪八九十年代已经大不相同。当时，研究者主要从抓取的角度理解操作，并在这一方向上取得了许多精彩的奠基性成果。例如，在能够稳定抓住物体的前提下，研究多指机械手的运动学和动力学。直到现在，我有时还会听到有人把“抓取”（grasping）与“操作”（manipulation）几乎当作同一回事。
 
 但今天的操作研究，以及这份讲义所关注的问题，都远远超出了抓取的范畴。扣衬衫纽扣时，仅用“抓取”就能说清双手在做什么吗？做沙拉时呢？在吐司上涂花生酱时呢？
 
@@ -128,7 +128,7 @@ description: MIT《机器人操作》第一章中文翻译：开放世界、仿�
 
 ## 1.4　这份讲义是交互式的
 
-有了仿真工具和免费的在线交互式计算资源，我希望这份讲义能让你获得传统教材之外的学习体验。每章都配有可运行的代码示例：你既可以在 [Google Colab](https://colab.research.google.com) 中运行，也可以安装到自己的计算机上运行，具体方法见[附录](https://manipulation.mit.edu/drake.html)。
+有了仿真工具和免费的在线交互式计算资源，我希望这份讲义能让你获得传统教材之外的学习体验。每章都配有可运行的代码示例：你既可以在 [Google Colab](https://colab.research.google.com) 中运行，也可以安装到自己的计算机上运行，具体方法见[附录](drake.md)。
 
 这些示例使用开源库 Drake。大约从 2013 年起，我开始把我们的研究代码整理出来，供更多人使用，Drake 也一直是我投入心力的项目。全部代码都已开源，你想钻研多深，就可以钻研多深。
 
@@ -136,7 +136,7 @@ Mortimer Adler 有一句名言：
 
 > 阅读一本好书，应当是你与作者之间的一场对话。
 
-除了交互式图形和代码，你还可以直接在讲义上高亮文字、发表评论或提出问题。欢迎试一试，不过请先读读[批注礼仪](https://manipulation.mit.edu/misc.html#annotation)的说明。
+除了交互式图形和代码，你还可以直接在讲义上高亮文字、发表评论或提出问题。欢迎试一试，不过请先读读[批注礼仪](miscellaneous.md#annotation)的说明。
 
 Adler 认为，好的文字能让阅读成为一场跨越时空的对话。也许我是在借技术之便：即使文笔达不到他所期待的水平，我依然可以通过这些工具与你交流。他还建议读者在书上做批注。[参考文献 2](#reference-2) 你可以打印讲义，使用更新较少的 [PDF 版本](https://github.com/RussTedrake/manipulation/releases)，也可以用网站上的批注工具给自己留下私人笔记。
 
@@ -269,5 +269,5 @@ Drake 是一个成熟、功能强大的软件库，能够支持许多先进的�
 
 ---
 
-**继续阅读**：[全书目录与前言（中文）](preface.md) · [下一章：先给你准备一个机器人（中文）](robot.md)
+**继续阅读**：[全书目录与前言（中文）](preface.md) · [下一章：先给你准备一个机器人（中文）](robot.md)  
 [无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

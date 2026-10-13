@@ -71,6 +71,21 @@ nav:
       - 全书目录与前言: translations/robotic-manipulation/preface.md
       - 第 1 章 · 引言: translations/robotic-manipulation/introduction.md
       - 第 2 章 · 先给你准备一个机器人: translations/robotic-manipulation/robot.md
+      - 第 3 章 · 基本的抓取与放置: translations/robotic-manipulation/pick-and-place.md
+      - 第 4 章 · 基于几何的位姿估计: translations/robotic-manipulation/pose-estimation.md
+      - 第 5 章 · 箱内抓取: translations/robotic-manipulation/bin-picking.md
+      - 第 6 章 · 运动规划: translations/robotic-manipulation/motion-planning.md
+      - 第 7 章 · 移动操作: translations/robotic-manipulation/mobile-manipulation.md
+      - 第 8 章 · 机械臂控制: translations/robotic-manipulation/manipulator-control.md
+      - 第 9 章 · 物体检测与分割: translations/robotic-manipulation/object-detection.md
+      - 第 10 章 · 面向操作任务的深度感知: translations/robotic-manipulation/deep-perception.md
+      - 第 11 章 · 强化学习: translations/robotic-manipulation/reinforcement-learning.md
+      - 第 12 章 · 软体机器人与触觉感知: translations/robotic-manipulation/soft-robots.md
+      - 附录 A · 空间代数: translations/robotic-manipulation/spatial-algebra.md
+      - 附录 B · Drake: translations/robotic-manipulation/drake.md
+      - 附录 C · DrakeGym 环境: translations/robotic-manipulation/drakegym.md
+      - 附录 D · 搭建自己的机器人操作工作站: translations/robotic-manipulation/manipulation-station.md
+      - 附录 E · 其他事项: translations/robotic-manipulation/miscellaneous.md
   - 论文阅读:
     - papers/index.md
     - ALOHA Unleashed: papers/aloha.md

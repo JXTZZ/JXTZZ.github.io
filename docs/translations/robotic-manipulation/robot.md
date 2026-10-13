@@ -1,6 +1,6 @@
 ---
 title: 第 2 章 · 先给你准备一个机器人
-description: MIT《机器人操作》第二章中文翻译：机器人描述文件、机械臂、机械手、传感器与 Drake HardwareStation。
+description: MIT《机器人操作：感知、规划与控制》中文翻译：第 2 章 · 先给你准备一个机器人。
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 02</div>
@@ -16,10 +16,10 @@ description: MIT《机器人操作》第二章中文翻译：机器人描述文�
 
 **原文版权** © Russ Tedrake, 2020–2026
 
-**对照阅读** [原文 PDF](pdfs/robot-original.pdf) · [第 2 章在线原文](https://manipulation.mit.edu/robot.html)
+**对照阅读** [原文 PDF](pdfs/robot-original.pdf) · [在线原文](https://manipulation.mit.edu/robot.html)
 </div>
 
-[如何引用讲义、使用批注和提供反馈](https://manipulation.mit.edu/misc.html)
+[如何引用讲义、使用批注和提供反馈](miscellaneous.md)
 
 ---
 
@@ -28,21 +28,21 @@ description: MIT《机器人操作》第二章中文翻译：机器人描述文�
 - [引言](#introduction)
 - [2.1　机器人描述文件](#section1)
 - [2.2　机械臂](#section2)
-  - [2.2.1　位置控制机器人](#position-controlled)
-  - [2.2.2　力矩控制机器人](#torque-controlled)
-  - [2.2.3　日益丰富的硬件](#hardware-options)
-  - [2.2.4　Kuka iiwa 仿真](#iiwa-simulation)
+    - [2.2.1　位置控制机器人](#position-controlled)
+    - [2.2.2　力矩控制机器人](#torque-controlled)
+    - [2.2.3　日益丰富的硬件](#hardware-options)
+    - [2.2.4　Kuka iiwa 仿真](#iiwa-simulation)
 - [2.3　机械手](#section3)
-  - [2.3.1　灵巧手](#dexterous-hands)
-  - [2.3.2　简单夹爪](#simple-grippers)
-  - [2.3.3　柔性／欠驱动机械手](#underactuated-hands)
-  - [2.3.4　其他末端执行器](#other-end-effectors)
-  - [2.3.5　如果你还没见过……](#high-speed-hand)
+    - [2.3.1　灵巧手](#dexterous-hands)
+    - [2.3.2　简单夹爪](#simple-grippers)
+    - [2.3.3　柔性／欠驱动机械手](#underactuated-hands)
+    - [2.3.4　其他末端执行器](#other-end-effectors)
+    - [2.3.5　如果你还没见过……](#high-speed-hand)
 - [2.4　传感器](#section4)
 - [2.5　将各部分整合起来](#hardware_station)
-  - [2.5.1　HardwareStation](#hardware-station)
-  - [2.5.2　HardwareStationInterface](#hardware-station-interface)
-  - [2.5.3　HardwareStation 独立仿真](#hardware-sim)
+    - [2.5.1　HardwareStation](#hardware-station)
+    - [2.5.2　HardwareStationInterface](#hardware-station-interface)
+    - [2.5.3　HardwareStation 独立仿真](#hardware-sim)
 - [2.6　更多 HardwareStation 示例](#section6)
 - [2.7　练习](#section7)
 - [参考文献](#references)
@@ -211,7 +211,7 @@ $$
 
 Gill Pratt 把这个思路进一步发展，提出了“串联弹性执行器”：在传动链中加入刚度更低的弹簧，同时测量电机侧和关节侧的位置，据此估计施加的力矩。[参考文献 6](#reference-6) Rethink 的 [Baxter](https://en.wikipedia.org/wiki/Baxter_(robot)) 和 Sawyer 就使用了这种执行器。我不记得它们公开过弹簧刚度，但采用类似思路的 [HEBI Robotics 执行器，其刚度更接近 100 N·m/rad](http://docs.hebi.us/hardware.html)。
 
-即使在 iiwa 上，关节弹性也足够明显。为了实现高性能关节控制，底层控制器需要专门考虑这一因素。[参考文献 7](#reference-7) 后面讨论[力控制](https://manipulation.mit.edu/force.html)时，我们会进一步介绍这些细节。
+即使在 iiwa 上，关节弹性也足够明显。为了实现高性能关节控制，底层控制器需要专门考虑这一因素。[参考文献 7](#reference-7) 后面讨论[力控制](manipulator-control.md)时，我们会进一步介绍这些细节。
 
 <a id="hardware-options"></a>
 
@@ -460,7 +460,7 @@ OpenAI 著名的 [“Learning Dexterity”项目](https://openai.com/blog/learni
 
 如果进一步查看实现，就会发现我们使用的是 [LCM](https://lcm-proj.github.io/)，而不是 ROS 消息。主要原因是，对公开仓库而言，LCM 是更轻量的依赖；此外，在驱动层接口中，多播 UDP 比 TCP/IP 更合适。不过，许多 Drake 开发者和用户，也会在 [ROS／ROS2 生态中使用 Drake](https://github.com/RobotLocomotion/drake-ros)。
 
-如果你已经有类似的机器人硬件，想在自己的计算机上运行硬件接口，可以查阅[附录](https://manipulation.mit.edu/station.html)。我已经开始在那里整理驱动程序和物料清单。
+如果你已经有类似的机器人硬件，想在自己的计算机上运行硬件接口，可以查阅[附录](manipulation-station.md)。我已经开始在那里整理驱动程序和物料清单。
 
 <a id="hardware-sim"></a>
 
@@ -586,5 +586,5 @@ python3 drake/examples/hardware_sim/hardware_sim.py \
 
 ---
 
-**继续阅读**：[上一章：引言（中文）](introduction.md) · [全书目录与前言（中文）](preface.md) · [下一章：基本的抓取与放置（英文）](https://manipulation.mit.edu/pick.html)
+**继续阅读**：[上一章：引言（中文）](introduction.md) · [全书目录与前言（中文）](preface.md) · [下一章：基本的抓取与放置（中文）](pick-and-place.md)
 [无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

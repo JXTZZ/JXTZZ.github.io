@@ -170,6 +170,15 @@
 .course-next { padding: 2.2rem 2.5rem; margin-top: 1.4rem; background: var(--note-surface); border-radius: 20px; }
 .course-next h2 { font-size: 1.45rem; margin: .5rem 0; }
 .course-next p { color: var(--md-default-fg-color--light); font-size: .8rem; }
+.course-preface { display: flex; align-items: center; gap: 1.2rem; padding: 1.3rem; background: var(--note-surface); border-radius: 16px; color: var(--md-default-fg-color) !important; }
+.course-preface strong { display: block; font-size: 1rem; }
+.course-preface small { display: block; color: var(--md-default-fg-color--light); font-size: .7rem; margin-top: .3rem; }
+.course-catalog { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+.course-chapter { display: flex; align-items: center; gap: 1rem; min-width: 0; min-height: 3.6rem; padding: .85rem 1.1rem; border-radius: 12px; background: var(--note-surface); color: var(--md-default-fg-color) !important; }
+.course-chapter:hover, .course-preface:hover { box-shadow: var(--soft-shadow); }
+.course-chapter__number { flex: 0 0 1.5rem; font-size: .72rem; color: var(--md-typeset-a-color); font-variant-numeric: tabular-nums; }
+.course-chapter__title { min-width: 0; font-size: .8rem; line-height: 1.6; font-weight: 550; }
+.course-chapter__arrow { margin-left: auto; color: var(--md-typeset-a-color); }
 .translation-note { max-width: 43rem; margin: 2.5rem auto 0; text-align: center; }
 .translation-note h3 { font-size: .8rem; }
 .translation-note p { font-size: .65rem; color: var(--md-default-fg-color--light); }
@@ -231,7 +240,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .feature-actions p { gap: .75rem; }
   .section-heading { margin: 2.25rem 0 1rem; }
   .section-heading h2 { font-size: 1.35rem; }
-  .topic-grid, .home-bottom, .chapter-grid { grid-template-columns: 1fr; }
+  .topic-grid, .home-bottom, .chapter-grid, .course-catalog { grid-template-columns: 1fr; }
   .topic-card { padding: 1.5rem; }
   .topic-symbol { margin-top: .9rem; }
   .topic-card p { margin-bottom: 1rem; }

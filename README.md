@@ -6,13 +6,14 @@
 
 ## 课程翻译
 
-[MIT《机器人操作》中文讲义](https://jxtzz.github.io/translations/robotic-manipulation/)目前包含全书目录与前言、第 1 章引言、第 2 章先给你准备一个机器人。译文与资源统一放在 `docs/translations/robotic-manipulation/`：
+[MIT《机器人操作》中文讲义](https://jxtzz.github.io/translations/robotic-manipulation/)包含全书目录与前言、12 章正文及 5 篇附录，共 18 篇译稿。译文与资源统一放在 `docs/translations/robotic-manipulation/`：
 
-- `index.md`：专题首页与翻译进度。
-- `preface.md`、`introduction.md`、`robot.md`：中文译稿。
+- `index.md`：专题首页与全书入口。
+- `preface.md`：全书目录与前言，主要小节链接到中文锚点，缩进子条目保持普通文字。
+- `introduction.md`、`robot.md` 等英文主题文件名：正文与附录译稿，完整路径见 `mkdocs.yml`。
 - `assets/`：原文插图；`pdfs/`：译稿对应的英文原文 PDF。
 
-增加新章节时，在该目录添加 Markdown，并更新专题首页和 `mkdocs.yml` 中的课程导航。原作者署名、原文链接和版本日期请保留。
+修订译稿时，保留原作者署名、原文链接、版本日期和参考文献锚点；章节交叉引用使用站内 Markdown 路径。原始的嵌套 `docs/` 导入目录已合并，后续直接维护上述文件。
 
 ## 本地预览
 

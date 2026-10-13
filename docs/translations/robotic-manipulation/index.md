@@ -1,6 +1,6 @@
 ---
 title: 机器人操作 · 中文讲义
-description: Russ Tedrake 的 MIT Robotic Manipulation 讲义中文翻译，感知、规划与控制。当前包含全书目录与前言、第 1 章引言、第 2 章先给你准备一个机器人。
+description: Russ Tedrake 的 MIT Robotic Manipulation 讲义中文翻译，感知、规划与控制。包含全书目录与前言、12 章正文和 5 篇附录，共 18 篇中文译稿。
 hide:
   - navigation
   - toc
@@ -22,33 +22,60 @@ hide:
 </div>
 </div>
 
-<div class="course-facts"><div><span>原著作者</span><strong>Russ Tedrake</strong></div><div><span>课程</span><strong>MIT 6.4210 / 6.4212</strong></div><div><span>翻译进度</span><strong>前言 + 第 1–2 章</strong></div><div><span>原文版本范围</span><strong>2026.09–10</strong></div></div>
+<div class="course-facts"><div><span>原著作者</span><strong>Russ Tedrake</strong></div><div><span>课程</span><strong>MIT 6.4210 / 6.4212</strong></div><div><span>全书中文译稿</span><strong>12 章正文 · 5 篇附录</strong></div><div><span>原文版本范围</span><strong>2026.09–10</strong></div></div>
 
-<div class="section-heading"><span class="eyebrow">READ IN CHINESE</span><h2>从这里，翻开第一篇。</h2><p>当前上线三篇译稿，后续章节持续更新。</p></div>
+<div class="section-heading"><span class="eyebrow">READ IN CHINESE</span><h2>全书，现在用中文读。</h2><p>前言、12 章正文与 5 篇附录，按原书顺序阅读。</p></div>
 
-<div class="chapter-grid">
-<a class="chapter-card" href="preface/">
-<div class="chapter-card-top"><span class="chapter-number">00</span><span class="status-pill">已翻译</span></div>
-<span class="eyebrow">PREFACE & CONTENTS</span><h3>全书目录与前言</h3><p>为什么研究机器人操作？了解作者的研究视角、全书脉络与机器人操作工具箱。</p><span class="chapter-foot">前言 · 全书目录 · 工具箱 <span aria-hidden="true">→</span></span>
-</a>
-<a class="chapter-card" href="introduction/">
-<div class="chapter-card-top"><span class="chapter-number">01</span><span class="status-pill">已翻译</span></div>
-<span class="eyebrow">INTRODUCTION</span><h3>第 1 章 · 引言</h3><p>从取放盘子到开放世界，认识操作任务的挑战，以及仿真、Drake 与基于模型的设计。</p><span class="chapter-foot">7 个小节 · 交互示例 · 练习 <span aria-hidden="true">→</span></span>
-</a>
-<a class="chapter-card" href="robot/">
-<div class="chapter-card-top"><span class="chapter-number">02</span><span class="status-pill">已翻译</span></div>
-<span class="eyebrow">LET’S GET YOU A ROBOT</span><h3>第 2 章 · 先给你准备一个机器人</h3><p>认识机械臂、机械手与传感器，从机器人描述文件到 HardwareStation，搭建可运行的操作工作站。</p><span class="chapter-foot">7 个小节 · 硬件与仿真 · 练习 <span aria-hidden="true">→</span></span>
-</a>
+<a class="course-preface" href="preface/"><span class="chapter-number">00</span><span><strong>全书目录与前言</strong><small>了解全书脉络，或直接跳转到各章的主要小节。</small></span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+
+## 正文
+
+
+<div class="course-catalog">
+
+<a class="course-chapter" href="introduction/"><span class="course-chapter__number">01</span><span class="course-chapter__title">引言</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="robot/"><span class="course-chapter__number">02</span><span class="course-chapter__title">先给你准备一个机器人</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="pick-and-place/"><span class="course-chapter__number">03</span><span class="course-chapter__title">基本的抓取与放置</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="pose-estimation/"><span class="course-chapter__number">04</span><span class="course-chapter__title">基于几何的位姿估计</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="bin-picking/"><span class="course-chapter__number">05</span><span class="course-chapter__title">箱内抓取</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="motion-planning/"><span class="course-chapter__number">06</span><span class="course-chapter__title">运动规划</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="mobile-manipulation/"><span class="course-chapter__number">07</span><span class="course-chapter__title">移动操作</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="manipulator-control/"><span class="course-chapter__number">08</span><span class="course-chapter__title">机械臂控制</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="object-detection/"><span class="course-chapter__number">09</span><span class="course-chapter__title">物体检测与分割</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="deep-perception/"><span class="course-chapter__number">10</span><span class="course-chapter__title">面向操作任务的深度感知</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="reinforcement-learning/"><span class="course-chapter__number">11</span><span class="course-chapter__title">强化学习</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="soft-robots/"><span class="course-chapter__number">12</span><span class="course-chapter__title">软体机器人与触觉感知</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
 </div>
 
-<div class="course-next" markdown>
-<span class="eyebrow">KEEP EXPLORING</span>
 
-## 接下来，完成一次抓取与放置。
+## 附录
 
-第 3 章起的中文译文尚未上线。可以先沿着英文原版继续学习，或在[全书目录](preface.md#all-chapters)中浏览后续主题。
 
-[第 3 章 · 基本的抓取与放置 ↗](https://manipulation.mit.edu/pick.html){ .text-link }
+<div class="course-catalog">
+
+<a class="course-chapter" href="spatial-algebra/"><span class="course-chapter__number">A</span><span class="course-chapter__title">空间代数</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="drake/"><span class="course-chapter__number">B</span><span class="course-chapter__title">Drake</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="drakegym/"><span class="course-chapter__number">C</span><span class="course-chapter__title">DrakeGym 环境</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="manipulation-station/"><span class="course-chapter__number">D</span><span class="course-chapter__title">搭建自己的机器人操作工作站</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
+<a class="course-chapter" href="miscellaneous/"><span class="course-chapter__number">E</span><span class="course-chapter__title">其他事项</span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
+
 </div>
 
 <div class="translation-note" markdown>
