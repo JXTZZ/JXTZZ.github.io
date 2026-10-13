@@ -41,65 +41,65 @@ Drake 文档也很好地总结了[多体系统中的物理量](https://drake.mit
 
 - 位置向量在同一个坐标系中表达时，只要参考点与目标点的标记首尾衔接，就可以相加：
   
-  $$
-{}^Ap^B_F + {}^Bp^C_F
-      = {}^Ap^C_F.
-$$
+    $$
+    {}^Ap^B_F + {}^Bp^C_F
+          = {}^Ap^C_F.
+    $$
   
-  加法满足交换律，也可以明确地定义相反向量：
+    加法满足交换律，也可以明确地定义相反向量：
   
-  $$
-{}^Ap^B_F = -
-      {}^Bp^A_F.
-$$
+    $$
+    {}^Ap^B_F = -
+          {}^Bp^A_F.
+    $$
   
-  这些关系应该很直观，不过还是请你亲自确认一下。
+    这些关系应该很直观，不过还是请你亲自确认一下。
 
 - 乘上旋转矩阵，就能改变向量的表达坐标系：
   
-  $$
-{}^Ap^B_G = {}^GR^F {}^Ap^B_F.
-$$
+    $$
+    {}^Ap^B_G = {}^GR^F {}^Ap^B_F.
+    $$
   
-  你也许会惊讶，只用旋转就能完成这个变换，但确实如此。表达坐标系的位置，并不会改变两个点之间的相对位置。
+    你也许会惊讶，只用旋转就能完成这个变换，但确实如此。表达坐标系的位置，并不会改变两个点之间的相对位置。
 
 - 旋转的参考坐标系与目标坐标系首尾衔接时，可以相乘：
   
-  $$
-{}^AR^B \: {}^BR^C = {}^AR^C.
-$$
+    $$
+    {}^AR^B \: {}^BR^C = {}^AR^C.
+    $$
   
-  逆运算也很简单：
+    逆运算也很简单：
   
-  $$
-\left[{}^AR^B\right]^{-1} = {}^BR^A.
-$$
+    $$
+    \left[{}^AR^B\right]^{-1} = {}^BR^A.
+    $$
   
-  如果用旋转矩阵表示，这就是通常的矩阵求逆。旋转矩阵还是正交矩阵，所以有 $R^{-1}=R^T.$。
+    如果用旋转矩阵表示，这就是通常的矩阵求逆。旋转矩阵还是正交矩阵，所以有 $R^{-1}=R^T.$。
 
 - 当位置以某个坐标系为参考，而且分量也在同一个坐标系中表达时，变换可以把这些运算统一成一种方便的记号：
   
-  $$
-{}^Gp^A = {}^GX^F {}^Fp^A = {}^Gp^F + {}^Fp^A_G
-      = {}^Gp^F + {}^GR^F {}^Fp^A.
-$$
+    $$
+    {}^Gp^A = {}^GX^F {}^Fp^A = {}^Gp^F + {}^Fp^A_G
+          = {}^Gp^F + {}^GR^F {}^Fp^A.
+    $$
   
   
 
 - 变换可以复合：
   
-  $$
-{}^AX^B {}^BX^C =
-      {}^AX^C,
-$$
+    $$
+    {}^AX^B {}^BX^C =
+          {}^AX^C,
+    $$
   
-  也存在逆变换：
+    也存在逆变换：
   
-  $$
-\left[{}^AX^B\right]^{-1} = {}^BX^A.
-$$
+    $$
+    \left[{}^AX^B\right]^{-1} = {}^BX^A.
+    $$
   
-  请注意，变换的逆虽然形式也很简单，但一般并不是 $X^T,$，即 $X^{-1}$ 通常不等于转置。
+    请注意，变换的逆虽然形式也很简单，但一般并不是 $X^T,$，即 $X^{-1}$ 通常不等于转置。
 
 <a id="section2"></a>
 
@@ -116,38 +116,38 @@ $$
 
 - 速度在同一个坐标系中表达时可以相加：
   
-  $$
-\begin{gathered}
-        {}^A\text{v}^B_F + {}^B\text{v}^C_F = {}^A\text{v}^C_F, \qquad {}^A\omega^B_F +
-        {}^B\omega^C_F = {}^A\omega^C_F,\end{gathered}
-$$
+    $$
+    \begin{gathered}
+            {}^A\text{v}^B_F + {}^B\text{v}^C_F = {}^A\text{v}^C_F, \qquad {}^A\omega^B_F +
+            {}^B\omega^C_F = {}^A\omega^C_F,\end{gathered}
+    $$
   
-  相反向量满足 ${}^AV^C_F = - {}^CV^A_F,$。
+    相反向量满足 ${}^AV^C_F = - {}^CV^A_F,$。
 
 - 旋转可以改变速度的表达坐标系：
   
-  $$
-{}^A\text{v}^B_G = {}^GR^F {}^A\text{v}^B_F,
-        \qquad {}^A\omega^B_G = {}^GR^F {}^A\omega^B_F.
-$$
+    $$
+    {}^A\text{v}^B_G = {}^GR^F {}^A\text{v}^B_F,
+            \qquad {}^A\omega^B_G = {}^GR^F {}^A\omega^B_F.
+    $$
   
   
 
 - 跨坐标系合成平移速度时，有：
   
-  $$
-{}^A\text{v}^C_F = {}^A\text{v}^B_F + {}^B\text{v}^C_F
-          + {}^A\omega^B_F \times {}^Bp^C_F.
-$$
+    $$
+    {}^A\text{v}^C_F = {}^A\text{v}^B_F + {}^B\text{v}^C_F
+              + {}^A\omega^B_F \times {}^Bp^C_F.
+    $$
   
   
 
 - 由此可见，求平移速度的相反向量，不能只交换参考坐标系和被测坐标系，还要考虑额外的一项：
   
-  $$
--{}^A\text{v}^B_F =
-        {}^B\text{v}^A_F + {}^A\omega^B_F \times {}^Bp^A_F.
-$$
+    $$
+    -{}^A\text{v}^B_F =
+            {}^B\text{v}^A_F + {}^A\omega^B_F \times {}^Bp^A_F.
+    $$
   
   
 
@@ -173,37 +173,38 @@ $$
 
 - 作用于同一刚体、同一作用点，并在同一坐标系中表达的空间力，可以相加。例如：
   
-  $$
-F^{B_p}_{\text{total},C}
-        = \sum_i F^{B_p}_{i,C} .
-$$
+    $$
+    F^{B_p}_{\text{total},C}
+            = \sum_i F^{B_p}_{i,C} .
+    $$
   
   
 
 - 把空间力从作用点 $B_p$ 移到 $B_q$，需要使用叉积：
   
-  <a id="equation-eq-spatial_force_shift"></a>
+    <a id="equation-eq-spatial_force_shift"></a>
 
-$$
-f^{B_q}_C
-        = f^{B_p}_C, \qquad \tau^{B_q}_C = \tau^{B_p}_C + {}^{B_q}p^{B_p}_C
-        \times f^{B_p}_C.
-   \tag{A.1}
-$$
+    $$
+    f^{B_q}_C
+            = f^{B_p}_C, \qquad \tau^{B_q}_C = \tau^{B_p}_C + {}^{B_q}p^{B_p}_C
+            \times f^{B_p}_C.
+       \tag{A.1}
+    $$
   
   
 
 - 与其他空间向量一样，旋转可以改变力的表达坐标系：
   
-  $$
-f^{B_p}_D = {}^DR^C
-        f^{B_p}_C, \qquad \tau^{B_p}_D = {}^DR^C
-        \tau^{B_p}_C.
-$$
+    $$
+    f^{B_p}_D = {}^DR^C
+            f^{B_p}_C, \qquad \tau^{B_p}_D = {}^DR^C
+            \tau^{B_p}_C.
+    $$
   
   
 
 
 ---
 
-**继续阅读**：[上一节（中文）](soft-robots.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](drake.md)
+**继续阅读**：[上一章：软体机器人与触觉感知（中文）](soft-robots.md) · [全书目录与前言（中文）](preface.md) · [下一章：附录 B · Drake（中文）](drake.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

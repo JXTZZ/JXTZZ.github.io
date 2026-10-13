@@ -825,7 +825,7 @@ $$
 
 1. 考虑下图。黑色模型点标为 $b_{i}$，红色场景点标为 $r_{j}$。
    
-   ![原文插图](assets/pose/icp_trimmed.png)
+    ![原文插图](assets/pose/icp_trimmed.png)
    
    
    
@@ -840,11 +840,11 @@ $$
    
    
    
-    这就是截尾 ICP（Trimmed ICP）的基本思路。
+       这就是截尾 ICP（Trimmed ICP）的基本思路。
 
 2. ICP 用对应点的欧氏距离平方和度量两组点的差异。另一个可能、但不太便于优化的度量是[单向 Hausdorff 距离](https://en.wikipedia.org/wiki/Hausdorff_distance)。直观地说，对手先在一个形状上选一个点，你必须走到另一个形状的最近点，这段距离就是该选择下的距离。考虑两种方案：方案 1 中，对手选场景点，你选最近模型点；方案 2 中，对手选模型点，你选最近场景点。哪种对离群点更稳健？下面用二维例子考察。黑色模型点标为 $b_{i}$，红色场景点标为 $r_{j}$。
    
-   ![原文插图](assets/pose/icp_hausdorff.png)
+    ![原文插图](assets/pose/icp_hausdorff.png)
    
    
    
@@ -928,113 +928,68 @@ $$
 
 ## 参考文献
 
-<a id="Shankar22"></a>
+<div class="references" markdown="1">
 
-1. Krishna Shankar and Mark Tjersland and Jeremy Ma and Kevin Stone and Max Bajracharya , "A learned stereo depth system for robotic manipulation in homes" , IEEE Robotics and Automation Letters , vol. 7, no. 2, pp. 2305--2312, 2022 .
+1. <a id="Shankar22"></a> Krishna Shankar and Mark Tjersland and Jeremy Ma and Kevin Stone and Max Bajracharya , "A learned stereo depth system for robotic manipulation in homes" , IEEE Robotics and Automation Letters , vol. 7, no. 2, pp. 2305--2312, 2022 .
 
-<a id="Sweeney18a"></a>
+2. <a id="Sweeney18a"></a> Chris Sweeney and Greg Izatt and Russ Tedrake , "A Supervised Approach to Predicting Noise in Depth Images" , Proceedings of the IEEE International Conference on Robotics and Automation , May, 2019 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Sweeney18a.pdf)
 
-2. Chris Sweeney and Greg Izatt and Russ Tedrake , "A Supervised Approach to Predicting Noise in Depth Images" , Proceedings of the IEEE International Conference on Robotics and Automation , May, 2019 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Sweeney18a.pdf)
+3. <a id="Park19"></a> Jeong Joon Park and Peter Florence and Julian Straub and Richard Newcombe and Steven Lovegrove , "DeepSDF: Learning Continuous Signed Distance Functions for Shape Representation" , Proceedings of the IEEE International Conference on Computer Vision and Pattern Recognition (CVPR) , June (To Appear), 2019 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Park19.pdf)
 
-<a id="Park19"></a>
+4. <a id="Mildenhall21"></a> Ben Mildenhall and Pratul P Srinivasan and Matthew Tancik and Jonathan T Barron and Ravi Ramamoorthi and Ren Ng , "Nerf: Representing scenes as neural radiance fields for view synthesis" , Communications of the ACM , vol. 65, no. 1, pp. 99--106, 2021 .
 
-3. Jeong Joon Park and Peter Florence and Julian Straub and Richard Newcombe and Steven Lovegrove , "DeepSDF: Learning Continuous Signed Distance Functions for Shape Representation" , Proceedings of the IEEE International Conference on Computer Vision and Pattern Recognition (CVPR) , June (To Appear), 2019 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Park19.pdf)
+5. <a id="Horn87"></a> Berthold K.P. Horn , "Closed-form solution of absolute orientation using unit quaternions" , Journal of the Optical Society of America A , vol. 4, no. 4, pp. 629-642, April, 1987 .
 
-<a id="Mildenhall21"></a>
+6. <a id="Myronenko09"></a> Andriy Myronenko and Xubo Song , "On the closed-form solution of the rotation matrix arising in computer vision problems" , arXiv preprint arXiv:0904.1613 , 2009 .
 
-4. Ben Mildenhall and Pratul P Srinivasan and Matthew Tancik and Jonathan T Barron and Ravi Ramamoorthi and Ren Ng , "Nerf: Representing scenes as neural radiance fields for view synthesis" , Communications of the ACM , vol. 65, no. 1, pp. 99--106, 2021 .
+7. <a id="Haralick89"></a> Robert M Haralick and Hyonam Joo and Chung-Nan Lee and Xinhua Zhuang and Vinay G Vaidya and Man Bae Kim , "Pose estimation from corresponding point data" , IEEE Transactions on Systems, Man, and Cybernetics , vol. 19, no. 6, pp. 1426--1446, 1989 .
 
-<a id="Horn87"></a>
+8. <a id="Muja09"></a> Marius Muja and David G Lowe , "Flann, fast library for approximate nearest neighbors" , International Conference on Computer Vision Theory and Applications (VISAPP’09) , vol. 3, 2009 .
 
-5. Berthold K.P. Horn , "Closed-form solution of absolute orientation using unit quaternions" , Journal of the Optical Society of America A , vol. 4, no. 4, pp. 629-642, April, 1987 .
+9. <a id="Drost10"></a> Bertram Drost and Markus Ulrich and Nassir Navab and Slobodan Ilic , "Model globally, match locally: Efficient and robust 3D object recognition" , 2010 IEEE computer society conference on computer vision and pattern recognition , pp. 998--1005, 2010 .
 
-<a id="Myronenko09"></a>
+10. <a id="Hodan20"></a> Tomás Hodan and Martin Sundermeyer and Bertram Drost and Yann Labbé and Eric Brachmann and Frank Michel and Carsten Rother and Jirí Matas , "BOP Challenge 2020 on 6D Object Localization" , European Conference on Computer Vision Workshops (ECCVW) , 2020 .
 
-6. Andriy Myronenko and Xubo Song , "On the closed-form solution of the rotation matrix arising in computer vision problems" , arXiv preprint arXiv:0904.1613 , 2009 .
+11. <a id="Fischler81"></a> M.A. Fischler and R.C. Bolles , "Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis andd Automated Cartography" , Communications of the Association for Computing Machinery (ACM) , vol. 24, no. 6, pp. 381--395, 1981 .
 
-<a id="Haralick89"></a>
+12. <a id="Yang20a"></a> Heng Yang and Jingnan Shi and Luca Carlone , "Teaser: Fast and certifiable point cloud registration" , arXiv preprint arXiv:2001.07715 , 2020 .
 
-7. Robert M Haralick and Hyonam Joo and Chung-Nan Lee and Xinhua Zhuang and Vinay G Vaidya and Man Bae Kim , "Pose estimation from corresponding point data" , IEEE Transactions on Systems, Man, and Cybernetics , vol. 19, no. 6, pp. 1426--1446, 1989 .
+13. <a id="Marion17"></a> Pat Marion and Peter R. Florence and Lucas Manuelli and Russ Tedrake , "A Pipeline for Generating Ground Truth Labels for Real RGBD Data of Cluttered Scenes" , International Conference on Robotics and Automation (ICRA), Brisbane, Australia , May, 2018 .
+    [文献链接](https://arxiv.org/abs/1707.04796)
 
-<a id="Muja09"></a>
+14. <a id="Nguyen13"></a> Anh Nguyen and Bac Le , "3D point cloud segmentation: A survey" , 2013 6th IEEE conference on robotics, automation and mechatronics (RAM) , pp. 225--230, 2013 .
 
-8. Marius Muja and David G Lowe , "Flann, fast library for approximate nearest neighbors" , International Conference on Computer Vision Theory and Applications (VISAPP’09) , vol. 3, 2009 .
+15. <a id="Myronenko10"></a> Andriy Myronenko and Xubo Song , "Point set registration: Coherent point drift" , IEEE transactions on pattern analysis and machine intelligence , vol. 32, no. 12, pp. 2262--2275, 2010 .
 
-<a id="Drost10"></a>
+16. <a id="Gao18a"></a> Wei Gao and Russ Tedrake , "FilterReg: Robust and Efficient Probabilistic Point-Set Registration using Gaussian Filter and Twist Parameterization" , Conference on Computer Vision and Pattern Recognition (CVPR) , June, 2019 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Gao18a.pdf)
 
-9. Bertram Drost and Markus Ulrich and Nassir Navab and Slobodan Ilic , "Model globally, match locally: Efficient and robust 3D object recognition" , 2010 IEEE computer society conference on computer vision and pattern recognition , pp. 998--1005, 2010 .
+17. <a id="Fitzgibbon03"></a> Andrew W Fitzgibbon , "Robust registration of 2D and 3D point sets" , Image and vision computing , vol. 21, no. 13-14, pp. 1145--1153, 2003 .
 
-<a id="Hodan20"></a>
+18. <a id="Osher03"></a> Stanley Osher and Ronald Fedkiw , "Level Set Methods and Dynamic Implicit Surfaces" , Springer
+    , 2003 .
 
-10. Tomás Hodan and Martin Sundermeyer and Bertram Drost and Yann Labbé and Eric Brachmann and Frank Michel and Carsten Rother and Jirí Matas , "BOP Challenge 2020 on 6D Object Localization" , European Conference on Computer Vision Workshops (ECCVW) , 2020 .
+19. <a id="Gelfand05"></a> Natasha Gelfand and Niloy J Mitra and Leonidas J Guibas and Helmut Pottmann , "Robust global registration" , Symposium on geometry processing , vol. 2, no. 3, pp. 5, 2005 .
 
-<a id="Fischler81"></a>
+20. <a id="Mellado14"></a> Nicolas Mellado and Dror Aiger and Niloy J Mitra , "Super 4pcs fast global pointcloud registration via smart indexing" , Computer Graphics Forum , vol. 33, no. 5, pp. 205--215, 2014 .
 
-11. M.A. Fischler and R.C. Bolles , "Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis andd Automated Cartography" , Communications of the Association for Computing Machinery (ACM) , vol. 24, no. 6, pp. 381--395, 1981 .
+21. <a id="Yang15"></a> Jiaolong Yang and Hongdong Li and Dylan Campbell and Yunde Jia , "Go-ICP: A globally optimal solution to 3D ICP point-set registration" , IEEE transactions on pattern analysis and machine intelligence , vol. 38, no. 11, pp. 2241--2254, 2015 .
 
-<a id="Yang20a"></a>
+22. <a id="Izatt17b"></a> Gregory Izatt and Hongkai Dai and Russ Tedrake , "Globally Optimal Object Pose Estimation in Point Clouds with Mixed-Integer Programming" , International Symposium on Robotics Research , Dec, 2017 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Izatt17b.pdf)
 
-12. Heng Yang and Jingnan Shi and Luca Carlone , "Teaser: Fast and certifiable point cloud registration" , arXiv preprint arXiv:2001.07715 , 2020 .
+23. <a id="Saunderson15"></a> James Saunderson and Pablo A Parrilo and Alan S Willsky , "Semidefinite descriptions of the convex hull of rotation matrices" , SIAM Journal on Optimization , vol. 25, no. 3, pp. 1314--1343, 2015 .
 
-<a id="Marion17"></a>
+24. <a id="Schmidt15"></a> Tanner Schmidt and Richard Newcombe and Dieter Fox , "DART: dense articulated real-time tracking with consumer depth cameras" , Autonomous Robots , vol. 39, no. 3, pp. 239--258, 2015 .
 
-13. Pat Marion and Peter R. Florence and Lucas Manuelli and Russ Tedrake , "A Pipeline for Generating Ground Truth Labels for Real RGBD Data of Cluttered Scenes" , International Conference on Robotics and Automation (ICRA), Brisbane, Australia , May, 2018 .
-[文献链接](https://arxiv.org/abs/1707.04796)
+25. <a id="Florence18a"></a> Peter R. Florence* and Lucas Manuelli* and Russ Tedrake , "Dense Object Nets: Learning Dense Visual Object Descriptors By and For Robotic Manipulation" , Conference on Robot Learning (CoRL) , October, 2018 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Florence18a.pdf)
 
-<a id="Nguyen13"></a>
-
-14. Anh Nguyen and Bac Le , "3D point cloud segmentation: A survey" , 2013 6th IEEE conference on robotics, automation and mechatronics (RAM) , pp. 225--230, 2013 .
-
-<a id="Myronenko10"></a>
-
-15. Andriy Myronenko and Xubo Song , "Point set registration: Coherent point drift" , IEEE transactions on pattern analysis and machine intelligence , vol. 32, no. 12, pp. 2262--2275, 2010 .
-
-<a id="Gao18a"></a>
-
-16. Wei Gao and Russ Tedrake , "FilterReg: Robust and Efficient Probabilistic Point-Set Registration using Gaussian Filter and Twist Parameterization" , Conference on Computer Vision and Pattern Recognition (CVPR) , June, 2019 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Gao18a.pdf)
-
-<a id="Fitzgibbon03"></a>
-
-17. Andrew W Fitzgibbon , "Robust registration of 2D and 3D point sets" , Image and vision computing , vol. 21, no. 13-14, pp. 1145--1153, 2003 .
-
-<a id="Osher03"></a>
-
-18. Stanley Osher and Ronald Fedkiw , "Level Set Methods and Dynamic Implicit Surfaces" , Springer
-, 2003 .
-
-<a id="Gelfand05"></a>
-
-19. Natasha Gelfand and Niloy J Mitra and Leonidas J Guibas and Helmut Pottmann , "Robust global registration" , Symposium on geometry processing , vol. 2, no. 3, pp. 5, 2005 .
-
-<a id="Mellado14"></a>
-
-20. Nicolas Mellado and Dror Aiger and Niloy J Mitra , "Super 4pcs fast global pointcloud registration via smart indexing" , Computer Graphics Forum , vol. 33, no. 5, pp. 205--215, 2014 .
-
-<a id="Yang15"></a>
-
-21. Jiaolong Yang and Hongdong Li and Dylan Campbell and Yunde Jia , "Go-ICP: A globally optimal solution to 3D ICP point-set registration" , IEEE transactions on pattern analysis and machine intelligence , vol. 38, no. 11, pp. 2241--2254, 2015 .
-
-<a id="Izatt17b"></a>
-
-22. Gregory Izatt and Hongkai Dai and Russ Tedrake , "Globally Optimal Object Pose Estimation in Point Clouds with Mixed-Integer Programming" , International Symposium on Robotics Research , Dec, 2017 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Izatt17b.pdf)
-
-<a id="Saunderson15"></a>
-
-23. James Saunderson and Pablo A Parrilo and Alan S Willsky , "Semidefinite descriptions of the convex hull of rotation matrices" , SIAM Journal on Optimization , vol. 25, no. 3, pp. 1314--1343, 2015 .
-
-<a id="Schmidt15"></a>
-
-24. Tanner Schmidt and Richard Newcombe and Dieter Fox , "DART: dense articulated real-time tracking with consumer depth cameras" , Autonomous Robots , vol. 39, no. 3, pp. 239--258, 2015 .
-
-<a id="Florence18a"></a>
-
-25. Peter R. Florence* and Lucas Manuelli* and Russ Tedrake , "Dense Object Nets: Learning Dense Visual Object Descriptors By and For Robotic Manipulation" , Conference on Robot Learning (CoRL) , October, 2018 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Florence18a.pdf)
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](pick-and-place.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](bin-picking.md)
+**继续阅读**：[上一章：基本的抓取与放置（中文）](pick-and-place.md) · [全书目录与前言（中文）](preface.md) · [下一章：箱内抓取（中文）](bin-picking.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

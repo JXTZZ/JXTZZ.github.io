@@ -215,7 +215,7 @@ Drake 是一个成熟、功能强大的软件库，能够支持许多先进的�
 1. 浏览 [Drake 教程](https://github.com/RobotLocomotion/drake/tree/master/tutorials)，其中的内容还在不断增加，Drake 官网也提供了入口。阅读 `dynamical_systems` 教程：在仿真 `SimpleContinuousTimeSystem` 时，初始条件 $x(0)$ 设成了多少？
 2. Drake 最详尽的文档是类和函数的参考文档。无论用 C++ 还是 Python 开发，我通常都会打开 [C++ Doxygen 文档](https://drake.mit.edu/doxygen_cxx/index.html)。[Python 文档](https://drake.mit.edu/pydrake/index.html)大多由它自动生成，整理得没有那么细致，因此我一般只在 Python 接口与 C++ 不同时才去查阅。
 
-   请在 C++ Doxygen 文档中搜索“Spatial Vectors”（空间向量）：代码中用哪些 ASCII 字符表示角加速度？
+    请在 C++ Doxygen 文档中搜索“Spatial Vectors”（空间向量）：代码中用哪些 ASCII 字符表示角加速度？
 3. Drake 是开源的，没有把算法藏在黑箱里。想知道某个算法如何实现，或某个函数该怎样使用，都可以直接查看源代码。现在还可以在浏览器中[使用 VS Code 浏览代码](https://github1s.com/RobotLocomotion/drake)。请查看[“拟合值迭代”（fitted value iteration）的单元测试](https://github1s.com/RobotLocomotion/drake/blob/HEAD/bindings/pydrake/systems/test/controllers_test.py)：其中的 `convergence_tol` 设成了多少？
 
 使用 Drake 遇到问题时，可以在 [Stack Overflow 上提问](https://stackoverflow.com/questions/tagged/drake)，并加上 `drake` 标签。那里的 Drake 开发者社区人数更多，往往能比课程工作人员更快地给出答复，也可能提供更好的答案。公开提问还能留下可供检索的记录，帮助后来遇到同样问题的人，让 Drake 更容易使用。
@@ -259,15 +259,15 @@ Drake 是一个成熟、功能强大的软件库，能够支持许多先进的�
 
 ## 参考文献
 
-<a id="reference-1"></a>
+<div class="references" markdown="1">
 
-1. Matthew T. Mason，《走向机器人操作》（“Toward robotic manipulation”），*Annual Review of Control, Robotics, and Autonomous Systems*（《控制、机器人与自主系统年度评论》），第 1 卷，第 1–28 页，2018 年。
+1. <a id="reference-1"></a> Matthew T. Mason，《走向机器人操作》（“Toward robotic manipulation”），*Annual Review of Control, Robotics, and Autonomous Systems*（《控制、机器人与自主系统年度评论》），第 1 卷，第 1–28 页，2018 年。
 
-<a id="reference-2"></a>
+2. <a id="reference-2"></a> Mortimer J. Adler，《如何在书上做批注》（“How to Mark a Book”），*The Saturday Review of Literature*（《星期六文学评论》），1941 年 7 月 6 日。[原文链接](<http://www.maebrussell.com/Articles%20and%20Notes/How%20To%20Mark%20A%20Book.html>)
 
-2. Mortimer J. Adler，《如何在书上做批注》（“How to Mark a Book”），*The Saturday Review of Literature*（《星期六文学评论》），1941 年 7 月 6 日。[原文链接](<http://www.maebrussell.com/Articles%20and%20Notes/How%20To%20Mark%20A%20Book.html>)
+</div>
 
 ---
 
-**继续阅读**：[全书目录与前言（中文）](preface.md) · [下一章：先给你准备一个机器人（中文）](robot.md)  
+**继续阅读**：[上一章：全书目录与前言（中文）](preface.md) · [下一章：先给你准备一个机器人（中文）](robot.md)  
 [无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

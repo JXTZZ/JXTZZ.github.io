@@ -110,4 +110,5 @@ jupyter notebook
 
 ---
 
-**继续阅读**：[上一节（中文）](spatial-algebra.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](drakegym.md)
+**继续阅读**：[上一章：附录 A · 空间代数（中文）](spatial-algebra.md) · [全书目录与前言（中文）](preface.md) · [下一章：附录 C · DrakeGym 环境（中文）](drakegym.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

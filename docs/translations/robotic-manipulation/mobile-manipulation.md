@@ -248,45 +248,32 @@ OctoMap 是面向机器人、大规模且高效的体素网格算法和软件实
 
 ## 参考文献
 
-<a id="Hornung13"></a>
+<div class="references" markdown="1">
 
-1. Armin Hornung and Kai M. Wurm and Maren Bennewitz and Cyrill  Stachniss and Wolfram Burgard , "OctoMap: An Efficient Probabilistic 3D Mapping Framework Based   on Octrees" , Autonomous Robots , 2013 .
+1. <a id="Hornung13"></a> Armin Hornung and Kai M. Wurm and Maren Bennewitz and Cyrill  Stachniss and Wolfram Burgard , "OctoMap: An Efficient Probabilistic 3D Mapping Framework Based   on Octrees" , Autonomous Robots , 2013 .
 
-<a id="Thrun05"></a>
+2. <a id="Thrun05"></a> S. Thrun and W. Burgard and D. Fox , "Probabilistic Robotics" , MIT Press
+    , 2005 .
 
-2. S. Thrun and W. Burgard and D. Fox , "Probabilistic Robotics" , MIT Press
-, 2005 .
+3. <a id="Kaess08"></a> M. Kaess and A. Ranganathan and F. Dellaert , "iSAM: Incremental Smoothing and Mapping" , IEEE Transactions on Robotics , vol. 24, no. 6, pp. 1365-1378, 2008 .
 
-<a id="Kaess08"></a>
+4. <a id="Scaramuzza11"></a> Davide Scaramuzza and Friedrich Fraundorfer , "Visual odometry [tutorial]" , Robotics & Automation Magazine, IEEE , vol. 18, no. 4, pp. 80--92, 2011 .
 
-3. M. Kaess and A. Ranganathan and F. Dellaert , "iSAM: Incremental Smoothing and Mapping" , IEEE Transactions on Robotics , vol. 24, no. 6, pp. 1365-1378, 2008 .
+5. <a id="Ming21"></a> Yue Ming and Xuyang Meng and Chunxiao Fan and Hui Yu , "Deep learning for monocular depth estimation: A review" , Neurocomputing , vol. 438, pp. 14--33, 2021 .
 
-<a id="Scaramuzza11"></a>
+6. <a id="Mildenhall21"></a> Ben Mildenhall and Pratul P Srinivasan and Matthew Tancik and Jonathan T Barron and Ravi Ramamoorthi and Ren Ng , "Nerf: Representing scenes as neural radiance fields for view synthesis" , Communications of the ACM , vol. 65, no. 1, pp. 99--106, 2021 .
 
-4. Davide Scaramuzza and Friedrich Fraundorfer , "Visual odometry [tutorial]" , Robotics & Automation Magazine, IEEE , vol. 18, no. 4, pp. 80--92, 2011 .
+7. <a id="Kerbl23"></a> Bernhard Kerbl and Georgios Kopanas and Thomas Leimkuhler and George Drettakis , "3d gaussian splatting for real-time radiance field rendering" , ACM Transactions on Graphics (ToG) , vol. 42, no. 4, pp. 1--14, 2023 .
 
-<a id="Ming21"></a>
+8. <a id="Cohn23"></a> Thomas Cohn and Mark Petersen and Max Simchowitz and Russ Tedrake , "Non-Euclidean Motion Planning with Graphs of Geodesically-Convex Sets" , Robotics: Science and Systems , 2023 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Cohn23.pdf)
 
-5. Yue Ming and Xuyang Meng and Chunxiao Fan and Hui Yu , "Deep learning for monocular depth estimation: A review" , Neurocomputing , vol. 438, pp. 14--33, 2021 .
+9. <a id="Siciliano16"></a> Bruno Siciliano and Oussama Khatib , "Springer handbook of robotics" , Springer
+    , 2016 .
 
-<a id="Mildenhall21"></a>
-
-6. Ben Mildenhall and Pratul P Srinivasan and Matthew Tancik and Jonathan T Barron and Ravi Ramamoorthi and Ren Ng , "Nerf: Representing scenes as neural radiance fields for view synthesis" , Communications of the ACM , vol. 65, no. 1, pp. 99--106, 2021 .
-
-<a id="Kerbl23"></a>
-
-7. Bernhard Kerbl and Georgios Kopanas and Thomas Leimkuhler and George Drettakis , "3d gaussian splatting for real-time radiance field rendering" , ACM Transactions on Graphics (ToG) , vol. 42, no. 4, pp. 1--14, 2023 .
-
-<a id="Cohn23"></a>
-
-8. Thomas Cohn and Mark Petersen and Max Simchowitz and Russ Tedrake , "Non-Euclidean Motion Planning with Graphs of Geodesically-Convex Sets" , Robotics: Science and Systems , 2023 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Cohn23.pdf)
-
-<a id="Siciliano16"></a>
-
-9. Bruno Siciliano and Oussama Khatib , "Springer handbook of robotics" , Springer
-, 2016 .
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](motion-planning.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](manipulator-control.md)
+**继续阅读**：[上一章：运动规划（中文）](motion-planning.md) · [全书目录与前言（中文）](preface.md) · [下一章：机械臂控制（中文）](manipulator-control.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

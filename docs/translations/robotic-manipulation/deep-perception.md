@@ -137,92 +137,57 @@ Transporter 网络。[参考文献 17](#Zeng21)
 
 ## 参考文献
 
-<a id="Mahendran17"></a>
+<div class="references" markdown="1">
 
-1. Siddharth Mahendran and Haider Ali and René Vidal , "3d pose regression using convolutional neural networks" , Proceedings of the IEEE International Conference on Computer Vision Workshops , pp. 2174--2182, 2017 .
+1. <a id="Mahendran17"></a> Siddharth Mahendran and Haider Ali and René Vidal , "3d pose regression using convolutional neural networks" , Proceedings of the IEEE International Conference on Computer Vision Workshops , pp. 2174--2182, 2017 .
 
-<a id="Xiang17"></a>
+2. <a id="Xiang17"></a> Yu Xiang and Tanner Schmidt and Venkatraman Narayanan and Dieter Fox , "Posecnn: A convolutional neural network for 6d object pose estimation in cluttered scenes" , arXiv preprint arXiv:1711.00199 , 2017 .
 
-2. Yu Xiang and Tanner Schmidt and Venkatraman Narayanan and Dieter Fox , "Posecnn: A convolutional neural network for 6d object pose estimation in cluttered scenes" , arXiv preprint arXiv:1711.00199 , 2017 .
+3. <a id="Zhou19"></a> Yi Zhou and Connelly Barnes and Jingwan Lu and Jimei Yang and Hao Li , "On the continuity of rotation representations in neural networks" , Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 5745--5753, 2019 .
 
-<a id="Zhou19"></a>
+4. <a id="Levinson20"></a> Jake Levinson and Carlos Esteves and Kefan Chen and Noah Snavely and Angjoo Kanazawa and Afshin Rostamizadeh and Ameesh Makadia , "An analysis of svd for deep rotation estimation" , Advances in Neural Information Processing Systems , vol. 33, pp. 22554--22565, 2020 .
 
-3. Yi Zhou and Connelly Barnes and Jingwan Lu and Jimei Yang and Hao Li , "On the continuity of rotation representations in neural networks" , Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 5745--5753, 2019 .
+5. <a id="Hashimoto20"></a> Kunimatsu Hashimoto* and Duy-Nguyen Ta* and Eric Cousineau and Russ Tedrake , "KOSNet: A Unified Keypoint, Orientation and Scale Network for Probabilistic 6D Pose Estimation" , Under review , 2020 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Hashimoto20.pdf)
 
-<a id="Levinson20"></a>
+6. <a id="Deng22"></a> Haowen Deng and Mai Bui and Nassir Navab and Leonidas Guibas and Slobodan Ilic and Tolga Birdal , "Deep bingham networks: Dealing with uncertainty and ambiguity in pose estimation" , International Journal of Computer Vision , vol. 130, no. 7, pp. 1627--1654, 2022 .
 
-4. Jake Levinson and Carlos Esteves and Kefan Chen and Noah Snavely and Angjoo Kanazawa and Afshin Rostamizadeh and Ameesh Makadia , "An analysis of svd for deep rotation estimation" , Advances in Neural Information Processing Systems , vol. 33, pp. 22554--22565, 2020 .
+7. <a id="Glover14"></a> Jared Marshall Glover , "The Quaternion Bingham Distribution, 3D Object Detection, and Dynamic Manipulation" , 
+    PhD thesis, Massachusetts Institute of Technology, May, 2014 .
 
-<a id="Hashimoto20"></a>
+8. <a id="Peretroukhin20"></a> Valentin Peretroukhin and Matthew Giamou and David M Rosen and W Nicholas Greene and Nicholas Roy and Jonathan Kelly , "A smooth representation of belief over so (3) for deep rotation learning with uncertainty" , arXiv preprint arXiv:2006.01031 , 2020 .
 
-5. Kunimatsu Hashimoto* and Duy-Nguyen Ta* and Eric Cousineau and Russ Tedrake , "KOSNet: A Unified Keypoint, Orientation and Scale Network for Probabilistic 6D Pose Estimation" , Under review , 2020 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Hashimoto20.pdf)
+9. <a id="Hodan20"></a> Tomás Hodan and Martin Sundermeyer and Bertram Drost and Yann Labbé and Eric Brachmann and Frank Michel and Carsten Rother and Jirí Matas , "BOP Challenge 2020 on 6D Object Localization" , European Conference on Computer Vision Workshops (ECCVW) , 2020 .
 
-<a id="Deng22"></a>
+10. <a id="Wang19"></a> He Wang and Srinath Sridhar and Jingwei Huang and Julien Valentin and Shuran Song and Leonidas J Guibas , "Normalized object coordinate space for category-level 6d object pose and size estimation" , Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 2642--2651, 2019 .
 
-6. Haowen Deng and Mai Bui and Nassir Navab and Leonidas Guibas and Slobodan Ilic and Tolga Birdal , "Deep bingham networks: Dealing with uncertainty and ambiguity in pose estimation" , International Journal of Computer Vision , vol. 130, no. 7, pp. 1627--1654, 2022 .
+11. <a id="Gibson77"></a> James J Gibson , "The theory of affordances" , Hilldale, USA , vol. 1, no. 2, pp. 67--82, 1977 .
 
-<a id="Glover14"></a>
+12. <a id="Gibson79"></a> James J Gibson , "The ecological approach to visual perception" , Psychology press
+    , 1979 .
 
-7. Jared Marshall Glover , "The Quaternion Bingham Distribution, 3D Object Detection, and Dynamic Manipulation" , 
-PhD thesis, Massachusetts Institute of Technology, May, 2014 .
+13. <a id="tenPas17"></a> Andreas ten Pas and Marcus Gualtieri and Kate Saenko and Robert Platt , "Grasp pose detection in point clouds" , The International Journal of Robotics Research , vol. 36, no. 13-14, pp. 1455--1473, 2017 .
 
-<a id="Peretroukhin20"></a>
+14. <a id="tenPas18"></a> Andreas Ten Pas and Robert Platt , "Using geometry to detect grasp poses in 3d point clouds" , Robotics Research: Volume 1 , pp. 307--324, 2018 .
 
-8. Valentin Peretroukhin and Matthew Giamou and David M Rosen and W Nicholas Greene and Nicholas Roy and Jonathan Kelly , "A smooth representation of belief over so (3) for deep rotation learning with uncertainty" , arXiv preprint arXiv:2006.01031 , 2020 .
+15. <a id="Mahler17"></a> Jeffrey Mahler and Jacky Liang and Sherdil Niyaz and Michael Laskey and Richard Doan and Xinyu Liu and Juan Aparicio Ojea and Ken Goldberg , "Dex-net 2.0: Deep learning to plan robust grasps with synthetic point clouds and analytic grasp metrics" , arXiv preprint arXiv:1703.09312 , 2017 .
 
-<a id="Hodan20"></a>
+16. <a id="Mahler17a"></a> Jeffrey Mahler and Ken Goldberg , "Learning deep policies for robot bin picking by simulating robust grasping sequences" , Conference on robot learning , pp. 515--524, 2017 .
 
-9. Tomás Hodan and Martin Sundermeyer and Bertram Drost and Yann Labbé and Eric Brachmann and Frank Michel and Carsten Rother and Jirí Matas , "BOP Challenge 2020 on 6D Object Localization" , European Conference on Computer Vision Workshops (ECCVW) , 2020 .
+17. <a id="Zeng21"></a> Andy Zeng and Pete Florence and Jonathan Tompson and Stefan Welker and Jonathan Chien and Maria Attarian and Travis Armstrong and Ivan Krasin and Dan Duong and Vikas Sindhwani and others , "Transporter networks: Rearranging the visual world for robotic manipulation" , Conference on Robot Learning , pp. 726--747, 2021 .
 
-<a id="Wang19"></a>
+18. <a id="Manuelli19"></a> Lucas Manuelli* and Wei Gao* and Peter Florence and Russ Tedrake , "kPAM: KeyPoint Affordances for Category-Level Robotic Manipulation" , arXiv e-prints , pp. arXiv:1903.06684, Mar, 2019 .
+    [文献链接](https://sites.google.com/view/kpam)
 
-10. He Wang and Srinath Sridhar and Jingwei Huang and Julien Valentin and Shuran Song and Leonidas J Guibas , "Normalized object coordinate space for category-level 6d object pose and size estimation" , Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 2642--2651, 2019 .
+19. <a id="Gao20b"></a> Wei Gao and Russ Tedrake , "kPAM 2.0: Feedback control for generalizable manipulation" , IEEE Robotics and Automation Letters , 2020 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Gao20b.pdf)
 
-<a id="Gibson77"></a>
+20. <a id="Florence18a"></a> Peter R. Florence* and Lucas Manuelli* and Russ Tedrake , "Dense Object Nets: Learning Dense Visual Object Descriptors By and For Robotic Manipulation" , Conference on Robot Learning (CoRL) , October, 2018 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Florence18a.pdf)
 
-11. James J Gibson , "The theory of affordances" , Hilldale, USA , vol. 1, no. 2, pp. 67--82, 1977 .
-
-<a id="Gibson79"></a>
-
-12. James J Gibson , "The ecological approach to visual perception" , Psychology press
-, 1979 .
-
-<a id="tenPas17"></a>
-
-13. Andreas ten Pas and Marcus Gualtieri and Kate Saenko and Robert Platt , "Grasp pose detection in point clouds" , The International Journal of Robotics Research , vol. 36, no. 13-14, pp. 1455--1473, 2017 .
-
-<a id="tenPas18"></a>
-
-14. Andreas Ten Pas and Robert Platt , "Using geometry to detect grasp poses in 3d point clouds" , Robotics Research: Volume 1 , pp. 307--324, 2018 .
-
-<a id="Mahler17"></a>
-
-15. Jeffrey Mahler and Jacky Liang and Sherdil Niyaz and Michael Laskey and Richard Doan and Xinyu Liu and Juan Aparicio Ojea and Ken Goldberg , "Dex-net 2.0: Deep learning to plan robust grasps with synthetic point clouds and analytic grasp metrics" , arXiv preprint arXiv:1703.09312 , 2017 .
-
-<a id="Mahler17a"></a>
-
-16. Jeffrey Mahler and Ken Goldberg , "Learning deep policies for robot bin picking by simulating robust grasping sequences" , Conference on robot learning , pp. 515--524, 2017 .
-
-<a id="Zeng21"></a>
-
-17. Andy Zeng and Pete Florence and Jonathan Tompson and Stefan Welker and Jonathan Chien and Maria Attarian and Travis Armstrong and Ivan Krasin and Dan Duong and Vikas Sindhwani and others , "Transporter networks: Rearranging the visual world for robotic manipulation" , Conference on Robot Learning , pp. 726--747, 2021 .
-
-<a id="Manuelli19"></a>
-
-18. Lucas Manuelli* and Wei Gao* and Peter Florence and Russ Tedrake , "kPAM: KeyPoint Affordances for Category-Level Robotic Manipulation" , arXiv e-prints , pp. arXiv:1903.06684, Mar, 2019 .
-[文献链接](https://sites.google.com/view/kpam)
-
-<a id="Gao20b"></a>
-
-19. Wei Gao and Russ Tedrake , "kPAM 2.0: Feedback control for generalizable manipulation" , IEEE Robotics and Automation Letters , 2020 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Gao20b.pdf)
-
-<a id="Florence18a"></a>
-
-20. Peter R. Florence* and Lucas Manuelli* and Russ Tedrake , "Dense Object Nets: Learning Dense Visual Object Descriptors By and For Robotic Manipulation" , Conference on Robot Learning (CoRL) , October, 2018 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Florence18a.pdf)
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](object-detection.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](reinforcement-learning.md)
+**继续阅读**：[上一章：物体检测与分割（中文）](object-detection.md) · [全书目录与前言（中文）](preface.md) · [下一章：强化学习（中文）](reinforcement-learning.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

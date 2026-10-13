@@ -182,21 +182,20 @@ Gymnasium 提供环境接口，并不实现强化学习算法。算法本身也�
 
 ## 参考文献
 
-<a id="Sutton18"></a>
+<div class="references" markdown="1">
 
-1. Richard S. Sutton and Andrew G. Barto , "Reinforcement Learning: An Introduction" , MIT Press
-, 2018 .
+1. <a id="Sutton18"></a> Richard S. Sutton and Andrew G. Barto , "Reinforcement Learning: An Introduction" , MIT Press
+    , 2018 .
 
-<a id="Agarwal20b"></a>
+2. <a id="Agarwal20b"></a> Alekh Agarwal and Nan Jiang and Sham M. Kakade and Wen Sun , "Reinforcement Learning: Theory and Algorithms" , Online Draft
+    , 2020 .
 
-2. Alekh Agarwal and Nan Jiang and Sham M. Kakade and Wen Sun , "Reinforcement Learning: Theory and Algorithms" , Online Draft
-, 2020 .
+3. <a id="Szepesvari10"></a> Csaba Szepesvari , "Algorithms for Reinforcement Learning" , Morgan and Claypool Publishers
+    , 2010 .
 
-<a id="Szepesvari10"></a>
-
-3. Csaba Szepesvari , "Algorithms for Reinforcement Learning" , Morgan and Claypool Publishers
-, 2010 .
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](deep-perception.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](soft-robots.md)
+**继续阅读**：[上一章：面向操作任务的深度感知（中文）](deep-perception.md) · [全书目录与前言（中文）](preface.md) · [下一章：软体机器人与触觉感知（中文）](soft-robots.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

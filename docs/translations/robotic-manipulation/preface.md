@@ -376,4 +376,5 @@ description: MIT《机器人操作：感知、规划与控制》全书中文目�
 
 ---
 
-**继续阅读**：[第 1 章——引言（中文译文）](introduction.md) · [第 1 章在线原文](https://manipulation.mit.edu/intro.html)
+**继续阅读**：[下一章：引言（中文）](introduction.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

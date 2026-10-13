@@ -73,6 +73,7 @@
 .md-typeset hr { border-color: var(--note-border); margin: 2rem 0; }
 .md-typeset blockquote { border-left: 2px solid var(--md-typeset-a-color); background: var(--note-surface); padding: .65rem 1.1rem; border-radius: 0 12px 12px 0; }
 .md-typeset img { border-radius: 12px; }
+.md-typeset div.arithmatex { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
 .md-typeset pre > code { border: 1px solid var(--note-border); border-radius: 12px; font-size: .7rem; }
 .md-typeset table:not([class]) { border: 1px solid var(--note-border); border-radius: 12px; font-size: .73rem; }
 .md-typeset table:not([class]) th { background: var(--note-surface); }
@@ -225,6 +226,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .course-facts > div { padding: .1rem .65rem; }
 }
 @media (max-width: 650px) {
+  .md-typeset span.arithmatex { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; vertical-align: middle; }
   .md-header__topic { font-size: .85rem; }
   .md-typeset { font-size: .8rem; }
   .md-typeset h1 { font-size: 1.65rem; overflow-wrap: anywhere; }

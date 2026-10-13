@@ -149,33 +149,33 @@ $$
 
 - 作用于同一刚体、在同一坐标系下表达的空间力可以相加，例如：
   
-  $$
-F^{B_p}_{\text{total},C}
-          = \sum_i F^{B_p}_{i,C} .
-$$
+    $$
+    F^{B_p}_{\text{total},C}
+              = \sum_i F^{B_p}_{i,C} .
+    $$
   
   
 
 - 把作用点从 $B_p$ 移到 $B_q$，需要使用叉积：
   
-  <a id="equation-eq-spatial_force_shift"></a>
+    <a id="equation-eq-spatial_force_shift"></a>
 
-$$
-f^{B_q}_C
-          = f^{B_p}_C, \qquad \tau^{B_q}_C = \tau^{B_p}_C + {}^{B_q}p^{B_p}_C
-          \times f^{B_p}_C.
-   \tag{5.1}
-$$
+    $$
+    f^{B_q}_C
+              = f^{B_p}_C, \qquad \tau^{B_q}_C = \tau^{B_p}_C + {}^{B_q}p^{B_p}_C
+              \times f^{B_p}_C.
+       \tag{5.1}
+    $$
   
   
 
 - 和其他空间向量一样，可用旋转改变表达坐标系：
   
-  $$
-f^{B_p}_D = {}^DR^C
-          f^{B_p}_C, \qquad \tau^{B_p}_D = {}^DR^C
-          \tau^{B_p}_C.
-$$
+    $$
+    f^{B_p}_D = {}^DR^C
+              f^{B_p}_C, \qquad \tau^{B_p}_D = {}^DR^C
+              \tau^{B_p}_C.
+    $$
   
   
 
@@ -426,32 +426,32 @@ $$
 
 - 同一点作用、同一坐标系表达的力旋量锥相加，应得到这样一个集合：从每个锥各选一个元素，将它们相加，收集所有可能结果。这个集合运算称为[Minkowski 和](https://en.wikipedia.org/wiki/Minkowski_addition)，记作 $\oplus$，例如：
   
-  $$
-\mathcal{K}^{B_p}_{\text{total},C}=
-            \mathcal{K}^{B_p}_{0,C} \oplus \mathcal{K}^{B_p}_{1,C} \oplus
-            \cdots
-$$
+    $$
+    \mathcal{K}^{B_p}_{\text{total},C}=
+                \mathcal{K}^{B_p}_{0,C} \oplus \mathcal{K}^{B_p}_{1,C} \oplus
+                \cdots
+    $$
   
   
 
 - 将力旋量锥的作用坐标系从 $B_p$ 移到 $B_q$，是对锥的线性运算。为强调这一点，把 [式 5.1](#equation-eq-spatial_force_shift) 写成矩阵形式：
   
-  $$
-\mathcal{K}^{B_q}_C = \begin{bmatrix}
-            I_{3 \times 3} & \left[ {}^{B_q}p^{B_p}_C \right]_\times \\ 0_{3
-            \times 3} & I_{3 \times 3} \end{bmatrix}
-            \mathcal{K}^{B_p}_C,
-$$
+    $$
+    \mathcal{K}^{B_q}_C = \begin{bmatrix}
+                I_{3 \times 3} & \left[ {}^{B_q}p^{B_p}_C \right]_\times \\ 0_{3
+                \times 3} & I_{3 \times 3} \end{bmatrix}
+                \mathcal{K}^{B_p}_C,
+    $$
   
-  ，其中 $[p]_{\times}$ 是叉积对应的反对称矩阵。
+    ，其中 $[p]_{\times}$ 是叉积对应的反对称矩阵。
 
 - 可以用旋转改变表达坐标系：
   
-  $$
-\mathcal{K}^{B_p}_D = \begin{bmatrix} {}^DR^C
-            & 0_{3 \times 3} \\ 0_{3 \times 3} & {}^DR^C \end{bmatrix}
-            \mathcal{K}^{B_p}_C.
-$$
+    $$
+    \mathcal{K}^{B_p}_D = \begin{bmatrix} {}^DR^C
+                & 0_{3 \times 3} \\ 0_{3 \times 3} & {}^DR^C \end{bmatrix}
+                \mathcal{K}^{B_p}_C.
+    $$
   
   
 
@@ -756,12 +756,12 @@ $$
 1. 质量 $m$ 的箱子位于倾角 $\theta$ 的斜面上，接触摩擦系数为 $\mu$：
    
    
-   ![原文插图](assets/clutter/static_equilibrium_ramp.png)
+    ![原文插图](assets/clutter/static_equilibrium_ramp.png)
    
    
    
    
-   。给定倾角 $\theta$，箱子不下滑所需的最小摩擦系数是多少？重力加速度记为 $g$。
+    。给定倾角 $\theta$，箱子不下滑所需的最小摩擦系数是多少？重力加速度记为 $g$。
 
 考虑平地上的三个均匀实心球，半径 $r$、质量 $m$，球之间、球与地面的摩擦系数均为 $\mu$。对下面各个位形，是否存在某些 $\mu\in[0,1]$、$m > 0$、$r > 0$，使球处于静力平衡？解释原因。所有刚体都必须同时满足力和力矩平衡。
 
@@ -770,7 +770,7 @@ $$
 1. 球竖直叠放：
    
    
-   ![原文插图](assets/clutter/static_equilibrium_stacked.png)
+    ![原文插图](assets/clutter/static_equilibrium_stacked.png)
    
    
    
@@ -780,7 +780,7 @@ $$
 2. 一个球放在另一个球上，但有偏移：
    
    
-   ![原文插图](assets/clutter/static_equilibrium_tilted.png)
+    ![原文插图](assets/clutter/static_equilibrium_tilted.png)
    
    
    
@@ -790,7 +790,7 @@ $$
 3. 球堆成金字塔：
    
    
-   ![原文插图](assets/clutter/static_equilibrium_pyramid.png)
+    ![原文插图](assets/clutter/static_equilibrium_pyramid.png)
    
    
    
@@ -800,7 +800,7 @@ $$
 4. 球堆成金字塔，但下方两球相距 $d$：
    
    
-   ![原文插图](assets/clutter/static_equilibrium_pyramid_with_space.png)
+    ![原文插图](assets/clutter/static_equilibrium_pyramid_with_space.png)
    
    
    
@@ -885,17 +885,17 @@ $$
 
 2. 有限状态机（FSM）是另一种计算模型，由状态、转移和事件构成。抓球任务也可用下面的 FSM 表达：
    
-   ![原文插图](assets/clutter/fsm_blanked.png)
+    ![原文插图](assets/clutter/fsm_blanked.png)
    
    
    
-   。其中留下了四处状态或转移，请补齐，使其行为与行为树相同。
+    。其中留下了四处状态或转移，请补齐，使其行为与行为树相同。
 
 从这个简单任务就能看出，FSM 虽然常很直观，却也容易迅速变得复杂。
 
 1. 接下来，用行为树表达本章和课堂中的箱内抓取。只要箱 1 没空，就选择可行抓取、执行，并把夹住的物体搬到箱 2。如果箱 1 还有物体，却找不到可行抓取，假设可以执行摇箱动作，随机改变物体配置，希望出现新机会。
    
-   条件如下：
+    条件如下：
    
    - 箱 1 是否为空？
    
@@ -913,7 +913,7 @@ $$
    
    
    
-   动作如下：
+       动作如下：
    
    - 把抓住的物体放入箱 2
    
@@ -929,15 +929,15 @@ $$
    
    
    
-   请结合这些条件、动作，以及顺序和回退节点，画出实现任务的行为树。下面提供了一个草稿，但有多处错误，例如缺分支，或控制流节点、动作、条件的类型不对：
+       请结合这些条件、动作，以及顺序和回退节点，画出实现任务的行为树。下面提供了一个草稿，但有多处错误，例如缺分支，或控制流节点、动作、条件的类型不对：
    
-   ![原文插图](assets/clutter/behaviorTreeBroken.png)
-   
-   
+       ![原文插图](assets/clutter/behaviorTreeBroken.png)
    
    
    
-   找出全部问题，画出修正后的树。
+   
+   
+       找出全部问题，画出修正后的树。
 
 行为树的模块化来自可复用的动作、条件代码，再通过树组合。例如，(c) 中的“选择抓取”可以用本章对跖抓取算法实现，“把抓住的物体移到箱 2 上方”则可以用第 3 章的抓取与放置工具。
 
@@ -961,110 +961,67 @@ $$
 
 ## 参考文献
 
-<a id="Calli17"></a>
+<div class="references" markdown="1">
 
-1. Berk Calli and Arjun Singh and James Bruce and Aaron Walsman and Kurt Konolige and Siddhartha Srinivasa and Pieter Abbeel and Aaron M Dollar , "Yale-CMU-Berkeley dataset for robotic manipulation research" , The International Journal of Robotics Research , vol. 36, no. 3, pp. 261--268, 2017 .
+1. <a id="Calli17"></a> Berk Calli and Arjun Singh and James Bruce and Aaron Walsman and Kurt Konolige and Siddhartha Srinivasa and Pieter Abbeel and Aaron M Dollar , "Yale-CMU-Berkeley dataset for robotic manipulation research" , The International Journal of Robotics Research , vol. 36, no. 3, pp. 261--268, 2017 .
 
-<a id="Izatt20"></a>
+2. <a id="Izatt20"></a> Gregory Izatt and Russ Tedrake , "Generative Modeling of Environments with Scene Grammars and Variational Inference" , Proceedings of the 2020 IEEE International Conference on Robotics and Automation (ICRA) , 2020 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Izatt20.pdf)
 
-2. Gregory Izatt and Russ Tedrake , "Generative Modeling of Environments with Scene Grammars and Variational Inference" , Proceedings of the 2020 IEEE International Conference on Robotics and Automation (ICRA) , 2020 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Izatt20.pdf)
+3. <a id="Elandt19"></a> Ryan Elandt and Evan Drumwright and Michael Sherman and Andy Ruina , "A pressure field model for fast, robust approximation of net contact force and moment between nominally rigid objects" , 
+    , pp. 8238-8245, 11, 2019 .
 
-<a id="Elandt19"></a>
+4. <a id="Prattichizzo08"></a> Domenico Prattichizzo and Jeffrey C Trinkle , "Grasping" , Springer Handbook of Robotics , pp. 671-700, 2008 .
 
-3. Ryan Elandt and Evan Drumwright and Michael Sherman and Andy Ruina , "A pressure field model for fast, robust approximation of net contact force and moment between nominally rigid objects" , 
-, pp. 8238-8245, 11, 2019 .
+5. <a id="Dai16"></a> Hongkai Dai , "Robust multi-contact dynamical motion planning using contact wrench set" , 
+    PhD thesis, Massachusetts Institute of Technology, 2016 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Dai16.pdf)
 
-<a id="Prattichizzo08"></a>
+6. <a id="tenPas17"></a> Andreas ten Pas and Marcus Gualtieri and Kate Saenko and Robert Platt , "Grasp pose detection in point clouds" , The International Journal of Robotics Research , vol. 36, no. 13-14, pp. 1455--1473, 2017 .
 
-4. Domenico Prattichizzo and Jeffrey C Trinkle , "Grasping" , Springer Handbook of Robotics , pp. 671-700, 2008 .
+7. <a id="Mahler17"></a> Jeffrey Mahler and Jacky Liang and Sherdil Niyaz and Michael Laskey and Richard Doan and Xinyu Liu and Juan Aparicio Ojea and Ken Goldberg , "Dex-net 2.0: Deep learning to plan robust grasps with synthetic point clouds and analytic grasp metrics" , arXiv preprint arXiv:1703.09312 , 2017 .
 
-<a id="Dai16"></a>
+8. <a id="Zeng18"></a> Andy Zeng and Shuran Song and Kuan-Ting Yu and Elliott Donlon and Francois R Hogan and Maria Bauza and Daolin Ma and Orion Taylor and Melody Liu and Eudald Romo and others , "Robotic pick-and-place of novel objects in clutter with multi-affordance grasping and cross-domain image matching" , 2018 IEEE international conference on robotics and automation (ICRA) , pp. 1--8, 2018 .
 
-5. Hongkai Dai , "Robust multi-contact dynamical motion planning using contact wrench set" , 
-PhD thesis, Massachusetts Institute of Technology, 2016 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Dai16.pdf)
+9. <a id="Shakarji98"></a> Craig M Shakarji , "Least-squares fitting algorithms of the NIST algorithm testing system" , Journal of research of the National Institute of Standards and Technology , vol. 103, no. 6, pp. 633, 1998 .
 
-<a id="tenPas17"></a>
+10. <a id="Rusu11"></a> Radu Bogdan Rusu and Steve Cousins , "3D is here: Point Cloud Library (PCL)" , Proceedings of the IEEE International Conference on Robotics and Automation (ICRA) , May 9-13, 2011 .
 
-6. Andreas ten Pas and Marcus Gualtieri and Kate Saenko and Robert Platt , "Grasp pose detection in point clouds" , The International Journal of Robotics Research , vol. 36, no. 13-14, pp. 1455--1473, 2017 .
+11. <a id="Rusu10"></a> Radu Bogdan Rusu , "Semantic 3D Object Maps for Everyday Manipulation in Human Living Environments" , 
+    PhD thesis, Institut für Informatik der Technischen Universität München, 2010 .
 
-<a id="Mahler17"></a>
+12. <a id="Brooks90"></a> R. A. Brooks , "Elephants Don't Play Chess" , Robotics and Autonomous Systems , vol. 6, pp. 3--15,, 1990 .
 
-7. Jeffrey Mahler and Jacky Liang and Sherdil Niyaz and Michael Laskey and Richard Doan and Xinyu Liu and Juan Aparicio Ojea and Ken Goldberg , "Dex-net 2.0: Deep learning to plan robust grasps with synthetic point clouds and analytic grasp metrics" , arXiv preprint arXiv:1703.09312 , 2017 .
+13. <a id="Brooks91"></a> Rodney A. Brooks , "Intelligence Without Reason" , 
+    , no. 1293, April, 1991 .
 
-<a id="Zeng18"></a>
+14. <a id="Brooks91a"></a> Rodney A. Brooks , "Intelligence without representation" , Artificial Intelligence , vol. 47, pp. 139-159, 1991 .
 
-8. Andy Zeng and Shuran Song and Kuan-Ting Yu and Elliott Donlon and Francois R Hogan and Maria Bauza and Daolin Ma and Orion Taylor and Melody Liu and Eudald Romo and others , "Robotic pick-and-place of novel objects in clutter with multi-affordance grasping and cross-domain image matching" , 2018 IEEE international conference on robotics and automation (ICRA) , pp. 1--8, 2018 .
+15. <a id="Fikes71"></a> Richard E Fikes and Nils J Nilsson , "STRIPS: A new approach to the application of theorem proving to problem solving" , Artificial intelligence , vol. 2, no. 3-4, pp. 189--208, 1971 .
 
-<a id="Shakarji98"></a>
+16. <a id="Aeronautiques98"></a> Constructions Aeronautiques and Adele Howe and Craig Knoblock and ISI Drew McDermott and Ashwin Ram and Manuela Veloso and Daniel Weld and David Wilkins SRI and Anthony Barrett and Dave Christianson and others , "PDDL| the planning domain definition language" , Technical Report, Tech. Rep. , 1998 .
 
-9. Craig M Shakarji , "Least-squares fitting algorithms of the NIST algorithm testing system" , Journal of research of the National Institute of Standards and Technology , vol. 103, no. 6, pp. 633, 1998 .
+17. <a id="Haslum19"></a> Patrik Haslum and Nir Lipovetzky and Daniele Magazzeni and Christian Muise and Ronald Brachman and Francesca Rossi and Peter Stone , "An introduction to the planning domain definition language" , Springer
+    , vol. 13, 2019 .
 
-<a id="Rusu11"></a>
+18. <a id="Blum97"></a> Avrim L Blum and Merrick L Furst , "Fast planning through planning graph analysis" , Artificial intelligence , vol. 90, no. 1-2, pp. 281--300, 1997 .
 
-10. Radu Bogdan Rusu and Steve Cousins , "3D is here: Point Cloud Library (PCL)" , Proceedings of the IEEE International Conference on Robotics and Automation (ICRA) , May 9-13, 2011 .
+19. <a id="Bonet01"></a> Blai Bonet and Héctor Geffner , "Planning as heuristic search" , Artificial Intelligence , vol. 129, no. 1-2, pp. 5--33, 2001 .
 
-<a id="Rusu10"></a>
+20. <a id="Hoffmann01"></a> Jörg Hoffmann , "FF: The fast-forward planning system" , AI magazine , vol. 22, no. 3, pp. 57--57, 2001 .
 
-11. Radu Bogdan Rusu , "Semantic 3D Object Maps for Everyday Manipulation in Human Living Environments" , 
-PhD thesis, Institut für Informatik der Technischen Universität München, 2010 .
+21. <a id="Helmert06"></a> Malte Helmert , "The fast downward planning system" , Journal of Artificial Intelligence Research , vol. 26, pp. 191--246, 2006 .
 
-<a id="Brooks90"></a>
+22. <a id="Liang23"></a> Jacky Liang and Wenlong Huang and Fei Xia and Peng Xu and Karol Hausman and Brian Ichter and Pete Florence and Andy Zeng , "Code as policies: Language model programs for embodied control" , 2023 IEEE International Conference on Robotics and Automation (ICRA) , pp. 9493--9500, 2023 .
 
-12. R. A. Brooks , "Elephants Don't Play Chess" , Robotics and Autonomous Systems , vol. 6, pp. 3--15,, 1990 .
+23. <a id="Yao23"></a> Shunyu Yao and Dian Yu and Jeffrey Zhao and Izhak Shafran and Thomas L Griffiths and Yuan Cao and Karthik Narasimhan , "Tree of thoughts: Deliberate problem solving with large language models" , arXiv preprint arXiv:2305.10601 , 2023 .
 
-<a id="Brooks91"></a>
+24. <a id="Colledanchise18"></a> Michele Colledanchise and Petter Ogren , "Behavior trees in robotics and AI: An introduction" , CRC Press
+    , 2018 .
 
-13. Rodney A. Brooks , "Intelligence Without Reason" , 
-, no. 1293, April, 1991 .
-
-<a id="Brooks91a"></a>
-
-14. Rodney A. Brooks , "Intelligence without representation" , Artificial Intelligence , vol. 47, pp. 139-159, 1991 .
-
-<a id="Fikes71"></a>
-
-15. Richard E Fikes and Nils J Nilsson , "STRIPS: A new approach to the application of theorem proving to problem solving" , Artificial intelligence , vol. 2, no. 3-4, pp. 189--208, 1971 .
-
-<a id="Aeronautiques98"></a>
-
-16. Constructions Aeronautiques and Adele Howe and Craig Knoblock and ISI Drew McDermott and Ashwin Ram and Manuela Veloso and Daniel Weld and David Wilkins SRI and Anthony Barrett and Dave Christianson and others , "PDDL| the planning domain definition language" , Technical Report, Tech. Rep. , 1998 .
-
-<a id="Haslum19"></a>
-
-17. Patrik Haslum and Nir Lipovetzky and Daniele Magazzeni and Christian Muise and Ronald Brachman and Francesca Rossi and Peter Stone , "An introduction to the planning domain definition language" , Springer
-, vol. 13, 2019 .
-
-<a id="Blum97"></a>
-
-18. Avrim L Blum and Merrick L Furst , "Fast planning through planning graph analysis" , Artificial intelligence , vol. 90, no. 1-2, pp. 281--300, 1997 .
-
-<a id="Bonet01"></a>
-
-19. Blai Bonet and Héctor Geffner , "Planning as heuristic search" , Artificial Intelligence , vol. 129, no. 1-2, pp. 5--33, 2001 .
-
-<a id="Hoffmann01"></a>
-
-20. Jörg Hoffmann , "FF: The fast-forward planning system" , AI magazine , vol. 22, no. 3, pp. 57--57, 2001 .
-
-<a id="Helmert06"></a>
-
-21. Malte Helmert , "The fast downward planning system" , Journal of Artificial Intelligence Research , vol. 26, pp. 191--246, 2006 .
-
-<a id="Liang23"></a>
-
-22. Jacky Liang and Wenlong Huang and Fei Xia and Peng Xu and Karol Hausman and Brian Ichter and Pete Florence and Andy Zeng , "Code as policies: Language model programs for embodied control" , 2023 IEEE International Conference on Robotics and Automation (ICRA) , pp. 9493--9500, 2023 .
-
-<a id="Yao23"></a>
-
-23. Shunyu Yao and Dian Yu and Jeffrey Zhao and Izhak Shafran and Thomas L Griffiths and Yuan Cao and Karthik Narasimhan , "Tree of thoughts: Deliberate problem solving with large language models" , arXiv preprint arXiv:2305.10601 , 2023 .
-
-<a id="Colledanchise18"></a>
-
-24. Michele Colledanchise and Petter Ogren , "Behavior trees in robotics and AI: An introduction" , CRC Press
-, 2018 .
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](pose-estimation.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](motion-planning.md)
+**继续阅读**：[上一章：基于几何的位姿估计（中文）](pose-estimation.md) · [全书目录与前言（中文）](preface.md) · [下一章：运动规划（中文）](motion-planning.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

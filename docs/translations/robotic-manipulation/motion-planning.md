@@ -662,54 +662,54 @@ $$
 
 - 单调性约束：
   
-  $$
-b(s_i) \ge \epsilon \Rightarrow
-      \dot{s}(t_i) >
-      0.
-$$
+    $$
+    b(s_i) \ge \epsilon \Rightarrow
+          \dot{s}(t_i) >
+          0.
+    $$
   
   
 
 - 速度限值是包围盒约束：
   
-  $$
-\forall j,\,
-      \dot{q}_{min,j}^2 \le r'_j(s_i)^2 b(s_i) \le \dot{q}_{max,j}^2 \Rightarrow
-      \dot{{\mathbf{q}}}_{min} \le \dot{{\mathbf{q}}}(t_i) \le \dot{{\mathbf{q}}}_{max}.
-$$
+    $$
+    \forall j,\,
+          \dot{q}_{min,j}^2 \le r'_j(s_i)^2 b(s_i) \le \dot{q}_{max,j}^2 \Rightarrow
+          \dot{{\mathbf{q}}}_{min} \le \dot{{\mathbf{q}}}(t_i) \le \dot{{\mathbf{q}}}_{max}.
+    $$
   
   
 
 - 加速度限值是线性约束：
   
-  $$
-\ddot{{\mathbf{q}}}_{min} \le
-      {\bf r}''(s_i)b(s_i) + \frac{1}{2} {\bf r}'(s_i) b'(s_i) \le
-      \ddot{{\mathbf{q}}}_{max} \Rightarrow \ddot{{\mathbf{q}}}_{min} \le \ddot{\mathbf{q}}(t_i) \le
-      \ddot{\mathbf{q}}_{max}.
-$$
+    $$
+    \ddot{{\mathbf{q}}}_{min} \le
+          {\bf r}''(s_i)b(s_i) + \frac{1}{2} {\bf r}'(s_i) b'(s_i) \le
+          \ddot{{\mathbf{q}}}_{max} \Rightarrow \ddot{{\mathbf{q}}}_{min} \le \ddot{\mathbf{q}}(t_i) \le
+          \ddot{\mathbf{q}}_{max}.
+    $$
   
   
 
 - 力矩限值是线性约束：
   
-  $$
-\begin{gathered}{\mathbf{u}}_{min} \le
-      \frac{1}{2}{\bf m}(s_i)b'(s_i) + {\bf c}(s_i)b(s_i) + \bar{\bf \tau}_g(s_i)
-      \le {\mathbf{u}}_{max} \Rightarrow\\ {\mathbf{u}}_{min} \le {\mathbf{u}}(t_i) \le
-      {\mathbf{u}}_{max}.\end{gathered}
-$$
+    $$
+    \begin{gathered}{\mathbf{u}}_{min} \le
+          \frac{1}{2}{\bf m}(s_i)b'(s_i) + {\bf c}(s_i)b(s_i) + \bar{\bf \tau}_g(s_i)
+          \le {\mathbf{u}}_{max} \Rightarrow\\ {\mathbf{u}}_{min} \le {\mathbf{u}}(t_i) \le
+          {\mathbf{u}}_{max}.\end{gathered}
+    $$
   
   
 
 - 最小化持续时间是凸目标：
   
-  $$
-t_f - t_0 = \int_{t_0}^{t_f} 1 dt = \int_0^1
-      \frac{1}{\sqrt{b(s)}} ds.
-$$
+    $$
+    t_f - t_0 = \int_{t_0}^{t_f} 1 dt = \int_0^1
+          \frac{1}{\sqrt{b(s)}} ds.
+    $$
   
-  。它看似非凸，但可以改写……（原文此处未展开。）
+    。它看似非凸，但可以改写……（原文此处未展开。）
 
 。我们当然希望有限个约束就能保证整段 $[t_0, t_f]$ 上成立，但实际通常取足够多样本，放弃严格的连续时间保证。
 
@@ -767,7 +767,7 @@ $$
 1. 第一种是后处理捷径化，用较短线段替换现有路径的一部分，见 [参考文献 35](#Geraerts04)。典型流程是随机选两个非相邻节点，用 RRT 的 extend 操作连接，若更好就替换原路径，反复直到步数或时间上限。本题假设 extend 是关节空间直线。下图中，RRT 已找到从 $q_{start}$ 到 $q_{goal}$ 的曲折路径，障碍为红色，$q_{start}$、$q_{goal}$ 标蓝；图是手工绘制的说明例。
    
    
-   ![原文插图](assets/trajectories/shortcutting.png)
+    ![原文插图](assets/trajectories/shortcutting.png)
    
    
    
@@ -838,169 +838,102 @@ $$
 
 ## 参考文献
 
-<a id="Fallon14"></a>
+<div class="references" markdown="1">
 
-1. Maurice Fallon and Scott Kuindersma and Sisir Karumanchi and Matthew Antone and Toby Schneider and Hongkai Dai and Claudia Pérez D'Arpino and Robin Deits and Matt DiCicco and Dehann Fourie and Twan Koolen and Pat Marion and Michael Posa and Andrés Valenzuela and Kuan-Ting Yu and Julie Shah and Karl Iagnemma and Russ Tedrake and Seth Teller , "An Architecture for Online Affordance-based Perception and Whole-body Planning" , Journal of Field Robotics , vol. 32, no. 2, pp. 229-254, September, 2014 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Fallon14.pdf)
+1. <a id="Fallon14"></a> Maurice Fallon and Scott Kuindersma and Sisir Karumanchi and Matthew Antone and Toby Schneider and Hongkai Dai and Claudia Pérez D'Arpino and Robin Deits and Matt DiCicco and Dehann Fourie and Twan Koolen and Pat Marion and Michael Posa and Andrés Valenzuela and Kuan-Ting Yu and Julie Shah and Karl Iagnemma and Russ Tedrake and Seth Teller , "An Architecture for Online Affordance-based Perception and Whole-body Planning" , Journal of Field Robotics , vol. 32, no. 2, pp. 229-254, September, 2014 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Fallon14.pdf)
 
-<a id="Marion16"></a>
+2. <a id="Marion16"></a> Pat Marion and Maurice Fallon and Robin Deits and Andrés Valenzuela and Claudia Pérez D'Arpino and Greg Izatt and Lucas Manuelli and Matt Antone and Hongkai Dai and Twan Koolen and John Carter and Scott Kuindersma and Russ Tedrake , "Director: A User Interface Designed for Robot Operation With Shared Autonomy" , Journal of Field Robotics , vol. 1556-4967, 2016 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Marion16.pdf)
 
-2. Pat Marion and Maurice Fallon and Robin Deits and Andrés Valenzuela and Claudia Pérez D'Arpino and Greg Izatt and Lucas Manuelli and Matt Antone and Hongkai Dai and Twan Koolen and John Carter and Scott Kuindersma and Russ Tedrake , "Director: A User Interface Designed for Robot Operation With Shared Autonomy" , Journal of Field Robotics , vol. 1556-4967, 2016 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Marion16.pdf)
+3. <a id="Wampler11"></a> Charles W. Wampler and Andrew J. Sommese , "Numerical algebraic geometry and algebraic kinematics" , Acta Numerica , vol. 20, pp. 469-567, 2011 .
 
-<a id="Wampler11"></a>
+4. <a id="Diankov10"></a> Rosen Diankov , "Automated Construction of Robotic Manipulation Programs" , 
+    PhD thesis, Carnegie Mellon University, August, 2010 .
 
-3. Charles W. Wampler and Andrew J. Sommese , "Numerical algebraic geometry and algebraic kinematics" , Acta Numerica , vol. 20, pp. 469-567, 2011 .
+5. <a id="Dai17"></a> Hongkai Dai and Gregory Izatt and Russ Tedrake , "Global inverse kinematics via mixed-integer convex optimization" , International Symposium on Robotics Research , 2017 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Dai17.pdf)
 
-<a id="Diankov10"></a>
+6. <a id="Trutman22"></a> Pavel Trutman and Mohab Safey El Din and Didier Henrion and Tomas Pajdla , "Globally optimal solution to inverse kinematics of 7DOF serial manipulator" , IEEE Robotics and Automation Letters , vol. 7, no. 3, pp. 6012--6019, 2022 .
 
-4. Rosen Diankov , "Automated Construction of Robotic Manipulation Programs" , 
-PhD thesis, Carnegie Mellon University, August, 2010 .
+7. <a id="Ratliff09a"></a> Nathan Ratliff and Matthew Zucker and J. Andrew (Drew) Bagnell and Siddhartha Srinivasa , "CHOMP: Gradient Optimization Techniques for Efficient Motion Planning" , IEEE International Conference on Robotics and Automation (ICRA) , May, 2009 .
 
-<a id="Dai17"></a>
+8. <a id="Kalakrishnan11a"></a> Mrinal Kalakrishnan and Sachin Chitta and Evangelos Theodorou and Peter Pastor and Stefan Schaal , "STOMP: Stochastic trajectory optimization for motion planning" , 2011 IEEE international conference on robotics and automation , pp. 4569--4574, 2011 .
 
-5. Hongkai Dai and Gregory Izatt and Russ Tedrake , "Global inverse kinematics via mixed-integer convex optimization" , International Symposium on Robotics Research , 2017 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Dai17.pdf)
+9. <a id="Toussaint17"></a> Marc Toussaint , "A tutorial on Newton methods for constrained trajectory optimization and relations to SLAM, Gaussian Process smoothing, optimal control, and probabilistic inference" , Geometric and numerical foundations of movements , pp. 361--392, 2017 .
 
-<a id="Trutman22"></a>
+10. <a id="Toussaint14"></a> Marc Toussaint , "A Novel Augmented Lagrangian Approach for Inequalities and Convergent Any-Time Non-Central Updates" , 
+    , 2014 .
 
-6. Pavel Trutman and Mohab Safey El Din and Didier Henrion and Tomas Pajdla , "Globally optimal solution to inverse kinematics of 7DOF serial manipulator" , IEEE Robotics and Automation Letters , vol. 7, no. 3, pp. 6012--6019, 2022 .
+11. <a id="LaValle06"></a> Steven M. LaValle , "Planning Algorithms" , Cambridge University Press
+    , 2006 .
 
-<a id="Ratliff09a"></a>
+12. <a id="Amice23"></a> Amice and Alexandre and Werner and Peter and Tedrake and Russ , "Certifying Bimanual RRT Motion Plans in a Second" , International Conference on Robotics and Automation , pp. 9293-9299, 2024 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Amice23.pdf)
 
-7. Nathan Ratliff and Matthew Zucker and J. Andrew (Drew) Bagnell and Siddhartha Srinivasa , "CHOMP: Gradient Optimization Techniques for Efficient Motion Planning" , IEEE International Conference on Robotics and Automation (ICRA) , May, 2009 .
+13. <a id="Marcucci21"></a> Tobia Marcucci and Jack Umenberger and Pablo A. Parrilo and Russ Tedrake , "Shortest Paths in Graphs of Convex Sets" , arxiv , 2023 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Marcucci21.pdf)
 
-<a id="Kalakrishnan11a"></a>
+14. <a id="Ahuja93"></a> Ravindra K Ahuja and Thomas L Magnanti and James B Orlin , "Network flows: theory, algorithms, and applications" , Prentice-Hall, Inc.
+    , 1993 .
 
-8. Mrinal Kalakrishnan and Sachin Chitta and Evangelos Theodorou and Peter Pastor and Stefan Schaal , "STOMP: Stochastic trajectory optimization for motion planning" , 2011 IEEE international conference on robotics and automation , pp. 4569--4574, 2011 .
+15. <a id="Marcucci24a"></a> Tobia Marcucci , "Graphs of Convex Sets with Applications to Optimal Control and Motion Planning" , 
+    PhD thesis, Massachusetts Institute of Technology, May, 2024 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Marcucci24a.pdf)
 
-<a id="Toussaint17"></a>
+16. <a id="Marcucci23a"></a> Tobia Marcucci and Mark Petersen and David von Wrangel and Russ Tedrake , "Motion planning around obstacles with convex optimization" , Science Robotics , vol. 8, no. 84, 2023 .
 
-9. Marc Toussaint , "A tutorial on Newton methods for constrained trajectory optimization and relations to SLAM, Gaussian Process smoothing, optimal control, and probabilistic inference" , Geometric and numerical foundations of movements , pp. 361--392, 2017 .
+17. <a id="Wrangel24"></a> David von Wrangel and Russ Tedrake , "Using Graphs of Convex Sets to Guide Nonconvex Trajectory Optimization" , Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pp. 8, 2024 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Wrangel24.pdf)
 
-<a id="Toussaint14"></a>
+18. <a id="Lozano-Perez90"></a> Tomas Lozano-Perez , "Spatial planning: A configuration space approach" , Springer
+    , 1990 .
 
-10. Marc Toussaint , "A Novel Augmented Lagrangian Approach for Inequalities and Convergent Any-Time Non-Central Updates" , 
-, 2014 .
+19. <a id="Shkolnik11a"></a> Alexander Shkolnik and Russ Tedrake , "Sample-Based Planning with Volumes in Configuration Space" , arXiv:1109.3145v1 [cs.RO] , 2011 .
 
-<a id="LaValle06"></a>
+20. <a id="Deits14"></a> Robin L H Deits and Russ Tedrake , "Computing Large Convex Regions of Obstacle-Free Space through Semidefinite Programming" , Proceedings of the Eleventh International Workshop on the Algorithmic Foundations of Robotics (WAFR 2014) , 2014 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Deits14.pdf)
 
-11. Steven M. LaValle , "Planning Algorithms" , Cambridge University Press
-, 2006 .
+21. <a id="Petersen23a"></a> Mark Petersen and Russ Tedrake , "Growing convex collision-free regions in configuration space using nonlinear programming" , arXiv preprint arXiv:2303.14737 , 2023 .
 
-<a id="Amice23"></a>
+22. <a id="Werner24"></a> Peter Werner and Thomas Cohn and Rebecca H. Jiang and Tim Seyde and Max Simchowitz and Russ Tedrake and Daniela Rus , "Faster Algorithms for Growing Collision-Free Convex Polytopes in Robot Configuration Space" , Accepted to ISRR 2024 , 2024 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Werner24.pdf)
 
-12. Amice and Alexandre and Werner and Peter and Tedrake and Russ , "Certifying Bimanual RRT Motion Plans in a Second" , International Conference on Robotics and Automation , pp. 9293-9299, 2024 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Amice23.pdf)
+23. <a id="Dai23"></a> Hongkai Dai* and Alexandre Amice* and Peter Werner and Annan Zhang and Russ Tedrake , "Certified Polyhedral Decompositions of Collision-Free Configuration Space" , The International Journal of Robotics Research (IJRR) , vol. 43, no. 9, pp. 1322-1341, November, 2023 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Dai23.pdf)
 
-<a id="Marcucci21"></a>
+24. <a id="Werner23"></a> Peter Werner and Alexandre Amice and Tobia Marcucci and Daniela Rus and Russ Tedrake , "Approximating Robot Configuration Spaces with few Convex Sets using Clique Covers of Visibility Graphs" , International Conference on Robotics and Automation , pp. 10359-10365, 2024 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Werner23.pdf)
 
-13. Tobia Marcucci and Jack Umenberger and Pablo A. Parrilo and Russ Tedrake , "Shortest Paths in Graphs of Convex Sets" , arxiv , 2023 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Marcucci21.pdf)
+25. <a id="Marcucci23"></a> Tobia Marcucci and Parth Nobel and Russ Tedrake and Stephen Boyd , "Fast Path Planning Through Large Collections of Safe Boxes" , arXiv preprint arXiv:2305.01072 , 2023 .
 
-<a id="Ahuja93"></a>
+26. <a id="Cohn23"></a> Thomas Cohn and Mark Petersen and Max Simchowitz and Russ Tedrake , "Non-Euclidean Motion Planning with Graphs of Geodesically-Convex Sets" , Robotics: Science and Systems , 2023 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Cohn23.pdf)
 
-14. Ravindra K Ahuja and Thomas L Magnanti and James B Orlin , "Network flows: theory, algorithms, and applications" , Prentice-Hall, Inc.
-, 1993 .
+27. <a id="Cohn23a"></a> Thomas Cohn and Seiji Shaw and Max Simchowitz and Russ Tedrake , "Constrained Bimanual Planning with Analytic Inverse Kinematics" , arXiv preprint arXiv:2309.08770 , May, 2024 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Cohn23a.pdf)
 
-<a id="Marcucci24a"></a>
+28. <a id="Graesdal24"></a> Bernhard P Graesdal and Shao Yuan Chew Chia and Tobia Marcucci and Savva Morozov and Alexandre Amice and Pablo A Parrilo and Russ Tedrake , "Towards Tight Convex Relaxations for Contact-Rich Manipulation" , arXiv preprint arXiv:2402.10312 , 2024 .
 
-15. Tobia Marcucci , "Graphs of Convex Sets with Applications to Optimal Control and Motion Planning" , 
-PhD thesis, Massachusetts Institute of Technology, May, 2024 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Marcucci24a.pdf)
+29. <a id="Kurtz23"></a> Vince Kurtz and Hai Lin , "Temporal Logic Motion Planning with Convex Optimization via Graphs of Convex Sets" , arXiv preprint arXiv:2301.07773 , 2023 .
 
-<a id="Marcucci23a"></a>
+30. <a id="Bobrow85"></a> J.E. Bobrow and S. Dubowsky and J.S. Gibson , "Time-Optimal Control of Robotic Manipulators Along Specified Paths" , Int. J of Robotics Research , vol. 4, no. 3, pp. 3--17, 1985 .
 
-16. Tobia Marcucci and Mark Petersen and David von Wrangel and Russ Tedrake , "Motion planning around obstacles with convex optimization" , Science Robotics , vol. 8, no. 84, 2023 .
+31. <a id="Verscheure09"></a> Diederik Verscheure and Bram Demeulenaere and Jan Swevers and Joris De Schutter and Moritz Diehl , "Time-optimal path tracking for robots: A convex optimization approach" , Automatic Control, IEEE Transactions on , vol. 54, no. 10, pp. 2318--2327, 2009 .
 
-<a id="Wrangel24"></a>
+32. <a id="Debrouwere13"></a> Frederik Debrouwere and Wannes Van Loock and Goele Pipeleers and Quoc Tran Dinh and Moritz Diehl and Joris De Schutter and Jan Swevers , "Time-optimal path following for robots with convex--concave constraints using sequential convex programming" , IEEE Transactions on Robotics , vol. 29, no. 6, pp. 1485--1495, 2013 .
 
-17. David von Wrangel and Russ Tedrake , "Using Graphs of Convex Sets to Guide Nonconvex Trajectory Optimization" , Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , pp. 8, 2024 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Wrangel24.pdf)
+33. <a id="Lipp14"></a> Thomas Lipp and Stephen Boyd , "Minimum-time speed optimisation over a fixed path" , International Journal of Control , vol. 87, no. 6, pp. 1297--1311, 2014 .
 
-<a id="Lozano-Perez90"></a>
+34. <a id="Pham18"></a> Hung Pham and Quang-Cuong Pham , "A new approach to time-optimal path parameterization based on reachability analysis" , IEEE Transactions on Robotics , vol. 34, no. 3, pp. 645--659, 2018 .
 
-18. Tomas Lozano-Perez , "Spatial planning: A configuration space approach" , Springer
-, 1990 .
+35. <a id="Geraerts04"></a> R. Geraerts and M. Overmars , "A comparative study of probabilistic roadmap planners" , Algorithmic Foundations of Robotics V , pp. 43--58, 2004 .
 
-<a id="Shkolnik11a"></a>
+36. <a id="Karaman11"></a> S. Karaman and E. Frazzoli , "Sampling-based Algorithms for Optimal Motion Planning" , Int. Journal of Robotics Research , vol. 30, pp. 846--894, June, 2011 .
 
-19. Alexander Shkolnik and Russ Tedrake , "Sample-Based Planning with Volumes in Configuration Space" , arXiv:1109.3145v1 [cs.RO] , 2011 .
-
-<a id="Deits14"></a>
-
-20. Robin L H Deits and Russ Tedrake , "Computing Large Convex Regions of Obstacle-Free Space through Semidefinite Programming" , Proceedings of the Eleventh International Workshop on the Algorithmic Foundations of Robotics (WAFR 2014) , 2014 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Deits14.pdf)
-
-<a id="Petersen23a"></a>
-
-21. Mark Petersen and Russ Tedrake , "Growing convex collision-free regions in configuration space using nonlinear programming" , arXiv preprint arXiv:2303.14737 , 2023 .
-
-<a id="Werner24"></a>
-
-22. Peter Werner and Thomas Cohn and Rebecca H. Jiang and Tim Seyde and Max Simchowitz and Russ Tedrake and Daniela Rus , "Faster Algorithms for Growing Collision-Free Convex Polytopes in Robot Configuration Space" , Accepted to ISRR 2024 , 2024 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Werner24.pdf)
-
-<a id="Dai23"></a>
-
-23. Hongkai Dai* and Alexandre Amice* and Peter Werner and Annan Zhang and Russ Tedrake , "Certified Polyhedral Decompositions of Collision-Free Configuration Space" , The International Journal of Robotics Research (IJRR) , vol. 43, no. 9, pp. 1322-1341, November, 2023 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Dai23.pdf)
-
-<a id="Werner23"></a>
-
-24. Peter Werner and Alexandre Amice and Tobia Marcucci and Daniela Rus and Russ Tedrake , "Approximating Robot Configuration Spaces with few Convex Sets using Clique Covers of Visibility Graphs" , International Conference on Robotics and Automation , pp. 10359-10365, 2024 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Werner23.pdf)
-
-<a id="Marcucci23"></a>
-
-25. Tobia Marcucci and Parth Nobel and Russ Tedrake and Stephen Boyd , "Fast Path Planning Through Large Collections of Safe Boxes" , arXiv preprint arXiv:2305.01072 , 2023 .
-
-<a id="Cohn23"></a>
-
-26. Thomas Cohn and Mark Petersen and Max Simchowitz and Russ Tedrake , "Non-Euclidean Motion Planning with Graphs of Geodesically-Convex Sets" , Robotics: Science and Systems , 2023 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Cohn23.pdf)
-
-<a id="Cohn23a"></a>
-
-27. Thomas Cohn and Seiji Shaw and Max Simchowitz and Russ Tedrake , "Constrained Bimanual Planning with Analytic Inverse Kinematics" , arXiv preprint arXiv:2309.08770 , May, 2024 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Cohn23a.pdf)
-
-<a id="Graesdal24"></a>
-
-28. Bernhard P Graesdal and Shao Yuan Chew Chia and Tobia Marcucci and Savva Morozov and Alexandre Amice and Pablo A Parrilo and Russ Tedrake , "Towards Tight Convex Relaxations for Contact-Rich Manipulation" , arXiv preprint arXiv:2402.10312 , 2024 .
-
-<a id="Kurtz23"></a>
-
-29. Vince Kurtz and Hai Lin , "Temporal Logic Motion Planning with Convex Optimization via Graphs of Convex Sets" , arXiv preprint arXiv:2301.07773 , 2023 .
-
-<a id="Bobrow85"></a>
-
-30. J.E. Bobrow and S. Dubowsky and J.S. Gibson , "Time-Optimal Control of Robotic Manipulators Along Specified Paths" , Int. J of Robotics Research , vol. 4, no. 3, pp. 3--17, 1985 .
-
-<a id="Verscheure09"></a>
-
-31. Diederik Verscheure and Bram Demeulenaere and Jan Swevers and Joris De Schutter and Moritz Diehl , "Time-optimal path tracking for robots: A convex optimization approach" , Automatic Control, IEEE Transactions on , vol. 54, no. 10, pp. 2318--2327, 2009 .
-
-<a id="Debrouwere13"></a>
-
-32. Frederik Debrouwere and Wannes Van Loock and Goele Pipeleers and Quoc Tran Dinh and Moritz Diehl and Joris De Schutter and Jan Swevers , "Time-optimal path following for robots with convex--concave constraints using sequential convex programming" , IEEE Transactions on Robotics , vol. 29, no. 6, pp. 1485--1495, 2013 .
-
-<a id="Lipp14"></a>
-
-33. Thomas Lipp and Stephen Boyd , "Minimum-time speed optimisation over a fixed path" , International Journal of Control , vol. 87, no. 6, pp. 1297--1311, 2014 .
-
-<a id="Pham18"></a>
-
-34. Hung Pham and Quang-Cuong Pham , "A new approach to time-optimal path parameterization based on reachability analysis" , IEEE Transactions on Robotics , vol. 34, no. 3, pp. 645--659, 2018 .
-
-<a id="Geraerts04"></a>
-
-35. R. Geraerts and M. Overmars , "A comparative study of probabilistic roadmap planners" , Algorithmic Foundations of Robotics V , pp. 43--58, 2004 .
-
-<a id="Karaman11"></a>
-
-36. S. Karaman and E. Frazzoli , "Sampling-based Algorithms for Optimal Motion Planning" , Int. Journal of Robotics Research , vol. 30, pp. 846--894, June, 2011 .
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](bin-picking.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](mobile-manipulation.md)
+**继续阅读**：[上一章：箱内抓取（中文）](bin-picking.md) · [全书目录与前言（中文）](preface.md) · [下一章：移动操作（中文）](mobile-manipulation.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

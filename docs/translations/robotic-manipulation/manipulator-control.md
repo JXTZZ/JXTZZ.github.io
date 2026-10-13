@@ -752,70 +752,45 @@ $$
 
 ## 参考文献
 
-<a id="Salisbury80"></a>
+<div class="references" markdown="1">
 
-1. K. Salisbury , "Active stiffness control of a manipulator in Cartesian coordinates" , Proc. of the 19th IEEE Conference on Decision and Control , 1980 .
+1. <a id="Salisbury80"></a> K. Salisbury , "Active stiffness control of a manipulator in Cartesian coordinates" , Proc. of the 19th IEEE Conference on Decision and Control , 1980 .
 
-<a id="Hogan85a"></a>
+2. <a id="Hogan85a"></a> Neville Hogan , "Impedance Control: An Approach to Manipulation. Part I - Theory" , Journal of Dynamic Systems, Measurement and Control , vol. 107, pp. 1--7, Mar, 1985 .
 
-2. Neville Hogan , "Impedance Control: An Approach to Manipulation. Part I - Theory" , Journal of Dynamic Systems, Measurement and Control , vol. 107, pp. 1--7, Mar, 1985 .
+3. <a id="Hogan85b"></a> Neville Hogan , "Impedance Control: An Approach to Manipulation. Part II - Implementation" , Journal of Dynamic Systems, Measurement and Control , vol. 107, pp. 8--16, Mar, 1985 .
 
-<a id="Hogan85b"></a>
+4. <a id="Hogan85c"></a> Neville Hogan , "Impedance Control: An Approach to Manipulation. Part III - Applications" , Journal of Dynamic Systems, Measurement and Control , vol. 107, pp. 17--24, Mar, 1985 .
 
-3. Neville Hogan , "Impedance Control: An Approach to Manipulation. Part II - Implementation" , Journal of Dynamic Systems, Measurement and Control , vol. 107, pp. 8--16, Mar, 1985 .
+5. <a id="Duindam09"></a> "Modeling and Control of Complex Physical Systems: The Port-Hamiltonian Approach" , Springer-Verlag
+    , 2009 .
 
-<a id="Hogan85c"></a>
+6. <a id="Villani08"></a> Luigi Villani and J De Schutterm , "9" , in: Force Control, Springer Handbook of Robotics , 2008 .
 
-4. Neville Hogan , "Impedance Control: An Approach to Manipulation. Part III - Applications" , Journal of Dynamic Systems, Measurement and Control , vol. 107, pp. 17--24, Mar, 1985 .
+7. <a id="Whitney87"></a> Daniel E Whitney , "Historical perspective and state of the art in robot force control" , The International Journal of Robotics Research , vol. 6, no. 1, pp. 3--14, 1987 .
 
-<a id="Duindam09"></a>
+8. <a id="Lynch17"></a> Kevin M Lynch and Frank C Park , "Modern Robotics" , Cambridge University Press
+    , 2017 .
 
-5. "Modeling and Control of Complex Physical Systems: The Port-Hamiltonian Approach" , Springer-Verlag
-, 2009 .
+9. <a id="Ott08"></a> Christian Ott and Alin Albu-Schaffer and Andreas Kugi and Gerd Hirzinger , "On the passivity-based impedance control of flexible joint robots" , IEEE Transactions on Robotics , vol. 24, no. 2, pp. 416--429, 2008 .
 
-<a id="Villani08"></a>
+10. <a id="Albu-Schaffer07"></a> Alin Albu-Schaffer and Christian Ott and Gerd Hirzinger , "A unified passivity-based control framework for position, torque and impedance control of flexible joint robots" , The international journal of robotics research , vol. 26, no. 1, pp. 23--39, 2007 .
 
-6. Luigi Villani and J De Schutterm , "9" , in: Force Control, Springer Handbook of Robotics , 2008 .
+11. <a id="Albu-Schaffer01"></a> Alin Albu-Schaffer and Gerd Hirzinger , "A globally stable state feedback controller for flexible joint robots" , Advanced Robotics , vol. 15, no. 8, pp. 799--814, 2001 .
 
-<a id="Whitney87"></a>
+12. <a id="Suh22"></a> H.J. Terry Suh and Naveen Kuppuswamy and Tao Pang and Paul Mitiguy and Alex Alspach and Russ Tedrake , "SEED: Series Elastic End Effectors in 6D for Visuotactile Tool Use" , Under review , 2022 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Suh22.pdf)
 
-7. Daniel E Whitney , "Historical perspective and state of the art in robot force control" , The International Journal of Robotics Research , vol. 6, no. 1, pp. 3--14, 1987 .
+13. <a id="Khatib87"></a> Oussama Khatib , "A Unified Approach for Motion and Force Control of Robot Manipulators: The Operational Space Formulation" , IEEE Journal of Robotics and Automation , vol. 3, no. 1, pp. 43-53, February, 1987 .
 
-<a id="Lynch17"></a>
+14. <a id="Drake78"></a> Samuel Hunt Drake , "Using compliance in lieu of sensory feedback for automatic assembly." , 
+    PhD thesis, Massachusetts Institute of Technology, 1978 .
 
-8. Kevin M Lynch and Frank C Park , "Modern Robotics" , Cambridge University Press
-, 2017 .
+15. <a id="Lozano-Perez84"></a> Tomas Lozano-Perez and Matthew Mason and Russell Taylor , "Automatic synthesis of fine-motion strategies for robots" , The International Journal of Robotics Research , vol. 3, no. 1, pp. 3--24, 1984 .
 
-<a id="Ott08"></a>
-
-9. Christian Ott and Alin Albu-Schaffer and Andreas Kugi and Gerd Hirzinger , "On the passivity-based impedance control of flexible joint robots" , IEEE Transactions on Robotics , vol. 24, no. 2, pp. 416--429, 2008 .
-
-<a id="Albu-Schaffer07"></a>
-
-10. Alin Albu-Schaffer and Christian Ott and Gerd Hirzinger , "A unified passivity-based control framework for position, torque and impedance control of flexible joint robots" , The international journal of robotics research , vol. 26, no. 1, pp. 23--39, 2007 .
-
-<a id="Albu-Schaffer01"></a>
-
-11. Alin Albu-Schaffer and Gerd Hirzinger , "A globally stable state feedback controller for flexible joint robots" , Advanced Robotics , vol. 15, no. 8, pp. 799--814, 2001 .
-
-<a id="Suh22"></a>
-
-12. H.J. Terry Suh and Naveen Kuppuswamy and Tao Pang and Paul Mitiguy and Alex Alspach and Russ Tedrake , "SEED: Series Elastic End Effectors in 6D for Visuotactile Tool Use" , Under review , 2022 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Suh22.pdf)
-
-<a id="Khatib87"></a>
-
-13. Oussama Khatib , "A Unified Approach for Motion and Force Control of Robot Manipulators: The Operational Space Formulation" , IEEE Journal of Robotics and Automation , vol. 3, no. 1, pp. 43-53, February, 1987 .
-
-<a id="Drake78"></a>
-
-14. Samuel Hunt Drake , "Using compliance in lieu of sensory feedback for automatic assembly." , 
-PhD thesis, Massachusetts Institute of Technology, 1978 .
-
-<a id="Lozano-Perez84"></a>
-
-15. Tomas Lozano-Perez and Matthew Mason and Russell Taylor , "Automatic synthesis of fine-motion strategies for robots" , The International Journal of Robotics Research , vol. 3, no. 1, pp. 3--24, 1984 .
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](mobile-manipulation.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](object-detection.md)
+**继续阅读**：[上一章：移动操作（中文）](mobile-manipulation.md) · [全书目录与前言（中文）](preface.md) · [下一章：物体检测与分割（中文）](object-detection.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

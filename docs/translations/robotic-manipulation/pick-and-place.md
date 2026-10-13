@@ -117,65 +117,65 @@ Drake [文档](https://drake.mit.edu/doxygen_cxx/group__multibody__notation.html
 
 - 位置在同一坐标系中表达时，只要参考点与目标点首尾衔接，就可以相加：
   
-  $$
-{}^Ap^B_F + {}^Bp^C_F
-        = {}^Ap^C_F.
-$$
+    $$
+    {}^Ap^B_F + {}^Bp^C_F
+            = {}^Ap^C_F.
+    $$
   
-  加法满足交换律，相反向量也有明确的定义：
+    加法满足交换律，相反向量也有明确的定义：
   
-  $$
-{}^Ap^B_F = -
-        {}^Bp^A_F.
-$$
+    $$
+    {}^Ap^B_F = -
+            {}^Bp^A_F.
+    $$
   
-  这些关系应该很直观，请自己确认一下。
+    这些关系应该很直观，请自己确认一下。
 
 - 乘以旋转矩阵可以改变表达坐标系：
   
-  $$
-{}^Ap^B_G = {}^GR^F {}^Ap^B_F.
-$$
+    $$
+    {}^Ap^B_G = {}^GR^F {}^Ap^B_F.
+    $$
   
-  只用旋转就足够，也许有些出乎意料，但表达坐标系的位置确实不影响两点的相对位置。
+    只用旋转就足够，也许有些出乎意料，但表达坐标系的位置确实不影响两点的相对位置。
 
 - 旋转的参考和目标坐标系衔接时，可以相乘：
   
-  $$
-{}^AR^B \: {}^BR^C = {}^AR^C.
-$$
+    $$
+    {}^AR^B \: {}^BR^C = {}^AR^C.
+    $$
   
-  逆运算也很简单：
+    逆运算也很简单：
   
-  $$
-\left[{}^AR^B\right]^{-1} = {}^BR^A.
-$$
+    $$
+    \left[{}^AR^B\right]^{-1} = {}^BR^A.
+    $$
   
-  采用旋转矩阵时，这就是矩阵求逆；又因为旋转矩阵正交，所以 $R^{-1}=R^T.$。
+    采用旋转矩阵时，这就是矩阵求逆；又因为旋转矩阵正交，所以 $R^{-1}=R^T.$。
 
 - 当位置相对某个坐标系测量，也在该坐标系中表达时，变换可以把这些运算统一成方便的记号：
   
-  $$
-{}^Gp^A = {}^GX^F {}^Fp^A = {}^Gp^F + {}^Fp^A_G
-        = {}^Gp^F + {}^GR^F {}^Fp^A.
-$$
+    $$
+    {}^Gp^A = {}^GX^F {}^Fp^A = {}^Gp^F + {}^Fp^A_G
+            = {}^Gp^F + {}^GR^F {}^Fp^A.
+    $$
   
   
 
 - 变换可以复合：
   
-  $$
-{}^AX^B {}^BX^C =
-        {}^AX^C,
-$$
+    $$
+    {}^AX^B {}^BX^C =
+            {}^AX^C,
+    $$
   
-  也有逆变换：
+    也有逆变换：
   
-  $$
-\left[{}^AX^B\right]^{-1} = {}^BX^A.
-$$
+    $$
+    \left[{}^AX^B\right]^{-1} = {}^BX^A.
+    $$
   
-  但请注意，虽然逆变换形式简单，$X^{-1}$ 一般并不等于 $X^T,$。
+    但请注意，虽然逆变换形式简单，$X^{-1}$ 一般并不等于 $X^T,$。
 
 实际实现通常采用[齐次坐标](https://drake.mit.edu/doxygen_cxx/group__multibody__spatial__pose.html)，目前可以先把它视为实现细节。
 
@@ -327,7 +327,6 @@ $$
 
 $$
 dX^B = \frac{\partial f_{kin}^B(q)}{\partial q} dq = J^B(q)dq.
-    
  \tag{3.1}
 $$
 
@@ -346,62 +345,62 @@ $$
 
 - 旋转可用于改变表达坐标系：
   
-  $$
-{}^A\text{v}^B_G = {}^GR^F {}^A\text{v}^B_F,
-        \qquad {}^A\omega^B_G = {}^GR^F {}^A\omega^B_F.
-$$
+    $$
+    {}^A\text{v}^B_G = {}^GR^F {}^A\text{v}^B_F,
+            \qquad {}^A\omega^B_G = {}^GR^F {}^A\omega^B_F.
+    $$
   
   
 
 - 角速度在同一坐标系中表达时，可以相加：
   
-  $$
-\begin{gathered} {}^A\omega^B_F + {}^B\omega^C_F = {}^A\omega^C_F,\end{gathered}
-$$
+    $$
+    \begin{gathered} {}^A\omega^B_F + {}^B\omega^C_F = {}^A\omega^C_F,\end{gathered}
+    $$
   
-  这个关系[值得亲自验证](https://manipulation.mit.edu/#angular_velocity_addition)，相反向量则满足 ${}^A\omega^C_F = - {}^C\omega^A_F,$。
+    这个关系[值得亲自验证](https://manipulation.mit.edu/#angular_velocity_addition)，相反向量则满足 ${}^A\omega^C_F = - {}^C\omega^A_F,$。
 
 - 平移速度的合成稍复杂一些：
   
-  $$
-{}^A\text{v}^C_F = {}^A\text{v}^B_F + {}^B\text{v}^C_F +
-        {}^A\omega^B_F \times {}^Bp^C_F.
-$$
+    $$
+    {}^A\text{v}^C_F = {}^A\text{v}^B_F + {}^B\text{v}^C_F +
+            {}^A\omega^B_F \times {}^Bp^C_F.
+    $$
   
-  推导如下。对 
+    推导如下。对 
   
-  $$
-{}^Ap^C = {}^AX^B {}^Bp^C = {}^Ap^B +
-        {}^AR^B {}^Bp^C,
-$$
+    $$
+    {}^Ap^C = {}^AX^B {}^Bp^C = {}^Ap^B +
+            {}^AR^B {}^Bp^C,
+    $$
   
-   求导，得到 
+    求导，得到 
   
-  $$
-\begin{aligned} {}^A\text{v}^C =& {}^A\text{v}^B +
-        {}^A\dot{R}^B {}^Bp^C + {}^AR^B {}^B\text{v}^C \nonumber \\ =& {}^A\text{v}^B_A +
-        {}^A\dot{R}^B {}^BR^A {}^Bp^C_A + {}^B\text{v}^C_A.\end{aligned}
-$$
+    $$
+    \begin{aligned} {}^A\text{v}^C =& {}^A\text{v}^B +
+            {}^A\dot{R}^B {}^Bp^C + {}^AR^B {}^B\text{v}^C \nonumber \\ =& {}^A\text{v}^B_A +
+            {}^A\dot{R}^B {}^BR^A {}^Bp^C_A + {}^B\text{v}^C_A.\end{aligned}
+    $$
   
-  。暂时省略坐标系，用 $\dot{R}R^T = \dot{R}R^{-1}$ 表示 ${}^A\dot{R}^B {}^BR^A$，则 $\dot{R}R^T$ 总是斜对称矩阵。因为对 $RR^T = I$ 求导会得到 
+    。暂时省略坐标系，用 $\dot{R}R^T = \dot{R}R^{-1}$ 表示 ${}^A\dot{R}^B {}^BR^A$，则 $\dot{R}R^T$ 总是斜对称矩阵。因为对 $RR^T = I$ 求导会得到 
   
-  $$
-\dot{R}R^T + R\dot{R}^T = 0
-        \Rightarrow \dot{R}R^T = - R\dot{R}^T \Rightarrow \dot{R} R^T = - (\dot{R}
-        R^T)^T,
-$$
+    $$
+    \dot{R}R^T + R\dot{R}^T = 0
+            \Rightarrow \dot{R}R^T = - R\dot{R}^T \Rightarrow \dot{R} R^T = - (\dot{R}
+            R^T)^T,
+    $$
   
-  ，这正是斜对称矩阵的定义。任意 3$\times$3 斜对称矩阵，都能用三个数表示；对 ${}^A\dot{R}^B
+    ，这正是斜对称矩阵的定义。任意 3$\times$3 斜对称矩阵，都能用三个数表示；对 ${}^A\dot{R}^B
         {}^BR^A$ 而言，这三个数就是角速度向量 ${}^A
         \omega^B$，所以可以写成叉积 ${}^A\dot{R}^B {}^BR^A
         {}^Bp^C_A = {}^A \omega^B_A \times {}^B p^C_A.$。再在两边乘上 ${}^FR^A$ 改变表达坐标系，就得到上面的结果。
 
 - 因此，平移速度的相反向量不能只靠交换参考和被测坐标系得到，还要考虑额外的一项：
   
-  $$
--{}^A\text{v}^B_F =
-        {}^B\text{v}^A_F + {}^A\omega^B_F \times {}^Bp^A_F.
-$$
+    $$
+    -{}^A\text{v}^B_F =
+            {}^B\text{v}^A_F + {}^A\omega^B_F \times {}^Bp^A_F.
+    $$
   
   
 
@@ -1123,15 +1122,15 @@ $$
 
 1. Roll–Pitch–Yaw：可以用一组 roll、pitch、yaw 角 $(r,p,y)$ 表示旋转。各个旋转的组合顺序，请参考 Drake 的 [RollPitchYaw](https://drake.mit.edu/doxygen_cxx/classdrake_1_1math_1_1_roll_pitch_yaw.html) 类。给定 $p=-\pi/2$，求出以 $r$ 和 $y$ 为变量的旋转矩阵。在这个矩阵中，改变 $r$ 与改变 $y$ 的效果有什么关系？这说明 roll–pitch–yaw 表示有什么特点？提示：试着用[三角函数和角公式](https://en.wikipedia.org/wiki/List_of_trigonometric_identities#Angle_sum_and_difference_identities)化简结果。
    
-   $$
-\sin(\alpha+\beta)=\sin\alpha\cos\beta+\cos\alpha\sin\beta
-$$
+    $$
+    \sin(\alpha+\beta)=\sin\alpha\cos\beta+\cos\alpha\sin\beta
+    $$
    
     
    
-   $$
-\cos(\alpha+\beta)=\cos\alpha\cos\beta-\sin\alpha\sin\beta
-$$
+    $$
+    \cos(\alpha+\beta)=\cos\alpha\cos\beta-\sin\alpha\sin\beta
+    $$
    
    
 
@@ -1139,9 +1138,9 @@ $$
 
 3. 四元数：单位四元数由四个数 $(w,x,y,z)$ 构成，满足 $w^2+x^2+y^2+z^2=1$。它很适合表示朝向，因为它没有 roll–pitch–yaw、轴角等表示中的奇异性，所以[对朝向做插值](https://manipulation.mit.edu/#pick_and_place_trajectory)时尤其可靠。不过，它仍有“同一个朝向对应多个表示”的问题。把单位四元数 $(w,x,y,z)$ 转成轴角向量 $(a_x,a_y,a_z)$，先计算 $\theta=2\arccos(w)$，再对任意整数 $n$ 使用：
    
-   $$
-(a_x,a_y,a_z)=\left\{\begin{array}{ll} \displaystyle\frac{\theta}{\sin(\theta/2)}(x,y,z) & \theta\ne 2n\pi\\ (0,0,0) & \theta=2n\pi \end{array}\right.
-$$
+    $$
+    (a_x,a_y,a_z)=\left\{\begin{array}{ll} \displaystyle\frac{\theta}{\sin(\theta/2)}(x,y,z) & \theta\ne 2n\pi\\ (0,0,0) & \theta=2n\pi \end{array}\right.
+    $$
    
     请将四元数转换为轴角并化简三角表达式，证明对任意单位四元数 $(w,x,y,z)$，$(-w,-x,-y,-z)$ 都表示同一朝向。事实上，每个朝向恰好对应两个单位四元数！提示 1：对任意 $\alpha$ 和 $\beta$，都有 $\arccos(-\alpha)=\pi-\arccos(\alpha)$ 与 $\sin(\pi-\beta)=\sin(\beta)$。提示 2：对任意旋转角 $\theta$，$\theta\pm 2\pi$ 表示相同朝向。提示 3：$\frac{1}{\sin(\theta/2)}(x,y,z)$ 是单位向量。
 
@@ -1163,48 +1162,35 @@ $$
 
 ## 参考文献
 
-<a id="Craig05"></a>
+<div class="references" markdown="1">
 
-1. John J. Craig , "Introduction to Robotics: Mechanics and Control" , Pearson Education, Inc
-, 2005 .
+1. <a id="Craig05"></a> John J. Craig , "Introduction to Robotics: Mechanics and Control" , Pearson Education, Inc
+    , 2005 .
 
-<a id="Murray94"></a>
+2. <a id="Murray94"></a> Richard M. Murray and Zexiang Li and S. Shankar Sastry , "A Mathematical Introduction to Robotic Manipulation" , CRC Press, Inc.
+    , 1994 .
 
-2. Richard M. Murray and Zexiang Li and S. Shankar Sastry , "A Mathematical Introduction to Robotic Manipulation" , CRC Press, Inc.
-, 1994 .
+3. <a id="Lynch17"></a> Kevin M Lynch and Frank C Park , "Modern Robotics" , Cambridge University Press
+    , 2017 .
 
-<a id="Lynch17"></a>
+4. <a id="Mitiguy17"></a> Paul Mitiguy , "Advanced Dynamics & Motion Simulation: For Professional Engineers and Scientists (graduate Work) ; 3D, Computational, Guided" , Prodigy Press
+    , 2017 .
 
-3. Kevin M Lynch and Frank C Park , "Modern Robotics" , Cambridge University Press
-, 2017 .
+5. <a id="Stillwell08"></a> John Stillwell , "Naive Lie theory" , Springer Science & Business Media
+    , 2008 .
 
-<a id="Mitiguy17"></a>
+6. <a id="Mussa-Ivaldi91"></a> Ferdinando A. Mussa-Ivaldi and Neville Hogan , "Integrable Solutions of Kinematic Redundancy via Impedance Control" , The International Journal of Robotics Research , vol. 10, no. 5, pp. 481-491, 1991 .
 
-4. Paul Mitiguy , "Advanced Dynamics & Motion Simulation: For Professional Engineers and Scientists (graduate Work) ; 3D, Computational, Guided" , Prodigy Press
-, 2017 .
+7. <a id="Boyd04a"></a> Stephen Boyd and Lieven Vandenberghe , "Convex Optimization" , Cambridge University Press
+    , 2004 .
 
-<a id="Stillwell08"></a>
+8. <a id="Flacco15"></a> Fabrizio Flacco and Alessandro De Luca and Oussama Khatib , "Control of redundant robots under hard joint constraints: Saturation in the null space" , IEEE Transactions on Robotics , vol. 31, no. 3, pp. 637--654, 2015 .
 
-5. John Stillwell , "Naive Lie theory" , Springer Science & Business Media
-, 2008 .
+9. <a id="Escande14"></a> Adrien Escande and Nicolas Mansard and Pierre-Brice Wieber , "Hierarchical quadratic programming: Fast online humanoid-robot motion generation" , The International Journal of Robotics Research , vol. 33, no. 7, pp. 1006--1028, 2014 .
 
-<a id="Mussa-Ivaldi91"></a>
-
-6. Ferdinando A. Mussa-Ivaldi and Neville Hogan , "Integrable Solutions of Kinematic Redundancy via Impedance Control" , The International Journal of Robotics Research , vol. 10, no. 5, pp. 481-491, 1991 .
-
-<a id="Boyd04a"></a>
-
-7. Stephen Boyd and Lieven Vandenberghe , "Convex Optimization" , Cambridge University Press
-, 2004 .
-
-<a id="Flacco15"></a>
-
-8. Fabrizio Flacco and Alessandro De Luca and Oussama Khatib , "Control of redundant robots under hard joint constraints: Saturation in the null space" , IEEE Transactions on Robotics , vol. 31, no. 3, pp. 637--654, 2015 .
-
-<a id="Escande14"></a>
-
-9. Adrien Escande and Nicolas Mansard and Pierre-Brice Wieber , "Hierarchical quadratic programming: Fast online humanoid-robot motion generation" , The International Journal of Robotics Research , vol. 33, no. 7, pp. 1006--1028, 2014 .
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](robot.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](pose-estimation.md)
+**继续阅读**：[上一章：先给你准备一个机器人（中文）](robot.md) · [全书目录与前言（中文）](preface.md) · [下一章：基于几何的位姿估计（中文）](pose-estimation.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

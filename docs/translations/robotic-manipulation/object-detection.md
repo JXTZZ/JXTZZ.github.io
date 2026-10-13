@@ -162,21 +162,13 @@ python3 segmentation/segmentation_data.py
 
 下面的 notebook 加载我们的一万张图像，以及在 COCO 上预训练的 Mask R-CNN。然后替换预测头，使输出类别数量适合 YCB 识别任务，再用新数据集训练 10 个 epoch。
 
-[
-
-![原文插图](assets/segmentation/colab-badge.svg)
-
-](https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/segmentation_train.ipynb)（训练 notebook）
+[![Open in Colab](assets/segmentation/colab-badge.svg)](https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/segmentation_train.ipynb)（训练 notebook）
 
 这个网络保存下来约占 150 MB，训练并不快。建议观看训练时就启动紧接着的保存单元格，让训练完成后自动保存、下载权重，免得 Colab 会话关闭时丢失结果。完成后，就有了一个能分割料箱中 YCB 物体的新网络。
 
 我还提供了第二个 notebook，用于加载和评估训练好的模型。如果不想等自己的模型训练完成，也可以查看我已经训练好的版本。
 
-[
-
-![原文插图](assets/segmentation/colab-badge.svg)
-
-](https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/segmentation_inference.ipynb)（推理 notebook）
+[![Open in Colab](assets/segmentation/colab-badge.svg)](https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/segmentation_inference.ipynb)（推理 notebook）
 
 ![原文插图](assets/segmentation/segmentation_detections.png)
 
@@ -260,63 +252,40 @@ python3 segmentation/segmentation_data.py
 
 ## 参考文献
 
-<a id="Russakovsky15"></a>
+<div class="references" markdown="1">
 
-1. Olga Russakovsky and Jia Deng and Hao Su and Jonathan Krause and Sanjeev Satheesh and Sean Ma and Zhiheng Huang and Andrej Karpathy and Aditya Khosla and Michael Bernstein and others , "Imagenet large scale visual recognition challenge" , International journal of computer vision , vol. 115, no. 3, pp. 211--252, 2015 .
+1. <a id="Russakovsky15"></a> Olga Russakovsky and Jia Deng and Hao Su and Jonathan Krause and Sanjeev Satheesh and Sean Ma and Zhiheng Huang and Andrej Karpathy and Aditya Khosla and Michael Bernstein and others , "Imagenet large scale visual recognition challenge" , International journal of computer vision , vol. 115, no. 3, pp. 211--252, 2015 .
 
-<a id="Lin14a"></a>
+2. <a id="Lin14a"></a> Tsung-Yi Lin and Michael Maire and Serge Belongie and James Hays and Pietro Perona and Deva Ramanan and Piotr Dollár and C Lawrence Zitnick , "Microsoft coco: Common objects in context" , European conference on computer vision , pp. 740--755, 2014 .
 
-2. Tsung-Yi Lin and Michael Maire and Serge Belongie and James Hays and Pietro Perona and Deva Ramanan and Piotr Dollár and C Lawrence Zitnick , "Microsoft coco: Common objects in context" , European conference on computer vision , pp. 740--755, 2014 .
+3. <a id="Russell08"></a> Bryan C Russell and Antonio Torralba and Kevin P Murphy and William T Freeman , "LabelMe: a database and web-based tool for image annotation" , International journal of computer vision , vol. 77, no. 1-3, pp. 157--173, 2008 .
 
-<a id="Russell08"></a>
+4. <a id="Marion17"></a> Pat Marion and Peter R. Florence and Lucas Manuelli and Russ Tedrake , "A Pipeline for Generating Ground Truth Labels for Real RGBD Data of Cluttered Scenes" , International Conference on Robotics and Automation (ICRA), Brisbane, Australia , May, 2018 .
+    [文献链接](https://arxiv.org/abs/1707.04796)
 
-3. Bryan C Russell and Antonio Torralba and Kevin P Murphy and William T Freeman , "LabelMe: a database and web-based tool for image annotation" , International journal of computer vision , vol. 77, no. 1-3, pp. 157--173, 2008 .
+5. <a id="Whelan16"></a> Thomas Whelan and Renato F Salas-Moreno and Ben Glocker and Andrew J Davison and Stefan Leutenegger , "ElasticFusion: Real-time dense SLAM and light source estimation" , The International Journal of Robotics Research , vol. 35, no. 14, pp. 1697--1716, 2016 .
 
-<a id="Marion17"></a>
+6. <a id="Northcutt21"></a> Curtis G Northcutt and Anish Athalye and Jonas Mueller , "Pervasive label errors in test sets destabilize machine learning benchmarks" , arXiv preprint arXiv:2103.14749 , 2021 .
 
-4. Pat Marion and Peter R. Florence and Lucas Manuelli and Russ Tedrake , "A Pipeline for Generating Ground Truth Labels for Real RGBD Data of Cluttered Scenes" , International Conference on Robotics and Automation (ICRA), Brisbane, Australia , May, 2018 .
-[文献链接](https://arxiv.org/abs/1707.04796)
+7. <a id="Kirillov23"></a> Alexander Kirillov and Eric Mintun and Nikhila Ravi and Hanzi Mao and Chloe Rolland and Laura Gustafson and Tete Xiao and Spencer Whitehead and Alexander C Berg and Wan-Yen Lo and others , "Segment anything" , arXiv preprint arXiv:2304.02643 , 2023 .
 
-<a id="Whelan16"></a>
+8. <a id="Long15"></a> Jonathan Long and Evan Shelhamer and Trevor Darrell , "Fully convolutional networks for semantic segmentation" , Proceedings of the IEEE conference on computer vision and pattern recognition , pp. 3431--3440, 2015 .
 
-5. Thomas Whelan and Renato F Salas-Moreno and Ben Glocker and Andrew J Davison and Stefan Leutenegger , "ElasticFusion: Real-time dense SLAM and light source estimation" , The International Journal of Robotics Research , vol. 35, no. 14, pp. 1697--1716, 2016 .
+9. <a id="Girshick14"></a> Ross Girshick and Jeff Donahue and Trevor Darrell and Jitendra Malik , "Rich feature hierarchies for accurate object detection and semantic segmentation" , Proceedings of the IEEE conference on computer vision and pattern recognition , pp. 580--587, 2014 .
 
-<a id="Northcutt21"></a>
+10. <a id="Girshick15"></a> Ross Girshick , "Fast r-cnn" , Proceedings of the IEEE international conference on computer vision , pp. 1440--1448, 2015 .
 
-6. Curtis G Northcutt and Anish Athalye and Jonas Mueller , "Pervasive label errors in test sets destabilize machine learning benchmarks" , arXiv preprint arXiv:2103.14749 , 2021 .
+11. <a id="Ren15"></a> Shaoqing Ren and Kaiming He and Ross Girshick and Jian Sun , "Faster r-cnn: Towards real-time object detection with region proposal networks" , Advances in neural information processing systems , pp. 91--99, 2015 .
 
-<a id="Kirillov23"></a>
+12. <a id="He17"></a> Kaiming He and Georgia Gkioxari and Piotr Dollár and Ross Girshick , "Mask R-CNN" , Proceedings of the IEEE international conference on computer vision , pp. 2961--2969, 2017 .
 
-7. Alexander Kirillov and Eric Mintun and Nikhila Ravi and Hanzi Mao and Chloe Rolland and Laura Gustafson and Tete Xiao and Spencer Whitehead and Alexander C Berg and Wan-Yen Lo and others , "Segment anything" , arXiv preprint arXiv:2304.02643 , 2023 .
+13. <a id="Bommasani21"></a> Rishi Bommasani and Drew A Hudson and Ehsan Adeli and Russ Altman and Simran Arora and Sydney von Arx and Michael S Bernstein and Jeannette Bohg and Antoine Bosselut and Emma Brunskill and others , "On the opportunities and risks of foundation models" , arXiv preprint arXiv:2108.07258 , 2021 .
 
-<a id="Long15"></a>
+14. <a id="Radford21"></a> Alec Radford and Jong Wook Kim and Chris Hallacy and Aditya Ramesh and Gabriel Goh and Sandhini Agarwal and Girish Sastry and Amanda Askell and Pamela Mishkin and Jack Clark and others , "Learning transferable visual models from natural language supervision" , International Conference on Machine Learning , pp. 8748--8763, 2021 .
 
-8. Jonathan Long and Evan Shelhamer and Trevor Darrell , "Fully convolutional networks for semantic segmentation" , Proceedings of the IEEE conference on computer vision and pattern recognition , pp. 3431--3440, 2015 .
-
-<a id="Girshick14"></a>
-
-9. Ross Girshick and Jeff Donahue and Trevor Darrell and Jitendra Malik , "Rich feature hierarchies for accurate object detection and semantic segmentation" , Proceedings of the IEEE conference on computer vision and pattern recognition , pp. 580--587, 2014 .
-
-<a id="Girshick15"></a>
-
-10. Ross Girshick , "Fast r-cnn" , Proceedings of the IEEE international conference on computer vision , pp. 1440--1448, 2015 .
-
-<a id="Ren15"></a>
-
-11. Shaoqing Ren and Kaiming He and Ross Girshick and Jian Sun , "Faster r-cnn: Towards real-time object detection with region proposal networks" , Advances in neural information processing systems , pp. 91--99, 2015 .
-
-<a id="He17"></a>
-
-12. Kaiming He and Georgia Gkioxari and Piotr Dollár and Ross Girshick , "Mask R-CNN" , Proceedings of the IEEE international conference on computer vision , pp. 2961--2969, 2017 .
-
-<a id="Bommasani21"></a>
-
-13. Rishi Bommasani and Drew A Hudson and Ehsan Adeli and Russ Altman and Simran Arora and Sydney von Arx and Michael S Bernstein and Jeannette Bohg and Antoine Bosselut and Emma Brunskill and others , "On the opportunities and risks of foundation models" , arXiv preprint arXiv:2108.07258 , 2021 .
-
-<a id="Radford21"></a>
-
-14. Alec Radford and Jong Wook Kim and Chris Hallacy and Aditya Ramesh and Gabriel Goh and Sandhini Agarwal and Girish Sastry and Amanda Askell and Pamela Mishkin and Jack Clark and others , "Learning transferable visual models from natural language supervision" , International Conference on Machine Learning , pp. 8748--8763, 2021 .
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](manipulator-control.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](deep-perception.md)
+**继续阅读**：[上一章：机械臂控制（中文）](manipulator-control.md) · [全书目录与前言（中文）](preface.md) · [下一章：面向操作任务的深度感知（中文）](deep-perception.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

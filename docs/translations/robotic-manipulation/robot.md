@@ -503,9 +503,10 @@ python3 drake/examples/hardware_sim/hardware_sim.py \
 
 1. 对一个配有电机和减速器的单摆，推导其一阶状态空间动力学：
 
-   $$
-   \dot{\mathbf{x}} = f(\mathbf{x},\mathbf{u}).
-   $$
+    $$
+    \dot{\mathbf{x}} = f(\mathbf{x},\mathbf{u}).
+    $$
+
 2. 在相同的位置控制律下，比较直驱单摆与配有大减速比减速器的单摆，它们的运动表现有什么不同。
 
 ### 练习 2.2　操作工作站的输入和输出端口
@@ -540,51 +541,33 @@ python3 drake/examples/hardware_sim/hardware_sim.py \
 
 ## 参考文献
 
-<a id="reference-1"></a>
+<div class="references" markdown="1">
 
-1. Jemin Hwangbo、Joonho Lee、Alexey Dosovitskiy、Dario Bellicoso、Vassilios Tsounis、Vladlen Koltun、Marco Hutter，《让腿式机器人学习敏捷的动态运动技能》（“Learning agile and dynamic motor skills for legged robots”），*Science Robotics*，第 4 卷，第 26 期，文章编号 eaau5872，2019 年。
+1. <a id="reference-1"></a> Jemin Hwangbo、Joonho Lee、Alexey Dosovitskiy、Dario Bellicoso、Vassilios Tsounis、Vladlen Koltun、Marco Hutter，《让腿式机器人学习敏捷的动态运动技能》（“Learning agile and dynamic motor skills for legged robots”），*Science Robotics*，第 4 卷，第 26 期，文章编号 eaau5872，2019 年。
 
-<a id="reference-2"></a>
+2. <a id="reference-2"></a> Haruhiko Asada、Kamal Youcef-Toumi，《直驱机器人：理论与实践》（“Direct-Drive Robots — Theory and Practice”），MIT Press，1987 年。
 
-2. Haruhiko Asada、Kamal Youcef-Toumi，《直驱机器人：理论与实践》（“Direct-Drive Robots — Theory and Practice”），MIT Press，1987 年。
+3. <a id="reference-3"></a> P. M. Wensing、A. Wang、S. Seok、D. Otten、J. Lang、S. Kim，《MIT Cheetah 的本体感知执行器设计：面向动态腿式机器人的冲击缓解与高带宽物理交互》（“Proprioceptive Actuator Design in the MIT Cheetah: Impact Mitigation and High-Bandwidth Physical Interaction for Dynamic Legged Robots”），*IEEE Transactions on Robotics*，第 33 卷，第 3 期，第 509–522 页，2017 年 6 月。
 
-<a id="reference-3"></a>
+4. <a id="reference-4"></a> Navvab Kashiri、Jörn Malzahn、Nikos Tsagarakis，《力矩控制执行器的传感器设计：基于应变片与编码器原理的比较研究》（“On the Sensor Design of Torque Controlled Actuators: A Comparison Study of Strain Gauge and Encoder Based Principles”），*IEEE Robotics and Automation Letters*，卷号 PP，02，2017 年。
 
-3. P. M. Wensing、A. Wang、S. Seok、D. Otten、J. Lang、S. Kim，《MIT Cheetah 的本体感知执行器设计：面向动态腿式机器人的冲击缓解与高带宽物理交互》（“Proprioceptive Actuator Design in the MIT Cheetah: Impact Mitigation and High-Bandwidth Physical Interaction for Dynamic Legged Robots”），*IEEE Transactions on Robotics*，第 33 卷，第 3 期，第 509–522 页，2017 年 6 月。
+5. <a id="reference-5"></a> A. Wedler、M. Chalon、K. Landzettel、M. Görner、E. Krämer、R. Gruber、A. Beyer、H. J. Sedlmayr、B. Willberg、W. Bertleff 等，《用于空间机器人应用的 DLR 动态执行器模块》（“DLRs dynamic actuator modules for robotic space applications”），*Proceedings of the 41st Aerospace Mechanisms Symposium*，2012 年 5 月 16–18 日。
 
-<a id="reference-4"></a>
+6. <a id="reference-6"></a> G. A. Pratt、M. M. Williamson，《串联弹性执行器》（“Series elastic actuators”），*Proceedings 1995 IEEE/RSJ International Conference on Intelligent Robots and Systems. Human Robot Interaction and Cooperative Robots*，第 1 卷，第 399–406 页，1995 年 8 月。
 
-4. Navvab Kashiri、Jörn Malzahn、Nikos Tsagarakis，《力矩控制执行器的传感器设计：基于应变片与编码器原理的比较研究》（“On the Sensor Design of Torque Controlled Actuators: A Comparison Study of Strain Gauge and Encoder Based Principles”），*IEEE Robotics and Automation Letters*，卷号 PP，02，2017 年。
+7. <a id="reference-7"></a> Alin Albu-Schaffer、Christian Ott、Gerd Hirzinger，《柔性关节机器人位置、力矩与阻抗控制的统一无源性框架》（“A unified passivity-based control framework for position, torque and impedance control of flexible joint robots”），*The International Journal of Robotics Research*，第 26 卷，第 1 期，第 23–39 页，2007 年。
 
-<a id="reference-5"></a>
+8. <a id="reference-8"></a> Tao Pang、Russ Tedrake，《准静态刚性多体系统的鲁棒时间步进方法》（“A Robust Time-Stepping Scheme for Quasistatic Rigid Multibody Systems”），*IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)*，2018 年。[原文链接](http://groups.csail.mit.edu/robotics-center/public_papers/Pang18.pdf)
 
-5. A. Wedler、M. Chalon、K. Landzettel、M. Görner、E. Krämer、R. Gruber、A. Beyer、H. J. Sedlmayr、B. Willberg、W. Bertleff 等，《用于空间机器人应用的 DLR 动态执行器模块》（“DLRs dynamic actuator modules for robotic space applications”），*Proceedings of the 41st Aerospace Mechanisms Symposium*，2012 年 5 月 16–18 日。
+9. <a id="reference-9"></a> Yong-Jae Kim、Junsuk Yoon、Young-Woo Sim，《具有类人冲击吸收能力的流体润滑灵巧手指机构》（“Fluid Lubricated Dexterous Finger Mechanism for Human-Like Impact Absorbing Capability”），*IEEE Robotics and Automation Letters*，第 4 卷，第 4 期，第 3971–3978 页，2019 年。
 
-<a id="reference-6"></a>
+10. <a id="reference-10"></a> Lael U. Odhner、Leif P. Jentoft、Mark R. Claffee、Nicholas Corson、Yaroslav Tenzer、Raymond R. Ma、Martin Buehler、Robert Kohout、Robert D. Howe、Aaron M. Dollar，《用于鲁棒操作的柔顺欠驱动机械手》（“A Compliant, Underactuated Hand for Robust Manipulation”），*International Journal of Robotics Research (IJRR)*，第 33 卷，第 5 期，第 736–752 页，2014 年。
 
-6. G. A. Pratt、M. M. Williamson，《串联弹性执行器》（“Series elastic actuators”），*Proceedings 1995 IEEE/RSJ International Conference on Intelligent Robots and Systems. Human Robot Interaction and Cooperative Robots*，第 1 卷，第 399–406 页，1995 年 8 月。
+11. <a id="reference-11"></a> Eric Brown、Nicholas Rodenberg、John Amend、Annan Mozeika、Erik Steltz、Mitchell R. Zakin、Hod Lipson、Heinrich M. Jaeger，《基于颗粒材料阻塞的通用机器人夹爪》（“Universal robotic gripper based on the jamming of granular material”），*Proceedings of the National Academy of Sciences*，第 107 卷，第 44 期，第 18809–18814 页，2010 年。
 
-<a id="reference-7"></a>
-
-7. Alin Albu-Schaffer、Christian Ott、Gerd Hirzinger，《柔性关节机器人位置、力矩与阻抗控制的统一无源性框架》（“A unified passivity-based control framework for position, torque and impedance control of flexible joint robots”），*The International Journal of Robotics Research*，第 26 卷，第 1 期，第 23–39 页，2007 年。
-
-<a id="reference-8"></a>
-
-8. Tao Pang、Russ Tedrake，《准静态刚性多体系统的鲁棒时间步进方法》（“A Robust Time-Stepping Scheme for Quasistatic Rigid Multibody Systems”），*IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)*，2018 年。[原文链接](http://groups.csail.mit.edu/robotics-center/public_papers/Pang18.pdf)
-
-<a id="reference-9"></a>
-
-9. Yong-Jae Kim、Junsuk Yoon、Young-Woo Sim，《具有类人冲击吸收能力的流体润滑灵巧手指机构》（“Fluid Lubricated Dexterous Finger Mechanism for Human-Like Impact Absorbing Capability”），*IEEE Robotics and Automation Letters*，第 4 卷，第 4 期，第 3971–3978 页，2019 年。
-
-<a id="reference-10"></a>
-
-10. Lael U. Odhner、Leif P. Jentoft、Mark R. Claffee、Nicholas Corson、Yaroslav Tenzer、Raymond R. Ma、Martin Buehler、Robert Kohout、Robert D. Howe、Aaron M. Dollar，《用于鲁棒操作的柔顺欠驱动机械手》（“A Compliant, Underactuated Hand for Robust Manipulation”），*International Journal of Robotics Research (IJRR)*，第 33 卷，第 5 期，第 736–752 页，2014 年。
-
-<a id="reference-11"></a>
-
-11. Eric Brown、Nicholas Rodenberg、John Amend、Annan Mozeika、Erik Steltz、Mitchell R. Zakin、Hod Lipson、Heinrich M. Jaeger，《基于颗粒材料阻塞的通用机器人夹爪》（“Universal robotic gripper based on the jamming of granular material”），*Proceedings of the National Academy of Sciences*，第 107 卷，第 44 期，第 18809–18814 页，2010 年。
+</div>
 
 ---
 
-**继续阅读**：[上一章：引言（中文）](introduction.md) · [全书目录与前言（中文）](preface.md) · [下一章：基本的抓取与放置（中文）](pick-and-place.md)
+**继续阅读**：[上一章：引言（中文）](introduction.md) · [全书目录与前言（中文）](preface.md) · [下一章：基本的抓取与放置（中文）](pick-and-place.md)  
 [无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

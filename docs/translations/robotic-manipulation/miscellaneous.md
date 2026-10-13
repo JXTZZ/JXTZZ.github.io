@@ -157,4 +157,5 @@ description: MIT《机器人操作：感知、规划与控制》中文翻译：�
 
 ---
 
-**继续阅读**：[上一节（中文）](manipulation-station.md) · [全书目录与前言（中文）](preface.md)
+**继续阅读**：[上一章：附录 D · 搭建自己的机器人操作工作站（中文）](manipulation-station.md) · [全书目录与前言（中文）](preface.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

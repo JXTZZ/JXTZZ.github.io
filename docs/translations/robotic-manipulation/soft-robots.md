@@ -91,15 +91,16 @@ description: MIT《机器人操作：感知、规划与控制》中文翻译：�
 
 ## 参考文献
 
-<a id="Han23"></a>
+<div class="references" markdown="1">
 
-1. Xuchen Han and Joseph Masterjohn and Alejandro Castro , "A Convex Formulation of Frictional Contact between Rigid and Deformable Bodies" , arXiv preprint arXiv:2303.08912 , 2023 .
+1. <a id="Han23"></a> Xuchen Han and Joseph Masterjohn and Alejandro Castro , "A Convex Formulation of Frictional Contact between Rigid and Deformable Bodies" , arXiv preprint arXiv:2303.08912 , 2023 .
 
-<a id="Pang20a"></a>
+2. <a id="Pang20a"></a> Tao Pang and Jack Umenberger and Russ Tedrake , "Identifying External Contacts from Joint Torque Measurements on Serial Robotic Arms and Its Limitations" , Under Review. , May, 2021 .
+    [文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Pang20a.pdf)
 
-2. Tao Pang and Jack Umenberger and Russ Tedrake , "Identifying External Contacts from Joint Torque Measurements on Serial Robotic Arms and Its Limitations" , Under Review. , May, 2021 .
-[文献链接](http://groups.csail.mit.edu/robotics-center/public_papers/Pang20a.pdf)
+</div>
 
 ---
 
-**继续阅读**：[上一节（中文）](reinforcement-learning.md) · [全书目录与前言（中文）](preface.md) · [下一节（中文）](spatial-algebra.md)
+**继续阅读**：[上一章：强化学习（中文）](reinforcement-learning.md) · [全书目录与前言（中文）](preface.md) · [下一章：附录 A · 空间代数（中文）](spatial-algebra.md)  
+[无障碍访问](https://accessibility.mit.edu/) · © Russ Tedrake, 2026

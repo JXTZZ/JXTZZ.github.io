@@ -3,6 +3,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 import sys
 from urllib.parse import unquote, urlsplit
+from check_reader import check_reader
 
 
 class Links(HTMLParser):
@@ -54,6 +55,7 @@ def main():
     if errors:
         raise SystemExit('\n'.join(errors))
     print(f'PASS: {len(pages)} HTML pages, {checked} local links and assets checked.')
+    check_reader(root)
 
 
 if __name__ == '__main__':
