@@ -1,16 +1,37 @@
-.venv/
-__pycache__/
-.cache/
-.build/
-site/
-*.log
-docs/journal/idea/
-docs/papers/human-depth-ambiguity.md
+# Generated site and build cache
+/.build/
+/site/
+/.cache/
 
-# ARIS managed local installation
+# Python environments and bytecode
+/.venv/
+/venv/
+__pycache__/
+*.py[cod]
+
+# Local settings and editor files
+.env
+.env.*
+!.env.example
+/.idea/
+/.vscode/
+*.log
+*.swp
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Unpublished notes (also excluded from the site in mkdocs.yml)
+/docs/journal/idea/
+/docs/papers/human-depth-ambiguity.md
+
+# Local research tooling
 /.agents/skills/
 /.aris/
 /AGENTS.md
 /review-stage/
-/refine-logs/human-depth-ambiguity/
+/refine-logs/
 /MANIFEST.md

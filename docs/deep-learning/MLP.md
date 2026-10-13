@@ -131,7 +131,7 @@ $$
 
 对图像来说，MLP 展平像素后忽略了二维局部结构。CNN 用卷积加入局部性和平移共享，ViT 则先把图像划为 patch，再用 attention 建模 patch 之间的关系。
 
-![MLP 与非线性示意](image.png)
+![MLP 与非线性示意](assets/mlp-nonlinearity.png)
 
 ## 7. 几个调试检查
 

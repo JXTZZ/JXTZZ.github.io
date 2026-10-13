@@ -15,5 +15,5 @@
 ## 延伸与实践
 
 - [计算机视觉学习路线](cv-roadmap.md)：从 2D 基础走到 3D、视频、多模态与具身视觉，并用短项目试方向。
-- [张量维度与求和](../attention/Linear_Algebra.md)：补充代码中的形状与运算细节。
-- [Tensor 原地操作与内存](../attention/python.md)：理解 PyTorch 中的对象与存储。
+- [张量维度与求和](../engineering/tensor-operations.md)：补充代码中的形状与运算细节。
+- [Tensor 原地操作与内存](../engineering/tensor-inplace.md)：理解 PyTorch 中的对象与存储。
