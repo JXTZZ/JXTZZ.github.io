@@ -8,6 +8,7 @@ hide:
 ---
 
 <div class="home-hero" markdown>
+<div class="home-intro" markdown>
 <span class="eyebrow">LOTUSY / NOTES & IDEAS</span>
 
 # 让好奇心，<br><span class="gradient-text">走得更远。</span>
@@ -19,6 +20,25 @@ hide:
 [关于我 ↗](about.md){ .quiet-link }
 </div>
 <div class="hero-caption">南京大学 · 软件工程 / 具身智能 · 机器人学习</div>
+</div>
+<div class="research-atlas" data-research-atlas>
+<div class="atlas-heading"><span>RESEARCH ATLAS</span><button class="atlas-motion" type="button" aria-label="暂停研究星图动画" aria-pressed="false" hidden><span class="atlas-motion-icon" aria-hidden="true">Ⅱ</span><span data-motion-label>暂停动画</span></button></div>
+<div class="atlas-stage">
+<img class="atlas-fallback" src="assets/research-atlas.svg" alt="由蓝紫色点云与轨道构成的研究星图" width="680" height="560">
+<canvas class="atlas-canvas" aria-hidden="true"></canvas>
+<span class="atlas-axis atlas-axis--top" aria-hidden="true">01 / PERCEPTION</span>
+<span class="atlas-axis atlas-axis--bottom" aria-hidden="true">02 / REPRESENTATION</span>
+<span class="atlas-axis atlas-axis--right" aria-hidden="true">03 / ACTION</span>
+</div>
+<div class="atlas-caption"><span class="atlas-status" aria-hidden="true"></span><span>从感知世界，到生成行动。</span><span class="atlas-coordinate" aria-hidden="true">OBSERVE → LEARN → ACT</span></div>
+</div>
+</div>
+
+<div class="home-threads">
+<div class="threads-heading"><span class="eyebrow">IN FOCUS</span><span>沿着三条线索阅读</span></div>
+<a class="hero-thread" href="papers/dp3/"><span class="thread-index">01</span><span><strong>感知与三维表示</strong><small>DP3 · 从点云到机器人策略</small></span><span class="thread-arrow" aria-hidden="true">↗</span></a>
+<a class="hero-thread" href="papers/openvla/"><span class="thread-index">02</span><span><strong>视觉、语言与行动</strong><small>OpenVLA · 通用策略的探索</small></span><span class="thread-arrow" aria-hidden="true">↗</span></a>
+<a class="hero-thread" href="translations/robotic-manipulation/"><span class="thread-index">03</span><span><strong>把机器人搭起来</strong><small>MIT 讲义 · 感知、规划与控制</small></span><span class="thread-arrow" aria-hidden="true">↗</span></a>
 </div>
 
 <div class="featured-course" markdown>

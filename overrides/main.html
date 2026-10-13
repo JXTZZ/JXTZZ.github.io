@@ -4,4 +4,8 @@
   {{ super() }}
   <meta name="site-version" content="{{ config.extra.site_version }}">
   <link rel="stylesheet" href="{{ 'stylesheets/extra.css' | url }}?v={{ config.extra.site_version }}">
+  {% if page and page.is_homepage %}
+    <link rel="stylesheet" href="{{ 'stylesheets/home-atlas.css' | url }}?v={{ config.extra.site_version }}">
+    <script defer src="{{ 'javascripts/home-atlas.js' | url }}?v={{ config.extra.site_version }}"></script>
+  {% endif %}
 {% endblock %}
