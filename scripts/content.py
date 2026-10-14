@@ -78,18 +78,6 @@ def collect(files, config):
     return files
 
 
-def recent():
-    # One latest entry per field first; then fill with chronologically dated updates.
-    chosen = []
-    for section in SECTIONS:
-        candidate = next((r for r in CATALOG if r['section'] == section), None)
-        if candidate:
-            chosen.append(candidate)
-    chosen.sort(key=sort_key, reverse=True)
-    chosen.extend(r for r in CATALOG if r not in chosen and (r['date'] or r['updated']))
-    return chosen[:7]
-
-
 def list_html(records, page, *, name='文章列表'):
     if not records:
         return '<p class="list-empty" role="status">这里还没有公开文章，整理完成后会出现在此处。</p>'
@@ -127,7 +115,7 @@ def resource_html(page, config):
 def expand_lists(markdown, page, config):
     def replace(match):
         section = match[1]
-        records = recent() if section == 'recent' else [r for r in CATALOG if r['section'] == section]
-        return list_html(records, page, name='最近更新' if section == 'recent' else '文章列表')
-    markdown = re.sub(r'<!-- article-list: (recent|papers|engineering|journal) -->', replace, markdown)
+        records = [r for r in CATALOG if r['section'] == section]
+        return list_html(records, page)
+    markdown = re.sub(r'<!-- article-list: (papers|engineering|journal) -->', replace, markdown)
     return markdown.replace('<!-- resource-list -->', resource_html(page, config)) if '<!-- resource-list -->' in markdown else markdown

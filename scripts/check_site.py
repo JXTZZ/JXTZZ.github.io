@@ -63,8 +63,9 @@ def main():
     assert all(r['description'] and isinstance(r['tags'], list) for r in records), 'Incomplete metadata'
     assert not any('/idea/' in r['source'] or 'human-depth-ambiguity' in r['source'] for r in records), 'Unpublished metadata exposed'
     home = Document((root / 'index.html').read_text(encoding='utf-8')).root
-    fields = {n.attrs['data-section'] for n in home.elements() if n.has_class('article-row')}
-    assert fields == {'papers', 'translations', 'deep-learning', 'engineering', 'journal'}, 'Recent updates miss a field'
+    assert not any(n.has_class('home-recent') or n.has_class('recent-notes') for n in home.elements()), 'Homepage must not contain recent updates'
+    assert len([n for n in home.elements() if n.has_class('hero-thread')]) == 3, 'Homepage reading threads missing'
+    assert len([n for n in home.elements() if n.has_class('topic-card')]) == 3, 'Homepage collection cards missing'
     image_count = math_pages = 0
     for page in pages:
         if page.name == '404.html':
@@ -73,6 +74,11 @@ def main():
         articles = [n for n in nodes if n.tag == 'article']
         if not articles:
             continue  # Legacy URL redirects intentionally have no article.
+        if page.relative_to(root).as_posix().removesuffix('index.html') in {r['url'] for r in records if r['section'] == 'papers'}:
+            headings = [n for n in articles[0].elements() if n.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6') and n.attrs.get('id')]
+            toc = next(n for n in nodes if n.has_class('md-nav--secondary'))
+            links = {n.attrs.get('href') for n in toc.elements() if n.tag == 'a'}
+            assert headings[1:] and all('#' + n.attrs['id'] in links for n in headings[1:]), f'{page}: incomplete paper outline'
         descriptions = [n.attrs.get('content') for n in nodes if n.tag == 'meta' and n.attrs.get('name') == 'description']
         assert descriptions and descriptions[0], f'{page}: page description missing'
         marked = any(n.has_class('arithmatex') for n in nodes)
@@ -83,7 +89,7 @@ def main():
             if n.tag == 'img':
                 assert 'width' in n.attrs and 'height' in n.attrs and n.attrs.get('loading') in ('eager', 'lazy'), f'{page}: missing intrinsic image/loading metadata'
                 image_count += 1
-    print(f'PASS: {len(records)} metadata entries, five-field recent list, {math_pages} conditional math pages and {image_count} dimensioned images.')
+    print(f'PASS: {len(records)} metadata entries, all paper outlines, homepage collections, {math_pages} conditional math pages and {image_count} dimensioned images.')
 
 
 if __name__ == '__main__':

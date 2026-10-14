@@ -37,6 +37,7 @@
 .md-search__overlay { background: rgba(0,0,0,.25); }
 .md-grid { max-width: 1280px; }
 .md-content { min-width: 0; }
+.md-content:has(.resource-list) { width: 100%; max-width: 1040px; margin-inline: auto; }
 .md-sidebar--primary { order: 2; }
 .md-sidebar--secondary { order: -1; }
 .md-content__inner { padding-bottom: 48px; }

@@ -2,6 +2,9 @@
 title: 论文资料库
 description: 机器人学习与具身智能论文的原文 PDF，以及相关中文阅读笔记。
 layout: collection
+hide:
+- navigation
+- toc
 resources:
 - title: Teach a Robot to FISH
   pdf: assets/papers/FISH.pdf

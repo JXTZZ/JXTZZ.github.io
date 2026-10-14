@@ -124,17 +124,23 @@ try {
     console.log('PASS',width,theme,route,'math',state.rendered);
     return state;
   }
-  for(const width of [320,390,768,1440])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
+  for(const width of [320,390,768,1440])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/papers/library/','/papers/orion/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
     const state=await load(route,width,theme);
     if(route==='/'){
-      assert(new Set(state.rows).size===5,'Recent list must cover five fields');
+      assert(await evaluate(()=>!document.querySelector('.home-recent,.recent-notes') && document.querySelectorAll('.hero-thread').length===3 && document.querySelectorAll('.topic-card').length===3),'Previous homepage collections must replace recent updates');
       assert(!state.loadedMath,'MathJax must not load on home');
       assert(await evaluate(()=>document.querySelectorAll('.reading-path a').length===3 && !!document.querySelector('.featured-course a.md-button')),'Curated Markdown links did not render');
       assert(await evaluate(()=>document.getElementById('_2')?.closest('.featured-course') && document.getElementById('_3')?.closest('.reading-note')),'Home bookmark anchors changed');
-      const home=await evaluate(()=>({stage:document.querySelector('.atlas-stage').getBoundingClientRect().height,recent:document.getElementById('recent-heading').getBoundingClientRect().top,ready:document.querySelector('.research-atlas').hasAttribute('data-ready')}));
-      assert(home.ready && (width>=650 || (home.stage<=170 && home.recent<750)),'Home content too far down: '+JSON.stringify(home));
+      const home=await evaluate(()=>({stage:document.querySelector('.atlas-stage').getBoundingClientRect().height,ready:document.querySelector('.research-atlas').hasAttribute('data-ready')}));
+      assert(home.ready && (width>=650 || home.stage<=170),'Mobile research atlas too large: '+JSON.stringify(home));
       if(width===320 || width===1440)await capture('home-'+width+'-'+theme);
     }
+    if(route==='/papers/library/'){
+      const library=await evaluate(()=>{const content=document.querySelector('.md-content'),r=content.getBoundingClientRect();return {center:Math.abs((r.left+r.right)/2-innerWidth/2),width:r.width,emptySidebar:[...document.querySelectorAll('.md-sidebar')].some(n=>{const b=n.getBoundingClientRect();return getComputedStyle(n).display!=='none' && b.right>1 && b.left<innerWidth;}),rows:document.querySelectorAll('.resource-row').length};});
+      assert(library.rows>0 && !library.emptySidebar && (width<960 || (library.center<15 && library.width<=1041)),'PDF library centering: '+JSON.stringify(library));
+      if(width===320 || width===1440)await capture('library-'+width+'-'+theme);
+    }
+    if(route==='/papers/orion/' && width===1440 && theme==='default')await capture('paper-outline-1440');
     if(route.includes('pick-and-place')){
       if(width<960){
         await evaluate(()=>document.querySelector('.mobile-toc summary').focus());await send('Page.bringToFront');
@@ -160,6 +166,11 @@ try {
   await evaluate(()=>Promise.all([...document.querySelectorAll('.plate-sequence img')].map(img=>img.decode())));
   await load('/journal/',390);await load('/papers/library/',390);
   assert(!await evaluate(()=>!!document.querySelector('article table')),'PDF library must be a list');
+  const papers=(await (await fetch(root+'/content-index.json')).json()).filter(p=>p.section==='papers');
+  for(const paper of papers){
+    await load('/'+paper.url,1440);
+    assert(await evaluate(()=>{const toc=document.querySelector('.md-sidebar--secondary'),links=new Set([...toc.querySelectorAll('a')].map(a=>a.hash));return getComputedStyle(toc).display!=='none' && [...document.querySelectorAll('article h1,article h2,article h3,article h4')].slice(1).every(h=>links.has('#'+encodeURIComponent(h.id)) || links.has('#'+h.id));}),'Incomplete left outline: '+paper.url);
+  }
   await load('/',1440);
   // Exercise the upstream switch itself as well as rendering both schemes.
   await evaluate(()=>document.querySelector('label[for="__palette_1"]').click());await delay(100);
@@ -190,7 +201,7 @@ try {
   await delay(600);
   assert(await evaluate(()=>location.pathname==='/' && !!document.querySelector('.research-atlas')),'Header keyboard link failed');
   await send('Emulation.setScriptExecutionDisabled',{value:true});await send('Page.navigate',{url:root+'/'});await delay(600);
-  assert(await evaluate(()=>getComputedStyle(document.querySelector('.atlas-fallback')).visibility==='visible' && document.querySelectorAll('.article-row').length>0),'No-script fallback failed');
+  assert(await evaluate(()=>getComputedStyle(document.querySelector('.atlas-fallback')).visibility==='visible' && document.querySelectorAll('.topic-card').length===3),'No-script fallback failed');
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:900,deviceScaleFactor:1,mobile:true});
   await send('Page.navigate',{url:root+'/translations/robotic-manipulation/introduction/'});await delay(650);
   assert(await evaluate(()=>getComputedStyle(document.querySelector('.mobile-toc')).display!=='none' && !document.querySelector('.mobile-toc').open),'Native no-script outline failed');

@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 from urllib.parse import urljoin
 from mkdocs.utils import get_relative_url
+from mkdocs.structure.toc import AnchorLink, TableOfContents
 
 from content import CATALOG, collect, expand_lists
 from page_assets import prepare_content
@@ -25,6 +26,14 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
 
 def on_page_content(html, page, config, **kwargs):
+    # Older paper notes have several H1s. Material displays only the first H1's
+    # children; gather every section under that root without editing the source
+    # headings, their HTML level or the bookmarked IDs.
+    items = list(page.toc)
+    if page.file.src_uri.startswith('papers/') and page.meta.get('layout') == 'article' and len(items) > 1 and items[0].level == 1:
+        root = AnchorLink(items[0].title, items[0].id, 1)
+        root.children = list(items[0].children) + items[1:]
+        page.toc = TableOfContents([root])
     return prepare_content(html, page, config)
 
 
