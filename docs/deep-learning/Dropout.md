@@ -1,3 +1,13 @@
+---
+title: Dropout：训练时随机丢弃，推理时保持完整
+description: 理解 Dropout 在训练时随机丢弃、推理时保持完整的机制，以及训练和评估模式的区别。
+tags:
+- 正则化
+- 神经网络
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+---
 # Dropout：训练时随机丢弃，推理时保持完整
 
 Dropout 在训练阶段随机把一部分激活置为 0，减少网络长期依赖某组固定特征的机会。它是一种随机正则化方法，不保证每个任务都有效，也不能替代数据增强、权重衰减或更合理的模型容量。

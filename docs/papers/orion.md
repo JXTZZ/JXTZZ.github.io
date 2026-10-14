@@ -1,3 +1,14 @@
+---
+title: ORION：单视频开放世界模仿
+description: 分析 ORION 如何用开放世界对象图，将一段人类操作视频转换为机器人可执行的交互策略。
+tags:
+- 视频模仿
+- 对象图
+layout: article
+updated: '2026-09-11'
+updated_source: git:48c2701d1ba75999d61effa9f47c2a445897718a
+pdf: assets/papers/ORION.pdf
+---
 # 2026 ORION \(Autonomous Robots\)
 
 # Vision-based Manipulation from Single Human Video with Open-World Object Graphs

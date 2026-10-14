@@ -1,24 +1,21 @@
+---
+title: 论文阅读
+description: 围绕具身智能、视觉语言动作模型与机器人学习的论文笔记和阅读路径。
+hide:
+- toc
+layout: collection
+---
+
 # 论文阅读
 
-围绕具身智能、视觉语言动作模型与机器人学习，记录每篇论文的任务定义、核心方法、实验结果与尚未解决的问题。
+围绕具身智能、视觉语言动作模型与机器人学习，沿着「问题 → 表示 → 模型 → 实验 → 局限」阅读。
 
 ## 从这里开始
 
-| 阅读主题 | 笔记 | 关注的问题 |
-| --- | --- | --- |
-| 双臂灵巧操作 | [ALOHA Unleashed](aloha.md) | 示范数据与动作生成如何支撑复杂操作？ |
-| 三维策略学习 | [3D Diffusion Policy](dp3.md) | 三维表示如何帮助机器人学习？ |
-| 通用机器人策略 | [Octo](octo.md) | 预训练策略怎样适配不同机器人？ |
-| 视觉语言动作模型 | [OpenVLA](openvla.md) | 如何把视觉、语言与控制连接起来？ |
-| 连续动作生成 | [π₀](pi0.md) | Flow Matching 如何用于机器人动作？ |
-| 人类演示与迁移 | [SPOT 深度阅读](spot.md) · [概念随记](spot-notes.md) | 怎样用物体轨迹连接人类演示与机器人执行？ |
-| 单视频开放世界模仿 | [ORION](orion.md) | 如何用对象图把一段人类视频转化为机器人策略？ |
-| 互联网视频到机器人动作 | [EgoInfinity](egoinfinity.md) | 如何把野外 RGB 视频转化为度量 4D 手物数据与可执行轨迹？ |
-| 互联网示范检索 | [RoboTok](robotok.md) | 如何用 actor-relative 3D hand trajectory 从网页视频中找到可用于灵巧操作的示范？ |
-| VLA／WAM 分布外泛化 | [LIT](lit.md) | 如何用空间目标动作先验与受监督的视觉接口减少 vision–action shortcut？ |
+<!-- article-list: papers -->
 
 ## 阅读方式
 
-先理解任务的输入与输出，再沿着「问题 → 表示 → 模型 → 实验 → 局限」阅读。概念不清楚时，回到[理论基础](../deep-learning/index.md)；零散发现与阶段回顾放在[学习日志](../journal/index.md)。
+概念不清楚时，回到[理论基础](../deep-learning/index.md)；阶段思考与零散发现放在[学习日志](../journal/index.md)。
 
 [打开论文资料库 →](library.md){ .md-button }

@@ -1,3 +1,14 @@
+---
+title: Octo：通用机器人策略
+description: 梳理 Octo 的多数据集预训练、策略架构与适配方式，理解通用策略迁移到新机器人的边界。
+tags:
+- 通用策略
+- 机器人学习
+layout: article
+updated: '2026-09-11'
+updated_source: git:22ce2649f2336c1e77f355e369ec173b43e16f9c
+pdf: assets/papers/OCTo.pdf
+---
 # Octo：可灵活适配新机器人的开源通用策略
 
 > 论文：Octo Model Team，arXiv:2405.12213v2，2024。

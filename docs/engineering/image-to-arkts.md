@@ -1,4 +1,13 @@
-﻿# Image-to-ArkTS 项目周会准备（第一周）
+---
+title: Image-to-ArkTS 项目记录
+description: 记录 Image-to-ArkTS 项目中 Coding Agent 与 Test Agent 的接口、编译验证和环境配置问题。
+tags:
+- Agent
+- ArkTS
+- 编译测试
+layout: article
+---
+# Image-to-ArkTS 项目周会准备（第一周）
 
 ## 1. Coding Agent 与 Test Agent 的衔接与集成
 

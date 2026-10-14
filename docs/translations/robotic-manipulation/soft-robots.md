@@ -1,6 +1,12 @@
 ---
 title: 第 12 章 · 软体机器人与触觉感知
-description: MIT《机器人操作：感知、规划与控制》中文翻译：第 12 章 · 软体机器人与触觉感知。
+description: MIT《机器人操作》中文译稿。了解软体机器人、机械手与触觉感知，以及柔性接触在操作任务中的作用。
+tags:
+- 机器人操作
+- MIT 讲义
+layout: article
+updated: '2026-10-13'
+updated_source: git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 12</div>

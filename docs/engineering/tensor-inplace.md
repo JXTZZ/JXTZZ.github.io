@@ -1,4 +1,14 @@
-﻿# Python 开发笔记
+---
+title: Tensor 原地操作与内存
+description: 整理 PyTorch 原地操作、对象引用与内存分配的差异，并通过代码观察张量存储的变化。
+tags:
+- PyTorch
+- 内存管理
+layout: article
+updated: '2026-03-09'
+updated_source: git:2f882eb0384d6130f6efce4741cfed0cab8abc52
+---
+# Python 开发笔记
 
 ## 1. Tensor 运算中的原地操作与内存优化
 

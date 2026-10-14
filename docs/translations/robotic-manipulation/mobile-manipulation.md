@@ -1,6 +1,12 @@
 ---
 title: 第 7 章 · 移动操作
-description: MIT《机器人操作：感知、规划与控制》中文翻译：第 7 章 · 移动操作。
+description: MIT《机器人操作》中文译稿。讨论移动机器人与机械臂的协同操作，以及导航、可达性和规划问题。
+tags:
+- 机器人操作
+- MIT 讲义
+layout: article
+updated: '2026-10-13'
+updated_source: git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 07</div>

@@ -1,3 +1,13 @@
+---
+title: 权重衰减：L2 正则化与 AdamW
+description: 比较 L2 正则化、权重衰减与 AdamW，结合梯度更新解释不同优化器中的正则化。
+tags:
+- 正则化
+- 优化器
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+---
 # 权重衰减：L2 正则化与 AdamW
 
 权重衰减（weight decay）会在更新参数时把权重向 0 拉回一点。它常用于控制模型复杂度，但需要区分两个实现：把 L2 惩罚加进 loss，以及把衰减从梯度更新中解耦。SGD 下二者可以等价，Adam 等自适应优化器下则不是一回事。

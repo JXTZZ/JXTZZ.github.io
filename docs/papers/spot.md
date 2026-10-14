@@ -1,3 +1,13 @@
+---
+title: SPOT：从人类演示学习物体轨迹
+description: 从物体位姿轨迹、可见性判断与机器人执行出发，分析 SPOT 的人类演示迁移方法与实验。
+tags:
+- 人类演示
+- 轨迹学习
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+---
 # 2025 SPOT \(ICRA\)
 
 # SPOT: SE\(3\) Pose Trajectory Diffusion for Object\-Centric Manipulation

@@ -1,3 +1,12 @@
+---
+title: π₀：Flow Matching 与机器人控制
+description: 沿着视觉语言模型、Flow Matching 与连续动作生成，整理 π₀ 的多机器人控制方法。
+tags:
+- VLA
+- Flow Matching
+layout: article
+pdf: assets/papers/pi0.pdf
+---
 # π₀：用视觉语言模型和 Flow Matching 控制多种机器人
 
 > 论文：Physical Intelligence，arXiv:2410.24164v4，PDF 版本日期 2026-01-08。

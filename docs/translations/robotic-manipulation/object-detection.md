@@ -1,6 +1,12 @@
 ---
 title: 第 9 章 · 物体检测与分割
-description: MIT《机器人操作：感知、规划与控制》中文翻译：第 9 章 · 物体检测与分割。
+description: MIT《机器人操作》中文译稿。从数据集与标注工具出发，学习物体检测、实例分割以及 Mask R-CNN 的微调流程。
+tags:
+- 机器人操作
+- MIT 讲义
+layout: article
+updated: '2026-10-13'
+updated_source: git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 09</div>

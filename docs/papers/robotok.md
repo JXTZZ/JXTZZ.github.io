@@ -1,3 +1,12 @@
+---
+title: RoboTok：互联网示范检索
+description: 理解 RoboTok 的相对三维手部轨迹表示，以及从互联网视频检索可用于灵巧操作的示范。
+tags:
+- 示范检索
+- 三维轨迹
+layout: article
+pdf: assets/papers/RoboTok.pdf
+---
 # 2026 RoboTok（arXiv）
 
 # RoboTok: An Internet-Scale Data Engine for Human Demonstration Retrieval and Dexterous Manipulation Learning

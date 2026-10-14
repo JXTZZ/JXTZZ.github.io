@@ -1,3 +1,14 @@
+---
+title: OpenVLA：视觉语言动作模型
+description: 理解 OpenVLA 如何连接视觉、语言与机器人动作，并分析微调方式、实验任务和模型局限。
+tags:
+- VLA
+- 机器人学习
+layout: article
+updated: '2026-09-11'
+updated_source: git:22ce2649f2336c1e77f355e369ec173b43e16f9c
+pdf: assets/papers/openVLA.pdf
+---
 # OpenVLA：让视觉语言模型直接控制机器人
 
 > 论文：Kim 等，CoRL 2024。

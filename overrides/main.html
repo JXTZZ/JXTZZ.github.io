@@ -4,6 +4,17 @@
   {{ super() }}
   <meta name="site-version" content="{{ config.extra.site_version }}">
   <link rel="stylesheet" href="{{ 'stylesheets/extra.css' | url }}?v={{ config.extra.site_version }}">
+  {% if page and page.meta.layout == 'article' %}
+    <link rel="stylesheet" href="{{ 'stylesheets/reader.css' | url }}?v={{ config.extra.site_version }}">
+    <script defer src="{{ 'javascripts/reader.js' | url }}?v={{ config.extra.site_version }}"></script>
+  {% endif %}
+  {% if page and page.url.startswith('translations/') %}
+    <link rel="stylesheet" href="{{ 'stylesheets/course.css' | url }}?v={{ config.extra.site_version }}">
+  {% endif %}
+  {% if page and page.meta.has_math %}
+    <script src="{{ 'javascripts/mathjax.js' | url }}?v={{ config.extra.site_version }}"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+  {% endif %}
   {% if page and page.is_homepage %}
     <link rel="stylesheet" href="{{ 'stylesheets/home-atlas.css' | url }}?v={{ config.extra.site_version }}">
     <script defer src="{{ 'javascripts/home-atlas.js' | url }}?v={{ config.extra.site_version }}"></script>

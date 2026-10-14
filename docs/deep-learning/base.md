@@ -1,3 +1,11 @@
+---
+title: PyTorch 中的模块、参数与设备
+description: 整理 PyTorch 模块、参数、序列化与设备管理，补齐构建和维护深度学习模型的基础。
+tags:
+- PyTorch
+- 模型管理
+layout: article
+---
 # PyTorch 中的模块、参数与设备
 
 这篇记录 `nn.Module` 最容易混淆的几件事：模块怎样调用，参数如何注册，延后初始化适合什么情况，以及模型怎样保存和搬到设备上。

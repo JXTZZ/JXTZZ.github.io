@@ -1,6 +1,12 @@
 ---
 title: 第 3 章 · 基本的抓取与放置
-description: MIT《机器人操作：感知、规划与控制》中文翻译：第 3 章 · 基本的抓取与放置。
+description: MIT《机器人操作》中文译稿。通过空间代数、正运动学、雅可比矩阵和轨迹生成，搭建基本抓取与放置流程。
+tags:
+- 机器人操作
+- MIT 讲义
+layout: article
+updated: '2026-10-13'
+updated_source: git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 03</div>

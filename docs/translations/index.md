@@ -1,7 +1,9 @@
 ---
 title: 课程翻译
 hide:
-  - toc
+- toc
+description: MIT《机器人操作：感知、规划与控制》的完整中文讲义与课程入口。
+layout: collection
 ---
 
 <div class="collection-intro" markdown>

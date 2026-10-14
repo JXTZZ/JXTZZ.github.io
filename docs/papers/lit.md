@@ -1,3 +1,12 @@
+---
+title: LIT：视觉—动作分布外泛化
+description: 分析空间目标动作先验和受监督视觉接口，如何减少视觉—动作捷径并改善分布外泛化。
+tags:
+- VLA
+- 分布外泛化
+layout: article
+pdf: assets/papers/LIT.pdf
+---
 # 2026 LIT（arXiv）
 
 # Breaking the Vision–Action Shortcut: Latent Interface Training for Generalizable Robotics Foundation Models

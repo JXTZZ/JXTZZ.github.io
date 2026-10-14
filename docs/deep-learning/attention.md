@@ -1,3 +1,13 @@
+---
+title: Attention：从加权平均到多头自注意力
+description: 从加权平均、查询与键值出发，推导注意力机制、多头自注意力与 Transformer 中的信息聚合。
+tags:
+- 注意力机制
+- Transformer
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+---
 # Attention：从加权平均到多头自注意力
 
 注意力机制做的事很朴素：给定一个查询（query），在一组键值对（key-value pairs）里计算相关性，再按相关性对 value 做加权求和。Transformer 把这套操作放到序列内部，于是每个 token 都能按当前需要读取其他 token 的信息。

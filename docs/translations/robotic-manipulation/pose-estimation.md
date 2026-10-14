@@ -1,6 +1,12 @@
 ---
 title: 第 4 章 · 基于几何的位姿估计
-description: MIT《机器人操作：感知、规划与控制》中文翻译：第 4 章 · 基于几何的位姿估计。
+description: MIT《机器人操作》中文译稿。从深度图、点云和几何匹配出发，理解机器人操作中的物体位姿估计。
+tags:
+- 机器人操作
+- MIT 讲义
+layout: article
+updated: '2026-10-13'
+updated_source: git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 04</div>

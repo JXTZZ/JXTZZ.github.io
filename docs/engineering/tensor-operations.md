@@ -1,3 +1,11 @@
+---
+title: 张量维度与求和
+description: 解释 PyTorch 张量的维度、求和与 keepdim，以及维度压缩对广播计算的影响。
+tags:
+- PyTorch
+- 张量运算
+layout: article
+---
 # Python 中的线性代数运用
 
 ## 1. PyTorch 中的维度操作与张量求和

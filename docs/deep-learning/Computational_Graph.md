@@ -1,3 +1,13 @@
+---
+title: 计算图与反向传播：PyTorch 到底保存了什么
+description: 理解 PyTorch 计算图、自动微分与梯度累积，以及反向传播时保存和释放的中间状态。
+tags:
+- 自动微分
+- PyTorch
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+---
 # 计算图与反向传播：PyTorch 到底保存了什么
 
 `loss.backward()` 看起来只有一行，背后依赖的是前向计算时动态建立的计算图。理解这张图，主要为了回答三个问题：梯度怎样传回参数，为什么训练比推理占更多显存，以及哪些操作会意外截断梯度。

@@ -59,9 +59,7 @@ markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
 extra_javascript:
-  - javascripts/mathjax.js
   - javascripts/version-sync.js
-  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
 extra:
   site_version: !ENV [GITHUB_SHA, local]
   social:
@@ -94,17 +92,6 @@ nav:
       - 附录 E · 其他事项: translations/robotic-manipulation/miscellaneous.md
   - 论文阅读:
     - papers/index.md
-    - ALOHA Unleashed: papers/aloha.md
-    - 3D Diffusion Policy: papers/dp3.md
-    - Octo: papers/octo.md
-    - OpenVLA: papers/openvla.md
-    - π₀: papers/pi0.md
-    - SPOT · 深度阅读: papers/spot.md
-    - SPOT · 概念笔记: papers/spot-notes.md
-    - ORION · 单视频开放世界模仿: papers/orion.md
-    - EgoInfinity · 互联网视频到机器人动作: papers/egoinfinity.md
-    - RoboTok · 互联网示范检索: papers/robotok.md
-    - LIT · 视觉—动作泛化: papers/lit.md
     - 论文资料库: papers/library.md
   - 理论基础:
     - deep-learning/index.md
@@ -119,17 +106,6 @@ nav:
     - 计算机视觉学习路线: deep-learning/cv-roadmap.md
   - 工程实践:
     - engineering/index.md
-    - Tensor 原地操作与内存: engineering/tensor-inplace.md
-    - 张量维度与求和: engineering/tensor-operations.md
-    - Image-to-ArkTS 项目记录: engineering/image-to-arkts.md
   - 学习日志:
     - journal/index.md
-    - 09.22 · 正运动学与 DH 参数法: journal/2026-09-22.md
-    - 09.16 · ReWeight 与 OpenResearch: journal/2026-09-16.md
-    - 09.15 · WSL 离线安装与 Conda: journal/2026-09-15.md
-    - 09.11 · Show-Harness 与 ORION: journal/2026-09-11.md
-    - 09.10 · Python 堆: journal/2026-09-10.md
-    - 09.08 · RoboSPA 与工具排障: journal/2026-09-08.md
-    - 09.07 · 论文速记与 WSL: journal/2026-09-07.md
-    - 09.04 · 具身智能阅读周记: journal/2026-09-04.md
   - 关于: about.md

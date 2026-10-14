@@ -1,6 +1,12 @@
 ---
 title: 全书目录与前言
-description: MIT《机器人操作：感知、规划与控制》全书中文目录与前言。
+description: MIT《机器人操作》中文译稿。全书目录与前言，按原书顺序连接十二章正文、五篇附录与中文小节锚点。
+tags:
+- 机器人操作
+- MIT 讲义
+layout: article
+updated: '2026-10-13'
+updated_source: git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 00</div>

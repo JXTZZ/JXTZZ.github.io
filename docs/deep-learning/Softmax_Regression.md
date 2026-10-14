@@ -1,3 +1,13 @@
+---
+title: Softmax 回归：从 logits 到多分类概率
+description: 从 logits、Softmax 和交叉熵出发，实现多分类模型并理解预测概率与损失计算。
+tags:
+- PyTorch
+- 分类
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+---
 # Softmax 回归：从 logits 到多分类概率
 
 线性回归预测连续值，Softmax 回归处理互斥的多分类问题。模型先给每个类别一个未经归一化的分数（logit），softmax 再把这些分数转成总和为 1 的分布。

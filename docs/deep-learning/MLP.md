@@ -1,3 +1,13 @@
+---
+title: 多层感知机：维度变换与非线性
+description: 通过维度变换、隐藏层与非线性激活，理解多层感知机的表示能力和 PyTorch 实现。
+tags:
+- 神经网络
+- PyTorch
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+---
 # 多层感知机：维度变换与非线性
 
 多层感知机（Multi-Layer Perceptron，MLP）可以看成若干线性层与非线性激活的交替组合。它比 Softmax 回归多出的关键一步，是先把输入映射到隐藏表示，再用这个表示完成预测。

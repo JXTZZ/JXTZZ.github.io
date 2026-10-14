@@ -1,3 +1,14 @@
+---
+title: EgoInfinity：互联网视频到机器人动作
+description: 梳理从野外 RGB 视频到度量四维手物数据、跨本体轨迹和机器人动作的处理流程。
+tags:
+- 互联网视频
+- 手物交互
+layout: article
+updated: '2026-09-15'
+updated_source: git:842f9154bb48a9d31e672749806fbbc58194e9b3
+pdf: assets/papers/EgoInfinity.pdf
+---
 # 2026 EgoInfinity
 
 # EgoInfinity: A Web-Scale 4D Hand-Object Interaction Data Engine for Any-View Robot Retargeting and Video-to-Action Robot Learning

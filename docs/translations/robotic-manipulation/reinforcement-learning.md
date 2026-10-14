@@ -1,6 +1,12 @@
 ---
 title: 第 11 章 · 强化学习
-description: MIT《机器人操作：感知、规划与控制》中文翻译：第 11 章 · 强化学习。
+description: MIT《机器人操作》中文译稿。连接随机优化、策略梯度、基于价值与模型的方法，理解操作任务中的强化学习。
+tags:
+- 机器人操作
+- MIT 讲义
+layout: article
+updated: '2026-10-13'
+updated_source: git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 11</div>

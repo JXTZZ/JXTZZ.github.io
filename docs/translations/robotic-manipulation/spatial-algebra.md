@@ -1,6 +1,12 @@
 ---
 title: 附录 A · 空间代数
-description: MIT《机器人操作：感知、规划与控制》中文翻译：附录 A · 空间代数。
+description: MIT《机器人操作》中文译稿。集中查阅位置、旋转、位姿、空间速度和空间力的 Monogram 记号与运算规则。
+tags:
+- 机器人操作
+- MIT 讲义
+layout: article
+updated: '2026-10-13'
+updated_source: git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678
 ---
 
 <div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 附录 A</div>

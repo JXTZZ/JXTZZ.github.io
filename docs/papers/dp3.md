@@ -1,3 +1,15 @@
+---
+title: 3D Diffusion Policy：三维策略学习
+description: 分析 DP3 如何使用简单点云表示与扩散策略学习机器人操作，以及三维表示带来的泛化能力。
+tags:
+- 三维感知
+- 扩散策略
+- 点云
+layout: article
+updated: '2026-09-11'
+updated_source: git:22ce2649f2336c1e77f355e369ec173b43e16f9c
+pdf: assets/papers/DP3.pdf
+---
 # 3D Diffusion Policy：用简单点云学习机器人操作
 
 > 论文：Ze 等，RSS 2024。

@@ -3,6 +3,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 import sys
 from urllib.parse import unquote, urlsplit
+import json
 from check_reader import check_reader
 
 
@@ -56,6 +57,33 @@ def main():
         raise SystemExit('\n'.join(errors))
     print(f'PASS: {len(pages)} HTML pages, {checked} local links and assets checked.')
     check_reader(root)
+    from check_reader import Document
+    records = json.loads((root / 'content-index.json').read_text(encoding='utf-8'))
+    assert len({r['source'] for r in records}) == len(records), 'Duplicate articles in generated metadata'
+    assert all(r['description'] and isinstance(r['tags'], list) for r in records), 'Incomplete metadata'
+    assert not any('/idea/' in r['source'] or 'human-depth-ambiguity' in r['source'] for r in records), 'Unpublished metadata exposed'
+    home = Document((root / 'index.html').read_text(encoding='utf-8')).root
+    fields = {n.attrs['data-section'] for n in home.elements() if n.has_class('article-row')}
+    assert fields == {'papers', 'translations', 'deep-learning', 'engineering', 'journal'}, 'Recent updates miss a field'
+    image_count = math_pages = 0
+    for page in pages:
+        if page.name == '404.html':
+            continue
+        nodes = list(Document(page.read_text(encoding='utf-8')).root.elements())
+        articles = [n for n in nodes if n.tag == 'article']
+        if not articles:
+            continue  # Legacy URL redirects intentionally have no article.
+        descriptions = [n.attrs.get('content') for n in nodes if n.tag == 'meta' and n.attrs.get('name') == 'description']
+        assert descriptions and descriptions[0], f'{page}: page description missing'
+        marked = any(n.has_class('arithmatex') for n in nodes)
+        loader = any(n.tag == 'script' and 'tex-mml-chtml' in n.attrs.get('src', '') for n in nodes)
+        assert marked == loader, f'{page}: MathJax must load exactly on math pages'
+        math_pages += loader
+        for n in articles[0].elements():
+            if n.tag == 'img':
+                assert 'width' in n.attrs and 'height' in n.attrs and n.attrs.get('loading') in ('eager', 'lazy'), f'{page}: missing intrinsic image/loading metadata'
+                image_count += 1
+    print(f'PASS: {len(records)} metadata entries, five-field recent list, {math_pages} conditional math pages and {image_count} dimensioned images.')
 
 
 if __name__ == '__main__':

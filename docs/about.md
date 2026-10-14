@@ -1,3 +1,8 @@
+---
+title: 关于我
+description: LoTusY，南京大学软件工程硕士研究生，记录从深度学习到具身智能的学习过程。
+layout: collection
+---
 # 关于我
 
 你好，我是 **LoTusY**，南京大学软件工程硕士研究生。

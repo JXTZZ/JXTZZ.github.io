@@ -1,3 +1,13 @@
+---
+title: 线性回归：用 PyTorch 走完一次训练
+description: 用 PyTorch 串起线性回归的模型、损失、梯度计算与训练循环，并理解张量维度。
+tags:
+- PyTorch
+- 线性回归
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+---
 # 线性回归：用 PyTorch 走完一次训练
 
 线性回归适合拿来熟悉深度学习框架，因为模型只有一层，数据、损失、梯度和参数更新却一个不少。下面用 (y=Xw+b+epsilon) 生成数据，再用 `nn.Linear` 把参数学回来。

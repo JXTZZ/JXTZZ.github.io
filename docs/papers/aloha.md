@@ -1,3 +1,15 @@
+---
+title: ALOHA Unleashed：双臂灵巧操作
+description: 从双臂操作任务、示范采集与动作生成出发，梳理 ALOHA Unleashed 的方法、实验与局限。
+tags:
+- 机器人学习
+- 模仿学习
+- 双臂操作
+layout: article
+updated: '2026-09-10'
+updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
+pdf: assets/papers/ALOHA Unleashed.pdf
+---
 # 2024 ALOHA Unleashed \(CoRL\)
 
 # **ALOHA Unleashed: A Simple Recipe for Robot Dexterity**

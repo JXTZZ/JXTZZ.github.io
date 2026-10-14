@@ -1,3 +1,11 @@
+---
+title: SPOT：概念与阅读随记
+description: 记录 SPOT 阅读过程中的概念、方法线索与问题，并连接到完整的深度阅读笔记。
+tags:
+- 人类演示
+- 阅读随记
+layout: article
+---
 # SPOT：概念与阅读随记
 
 ### 专业词汇
