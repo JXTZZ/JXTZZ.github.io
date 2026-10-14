@@ -6,6 +6,7 @@ tags:
 - 模仿学习
 - 双臂操作
 layout: article
+method: ALOHA Unleashed
 updated: '2026-09-10'
 updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
 pdf: assets/papers/ALOHA Unleashed.pdf

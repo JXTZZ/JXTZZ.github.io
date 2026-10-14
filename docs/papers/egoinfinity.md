@@ -5,6 +5,7 @@ tags:
 - 互联网视频
 - 手物交互
 layout: article
+method: EgoInfinity
 updated: '2026-09-15'
 updated_source: git:842f9154bb48a9d31e672749806fbbc58194e9b3
 pdf: assets/papers/EgoInfinity.pdf

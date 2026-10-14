@@ -5,6 +5,7 @@ tags:
 - 人类演示
 - 阅读随记
 layout: article
+method: SPOT
 ---
 # SPOT：概念与阅读随记
 

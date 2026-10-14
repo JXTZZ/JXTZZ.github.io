@@ -5,6 +5,7 @@ tags:
 - VLA
 - Flow Matching
 layout: article
+method: π₀
 pdf: assets/papers/pi0.pdf
 ---
 # π₀：用视觉语言模型和 Flow Matching 控制多种机器人

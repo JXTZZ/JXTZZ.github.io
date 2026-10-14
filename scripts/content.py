@@ -60,7 +60,8 @@ def collect(files, config):
                   'description': description, 'tags': tags,
                   'date': iso_date(meta.get('date'), 'date', source),
                   'updated': iso_date(meta.get('updated'), 'updated', source),
-                  'updated_source': meta.get('updated_source'), 'pdf': meta.get('pdf')}
+                  'updated_source': meta.get('updated_source'), 'pdf': meta.get('pdf'),
+                  'method': meta.get('method')}
         if record['date'] and record['updated'] and record['updated'] < record['date']:
             raise ValueError(f'{source}: updated cannot precede date')
         CATALOG.append(record)

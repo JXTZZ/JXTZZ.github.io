@@ -64,8 +64,10 @@ def main():
     assert not any('/idea/' in r['source'] or 'human-depth-ambiguity' in r['source'] for r in records), 'Unpublished metadata exposed'
     home = Document((root / 'index.html').read_text(encoding='utf-8')).root
     assert not any(n.has_class('home-recent') or n.has_class('recent-notes') for n in home.elements()), 'Homepage must not contain recent updates'
-    assert len([n for n in home.elements() if n.has_class('hero-thread')]) == 3, 'Homepage reading threads missing'
+    assert not any(n.has_class('hero-thread') or n.has_class('reading-note') for n in home.elements()), 'Removed homepage reading modules returned'
     assert len([n for n in home.elements() if n.has_class('topic-card')]) == 3, 'Homepage collection cards missing'
+    course = next(n for n in home.elements() if n.has_class('featured-course'))
+    assert 'Robotic Manipulation' in next(n for n in course.elements() if n.tag == 'h2').text(), 'Homepage course title must be English'
     image_count = math_pages = 0
     for page in pages:
         if page.name == '404.html':
@@ -77,8 +79,11 @@ def main():
         if page.relative_to(root).as_posix().removesuffix('index.html') in {r['url'] for r in records if r['section'] == 'papers'}:
             headings = [n for n in articles[0].elements() if n.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6') and n.attrs.get('id')]
             toc = next(n for n in nodes if n.has_class('md-nav--secondary'))
-            links = {n.attrs.get('href') for n in toc.elements() if n.tag == 'a'}
+            toc_links = [n for n in toc.elements() if n.tag == 'a']
+            links = {n.attrs.get('href') for n in toc_links}
             assert headings[1:] and all('#' + n.attrs['id'] in links for n in headings[1:]), f'{page}: incomplete paper outline'
+            record = next(r for r in records if r['url'] == page.relative_to(root).as_posix().removesuffix('index.html'))
+            assert record['method'] and toc_links[0].text().strip() == record['method'], f'{page}: first outline entry must be the method name'
         descriptions = [n.attrs.get('content') for n in nodes if n.tag == 'meta' and n.attrs.get('name') == 'description']
         assert descriptions and descriptions[0], f'{page}: page description missing'
         marked = any(n.has_class('arithmatex') for n in nodes)

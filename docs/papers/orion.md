@@ -5,6 +5,7 @@ tags:
 - 视频模仿
 - 对象图
 layout: article
+method: ORION
 updated: '2026-09-11'
 updated_source: git:48c2701d1ba75999d61effa9f47c2a445897718a
 pdf: assets/papers/ORION.pdf

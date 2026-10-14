@@ -51,9 +51,9 @@ layout: article
 
 更新正文时填写实际修订日期；纯目录移动、样式调整和元数据整理不需要给全部文章刷新日期。描述随内容修订，标签来自文章实际内容。论文可用 `pdf: assets/papers/文件名.pdf` 关联原文；资料库的未配笔记资源维护在 `papers/library.md` 的 `resources` 中，大小自动读取文件。
 
-论文/工程/日志列表及其导航由 `scripts/content.py` 生成，不用重复登记；占位符为 `<!-- article-list: papers|engineering|journal -->`（选择一个名称）。首页保留星图、阅读线索、课程推荐和分类卡片，不展示最近更新模块。
+论文/工程/日志列表及其导航由 `scripts/content.py` 生成，不用重复登记；占位符为 `<!-- article-list: papers|engineering|journal -->`（选择一个名称）。首页保留星图、课程推荐和分类卡片，不展示最近更新模块。
 
-理论学习路径、课程顺序和首页精选阅读路径保留人工编排，分别维护栏目首页、`mkdocs.yml` 与 `docs/index.md`。论文笔记的多一级标题目录在构建时合并，保留源标题与锚点；资料库隐藏空侧栏、居中展示。不要修改生成的 `content-index.json`。未发布文件同时配置 `.gitignore` 与 `exclude_docs`，不要忽略整个 `docs/`。
+理论学习路径、课程顺序和首页精选栏目保留人工编排，分别维护栏目首页、`mkdocs.yml` 与 `docs/index.md`。论文笔记用 `method: SPOT` 等元数据提供目录顶部的方法名；多一级标题目录在构建时合并，保留源标题与锚点；资料库隐藏空侧栏、居中展示。不要修改生成的 `content-index.json`。未发布文件同时配置 `.gitignore` 与 `exclude_docs`，不要忽略整个 `docs/`。
 
 旧链接映射集中在 `scripts/site_hooks.py`，保留查询参数和章节锚点。移动公开文章前先新增重定向；文章正文、公式、参考文献锚点和附件链接须保留。
 

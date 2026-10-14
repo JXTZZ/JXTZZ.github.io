@@ -5,6 +5,7 @@ tags:
 - 示范检索
 - 三维轨迹
 layout: article
+method: RoboTok
 pdf: assets/papers/RoboTok.pdf
 ---
 # 2026 RoboTok（arXiv）

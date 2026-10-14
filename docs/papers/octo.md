@@ -5,6 +5,7 @@ tags:
 - 通用策略
 - 机器人学习
 layout: article
+method: Octo
 updated: '2026-09-11'
 updated_source: git:22ce2649f2336c1e77f355e369ec173b43e16f9c
 pdf: assets/papers/OCTo.pdf

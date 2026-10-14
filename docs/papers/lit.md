@@ -5,6 +5,7 @@ tags:
 - VLA
 - 分布外泛化
 layout: article
+method: LIT
 pdf: assets/papers/LIT.pdf
 ---
 # 2026 LIT（arXiv）

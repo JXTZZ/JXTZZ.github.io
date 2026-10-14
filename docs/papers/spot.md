@@ -5,6 +5,7 @@ tags:
 - 人类演示
 - 轨迹学习
 layout: article
+method: SPOT
 updated: '2026-09-10'
 updated_source: git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc
 ---

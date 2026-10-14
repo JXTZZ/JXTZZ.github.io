@@ -1,4 +1,4 @@
-/* Homepage only: research atlas, reading threads, course and collections. */
+/* Homepage only: research atlas, course and collections. */
 .home-hero { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 26px; align-items: center; padding: 24px 0 28px; }
 .home-intro { position: relative; z-index: 1; padding: 16px 0; }
 .home-intro .eyebrow { color: var(--md-typeset-a-color); }
@@ -30,19 +30,9 @@
 .atlas-caption { padding: 8px 12px; font-size: var(--font-label); }
 .atlas-status { width: 5px; height: 5px; border-radius: 50%; background: var(--md-typeset-a-color); box-shadow: 0 0 0 3px rgba(60,119,214,.09); flex-shrink: 0; }
 .atlas-coordinate { margin-left: auto; font-size: var(--font-label); font-family: var(--md-code-font); }
-.home-threads { display: grid; grid-template-columns: .65fr repeat(3,minmax(0,1fr)); align-items: center; gap: 20px; padding: 20px 0; border-block: 1px solid var(--note-border); margin-bottom: 34px; }
-.threads-heading { display: grid; gap: 4px; }
-.threads-heading > span:last-child { font-size: var(--font-small); color: var(--md-default-fg-color--light); }
-.hero-thread { display: flex; align-items: center; min-width: 0; min-height: 64px; gap: 14px; color: var(--md-default-fg-color) !important; border-left: 1px solid var(--note-border); padding: 6px 0 6px 16px; }
-.thread-index { align-self: flex-start; font-family: var(--md-code-font); font-size: var(--font-label); color: var(--md-typeset-a-color); padding-top: 4px; }
-.hero-thread strong, .hero-thread small { display: block; }
-.hero-thread strong { font-size: 15px; font-weight: 550; line-height: 1.6; }
-.hero-thread small { font-size: var(--font-label); color: var(--md-default-fg-color--light); line-height: 1.6; margin-top: 2px; }
-.thread-arrow { margin-left: auto; padding-right: 5px; color: var(--md-typeset-a-color); }
-.hero-thread:hover strong { color: var(--md-typeset-a-color); }
 .featured-course { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); align-items: center; background: var(--feature-surface); border-radius: var(--radius-card); overflow: hidden; }
 .feature-copy { padding: 48px 0 48px 48px; }
-.feature-copy h2 { font-size: clamp(30px,3vw,42px); line-height: 1.35; margin: 18px 0; }
+.feature-copy h2 { font-size: clamp(30px,3vw,42px); overflow-wrap: anywhere; line-height: 1.35; margin: 18px 0; }
 .feature-copy > p { color: var(--md-default-fg-color--light); font-size: 17px; }
 .feature-label, .feature-detail { font-size: var(--font-label); color: var(--md-default-fg-color--light); }
 .feature-actions p { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
@@ -59,21 +49,11 @@
 .topic-card p { font-size: var(--font-small); color: var(--md-default-fg-color--light); margin: 8px 0 28px; line-height: 1.85; }
 .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-top: auto; padding-top: 17px; border-top: 1px solid var(--note-border); font-size: var(--font-label); color: var(--md-default-fg-color--light); }
 .card-foot > span { font-size: 18px; color: var(--md-typeset-a-color); }
-.reading-note { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0 40px; background: var(--note-surface); border-radius: var(--radius-card); padding: 34px; margin-top: 40px; }
-.reading-note > .eyebrow, .reading-note > h3, .reading-note > p { grid-column: 1; }
-.reading-note h3 { font-size: 24px; line-height: 1.5; margin: 12px 0; }
-.reading-note > p { color: var(--md-default-fg-color--light); font-size: var(--font-small); margin-bottom: 0; }
-.reading-path { grid-column: 2; grid-row: 1 / 4; align-self: center; }
-.reading-path p { padding: 8px 0; border-top: 1px solid var(--note-border); margin: 0; font-size: var(--font-small); }
-.reading-path a { display: flex; min-height: 44px; align-items: center; }
 .home-signoff { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--note-border); font-size: var(--font-label); color: var(--md-default-fg-color--light); }
 @media (max-width: 960px) {
   .home-hero { gap: 16px; }
   .md-typeset .home-intro h1 { font-size: 48px; }
   .atlas-coordinate { display: none; }
-  .home-threads { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
-  .threads-heading { grid-column: 1 / -1; display: flex; gap: 12px; align-items: center; }
-  .hero-thread:first-of-type { border-left: 0; padding-left: 0; }
   .feature-copy { padding: 32px 0 32px 32px; }
   .topic-card { padding: 24px; }
 }
@@ -89,11 +69,6 @@
   .atlas-axis--bottom, .atlas-axis--right { display: none; }
   .atlas-axis--top { font-size: 12px; top: 2%; }
   .atlas-caption { padding: 4px 12px; }
-  .home-threads { grid-template-columns: 1fr; padding: 16px 0 8px; gap: 0; margin-bottom: 24px; }
-  .threads-heading { margin-bottom: 12px; }
-  .hero-thread { border-left: 0; padding: 12px 0; border-top: 1px solid var(--note-border); }
-  .hero-thread:first-of-type { border-top: 0; }
-  .hero-thread strong { font-size: 16px; }
   .featured-course { grid-template-columns: 1fr; }
   .feature-copy { padding: 24px 24px 0; }
   .feature-copy h2 { font-size: 30px; }
@@ -101,8 +76,6 @@
   .home-collection-heading { margin-top: 40px; }
   .topic-grid { grid-template-columns: 1fr; gap: 16px; }
   .topic-card { padding: 24px; }
-  .reading-note { grid-template-columns: 1fr; padding: 24px; gap: 16px; margin-top: 24px; }
-  .reading-path { grid-column: 1; grid-row: auto; }
   .feature-copy .md-button { padding-inline: 16px; }
 }
 @media print { .atlas-motion, .atlas-canvas { display: none; } .research-atlas[data-ready] .atlas-fallback { visibility: visible; } .home-hero { break-inside: avoid; } }

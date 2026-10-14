@@ -127,10 +127,10 @@ try {
   for(const width of [320,390,768,1440])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/papers/library/','/papers/orion/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
     const state=await load(route,width,theme);
     if(route==='/'){
-      assert(await evaluate(()=>!document.querySelector('.home-recent,.recent-notes') && document.querySelectorAll('.hero-thread').length===3 && document.querySelectorAll('.topic-card').length===3),'Previous homepage collections must replace recent updates');
+      assert(await evaluate(()=>!document.querySelector('.home-recent,.recent-notes,.home-threads,.reading-note') && document.querySelectorAll('.topic-card').length===3),'Homepage must omit removed reading/update modules');
       assert(!state.loadedMath,'MathJax must not load on home');
-      assert(await evaluate(()=>document.querySelectorAll('.reading-path a').length===3 && !!document.querySelector('.featured-course a.md-button')),'Curated Markdown links did not render');
-      assert(await evaluate(()=>document.getElementById('_2')?.closest('.featured-course') && document.getElementById('_3')?.closest('.reading-note')),'Home bookmark anchors changed');
+      assert(await evaluate(()=>!!document.querySelector('.featured-course a.md-button') && document.querySelector('.featured-course h2').innerText.includes('Robotic Manipulation')),'Course title/links did not render');
+      assert(await evaluate(()=>document.getElementById('_2')?.closest('.featured-course') && document.getElementById('_3')?.closest('.featured-course')),'Home bookmark anchors changed');
       const home=await evaluate(()=>({stage:document.querySelector('.atlas-stage').getBoundingClientRect().height,ready:document.querySelector('.research-atlas').hasAttribute('data-ready')}));
       assert(home.ready && (width>=650 || home.stage<=170),'Mobile research atlas too large: '+JSON.stringify(home));
       if(width===320 || width===1440)await capture('home-'+width+'-'+theme);
@@ -169,6 +169,7 @@ try {
   const papers=(await (await fetch(root+'/content-index.json')).json()).filter(p=>p.section==='papers');
   for(const paper of papers){
     await load('/'+paper.url,1440);
+    assert(await evaluate(method=>document.querySelector('.md-sidebar--secondary [data-md-component="toc"] a')?.innerText.trim()===method,[paper.method]),'Paper method name missing: '+paper.url);
     assert(await evaluate(()=>{const toc=document.querySelector('.md-sidebar--secondary'),links=new Set([...toc.querySelectorAll('a')].map(a=>a.hash));return getComputedStyle(toc).display!=='none' && [...document.querySelectorAll('article h1,article h2,article h3,article h4')].slice(1).every(h=>links.has('#'+encodeURIComponent(h.id)) || links.has('#'+h.id));}),'Incomplete left outline: '+paper.url);
   }
   await load('/',1440);

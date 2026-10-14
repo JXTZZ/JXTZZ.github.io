@@ -26,13 +26,21 @@ def on_page_markdown(markdown, page, config, **kwargs):
 
 
 def on_page_content(html, page, config, **kwargs):
-    # Older paper notes have several H1s. Material displays only the first H1's
-    # children; gather every section under that root without editing the source
-    # headings, their HTML level or the bookmarked IDs.
+    # Keep every paper section, and use the method name for the top TOC entry.
+    # The original headings, HTML levels and bookmarked IDs stay untouched.
     items = list(page.toc)
-    if page.file.src_uri.startswith('papers/') and page.meta.get('layout') == 'article' and len(items) > 1 and items[0].level == 1:
+    if page.file.src_uri.startswith('papers/') and page.meta.get('layout') == 'article' and items and items[0].level == 1:
+        method = page.meta.get('method')
+        if not isinstance(method, str) or not method.strip():
+            raise ValueError(f'{page.file.src_uri}: method is required for the paper outline')
+        # Older notes have a second H1 containing the English paper title, then
+        # numbered H1 sections. Replace that title only in the generated TOC.
+        full_title = items[1] if len(items) > 1 and items[1].level == 1 and not re.match(r'^\d+[.、．]', items[1].title) else None
+        method_link = AnchorLink(escape(method), full_title.id if full_title else items[0].id, 2)
         root = AnchorLink(items[0].title, items[0].id, 1)
-        root.children = list(items[0].children) + items[1:]
+        root.children = [method_link] + list(items[0].children)
+        for item in items[1:]:
+            root.children.extend(item.children if item is full_title else [item])
         page.toc = TableOfContents([root])
     return prepare_content(html, page, config)
 
