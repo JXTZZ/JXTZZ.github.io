@@ -15,21 +15,17 @@
 .atlas-heading, .atlas-caption { display: flex; align-items: center; gap: 10px; }
 .atlas-heading { justify-content: space-between; padding: 0 4px; min-height: 28px; }
 .atlas-heading > span { font-family: var(--md-code-font); font-size: var(--font-label); letter-spacing: .08em; }
-.atlas-edition { font-size: var(--font-label); font-family: var(--md-code-font); letter-spacing: .06em; }
-.atlas-stage { position: relative; width: 100%; aspect-ratio: 1.45; max-height: 380px; isolation: isolate; overflow: hidden; }
+.atlas-stage { position: relative; width: 100%; aspect-ratio: 1.45; max-height: 380px; isolation: isolate; overflow: hidden; touch-action: pan-y; }
 .atlas-stage::before { content: ""; position: absolute; inset: 5%; z-index: -1; background-image: radial-gradient(var(--atlas-grid) .7px,transparent .7px); background-size: 22px 22px; mask-image: radial-gradient(ellipse,#000 12%,transparent 72%); -webkit-mask-image: radial-gradient(ellipse,#000 12%,transparent 72%); }
 .atlas-canvas, .md-typeset .atlas-fallback { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .md-typeset .atlas-fallback { object-fit: contain; }
 .atlas-canvas { opacity: 0; }
 .research-atlas[data-ready] .atlas-canvas { opacity: 1; }
 .research-atlas[data-ready] .atlas-fallback { visibility: hidden; }
-.atlas-labels span { position: absolute; padding: 6px 10px; border: 1px solid var(--note-border); border-radius: 99px; font-size: var(--font-label); color: var(--md-default-fg-color--light); background: var(--header-surface); box-shadow: 0 4px 12px rgba(30,53,101,.04); pointer-events: none; }
-.atlas-labels span:first-child { top: 24%; left: 2%; }
-.atlas-labels span:nth-child(2) { top: 53%; right: 0; }
-.atlas-labels span:last-child { bottom: 13%; left: 14%; }
 .atlas-caption { padding: 12px 4px 0; border-top: 1px solid var(--note-border); font-size: var(--font-label); }
 .atlas-status { width: 5px; height: 5px; border-radius: 50%; background: var(--md-typeset-a-color); box-shadow: 0 0 0 3px rgba(60,119,214,.09); flex-shrink: 0; }
-.atlas-coordinate { margin-left: auto; font-size: var(--font-label); font-family: var(--md-code-font); }
+.atlas-hint { margin-left: auto; font-size: var(--font-label); }
+.atlas-hint--touch { display: none; }
 .featured-course { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); align-items: center; background: radial-gradient(ellipse at 88% 30%,var(--figure-glow),transparent 65%),var(--note-card); border: 1px solid var(--note-border); border-radius: 32px; overflow: hidden; box-shadow: var(--soft-shadow); margin-top: 20px; }
 .feature-copy { padding: 48px 0 48px 48px; }
 .feature-copy h2 { font-size: clamp(30px,3vw,42px); overflow-wrap: anywhere; line-height: 1.35; margin: 18px 0; }
@@ -57,7 +53,6 @@
 @media (max-width: 960px) {
   .home-hero { gap: 16px; }
   .md-typeset .home-intro h1 { font-size: 48px; }
-  .atlas-coordinate { display: none; }
   .feature-copy { padding: 32px 0 32px 32px; }
   .topic-card { padding: 24px; }
 }
@@ -70,10 +65,8 @@
   .research-atlas { width: 100%; max-width: 430px; justify-self: center; padding: 16px; border-radius: 24px; margin-top: 12px; }
   .atlas-stage { height: 160px; aspect-ratio: auto; }
   .atlas-heading { min-height: 28px; }
-  .atlas-labels span:first-child { top: 8%; left: 0; }
-  .atlas-labels span:nth-child(2) { display: none; }
-  .atlas-labels span:last-child { bottom: 10%; left: auto; right: 0; }
-  .atlas-caption { padding: 10px 0 0; }
+  .atlas-caption { flex-wrap: wrap; gap: 8px; padding: 10px 0 0; }
+  .atlas-hint { flex-basis: 100%; margin: 0 0 0 15px; }
   .featured-course { grid-template-columns: 1fr; }
   .feature-copy { padding: 24px 24px 0; }
   .feature-copy h2 { font-size: 30px; }
@@ -85,3 +78,5 @@
   .feature-copy .md-button { padding-inline: 16px; }
 }
 @media print { .atlas-canvas { display: none; } .research-atlas[data-ready] .atlas-fallback { visibility: visible; } .home-hero { break-inside: avoid; } }
+@media (hover: none), (pointer: coarse) { .atlas-hint--mouse { display: none; } .atlas-hint--touch { display: inline; } }
+@media (prefers-reduced-motion: reduce), print { .atlas-hint { display: none; } }

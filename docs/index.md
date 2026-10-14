@@ -23,13 +23,12 @@ layout: home
 <div class="hero-caption">南京大学 · 软件工程 / 具身智能 · 机器人学习</div>
 </div>
 <div class="research-atlas" data-research-atlas>
-<div class="atlas-heading"><span>RESEARCH ATLAS</span><span class="atlas-edition" aria-hidden="true">FIG. 01</span></div>
+<div class="atlas-heading"><span>RESEARCH ATLAS</span></div>
 <div class="atlas-stage">
-<img class="atlas-fallback" src="assets/research-atlas.svg" alt="蓝紫色半透明球体、点云与交错轨道构成的研究星图" width="680" height="560">
+<img class="atlas-fallback" src="assets/research-atlas.svg" alt="OpenVLA、DP3、SPOT、Diffusion 等研究关键词拼成 LoTusY 的文字图案" width="680" height="440">
 <canvas class="atlas-canvas" aria-hidden="true"></canvas>
-<div class="atlas-labels" aria-hidden="true"><span>Perception</span><span>Representation</span><span>Action</span></div>
 </div>
-<div class="atlas-caption"><span class="atlas-status" aria-hidden="true"></span><span>从感知世界，到生成行动。</span><span class="atlas-coordinate" aria-hidden="true">OBSERVE → LEARN → ACT</span></div>
+<div class="atlas-caption"><span class="atlas-status" aria-hidden="true"></span><span>从感知世界，到生成行动。</span><span class="atlas-hint"><span class="atlas-hint--mouse">移动鼠标 · 汇聚想法</span><span class="atlas-hint--touch">横向滑动 · 汇聚想法</span></span></div>
 </div>
 </div>
 
@@ -47,7 +46,7 @@ MIT《Robotic Manipulation》<br>从感知、规划到控制，理解机器人�
 </div>
 <span class="feature-detail">RUSS TEDRAKE · 12 章正文与 5 篇附录</span>
 </div>
-<div class="feature-visual"><span class="visual-edition" aria-hidden="true">FIG. 02 / MANIPULATION</span><img src="assets/robot-arm.svg" alt="银色机械臂在蓝紫色工作台上抓取半透明立方体的立体示意图" width="640" height="520"><div class="visual-caption"><span>PERCEPTION</span><span>PLANNING</span><span>CONTROL</span></div></div>
+<div class="feature-visual"><span class="visual-edition" aria-hidden="true">MANIPULATION</span><img src="assets/robot-arm.svg" alt="银色机械臂在蓝紫色工作台上抓取半透明立方体的立体示意图" width="640" height="520"><div class="visual-caption"><span>PERCEPTION</span><span>PLANNING</span><span>CONTROL</span></div></div>
 </div>
 
 <div class="section-heading home-collection-heading"><span class="eyebrow">THE COLLECTION</span><h2>沿着兴趣，找到一条线索。</h2><p>理解方法，补齐基础，把想法付诸实践。</p></div>

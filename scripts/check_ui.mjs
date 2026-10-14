@@ -30,7 +30,7 @@ const checks=[],errors=[],network=new Map();
 let homeTransfer;
 try {
   if(!cdp) {
-    const profile=path.join(artifacts,'chrome-'+process.pid);
+    const profile=path.join(artifacts,'chrome-'+process.pid+'-'+Date.now());
     await mkdir(profile,{recursive:true});
     const executable=process.env.CHROME_BIN || (process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
     browser=spawn(executable,['--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--remote-debugging-port=0','--user-data-dir='+profile,...(process.platform==='linux'?['--no-sandbox']:[]),'about:blank'],{stdio:'ignore',windowsHide:true});
@@ -98,7 +98,7 @@ try {
         mobileToc:visible(toc),tocOpen:toc?.open,tocHeight:toc?.getBoundingClientRect().height,tocAfterTitle:toc?toc.getBoundingClientRect().top>=article.querySelector('h1').getBoundingClientRect().bottom:false,
         desktopToc:visible(aside),tocLeft:aside?aside.getBoundingClientRect().right<=article.getBoundingClientRect().left+1:false,
         rows:[...article.querySelectorAll('.article-row')].map(n=>n.dataset.section),
-        auxiliaryFonts:[...article.querySelectorAll('.article-row__meta,.article-row__description,.article-tag,.hero-caption,.atlas-caption,.atlas-labels span,.visual-caption')].filter(visible).map(n=>parseFloat(getComputedStyle(n).fontSize)),
+        auxiliaryFonts:[...article.querySelectorAll('.article-row__meta,.article-row__description,.article-tag,.hero-caption,.atlas-caption,.atlas-hint,.visual-caption')].filter(visible).map(n=>parseFloat(getComputedStyle(n).fontSize)),
         images:[...article.querySelectorAll('img')].map(img=>({dimensions:img.hasAttribute('width') && img.hasAttribute('height'),loaded:img.complete && img.naturalWidth>0,lazy:img.loading==='lazy'})),
         contrast:[ratio('--md-default-fg-color','--md-default-bg-color'),ratio('--md-default-fg-color--light','--note-surface'),ratio('--md-typeset-a-color','--md-default-bg-color')],
         brand:document.querySelector('.header-home-link').href,loadedMath:!!document.querySelector('script[src*="tex-mml-chtml"]')};
@@ -131,11 +131,21 @@ try {
       assert(await evaluate(()=>!document.querySelector('.home-recent,.recent-notes,.home-threads,.reading-note') && document.querySelectorAll('.topic-card').length===3),'Homepage must omit removed reading/update modules');
       assert(!state.loadedMath,'MathJax must not load on home');
       assert(await evaluate(()=>!document.querySelector('.atlas-motion')),'Animation pause control must be removed');
+      assert(await evaluate(()=>document.querySelector('[data-word="LoTusY"]') && !document.querySelector('article').innerText.includes('FIG.') && document.querySelector('.visual-edition').innerText==='MANIPULATION'),'Word atlas/figure labels incorrect');
       assert(await evaluate(()=>!!document.querySelector('.featured-course a.md-button') && document.querySelector('.featured-course h2').innerText.includes('Robotic Manipulation')),'Course title/links did not render');
       assert(await evaluate(()=>document.getElementById('_2')?.closest('.featured-course') && document.getElementById('_3')?.closest('.featured-course')),'Home bookmark anchors changed');
       const home=await evaluate(()=>({stage:document.querySelector('.atlas-stage').getBoundingClientRect().height,ready:document.querySelector('.research-atlas').hasAttribute('data-ready')}));
       assert(home.ready && (width>=650 || home.stage<=170),'Mobile research atlas too large: '+JSON.stringify(home));
       if(width===320 || width===1440)await capture('home-'+width+'-'+theme);
+      if(width===320 && theme==='default') {
+        const drag=await evaluate(()=>{const r=document.querySelector('.atlas-stage').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};});
+        await send('Page.bringToFront');
+        await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[drag]});await delay(40);
+        for(const offset of [35,70,110]){await send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:drag.x,y:drag.y-offset}]});await delay(40);}
+        await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(300);
+        const vertical=await evaluate(()=>({scroll:scrollY,hidden:document.hidden,touchAction:getComputedStyle(document.querySelector('.atlas-stage')).touchAction}));
+        assert(vertical.scroll>30,'Word atlas must preserve vertical touch scrolling: '+JSON.stringify(vertical));
+      }
       await evaluate(()=>document.querySelector('.feature-visual img').scrollIntoView({block:'center'}));
       await evaluate(()=>document.querySelector('.feature-visual img').decode());
       await delay(300); // Allow the sticky header/scroll transition to settle.
@@ -187,6 +197,17 @@ try {
   await evaluate(()=>document.querySelector('label[for="__palette_0"]').click());await delay(100);
   assert(await evaluate(()=>document.body.dataset.mdColorScheme==='default'),'Theme control failed to select light mode');
   await send('Page.bringToFront');
+  for(const theme of ['default','slate']) {
+    await evaluate(theme=>document.querySelector('input[data-md-color-scheme="'+theme+'"]').click(),[theme]);await delay(100);
+    const button=await evaluate(()=>{const n=document.querySelector('.hero-actions .md-button--primary'),r=n.getBoundingClientRect();window.__buttonFrames=new Promise(resolve=>{const frames=[],start=performance.now();const sample=()=>{const s=getComputedStyle(n);frames.push({background:s.backgroundColor,image:s.backgroundImage,color:s.color});performance.now()-start<350?requestAnimationFrame(sample):resolve(frames);};sample();});return {x:r.left+r.width/2,y:r.top+r.height/2};});
+    await send('Input.dispatchMouseEvent',{type:'mouseMoved',...button});
+    const frames=await evaluate(()=>window.__buttonFrames);
+    assert(frames.length>3 && frames.every(f=>f.background==='rgb(7, 95, 208)' && f.image.includes('linear-gradient') && f.color==='rgb(255, 255, 255)'),'Primary button background flashes during hover: '+JSON.stringify(frames));
+    await evaluate(()=>document.querySelector('.hero-actions .md-button--primary').focus());
+    assert(await evaluate(()=>getComputedStyle(document.activeElement).backgroundImage.includes('linear-gradient')),'Focused button lost its gradient');
+    await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:10,y:80});
+  }
+  await evaluate(()=>document.querySelector('input[data-md-color-scheme="default"]').click());await delay(100);
   await evaluate(()=>document.querySelector('.atlas-stage').addEventListener('pointermove',e=>{window.__atlasTestPointer=e.pointerType;},{once:true}));
   const sphere=await evaluate(()=>{const r=document.querySelector('.atlas-stage').getBoundingClientRect();return {x:r.left+r.width*.75,y:r.top+r.height*.3};});
   const beforePointer=await evaluate(()=>document.querySelector('canvas').toDataURL());
@@ -201,13 +222,18 @@ try {
   assert(motion.changed && motion.pointer==='mouse','Pointer-driven star map did not respond: '+JSON.stringify(motion));
   await delay(1000);
   assert(await evaluate(()=>new Promise(resolve=>{const c=document.querySelector('canvas'),a=c.toDataURL();setTimeout(()=>resolve(a===c.toDataURL()),180);})), 'Star map must settle when the pointer stops');
+  assert(await evaluate(()=>{const value=Number(document.querySelector('[data-research-atlas]').dataset.formation);return value>.7 && value<.8;}),'Pointer position must control word formation');
   await send('Emulation.setTouchEmulationEnabled',{enabled:true});
-  const beforeTouch=await evaluate(()=>document.querySelector('canvas').toDataURL());
+  const beforeTouch=await evaluate(()=>Number(document.querySelector('[data-research-atlas]').dataset.formation));
   await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[sphere]});
   await send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:sphere.x+40,y:sphere.y}]});
-  await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(200);
-  assert(await evaluate(before=>document.querySelector('canvas').toDataURL()===before,[beforeTouch]),'Touch input must keep the star map static');
+  await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(1000);
+  assert(await evaluate(before=>Number(document.querySelector('[data-research-atlas]').dataset.formation)>before+.05,[beforeTouch]),'Horizontal swipe must gather the words');
   await send('Emulation.setTouchEmulationEnabled',{enabled:false});
+  const assemble=await evaluate(()=>{const r=document.querySelector('.atlas-stage').getBoundingClientRect();return {x:r.left+r.width*.98,y:r.top+r.height*.5};});
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',...assemble});await delay(1000);
+  assert(await evaluate(()=>Number(document.querySelector('[data-research-atlas]').dataset.formation)>.95),'Words must assemble into the full blog name');
+  await capture('word-atlas-assembled');
   await send('Emulation.setEmulatedMedia',{media:'screen',features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   // Reload to test the OS preference at startup, avoiding CDP's delayed media-change
   // repaint in headless tabs. Pointer response and settling are tested above.
@@ -238,7 +264,7 @@ try {
   await send('Emulation.setScriptExecutionDisabled',{value:false});
   assert(!errors.length,'Browser exceptions: '+errors.join(','));
   await rm(path.join(artifacts,'failure.txt'),{force:true});
-  await writeFile(path.join(artifacts,'report.json'),JSON.stringify({checks,homeTransfer,keyboard:true,search:true,themeControl:true,pointerMotion:true,idleStatic:true,touchStatic:true,reducedMotion:true,noScript:true,errors},null,2));
+  await writeFile(path.join(artifacts,'report.json'),JSON.stringify({checks,homeTransfer,keyboard:true,search:true,themeControl:true,pointerMotion:true,idleStatic:true,touchFormation:true,buttonHover:true,reducedMotion:true,noScript:true,verticalTouchScroll:option('--only')!=='interaction',errors},null,2));
   console.log('PASS: real-browser layout, TOC, math, table, themes, images, search and fallbacks.');
   await send('Target.closeTarget',{targetId:target.id});
 }catch(error){await writeFile(path.join(artifacts,'failure.txt'),String(error.stack));throw error;}

@@ -61,7 +61,7 @@ layout: article
 
 正文图片的原始像素保持不变；构建补充宽高、异步解码及懒加载，首屏关键图保持立即加载。MathJax 根据渲染标记只在公式页加载。论文图暂不统一转为有损 WebP/JPEG；`audit_assets.py` 评估最大的 PNG 是否有无损重压缩空间，实际压缩前应复查图中文字和线条。
 
-界面参考 [Dribbble 收藏](https://dribbble.com/zhangchengcheng/collections/1162512--UI) 的通透卡片、产品插画光感与克制排版；首页图形采用 SVG 和 Canvas。星图随鼠标轻微转动，停止操作后静止；减少动态效果偏好与触摸设备使用静态呈现，无 JavaScript 时显示 SVG 回退图。
+界面参考 [Dribbble 收藏](https://dribbble.com/zhangchengcheng/collections/1162512--UI) 的通透卡片、产品插画光感与克制排版；首页图形采用 SVG 和 Canvas。研究关键词拼成 LoTusY，鼠标移动或手机横向滑动控制文字聚散，停止操作后静止；竖向滑动保持正常页面滚动。减少动态效果偏好使用静态文字图案，无 JavaScript 时显示 SVG 回退图。
 
 资源总体积与页面下载量分别测量：源资源约 332.4 MiB，其中 34 个 PDF 约 296.5 MiB；这些 PDF 未嵌入首页，只在下载时请求。浏览器报告记录本地 HTTP、无压缩、关闭缓存时的首页传输量，不能等同于线上压缩后的速度。搜索索引也是页面加载的一部分。
 
