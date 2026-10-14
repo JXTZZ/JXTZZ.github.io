@@ -7,7 +7,6 @@
   if (!context) return;
   const stage = atlas.querySelector('.atlas-stage');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const pointer = matchMedia('(hover: hover) and (pointer: fine)');
   const homeYaw = .36, homePitch = -.26;
   let width = 0, height = 0, radius = 0, points = [];
   let yaw = homeYaw, pitch = homePitch, targetYaw = homeYaw, targetPitch = homePitch;
@@ -104,7 +103,7 @@
     });
     draw();
   }
-  const interactive = () => visible && !document.hidden && !reduced.matches && pointer.matches;
+  const interactive = () => visible && !document.hidden && !reduced.matches;
   function tick(time) {
     frame = 0;
     if (!interactive()) return;
@@ -125,14 +124,17 @@
     yaw = targetYaw = homeYaw; pitch = targetPitch = homePitch; draw();
   }
   stage.addEventListener('pointermove', event => {
-    if (!interactive()) return;
+    if (event.pointerType !== 'mouse' || !interactive()) return;
     const rect = stage.getBoundingClientRect();
     targetYaw = homeYaw + ((event.clientX - rect.left) / rect.width * 2 - 1) * .3;
     targetPitch = homePitch - ((event.clientY - rect.top) / rect.height * 2 - 1) * .2;
     start();
   });
-  stage.addEventListener('pointerleave', () => {targetYaw = homeYaw; targetPitch = homePitch; start();});
-  reduced.addEventListener('change', reset); pointer.addEventListener('change', reset);
+  stage.addEventListener('pointerleave', event => {
+    if (event.pointerType !== 'mouse') return;
+    targetYaw = homeYaw; targetPitch = homePitch; start();
+  });
+  reduced.addEventListener('change', reset);
   document.addEventListener('visibilitychange', reset);
   new IntersectionObserver(([entry]) => {visible = entry.isIntersecting; if (!visible) reset();}, {threshold: .05}).observe(atlas);
   new ResizeObserver(resize).observe(stage);

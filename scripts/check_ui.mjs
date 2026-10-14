@@ -124,6 +124,7 @@ try {
     console.log('PASS',width,theme,route,'math',state.rendered);
     return state;
   }
+  if(option('--only')!=='interaction') {
   for(const width of [320,390,768,1440])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/papers/library/','/papers/orion/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
     const state=await load(route,width,theme);
     if(route==='/'){
@@ -178,18 +179,35 @@ try {
     assert(await evaluate(method=>document.querySelector('.md-sidebar--secondary [data-md-component="toc"] a')?.innerText.trim()===method,[paper.method]),'Paper method name missing: '+paper.url);
     assert(await evaluate(()=>{const toc=document.querySelector('.md-sidebar--secondary'),links=new Set([...toc.querySelectorAll('a')].map(a=>a.hash));return getComputedStyle(toc).display!=='none' && [...document.querySelectorAll('article h1,article h2,article h3,article h4')].slice(1).every(h=>links.has('#'+encodeURIComponent(h.id)) || links.has('#'+h.id));}),'Incomplete left outline: '+paper.url);
   }
+  }
   await load('/',1440);
   // Exercise the upstream switch itself as well as rendering both schemes.
   await evaluate(()=>document.querySelector('label[for="__palette_1"]').click());await delay(100);
   assert(await evaluate(()=>document.body.dataset.mdColorScheme==='slate'),'Theme control failed to select dark mode');
   await evaluate(()=>document.querySelector('label[for="__palette_0"]').click());await delay(100);
   assert(await evaluate(()=>document.body.dataset.mdColorScheme==='default'),'Theme control failed to select light mode');
+  await send('Page.bringToFront');
+  await evaluate(()=>document.querySelector('.atlas-stage').addEventListener('pointermove',e=>{window.__atlasTestPointer=e.pointerType;},{once:true}));
   const sphere=await evaluate(()=>{const r=document.querySelector('.atlas-stage').getBoundingClientRect();return {x:r.left+r.width*.75,y:r.top+r.height*.3};});
   const beforePointer=await evaluate(()=>document.querySelector('canvas').toDataURL());
-  await send('Input.dispatchMouseEvent',{type:'mouseMoved',...sphere});await delay(300);
-  assert(await evaluate(before=>document.querySelector('canvas').toDataURL()!==before,[beforePointer]),'Pointer-driven star map did not respond');
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',...sphere});
+  const motion=await evaluate(before=>new Promise(resolve=>{
+    const start=Date.now();const poll=()=>{
+      if(document.querySelector('canvas').toDataURL()!==before)return resolve({changed:true,pointer:window.__atlasTestPointer});
+      if(Date.now()-start>2500)return resolve({changed:false,pointer:window.__atlasTestPointer,hidden:document.hidden,media:matchMedia('(hover: hover) and (pointer: fine)').matches});
+      setTimeout(poll,80);
+    };poll();
+  }),[beforePointer]);
+  assert(motion.changed && motion.pointer==='mouse','Pointer-driven star map did not respond: '+JSON.stringify(motion));
   await delay(1000);
   assert(await evaluate(()=>new Promise(resolve=>{const c=document.querySelector('canvas'),a=c.toDataURL();setTimeout(()=>resolve(a===c.toDataURL()),180);})), 'Star map must settle when the pointer stops');
+  await send('Emulation.setTouchEmulationEnabled',{enabled:true});
+  const beforeTouch=await evaluate(()=>document.querySelector('canvas').toDataURL());
+  await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[sphere]});
+  await send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:sphere.x+40,y:sphere.y}]});
+  await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(200);
+  assert(await evaluate(before=>document.querySelector('canvas').toDataURL()===before,[beforeTouch]),'Touch input must keep the star map static');
+  await send('Emulation.setTouchEmulationEnabled',{enabled:false});
   await send('Emulation.setEmulatedMedia',{media:'screen',features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   // Reload to test the OS preference at startup, avoiding CDP's delayed media-change
   // repaint in headless tabs. Pointer response and settling are tested above.
@@ -220,7 +238,7 @@ try {
   await send('Emulation.setScriptExecutionDisabled',{value:false});
   assert(!errors.length,'Browser exceptions: '+errors.join(','));
   await rm(path.join(artifacts,'failure.txt'),{force:true});
-  await writeFile(path.join(artifacts,'report.json'),JSON.stringify({checks,homeTransfer,keyboard:true,search:true,themeControl:true,pointerMotion:true,idleStatic:true,reducedMotion:true,noScript:true,errors},null,2));
+  await writeFile(path.join(artifacts,'report.json'),JSON.stringify({checks,homeTransfer,keyboard:true,search:true,themeControl:true,pointerMotion:true,idleStatic:true,touchStatic:true,reducedMotion:true,noScript:true,errors},null,2));
   console.log('PASS: real-browser layout, TOC, math, table, themes, images, search and fallbacks.');
   await send('Target.closeTarget',{targetId:target.id});
 }catch(error){await writeFile(path.join(artifacts,'failure.txt'),String(error.stack));throw error;}
