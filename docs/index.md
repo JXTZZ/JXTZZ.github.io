@@ -23,13 +23,11 @@ layout: home
 <div class="hero-caption">南京大学 · 软件工程 / 具身智能 · 机器人学习</div>
 </div>
 <div class="research-atlas" data-research-atlas>
-<div class="atlas-heading"><span>RESEARCH ATLAS</span><button class="atlas-motion" type="button" aria-label="暂停研究星图动画" aria-pressed="false" hidden><span class="atlas-motion-icon" aria-hidden="true">Ⅱ</span><span data-motion-label>暂停动画</span></button></div>
+<div class="atlas-heading"><span>RESEARCH ATLAS</span><span class="atlas-edition" aria-hidden="true">FIG. 01</span></div>
 <div class="atlas-stage">
-<img class="atlas-fallback" src="assets/research-atlas.svg" alt="由蓝紫色点云与轨道构成的研究星图" width="680" height="560">
+<img class="atlas-fallback" src="assets/research-atlas.svg" alt="蓝紫色半透明球体、点云与交错轨道构成的研究星图" width="680" height="560">
 <canvas class="atlas-canvas" aria-hidden="true"></canvas>
-<span class="atlas-axis atlas-axis--top" aria-hidden="true">01 / PERCEPTION</span>
-<span class="atlas-axis atlas-axis--bottom" aria-hidden="true">02 / REPRESENTATION</span>
-<span class="atlas-axis atlas-axis--right" aria-hidden="true">03 / ACTION</span>
+<div class="atlas-labels" aria-hidden="true"><span>Perception</span><span>Representation</span><span>Action</span></div>
 </div>
 <div class="atlas-caption"><span class="atlas-status" aria-hidden="true"></span><span>从感知世界，到生成行动。</span><span class="atlas-coordinate" aria-hidden="true">OBSERVE → LEARN → ACT</span></div>
 </div>
@@ -49,15 +47,15 @@ MIT《Robotic Manipulation》<br>从感知、规划到控制，理解机器人�
 </div>
 <span class="feature-detail">RUSS TEDRAKE · 12 章正文与 5 篇附录</span>
 </div>
-<div class="feature-visual"><img src="assets/robot-arm.svg" alt="机器人机械臂与物体交互的示意图" width="640" height="520"><div class="visual-caption"><span>PERCEPTION</span><span>PLANNING</span><span>CONTROL</span></div></div>
+<div class="feature-visual"><span class="visual-edition" aria-hidden="true">FIG. 02 / MANIPULATION</span><img src="assets/robot-arm.svg" alt="银色机械臂在蓝紫色工作台上抓取半透明立方体的立体示意图" width="640" height="520"><div class="visual-caption"><span>PERCEPTION</span><span>PLANNING</span><span>CONTROL</span></div></div>
 </div>
 
 <div class="section-heading home-collection-heading"><span class="eyebrow">THE COLLECTION</span><h2>沿着兴趣，找到一条线索。</h2><p>理解方法，补齐基础，把想法付诸实践。</p></div>
 
 <div class="topic-grid">
-<a class="topic-card" href="papers/"><span class="card-number">01 / RESEARCH</span><span class="topic-symbol" aria-hidden="true">↗</span><h3>论文阅读</h3><p>从 ALOHA、DP3 到 OpenVLA，拆解机器人策略的任务、方法与边界。</p><span class="card-foot">具身智能 · 论文精读 <span aria-hidden="true">→</span></span></a>
-<a class="topic-card" href="deep-learning/"><span class="card-number">02 / FOUNDATIONS</span><span class="topic-symbol" aria-hidden="true">∑</span><h3>理论基础</h3><p>用数学推导和代码，串起回归、神经网络、正则化与注意力机制。</p><span class="card-foot">深度学习 · 数学直觉 <span aria-hidden="true">→</span></span></a>
-<a class="topic-card" href="engineering/"><span class="card-number">03 / PRACTICE</span><span class="topic-symbol" aria-hidden="true">⌘</span><h3>工程实践</h3><p>记录 Tensor 的细节、开发中的问题，以及从想法到实现的过程。</p><span class="card-foot">PyTorch · 开发手记 <span aria-hidden="true">→</span></span></a>
+<a class="topic-card" href="papers/"><span class="card-number">01 / RESEARCH</span><span class="topic-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12a2 2 0 0 1 2 2v14H8a2 2 0 0 1-2-2Zm0 13a2 2 0 0 1 2-2h12M10 7h6M10 10h4"/></svg></span><h3>论文阅读</h3><p>从 ALOHA、DP3 到 OpenVLA，拆解机器人策略的任务、方法与边界。</p><span class="card-foot">具身智能 · 论文精读 <span aria-hidden="true">→</span></span></a>
+<a class="topic-card" href="deep-learning/"><span class="card-number">02 / FOUNDATIONS</span><span class="topic-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 6h10M7 18h10M6 7v10M18 7v10M8 8l8 8M16 8l-8 8"/><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></span><h3>理论基础</h3><p>用数学推导和代码，串起回归、神经网络、正则化与注意力机制。</p><span class="card-foot">深度学习 · 数学直觉 <span aria-hidden="true">→</span></span></a>
+<a class="topic-card" href="engineering/"><span class="card-number">03 / PRACTICE</span><span class="topic-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 4l-4 16"/></svg></span><h3>工程实践</h3><p>记录 Tensor 的细节、开发中的问题，以及从想法到实现的过程。</p><span class="card-foot">PyTorch · 开发手记 <span aria-hidden="true">→</span></span></a>
 </div>
 
 <div class="home-signoff"><span>一点点理解，一点点构建。</span><span>LEARN. BUILD. UNDERSTAND.</span></div>

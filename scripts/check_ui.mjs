@@ -98,7 +98,7 @@ try {
         mobileToc:visible(toc),tocOpen:toc?.open,tocHeight:toc?.getBoundingClientRect().height,tocAfterTitle:toc?toc.getBoundingClientRect().top>=article.querySelector('h1').getBoundingClientRect().bottom:false,
         desktopToc:visible(aside),tocLeft:aside?aside.getBoundingClientRect().right<=article.getBoundingClientRect().left+1:false,
         rows:[...article.querySelectorAll('.article-row')].map(n=>n.dataset.section),
-        auxiliaryFonts:[...article.querySelectorAll('.article-row__meta,.article-row__description,.article-tag,.hero-caption,.atlas-motion')].filter(visible).map(n=>parseFloat(getComputedStyle(n).fontSize)),
+        auxiliaryFonts:[...article.querySelectorAll('.article-row__meta,.article-row__description,.article-tag,.hero-caption,.atlas-caption,.atlas-labels span,.visual-caption')].filter(visible).map(n=>parseFloat(getComputedStyle(n).fontSize)),
         images:[...article.querySelectorAll('img')].map(img=>({dimensions:img.hasAttribute('width') && img.hasAttribute('height'),loaded:img.complete && img.naturalWidth>0,lazy:img.loading==='lazy'})),
         contrast:[ratio('--md-default-fg-color','--md-default-bg-color'),ratio('--md-default-fg-color--light','--note-surface'),ratio('--md-typeset-a-color','--md-default-bg-color')],
         brand:document.querySelector('.header-home-link').href,loadedMath:!!document.querySelector('script[src*="tex-mml-chtml"]')};
@@ -129,11 +129,17 @@ try {
     if(route==='/'){
       assert(await evaluate(()=>!document.querySelector('.home-recent,.recent-notes,.home-threads,.reading-note') && document.querySelectorAll('.topic-card').length===3),'Homepage must omit removed reading/update modules');
       assert(!state.loadedMath,'MathJax must not load on home');
+      assert(await evaluate(()=>!document.querySelector('.atlas-motion')),'Animation pause control must be removed');
       assert(await evaluate(()=>!!document.querySelector('.featured-course a.md-button') && document.querySelector('.featured-course h2').innerText.includes('Robotic Manipulation')),'Course title/links did not render');
       assert(await evaluate(()=>document.getElementById('_2')?.closest('.featured-course') && document.getElementById('_3')?.closest('.featured-course')),'Home bookmark anchors changed');
       const home=await evaluate(()=>({stage:document.querySelector('.atlas-stage').getBoundingClientRect().height,ready:document.querySelector('.research-atlas').hasAttribute('data-ready')}));
       assert(home.ready && (width>=650 || home.stage<=170),'Mobile research atlas too large: '+JSON.stringify(home));
       if(width===320 || width===1440)await capture('home-'+width+'-'+theme);
+      await evaluate(()=>document.querySelector('.feature-visual img').scrollIntoView({block:'center'}));
+      await evaluate(()=>document.querySelector('.feature-visual img').decode());
+      await delay(300); // Allow the sticky header/scroll transition to settle.
+      assert(await evaluate(()=>{const a=document.querySelector('.header-home-link'),r=a.getBoundingClientRect(),s=getComputedStyle(a.parentElement);return s.opacity==='1' && s.pointerEvents!=='none' && r.width>0 && r.left>=0 && r.top>=0;}),'Homepage brand must stay visible and clickable after scrolling');
+      if(width===320 || width===1440)await capture('home-course-'+width+'-'+theme);
     }
     if(route==='/papers/library/'){
       const library=await evaluate(()=>{const content=document.querySelector('.md-content'),r=content.getBoundingClientRect();return {center:Math.abs((r.left+r.right)/2-innerWidth/2),width:r.width,emptySidebar:[...document.querySelectorAll('.md-sidebar')].some(n=>{const b=n.getBoundingClientRect();return getComputedStyle(n).display!=='none' && b.right>1 && b.left<innerWidth;}),rows:document.querySelectorAll('.resource-row').length};});
@@ -178,14 +184,19 @@ try {
   assert(await evaluate(()=>document.body.dataset.mdColorScheme==='slate'),'Theme control failed to select dark mode');
   await evaluate(()=>document.querySelector('label[for="__palette_0"]').click());await delay(100);
   assert(await evaluate(()=>document.body.dataset.mdColorScheme==='default'),'Theme control failed to select light mode');
-  await evaluate(()=>document.querySelector('.atlas-motion').click());
-  assert(await evaluate(()=>new Promise(resolve=>{const c=document.querySelector('canvas'),a=c.toDataURL();setTimeout(()=>resolve(a===c.toDataURL()),160);})), 'Animation pause failed');
-  await evaluate(()=>document.querySelector('.atlas-motion').click());
+  const sphere=await evaluate(()=>{const r=document.querySelector('.atlas-stage').getBoundingClientRect();return {x:r.left+r.width*.75,y:r.top+r.height*.3};});
+  const beforePointer=await evaluate(()=>document.querySelector('canvas').toDataURL());
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',...sphere});await delay(300);
+  assert(await evaluate(before=>document.querySelector('canvas').toDataURL()!==before,[beforePointer]),'Pointer-driven star map did not respond');
+  await delay(1000);
+  assert(await evaluate(()=>new Promise(resolve=>{const c=document.querySelector('canvas'),a=c.toDataURL();setTimeout(()=>resolve(a===c.toDataURL()),180);})), 'Star map must settle when the pointer stops');
   await send('Emulation.setEmulatedMedia',{media:'screen',features:[{name:'prefers-reduced-motion',value:'reduce'}]});
   // Reload to test the OS preference at startup, avoiding CDP's delayed media-change
-  // repaint in headless tabs. Pause/resume is tested separately above.
+  // repaint in headless tabs. Pointer response and settling are tested above.
   await send('Page.navigate',{url:root+'/'});await delay(700);
-  assert(await evaluate(()=>document.querySelector('.atlas-motion').hidden),'Reduced motion failed');
+  const staticSphere=await evaluate(()=>document.querySelector('canvas').toDataURL());
+  await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:sphere.x-80,y:sphere.y+40});await delay(200);
+  assert(await evaluate(before=>document.querySelector('canvas').toDataURL()===before,[staticSphere]),'Reduced-motion star map must remain static');
   await evaluate(()=>{document.getElementById('__search').click();const q=document.querySelector('[data-md-component=search-query]');q.focus();q.value='空间代数';q.dispatchEvent(new KeyboardEvent('keyup',{bubbles:true,key:'数'}));});
   await evaluate(()=>new Promise((resolve,reject)=>{const start=Date.now();const poll=()=>{if(document.querySelector('[data-md-component=search-result]').innerText.includes('附录 A'))return resolve();if(Date.now()-start>8000)return reject(Error('Search failed'));setTimeout(poll,150);};poll();}));
   await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
@@ -209,7 +220,7 @@ try {
   await send('Emulation.setScriptExecutionDisabled',{value:false});
   assert(!errors.length,'Browser exceptions: '+errors.join(','));
   await rm(path.join(artifacts,'failure.txt'),{force:true});
-  await writeFile(path.join(artifacts,'report.json'),JSON.stringify({checks,homeTransfer,keyboard:true,search:true,themeControl:true,reducedMotion:true,noScript:true,errors},null,2));
+  await writeFile(path.join(artifacts,'report.json'),JSON.stringify({checks,homeTransfer,keyboard:true,search:true,themeControl:true,pointerMotion:true,idleStatic:true,reducedMotion:true,noScript:true,errors},null,2));
   console.log('PASS: real-browser layout, TOC, math, table, themes, images, search and fallbacks.');
   await send('Target.closeTarget',{targetId:target.id});
 }catch(error){await writeFile(path.join(artifacts,'failure.txt'),String(error.stack));throw error;}
