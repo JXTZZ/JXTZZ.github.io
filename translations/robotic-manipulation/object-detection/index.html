@@ -1,0 +1,3038 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="MIT《机器人操作》中文译稿。从数据集与标注工具出发，学习物体检测、实例分割以及 Mask R-CNN 的微调流程。">
+      
+      
+        <meta name="author" content="LoTusY">
+      
+      
+        <link rel="canonical" href="https://jxtzz.github.io/translations/robotic-manipulation/object-detection/">
+      
+      
+        <link rel="prev" href="../manipulator-control/">
+      
+      
+        <link rel="next" href="../deep-perception/">
+      
+      
+      <link rel="icon" href="../../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>第 9 章 · 物体检测与分割 - LoTusY</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  <meta name="site-version" content="6878e2f7caf2f4babaae03be1a6b5709d106207e">
+  <link rel="stylesheet" href="../../../stylesheets/extra.css?v=6878e2f7caf2f4babaae03be1a6b5709d106207e">
+  
+    <link rel="stylesheet" href="../../../stylesheets/reader.css?v=6878e2f7caf2f4babaae03be1a6b5709d106207e">
+    <script defer src="../../../javascripts/reader.js?v=6878e2f7caf2f4babaae03be1a6b5709d106207e"></script>
+  
+  
+    <link rel="stylesheet" href="../../../stylesheets/course.css?v=6878e2f7caf2f4babaae03be1a6b5709d106207e">
+  
+  
+  
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#9" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="LoTusY" class="md-header__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <a class="md-ellipsis header-home-link" href="../../.." aria-label="LoTusY · 回到首页" title="LoTusY · 回到首页">
+            LoTusY
+          </a>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第 9 章 · 物体检测与分割
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  课程翻译
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../papers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  论文阅读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../deep-learning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  理论基础
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../engineering/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工程实践
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../journal/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  学习日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="LoTusY" class="md-nav__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../../assets/logo.svg" alt="logo">
+
+    </a>
+    LoTusY
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    课程翻译
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            课程翻译
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    机器人操作 · 中文讲义
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            机器人操作 · 中文讲义
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    全书目录与前言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 1 章 · 引言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 2 章 · 先给你准备一个机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pick-and-place/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 3 章 · 基本的抓取与放置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pose-estimation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 4 章 · 基于几何的位姿估计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bin-picking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 5 章 · 箱内抓取
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../motion-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 6 章 · 运动规划
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mobile-manipulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 7 章 · 移动操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulator-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 8 章 · 机械臂控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    第 9 章 · 物体检测与分割
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 9 章 · 物体检测与分割
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      本章目录
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#91" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1 迈向大数据
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.1 迈向大数据">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#911" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.1 众包标注数据集
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#912" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.2 通过微调分割新类别
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#913" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.3 面向操作任务的标注工具
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#914" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.4 合成数据集
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.1.4 合成数据集">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 9.1 生成实例分割训练数据
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#915" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.5 自监督学习
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#916" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.6 更大规模的数据集
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#92" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.2 物体检测与分割
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.2 物体检测与分割">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#92-mask-r-cnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 9.2 为料箱抓取微调 Mask R-CNN
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#93" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.3 将各部分整合起来
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#94" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.4 变体与扩展
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.4 变体与扩展">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#941" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.4.1 使用自监督学习进行预训练
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#942" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.4.2 利用大规模模型
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#95" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.5 练习
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.5 练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 9.1 生成标签
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 9.2 实例分割与对跖抓取
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 9.3 视觉语言分割
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      参考文献
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-perception/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 10 章 · 面向操作任务的深度感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 11 章 · 强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../soft-robots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 12 章 · 软体机器人与触觉感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spatial-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 A · 空间代数
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drake/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 B · Drake
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drakegym/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 C · DrakeGym 环境
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulation-station/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 D · 搭建自己的机器人操作工作站
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../miscellaneous/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 E · 其他事项
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../papers/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/race/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RACE：让 VLA 更可靠地执行长动作片段
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/ghost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GHOST：单目视频中的手与物体交互重建
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/egoinfinity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EgoInfinity：互联网视频到机器人动作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/orion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ORION：单视频开放世界模仿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/openvla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenVLA：视觉语言动作模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/octo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octo：通用机器人策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/dp3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3D Diffusion Policy：三维策略学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/spot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：从人类演示学习物体轨迹
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/aloha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ALOHA Unleashed：双臂灵巧操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/spot-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：概念与阅读随记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/robotok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboTok：互联网示范检索
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/pi0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    π₀：Flow Matching 与机器人控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/lit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LIT：视觉—动作分布外泛化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文资料库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../deep-learning/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    理论基础
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            理论基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Linear_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Softmax_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Softmax 回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/MLP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多层感知机
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Computational_Graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算图与反向传播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Weight_Decay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    权重衰减
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Dropout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dropout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    注意力机制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深度学习计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/cv-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机视觉学习路线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../engineering/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    工程实践
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            工程实践
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/tensor-inplace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tensor 原地操作与内存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/tensor-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    张量维度与求和
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/image-to-arkts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Image-to-ArkTS 项目记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../journal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    学习日志
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            学习日志
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-10-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub 克隆失败排查：从认证报错定位到地址重写
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从关节角到末端位姿：正运动学与标准 DH 参数法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ReWeight 与 OpenResearch 阅读记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WSL 离线安装与 Miniconda 初始化记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从语义动作到对象交互：Show-Harness 与 ORION
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python 堆与 heapq：怎样维护当前最值
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboSPA 与 Snipaste 自启排障
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文速记与 WSL 网络配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    具身智能阅读周记：数据、空间表示与动作生成
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    关于
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      本章目录
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#91" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1 迈向大数据
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.1 迈向大数据">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#911" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.1 众包标注数据集
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#912" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.2 通过微调分割新类别
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#913" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.3 面向操作任务的标注工具
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#914" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.4 合成数据集
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.1.4 合成数据集">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 9.1 生成实例分割训练数据
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#915" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.5 自监督学习
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#916" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.1.6 更大规模的数据集
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#92" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.2 物体检测与分割
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.2 物体检测与分割">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#92-mask-r-cnn" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 9.2 为料箱抓取微调 Mask R-CNN
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#93" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.3 将各部分整合起来
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#94" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.4 变体与扩展
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.4 变体与扩展">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#941" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.4.1 使用自监督学习进行预训练
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#942" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.4.2 利用大规模模型
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#95" class="md-nav__link">
+    <span class="md-ellipsis">
+      9.5 练习
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9.5 练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 9.1 生成标签
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 9.2 实例分割与对跖抓取
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 9.3 视觉语言分割
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      参考文献
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 09</div>
+
+<h1 id="9">第 9 章　物体检测与分割<a class="headerlink" href="#9" title="Permanent link">&para;</a></h1><div class="article-meta"><time datetime="2026-10-13">站内更新 2026-10-13</time><span class="article-tag">机器人操作</span><span class="article-tag">MIT 讲义</span></div><details class="mobile-toc"><summary>本页目录<span aria-hidden="true">展开 / 收起</span></summary><nav aria-label="本页目录"><ul><li><a href="#91">9.1 迈向大数据</a><ul><li><a href="#911">9.1.1 众包标注数据集</a></li><li><a href="#912">9.1.2 通过微调分割新类别</a></li><li><a href="#913">9.1.3 面向操作任务的标注工具</a></li><li><a href="#914">9.1.4 合成数据集</a><ul><li><a href="#91_1">示例 9.1 生成实例分割训练数据</a></li></ul></li><li><a href="#915">9.1.5 自监督学习</a></li><li><a href="#916">9.1.6 更大规模的数据集</a></li></ul></li><li><a href="#92">9.2 物体检测与分割</a><ul><li><a href="#92-mask-r-cnn">示例 9.2 为料箱抓取微调 Mask R-CNN</a></li></ul></li><li><a href="#93">9.3 将各部分整合起来</a></li><li><a href="#94">9.4 变体与扩展</a><ul><li><a href="#941">9.4.1 使用自监督学习进行预训练</a></li><li><a href="#942">9.4.2 利用大规模模型</a></li></ul></li><li><a href="#95">9.5 练习</a><ul><li><a href="#91_2">练习 9.1 生成标签</a></li><li><a href="#92_1">练习 9.2 实例分割与对跖抓取</a></li><li><a href="#93_1">练习 9.3 视觉语言分割</a></li></ul></li><li><a href="#_2">参考文献</a></li></ul></nav></details>
+<p><em>Robotic Manipulation: Perception, Planning, and Control</em></p>
+<div class="translation-meta">
+<p><strong>原著作者</strong> <a href="http://people.csail.mit.edu/russt/">Russ Tedrake</a></p>
+<p><strong>原文最后修改日期</strong> 2026 年 10 月 11 日</p>
+<p><strong>原文版权</strong> © Russ Tedrake, 2020–2026</p>
+<p><strong>对照阅读</strong> <a href="../pdfs/object-detection-original.pdf">原文 PDF</a> · <a href="https://manipulation.mit.edu/segmentation.html">在线原文</a></p>
+</div>
+<details class="chapter-contents"><summary>本章目录 · 章节概览</summary><h2 id="_1">本章目录<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#section1">9.1　迈向大数据</a><ul>
+<li><a href="#section1.1">9.1.1　众包标注数据集</a></li>
+<li><a href="#section1.2">9.1.2　通过微调分割新类别</a></li>
+<li><a href="#section1.3">9.1.3　面向操作任务的标注工具</a></li>
+<li><a href="#section1.4">9.1.4　合成数据集</a></li>
+<li><a href="#section1.5">9.1.5　自监督学习</a></li>
+<li><a href="#section1.6">9.1.6　更大规模的数据集</a></li>
+</ul>
+</li>
+<li><a href="#section2">9.2　物体检测与分割</a></li>
+<li><a href="#section3">9.3　将各部分整合起来</a></li>
+<li><a href="#section4">9.4　变体与扩展</a><ul>
+<li><a href="#section4.1">9.4.1　使用自监督学习进行预训练</a></li>
+<li><a href="#section4.2">9.4.2　利用大规模模型</a></li>
+</ul>
+</li>
+<li><a href="#section5">9.5　练习</a></li>
+<li><a href="#references">参考文献</a></li>
+</ul></details>
+<hr />
+<p>几何感知为估计已知物体的位姿提供了很好的工具，精度也可以很高，但仍容易陷入局部极小值。场景更杂乱、复杂，或物体种类更多时，单靠这些算法就不够了。</p>
+<p>深度学习提供的数据驱动方法，恰好能与几何方法互补。从大规模数据中寻找关联，非常适合解决更全局的问题：芥末瓶是否出现在场景里？图像或点云的哪一部分属于它？甚至还能给出粗略位姿，再用几何方法细化。</p>
+<p>网上有很多介绍深度学习的资料，我不打算在这里重复或取代它们。不过，本章将开始讨论操作中的深度感知，还是需要先交代一点背景。</p>
+<p><a id="section1"></a></p>
+<h2 id="91">9.1　迈向大数据<a class="headerlink" href="#91" title="Permanent link">&para;</a></h2>
+<p><a id="section1.1"></a></p>
+<h3 id="911">9.1.1　众包标注数据集<a class="headerlink" href="#911" title="Permanent link">&para;</a></h3>
+<p>现代计算机视觉的变革，无疑离不开大规模标注数据集。其中最著名的是 ImageNet，无论图像数量，还是标签的准确性和实用性，都远超此前的数据集。<a href="#Russakovsky15">参考文献 1</a>主持 ImageNet 建设的李飞飞也做过不少报告，回顾它诞生的过程。<a href="https://youtu.be/0bb9EcaQupI">这场报告</a>稍微针对机器人、甚至操作任务调整了内容，可以从<a href="https://youtu.be/0bb9EcaQupI?t=857">这里</a>开始观看。</p>
+<p><a href="#Russakovsky15">参考文献 1</a>介绍了 ImageNet 的标注，主要分为两类：第一类是图像级二元标签，说明某类物体是否出现，比如“图中有汽车，但没有老虎”；第二类是物体级标签，为每个实例提供紧密包围框和类别，例如“螺丝刀位于 (20,25)，宽 50 像素、高 30 像素”。</p>
+<p><img alt="原文插图" src="../assets/segmentation/coco_instance_segmentation.jpeg" width="3583" height="1695" loading="lazy" decoding="async"></p>
+<p><strong>图 9.1</strong>：COCO 数据集中的一张标注图，展示图像级、物体级标注，以及类别／语义分割与实例分割之间的区别。</p>
+<p>ImageNet 推动了物体检测，COCO 则类似地推动了逐像素实例分割。<a href="#Lin14a">参考文献 2</a>同一类别的不同实例各有独立标签，同时保留类别信息。COCO 的类别比 ImageNet 少，但每类实例更多。它竟然给 250 万张图像做了像素级标注，我至今仍觉得惊人。我还记得 MIT 早期的 LabelMe 等众包标注项目，<a href="#Russell08">参考文献 3</a>Antonio Torralba 曾开玩笑说，众包得到的近乎逐像素标注，精度高得出乎意料，而他母亲正是标得又多又准的一位参与者。</p>
+<p>实例分割很适合机器人操作的感知需求。上一章里，我们面对装满 YCB 物体的料箱。如果只想把芥末瓶一个个取出来，可以先用深度网络做实例分割，再只对相应点云使用抓取策略。如果需要估计物体位姿，例如按指定朝向放置，先分割点云也能显著提高几何位姿估计成功的机会。</p>
+<p><a id="section1.2"></a></p>
+<h3 id="912">9.1.2　通过微调分割新类别<a class="headerlink" href="#912" title="Permanent link">&para;</a></h3>
+<p>ImageNet 和 COCO 标注了<a href="https://tech.amikelive.com/node-718/what-object-categories-labels-are-in-coco-dataset/">许多有意思的类别</a>，包括牛、象、熊、斑马和长颈鹿，也有盘子、叉子、刀、勺子等与操作有关的类别。但它们没有 YCB 数据集里的芥末瓶和肉罐头。怎么办？难道必须自己开发标注工具，再付钱请人标上千张图像吗？</p>
+<p>适用于实例分割的深度网络，有一种很强的能力：迁移到新任务。先在 ImageNet、COCO 等大数据集上预训练，再用少得多的标注数据微调，就能适应我们需要的新类别。网络通常分为骨干网络和预测头；换类别时，常常只需把原来的头替换为输出新标签的头。即使数据不多、训练不长，也能得到出乎意料的鲁棒表现。更重要的是，先在多样的数据集上训练，似乎有助于学到适用于广泛感知任务的稳健表示。</p>
+<p>这是好消息，不过仍需要给目标物体准备一些标注数据。近几年，有不少公司专门提供数据标注服务。幸好，这并不是唯一的办法。</p>
+<p><a id="section1.3"></a></p>
+<h3 id="913">9.1.3　面向操作任务的标注工具<a class="headerlink" href="#913" title="Permanent link">&para;</a></h3>
+<p>LabelMe 等项目让网络图像的逐像素标注更方便，机器人领域也出现了简化标注流程的工具。较早的例子是 <a href="http://labelfusion.csail.mit.edu/">LabelFusion</a>，它结合点云几何感知和简单的交互界面，很快就能标注大量图像。<a href="#Marion17">参考文献 4</a></p>
+<p><img alt="原文插图" src="../assets/segmentation/labelfusion_multi_object_scenes.png" width="307" height="226" loading="lazy" decoding="async"></p>
+<p><strong>图 9.2</strong>：<a href="http://labelfusion.csail.mit.edu/">LabelFusion</a>中的多物体场景。<a href="#Marion17">参考文献 4</a>原网页中把鼠标移到图上可以查看动画。</p>
+<p>使用 LabelFusion 时，用户提供静态场景的多张 RGB-D 图像，以及目标物体的 CAD 模型。系统用 ElasticFusion 稠密重建算法<a href="#Whelan16">参考文献 5</a>把各张图像的点云合并，并同时确定相机相对点云的位置，本质上仍是点云配准。要定位其中的物体，例如电钻，用户只需在模型和场景中各点三个点，建立全局对应，再运行 ICP 精化位姿。一次配准就能为全部原始图像提供位姿标签；把 CAD 模型按该位姿渲染到每张图像上，还能得到精确的逐像素标注。</p>
+<p>因此，LabelFusion 等工具可以快速标注大量图像，用户少量点击，就能产生许多图像的真值标签。</p>
+<p><a id="section1.4"></a></p>
+<h3 id="914">9.1.4　合成数据集<a class="headerlink" href="#914" title="Permanent link">&para;</a></h3>
+<p>真实数据很宝贵，但我们还有强大的仿真工具。计算机视觉领域过去对合成图像训练感知系统相当怀疑，如今游戏引擎级的基于物理的渲染已经普及，机器人研究者开始大量使用它补充，甚至替代真实数据。机器人会议也常举办讨论 sim2real 的<a href="https://sim2real.github.io/">研讨会和辩论</a>。对于具体场景或较窄的物体类别，通常可以制作足够准确的模型资产，并调整材质、环境贴图和光照，让渲染图像用于训练。更大的问题是，能否生成足够多样、分布又能代表真实世界的数据，像 ImageNet 那样学出鲁棒的特征。不过，许多认真开展机器人研究的团队，已经大量使用合成数据，甚至取代真实标注数据。</p>
+<p>背后还有一个细节：真实数据的人工标签再好，也不会完全准确，标注误差会限制学习系统的性能上限。<a href="#Northcutt21">参考文献 6</a>即使渲染图像与自然图像有差距，能够生成任意规模、像素标签完全准确的数据，仍可能让合成数据训练的模型胜过真实数据训练的模型，哪怕测试集来自真实世界。</p>
+<p>本章要训练的实例分割系统，主要用于我们的仿真图像，因此几乎没有必要争论数据来源。我们会采用在 COCO 上预训练的骨干网络，只用合成数据微调。</p>
+<p>你也许已注意到，Drake 中使用的 <code>RgbdSensor</code> 还有一个尚未使用的标签图像输出端口。</p>
+<p><img alt="系统与输入输出端口" src="../assets/segmentation/system-0.svg" width="580" height="270" loading="lazy" decoding="async"></p>
+<p><a href="https://drake.mit.edu/doxygen_cxx/classdrake_1_1systems_1_1sensors_1_1_rgbd_sensor.html">API 文档</a></p>
+<p>这个端口正是为感知训练准备的。它输出与 RGB 图像相对应的图像，只不过每个像素的值，变成了所属物体实例的唯一标识。</p>
+<p><img alt="原文插图" src="../assets/segmentation/clutter_maskrcnn_labels.png" width="1302" height="446" loading="lazy" decoding="async"></p>
+<p><strong>图 9.3</strong>：<code>RgbdSensor</code> 的标签图像端口提供逐像素实例标签。这里重新映射了颜色，方便区分不同实例。</p>
+<p><a id="example-1"></a></p>
+<p><a id="example1"></a></p>
+<h4 id="91_1">示例 9.1　生成实例分割训练数据<a class="headerlink" href="#91_1" title="Permanent link">&para;</a></h4>
+<p>我提供了一个简单脚本，运行料箱抓取示例里的杂乱场景生成器，把随机 YCB 物体落进料箱。短暂仿真后，渲染 RGB 图和标签图，再连同实例、类别标识等元数据一起保存。</p>
+<p>代码可以在 Colab 中运行，但这套未经优化的流程，在我的大型开发计算机上生成一万张图像也要约一小时。本地整理文件也更方便，因此这里提供的是 Python 脚本。</p>
+<p><strong>运行脚本</strong>：<a href="https://manipulation.mit.edu/segmentation/segmentation_data.py">segmentation/segmentation_data.py</a></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python3<span class="w"> </span>segmentation/segmentation_data.py
+</code></pre></div>
+<p>当然，也可以跳过生成步骤。我已把生成的一万张图像上传到<a href="https://groups.csail.mit.edu/locomotion/clutter_maskrcnn_data.zip">这里</a>，训练 notebook 会直接下载它们。</p>
+<p><a id="section1.5"></a></p>
+<h3 id="915">9.1.5　自监督学习<a class="headerlink" href="#915" title="Permanent link">&para;</a></h3>
+<p><a id="section1.6"></a></p>
+<h3 id="916">9.1.6　更大规模的数据集<a class="headerlink" href="#916" title="Permanent link">&para;</a></h3>
+<p>大语言模型兴起后，一个自然的问题是：计算机视觉能否也有基础模型？我们希望它对几乎任何新图像都有出色的零样本表现，用提示和非专家用户的少量交互，代替特定领域数据集上的微调。</p>
+<p>2023 年较早的时候，Segment Anything 发布了，它是面向分割任务的基础模型。<a href="#Kirillov23">参考文献 7</a>配套的 SA-1B 数据集，无论图像数量、分辨率，还是分割标注数量，都远超 COCO 等旧数据集。这个规模由数据引擎推动：不断增强的模型先生成标签，再交给付费专业标注者调整、纠正，并补上模型漏掉的细小区域。也许针对机器人专用数据集的微调，已经或即将不再必要。</p>
+<p><a id="section2"></a></p>
+<h2 id="92">9.2　物体检测与分割<a class="headerlink" href="#92" title="Permanent link">&para;</a></h2>
+<p>现代检测与分割流程有很多内容值得学习，这里只介绍最基本的部分。</p>
+<p>图像识别时，可以用普通卷积网络输入整幅图像，输出其中有羊、狗等类别的概率。类似结构也适用于语义分割：输入图像，输出另一幅标签图，著名例子是全卷积网络 FCN。<a href="#Long15">参考文献 8</a>但物体检测和实例分割连输出数量都可能变化，怎样让网络输出数量不固定的检测结果？</p>
+<p>主流思路是，先把图像分成许多可能包含目标、彼此重叠的区域，数量可达上千，再分别运行识别或分割网络，输出概率较高的区域。检测网络还会预测包围框的精化结果，得到更紧的框。早期 R-CNN 使用传统图像预处理生成候选区域，<a href="#Girshick14">参考文献 9</a>Fast、Faster R-CNN 则进一步引入学习得到的候选区域网络。<a href="#Girshick15">参考文献 10</a>、<a href="#Ren15">参考文献 11</a></p>
+<p>实例分割这里采用流行的 Mask R-CNN，结合候选区域网络和全卷积网络，分别完成检测与掩码预测。<a href="#He17">参考文献 12</a>它并行预测检测结果和掩码，最后只返回最可信检测对应的掩码。撰写讲义时，Facebook AI Research 的 <a href="https://github.com/facebookresearch/detectron2">Detectron2</a> 提供了更新、性能更强的实现，但不如 PyTorch <a href="https://pytorch.org/vision/stable/index.html"><code>torchvision</code></a> 软件包里的原始版本简洁易用，所以实验使用 <code>torchvision</code> 版本。</p>
+<p><a id="example-2"></a></p>
+<p><a id="example2"></a></p>
+<h3 id="92-mask-r-cnn">示例 9.2　为料箱抓取微调 Mask R-CNN<a class="headerlink" href="#92-mask-r-cnn" title="Permanent link">&para;</a></h3>
+<p>下面的 notebook 加载我们的一万张图像，以及在 COCO 上预训练的 Mask R-CNN。然后替换预测头，使输出类别数量适合 YCB 识别任务，再用新数据集训练 10 个 epoch。</p>
+<p><a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/segmentation_train.ipynb"><img alt="Open in Colab" src="../assets/segmentation/colab-badge.svg" width="117" height="20" loading="lazy" decoding="async"></a>（训练 notebook）</p>
+<p>这个网络保存下来约占 150 MB，训练并不快。建议观看训练时就启动紧接着的保存单元格，让训练完成后自动保存、下载权重，免得 Colab 会话关闭时丢失结果。完成后，就有了一个能分割料箱中 YCB 物体的新网络。</p>
+<p>我还提供了第二个 notebook，用于加载和评估训练好的模型。如果不想等自己的模型训练完成，也可以查看我已经训练好的版本。</p>
+<p><a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/segmentation_inference.ipynb"><img alt="Open in Colab" src="../assets/segmentation/colab-badge.svg" width="117" height="20" loading="lazy" decoding="async"></a>（推理 notebook）</p>
+<p><img alt="原文插图" src="../assets/segmentation/segmentation_detections.png" width="653" height="489" loading="lazy" decoding="async"></p>
+<p><img alt="原文插图" src="../assets/segmentation/segmentation_mask.png" width="640" height="480" loading="lazy" decoding="async"></p>
+<p><strong>图 9.4</strong>：Mask R-CNN 的推理输出。左侧为物体检测，右侧为其中一个实例掩码。</p>
+<p><a id="section3"></a></p>
+<h2 id="93">9.3　将各部分整合起来<a class="headerlink" href="#93" title="Permanent link">&para;</a></h2>
+<p>把 Mask R-CNN 推理接入操作系统，就可以有选择地从料箱中取出物体……</p>
+<p><a id="section4"></a></p>
+<h2 id="94">9.4　变体与扩展<a class="headerlink" href="#94" title="Permanent link">&para;</a></h2>
+<p><a id="section4.1"></a></p>
+<h3 id="941">9.4.1　使用自监督学习进行预训练<a class="headerlink" href="#941" title="Permanent link">&para;</a></h3>
+<p><a id="section4.2"></a></p>
+<h3 id="942">9.4.2　利用大规模模型<a class="headerlink" href="#942" title="Permanent link">&para;</a></h3>
+<p>本讲义希望探索开放世界操作：让操作系统能在未见过的环境中，对未见过的物体完成实用任务。可我们怎么可能给机器人将来遇到的每个物体都准备标签？</p>
+<p>所谓的基础模型，展示了一些最令人印象深刻的开放世界推理能力。<a href="#Bommasani21">参考文献 13</a>机器人领域较早广泛采用的是大型视觉与文本模型 <a href="https://openai.com/blog/clip/">CLIP</a>。<a href="#Radford21">参考文献 14</a></p>
+<p>后续还会补充更多内容。</p>
+<p><a id="section5"></a></p>
+<h2 id="95">9.5　练习<a class="headerlink" href="#95" title="Permanent link">&para;</a></h2>
+<p><a id="exercise-1"></a></p>
+<p><a id="exercise1"></a></p>
+<h3 id="91_2">练习 9.1　生成标签<a class="headerlink" href="#91_2" title="Permanent link">&para;</a></h3>
+<p>本练习介绍一种自动生成 Mask R-CNN 训练数据的简单办法。所有操作都在<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/exercises/label_generation.ipynb">对应 notebook</a>中完成，具体步骤如下：</p>
+<ol>
+<li>
+<p>根据预处理后的点云，自动生成掩码标签。</p>
+</li>
+<li>
+<p>分析这种方法能否用于更复杂的场景。</p>
+</li>
+<li>
+<p>使用数据增强生成更多训练数据。</p>
+</li>
+</ol>
+<p><a id="exercise-2"></a></p>
+<p><a id="exercise2"></a></p>
+<h3 id="92_1">练习 9.2　实例分割与对跖抓取<a class="headerlink" href="#92_1" title="Permanent link">&para;</a></h3>
+<p>本练习结合 Mask R-CNN 和前面开发的对跖抓取策略，根据点云选择抓取。所有操作都在<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/exercises/segmentation_and_grasp.ipynb">对应 notebook</a>中完成，具体步骤如下：</p>
+<ol>
+<li>
+<p>自动筛选点云，保留与目标抓取物体对应的点。</p>
+</li>
+<li>
+<p>分析多相机配置的影响。</p>
+</li>
+<li>
+<p>解释为什么筛选点云对这套抓取流程有帮助。</p>
+</li>
+<li>
+<p>讨论怎样改进这套抓取流程。</p>
+</li>
+</ol>
+<p><a id="exercise-3"></a></p>
+<p><a id="exercise3"></a></p>
+<h3 id="93_1">练习 9.3　视觉语言分割<a class="headerlink" href="#93_1" title="Permanent link">&para;</a></h3>
+<p>本练习把视觉语言模型（VLM）与 Segment Anything Model（SAM）结合，实现由语言指定目标的物体分割。所有操作都在<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/segmentation/exercises/segmentation_sam.ipynb">对应 notebook</a>中完成，具体步骤如下：</p>
+<ol>
+<li>
+<p>分析 SAM 的分割能力，并理解它在物体识别上的局限。</p>
+</li>
+<li>
+<p>使用视觉语言模型，根据自然语言提示生成包围框。</p>
+</li>
+<li>
+<p>把 VLM 生成的包围框交给 SAM，得到指定物体的精确分割掩码。</p>
+</li>
+</ol>
+<p><a id="references"></a></p>
+<h2 id="_2">参考文献<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div class="references">
+<ol>
+<li>
+<p><a id="Russakovsky15"></a> Olga Russakovsky and Jia Deng and Hao Su and Jonathan Krause and Sanjeev Satheesh and Sean Ma and Zhiheng Huang and Andrej Karpathy and Aditya Khosla and Michael Bernstein and others , "Imagenet large scale visual recognition challenge" , International journal of computer vision , vol. 115, no. 3, pp. 211--252, 2015 .</p>
+</li>
+<li>
+<p><a id="Lin14a"></a> Tsung-Yi Lin and Michael Maire and Serge Belongie and James Hays and Pietro Perona and Deva Ramanan and Piotr Dollár and C Lawrence Zitnick , "Microsoft coco: Common objects in context" , European conference on computer vision , pp. 740--755, 2014 .</p>
+</li>
+<li>
+<p><a id="Russell08"></a> Bryan C Russell and Antonio Torralba and Kevin P Murphy and William T Freeman , "LabelMe: a database and web-based tool for image annotation" , International journal of computer vision , vol. 77, no. 1-3, pp. 157--173, 2008 .</p>
+</li>
+<li>
+<p><a id="Marion17"></a> Pat Marion and Peter R. Florence and Lucas Manuelli and Russ Tedrake , "A Pipeline for Generating Ground Truth Labels for Real RGBD Data of Cluttered Scenes" , International Conference on Robotics and Automation (ICRA), Brisbane, Australia , May, 2018 .
+    <a href="https://arxiv.org/abs/1707.04796">文献链接</a></p>
+</li>
+<li>
+<p><a id="Whelan16"></a> Thomas Whelan and Renato F Salas-Moreno and Ben Glocker and Andrew J Davison and Stefan Leutenegger , "ElasticFusion: Real-time dense SLAM and light source estimation" , The International Journal of Robotics Research , vol. 35, no. 14, pp. 1697--1716, 2016 .</p>
+</li>
+<li>
+<p><a id="Northcutt21"></a> Curtis G Northcutt and Anish Athalye and Jonas Mueller , "Pervasive label errors in test sets destabilize machine learning benchmarks" , arXiv preprint arXiv:2103.14749 , 2021 .</p>
+</li>
+<li>
+<p><a id="Kirillov23"></a> Alexander Kirillov and Eric Mintun and Nikhila Ravi and Hanzi Mao and Chloe Rolland and Laura Gustafson and Tete Xiao and Spencer Whitehead and Alexander C Berg and Wan-Yen Lo and others , "Segment anything" , arXiv preprint arXiv:2304.02643 , 2023 .</p>
+</li>
+<li>
+<p><a id="Long15"></a> Jonathan Long and Evan Shelhamer and Trevor Darrell , "Fully convolutional networks for semantic segmentation" , Proceedings of the IEEE conference on computer vision and pattern recognition , pp. 3431--3440, 2015 .</p>
+</li>
+<li>
+<p><a id="Girshick14"></a> Ross Girshick and Jeff Donahue and Trevor Darrell and Jitendra Malik , "Rich feature hierarchies for accurate object detection and semantic segmentation" , Proceedings of the IEEE conference on computer vision and pattern recognition , pp. 580--587, 2014 .</p>
+</li>
+<li>
+<p><a id="Girshick15"></a> Ross Girshick , "Fast r-cnn" , Proceedings of the IEEE international conference on computer vision , pp. 1440--1448, 2015 .</p>
+</li>
+<li>
+<p><a id="Ren15"></a> Shaoqing Ren and Kaiming He and Ross Girshick and Jian Sun , "Faster r-cnn: Towards real-time object detection with region proposal networks" , Advances in neural information processing systems , pp. 91--99, 2015 .</p>
+</li>
+<li>
+<p><a id="He17"></a> Kaiming He and Georgia Gkioxari and Piotr Dollár and Ross Girshick , "Mask R-CNN" , Proceedings of the IEEE international conference on computer vision , pp. 2961--2969, 2017 .</p>
+</li>
+<li>
+<p><a id="Bommasani21"></a> Rishi Bommasani and Drew A Hudson and Ehsan Adeli and Russ Altman and Simran Arora and Sydney von Arx and Michael S Bernstein and Jeannette Bohg and Antoine Bosselut and Emma Brunskill and others , "On the opportunities and risks of foundation models" , arXiv preprint arXiv:2108.07258 , 2021 .</p>
+</li>
+<li>
+<p><a id="Radford21"></a> Alec Radford and Jong Wook Kim and Chris Hallacy and Aditya Ramesh and Gabriel Goh and Sandhini Agarwal and Girish Sastry and Amanda Askell and Pamela Mishkin and Jack Clark and others , "Learning transferable visual models from natural language supervision" , International Conference on Machine Learning , pp. 8748--8763, 2021 .</p>
+</li>
+</ol>
+</div>
+<hr />
+<p><strong>继续阅读</strong>：<a href="../manipulator-control/">上一章：机械臂控制（中文）</a> · <a href="../preface/">全书目录与前言（中文）</a> · <a href="../deep-perception/">下一章：面向操作任务的深度感知（中文）</a><br />
+<a href="https://accessibility.mit.edu/">无障碍访问</a> · © Russ Tedrake, 2026</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../manipulator-control/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第 8 章 · 机械臂控制">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                第 8 章 · 机械臂控制
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../deep-perception/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第 10 章 · 面向操作任务的深度感知">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第 10 章 · 面向操作任务的深度感知
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/JXTZZ" target="_blank" rel="noopener" title="LoTusY on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../../javascripts/version-sync.js"></script>
+      
+    
+  </body>
+</html>

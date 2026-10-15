@@ -1,0 +1,839 @@
+[
+  {
+    "source": "journal/2026-10-15.md",
+    "url": "journal/2026-10-15/",
+    "section": "journal",
+    "title": "GitHub 克隆失败排查：从认证报错定位到地址重写",
+    "description": "记录一次 GitHub 克隆失败的发现、原因与修复过程，理解 insteadOf 地址重写和最长前缀匹配。",
+    "tags": [
+      "Git",
+      "工具排障"
+    ],
+    "date": "2026-10-15",
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "papers/race.md",
+    "url": "papers/race/",
+    "section": "papers",
+    "title": "RACE：让 VLA 更可靠地执行长动作片段",
+    "description": "解析 RACE 如何用一步辅助去噪预测技能切换时机并调制动作生成，核对长片段成功率、推理开销、机器人空闲时间及消融证据。",
+    "tags": [
+      "VLA",
+      "动作分块",
+      "技能切换"
+    ],
+    "date": "2026-10-14",
+    "updated": null,
+    "updated_source": null,
+    "pdf": "assets/papers/RACE.pdf",
+    "method": "RACE"
+  },
+  {
+    "source": "papers/ghost.md",
+    "url": "papers/ghost/",
+    "section": "papers",
+    "title": "GHOST：单目视频中的手与物体交互重建",
+    "description": "解析 GHOST 如何通过几何先验检索、抓握感知对齐与 2D Gaussian Splatting，从单目 RGB 视频重建手与物体，并核对其速度、几何和渲染实验。",
+    "tags": [
+      "手物交互",
+      "三维重建",
+      "Gaussian Splatting"
+    ],
+    "date": "2026-10-14",
+    "updated": null,
+    "updated_source": null,
+    "pdf": "assets/papers/GHOST.pdf",
+    "method": "GHOST"
+  },
+  {
+    "source": "translations/robotic-manipulation/spatial-algebra.md",
+    "url": "translations/robotic-manipulation/spatial-algebra/",
+    "section": "translations",
+    "title": "附录 A · 空间代数",
+    "description": "MIT《机器人操作》中文译稿。集中查阅位置、旋转、位姿、空间速度和空间力的 Monogram 记号与运算规则。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/soft-robots.md",
+    "url": "translations/robotic-manipulation/soft-robots/",
+    "section": "translations",
+    "title": "第 12 章 · 软体机器人与触觉感知",
+    "description": "MIT《机器人操作》中文译稿。了解软体机器人、机械手与触觉感知，以及柔性接触在操作任务中的作用。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/robot.md",
+    "url": "translations/robotic-manipulation/robot/",
+    "section": "translations",
+    "title": "第 2 章 · 先给你准备一个机器人",
+    "description": "MIT《机器人操作》中文译稿。从机器人描述文件、机械臂、机械手和传感器开始，在 Drake 中搭建操作系统。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/reinforcement-learning.md",
+    "url": "translations/robotic-manipulation/reinforcement-learning/",
+    "section": "translations",
+    "title": "第 11 章 · 强化学习",
+    "description": "MIT《机器人操作》中文译稿。连接随机优化、策略梯度、基于价值与模型的方法，理解操作任务中的强化学习。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/preface.md",
+    "url": "translations/robotic-manipulation/preface/",
+    "section": "translations",
+    "title": "全书目录与前言",
+    "description": "MIT《机器人操作》中文译稿。全书目录与前言，按原书顺序连接十二章正文、五篇附录与中文小节锚点。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/pose-estimation.md",
+    "url": "translations/robotic-manipulation/pose-estimation/",
+    "section": "translations",
+    "title": "第 4 章 · 基于几何的位姿估计",
+    "description": "MIT《机器人操作》中文译稿。从深度图、点云和几何匹配出发，理解机器人操作中的物体位姿估计。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/pick-and-place.md",
+    "url": "translations/robotic-manipulation/pick-and-place/",
+    "section": "translations",
+    "title": "第 3 章 · 基本的抓取与放置",
+    "description": "MIT《机器人操作》中文译稿。通过空间代数、正运动学、雅可比矩阵和轨迹生成，搭建基本抓取与放置流程。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/object-detection.md",
+    "url": "translations/robotic-manipulation/object-detection/",
+    "section": "translations",
+    "title": "第 9 章 · 物体检测与分割",
+    "description": "MIT《机器人操作》中文译稿。从数据集与标注工具出发，学习物体检测、实例分割以及 Mask R-CNN 的微调流程。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/motion-planning.md",
+    "url": "translations/robotic-manipulation/motion-planning/",
+    "section": "translations",
+    "title": "第 6 章 · 运动规划",
+    "description": "MIT《机器人操作》中文译稿。理解逆运动学、构型空间、轨迹优化和时间参数化，规划满足约束的机器人运动。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/mobile-manipulation.md",
+    "url": "translations/robotic-manipulation/mobile-manipulation/",
+    "section": "translations",
+    "title": "第 7 章 · 移动操作",
+    "description": "MIT《机器人操作》中文译稿。讨论移动机器人与机械臂的协同操作，以及导航、可达性和规划问题。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/miscellaneous.md",
+    "url": "translations/robotic-manipulation/miscellaneous/",
+    "section": "translations",
+    "title": "附录 E · 其他事项",
+    "description": "MIT《机器人操作》中文译稿。查阅原文的引用方式、批注与反馈、课程资源及讲义相关说明。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/manipulator-control.md",
+    "url": "translations/robotic-manipulation/manipulator-control/",
+    "section": "translations",
+    "title": "第 8 章 · 机械臂控制",
+    "description": "MIT《机器人操作》中文译稿。学习机械臂动力学、位置与力控制、阻抗控制和接触任务中的反馈方法。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/manipulation-station.md",
+    "url": "translations/robotic-manipulation/manipulation-station/",
+    "section": "translations",
+    "title": "附录 D · 搭建自己的机器人操作工作站",
+    "description": "MIT《机器人操作》中文译稿。了解如何搭建自己的机器人操作工作站，配置硬件、控制与仿真系统。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/introduction.md",
+    "url": "translations/robotic-manipulation/introduction/",
+    "section": "translations",
+    "title": "第 1 章 · 引言",
+    "description": "MIT《机器人操作》中文译稿。从日常操作任务理解开放世界、物理仿真、交互示例与讲义的组织方式。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/drakegym.md",
+    "url": "translations/robotic-manipulation/drakegym/",
+    "section": "translations",
+    "title": "附录 C · DrakeGym 环境",
+    "description": "MIT《机器人操作》中文译稿。使用 DrakeGym 环境连接机器人仿真、控制与强化学习接口。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/drake.md",
+    "url": "translations/robotic-manipulation/drake/",
+    "section": "translations",
+    "title": "附录 B · Drake",
+    "description": "MIT《机器人操作》中文译稿。了解 Drake 的系统框架、建模工具和机器人仿真工作流程。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/deep-perception.md",
+    "url": "translations/robotic-manipulation/deep-perception/",
+    "section": "translations",
+    "title": "第 10 章 · 面向操作任务的深度感知",
+    "description": "MIT《机器人操作》中文译稿。讨论面向操作任务的深度感知，包括位姿、抓取、三维表示与视觉特征学习。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "translations/robotic-manipulation/bin-picking.md",
+    "url": "translations/robotic-manipulation/bin-picking/",
+    "section": "translations",
+    "title": "第 5 章 · 箱内抓取",
+    "description": "MIT《机器人操作》中文译稿。结合接触力、抓取几何与感知，分析机器人如何从杂乱箱体中选择和抓取物体。",
+    "tags": [
+      "机器人操作",
+      "MIT 讲义"
+    ],
+    "date": null,
+    "updated": "2026-10-13",
+    "updated_source": "git:c0a5c26daf5d9a0bb25c5620f4c002497f69f678",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "journal/2026-09-22.md",
+    "url": "journal/2026-09-22/",
+    "section": "journal",
+    "title": "从关节角到末端位姿：正运动学与标准 DH 参数法",
+    "description": "推导机器人正运动学、标准 DH 参数与末端位姿变换，连接关节角和空间坐标系。",
+    "tags": [
+      "正运动学",
+      "DH 参数"
+    ],
+    "date": "2026-09-22",
+    "updated": "2026-09-23",
+    "updated_source": "git:57893a2f0356e4f8ecd85143cb3dc255ebb038f5",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "journal/2026-09-16.md",
+    "url": "journal/2026-09-16/",
+    "section": "journal",
+    "title": "ReWeight 与 OpenResearch 阅读记录",
+    "description": "记录人类示范筛选、跨本体学习与 Git 原生实验管理的阅读思考。",
+    "tags": [
+      "示范学习",
+      "实验管理"
+    ],
+    "date": "2026-09-16",
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "papers/egoinfinity.md",
+    "url": "papers/egoinfinity/",
+    "section": "papers",
+    "title": "EgoInfinity：互联网视频到机器人动作",
+    "description": "梳理从野外 RGB 视频到度量四维手物数据、跨本体轨迹和机器人动作的处理流程。",
+    "tags": [
+      "互联网视频",
+      "手物交互"
+    ],
+    "date": null,
+    "updated": "2026-09-15",
+    "updated_source": "git:842f9154bb48a9d31e672749806fbbc58194e9b3",
+    "pdf": "assets/papers/EgoInfinity.pdf",
+    "method": "EgoInfinity"
+  },
+  {
+    "source": "journal/2026-09-15.md",
+    "url": "journal/2026-09-15/",
+    "section": "journal",
+    "title": "WSL 离线安装与 Miniconda 初始化记录",
+    "description": "记录 WSL 离线安装、下载 403 排障，以及 PowerShell 中 Miniconda 的初始化流程。",
+    "tags": [
+      "WSL",
+      "Conda"
+    ],
+    "date": "2026-09-15",
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "papers/orion.md",
+    "url": "papers/orion/",
+    "section": "papers",
+    "title": "ORION：单视频开放世界模仿",
+    "description": "分析 ORION 如何用开放世界对象图，将一段人类操作视频转换为机器人可执行的交互策略。",
+    "tags": [
+      "视频模仿",
+      "对象图"
+    ],
+    "date": null,
+    "updated": "2026-09-11",
+    "updated_source": "git:48c2701d1ba75999d61effa9f47c2a445897718a",
+    "pdf": "assets/papers/ORION.pdf",
+    "method": "ORION"
+  },
+  {
+    "source": "papers/openvla.md",
+    "url": "papers/openvla/",
+    "section": "papers",
+    "title": "OpenVLA：视觉语言动作模型",
+    "description": "理解 OpenVLA 如何连接视觉、语言与机器人动作，并分析微调方式、实验任务和模型局限。",
+    "tags": [
+      "VLA",
+      "机器人学习"
+    ],
+    "date": null,
+    "updated": "2026-09-11",
+    "updated_source": "git:22ce2649f2336c1e77f355e369ec173b43e16f9c",
+    "pdf": "assets/papers/openVLA.pdf",
+    "method": "OpenVLA"
+  },
+  {
+    "source": "papers/octo.md",
+    "url": "papers/octo/",
+    "section": "papers",
+    "title": "Octo：通用机器人策略",
+    "description": "梳理 Octo 的多数据集预训练、策略架构与适配方式，理解通用策略迁移到新机器人的边界。",
+    "tags": [
+      "通用策略",
+      "机器人学习"
+    ],
+    "date": null,
+    "updated": "2026-09-11",
+    "updated_source": "git:22ce2649f2336c1e77f355e369ec173b43e16f9c",
+    "pdf": "assets/papers/OCTo.pdf",
+    "method": "Octo"
+  },
+  {
+    "source": "papers/dp3.md",
+    "url": "papers/dp3/",
+    "section": "papers",
+    "title": "3D Diffusion Policy：三维策略学习",
+    "description": "分析 DP3 如何使用简单点云表示与扩散策略学习机器人操作，以及三维表示带来的泛化能力。",
+    "tags": [
+      "三维感知",
+      "扩散策略",
+      "点云"
+    ],
+    "date": null,
+    "updated": "2026-09-11",
+    "updated_source": "git:22ce2649f2336c1e77f355e369ec173b43e16f9c",
+    "pdf": "assets/papers/DP3.pdf",
+    "method": "DP3"
+  },
+  {
+    "source": "journal/2026-09-11.md",
+    "url": "journal/2026-09-11/",
+    "section": "journal",
+    "title": "从语义动作到对象交互：Show-Harness 与 ORION",
+    "description": "连接 Show-Harness 的语义动作与 ORION 的对象交互，记录 VLM Agent 和中间表示的阅读线索。",
+    "tags": [
+      "VLM Agent",
+      "对象图"
+    ],
+    "date": "2026-09-11",
+    "updated": "2026-09-11",
+    "updated_source": "git:e2ba286e0071a565a5a9c951b055676076c34e07",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "papers/spot.md",
+    "url": "papers/spot/",
+    "section": "papers",
+    "title": "SPOT：从人类演示学习物体轨迹",
+    "description": "从物体位姿轨迹、可见性判断与机器人执行出发，分析 SPOT 的人类演示迁移方法与实验。",
+    "tags": [
+      "人类演示",
+      "轨迹学习"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": "SPOT"
+  },
+  {
+    "source": "papers/aloha.md",
+    "url": "papers/aloha/",
+    "section": "papers",
+    "title": "ALOHA Unleashed：双臂灵巧操作",
+    "description": "从双臂操作任务、示范采集与动作生成出发，梳理 ALOHA Unleashed 的方法、实验与局限。",
+    "tags": [
+      "机器人学习",
+      "模仿学习",
+      "双臂操作"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": "assets/papers/ALOHA Unleashed.pdf",
+    "method": "ALOHA Unleashed"
+  },
+  {
+    "source": "journal/2026-09-10.md",
+    "url": "journal/2026-09-10/",
+    "section": "journal",
+    "title": "Python 堆与 heapq：怎样维护当前最值",
+    "description": "补充堆的数据结构、Python heapq 的基本操作及使用场景。",
+    "tags": [
+      "Python",
+      "数据结构"
+    ],
+    "date": "2026-09-10",
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/cv-roadmap.md",
+    "url": "deep-learning/cv-roadmap/",
+    "section": "deep-learning",
+    "title": "计算机视觉学习路线：先打基础，再选方向",
+    "description": "从二维视觉基础走向三维、视频、多模态与具身视觉，通过短项目探索学习和研究方向。",
+    "tags": [
+      "计算机视觉",
+      "学习路线"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/attention.md",
+    "url": "deep-learning/attention/",
+    "section": "deep-learning",
+    "title": "Attention：从加权平均到多头自注意力",
+    "description": "从加权平均、查询与键值出发，推导注意力机制、多头自注意力与 Transformer 中的信息聚合。",
+    "tags": [
+      "注意力机制",
+      "Transformer"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/Weight_Decay.md",
+    "url": "deep-learning/Weight_Decay/",
+    "section": "deep-learning",
+    "title": "权重衰减：L2 正则化与 AdamW",
+    "description": "比较 L2 正则化、权重衰减与 AdamW，结合梯度更新解释不同优化器中的正则化。",
+    "tags": [
+      "正则化",
+      "优化器"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/Softmax_Regression.md",
+    "url": "deep-learning/Softmax_Regression/",
+    "section": "deep-learning",
+    "title": "Softmax 回归：从 logits 到多分类概率",
+    "description": "从 logits、Softmax 和交叉熵出发，实现多分类模型并理解预测概率与损失计算。",
+    "tags": [
+      "PyTorch",
+      "分类"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/MLP.md",
+    "url": "deep-learning/MLP/",
+    "section": "deep-learning",
+    "title": "多层感知机：维度变换与非线性",
+    "description": "通过维度变换、隐藏层与非线性激活，理解多层感知机的表示能力和 PyTorch 实现。",
+    "tags": [
+      "神经网络",
+      "PyTorch"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/Linear_Regression.md",
+    "url": "deep-learning/Linear_Regression/",
+    "section": "deep-learning",
+    "title": "线性回归：用 PyTorch 走完一次训练",
+    "description": "用 PyTorch 串起线性回归的模型、损失、梯度计算与训练循环，并理解张量维度。",
+    "tags": [
+      "PyTorch",
+      "线性回归"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/Dropout.md",
+    "url": "deep-learning/Dropout/",
+    "section": "deep-learning",
+    "title": "Dropout：训练时随机丢弃，推理时保持完整",
+    "description": "理解 Dropout 在训练时随机丢弃、推理时保持完整的机制，以及训练和评估模式的区别。",
+    "tags": [
+      "正则化",
+      "神经网络"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/Computational_Graph.md",
+    "url": "deep-learning/Computational_Graph/",
+    "section": "deep-learning",
+    "title": "计算图与反向传播：PyTorch 到底保存了什么",
+    "description": "理解 PyTorch 计算图、自动微分与梯度累积，以及反向传播时保存和释放的中间状态。",
+    "tags": [
+      "自动微分",
+      "PyTorch"
+    ],
+    "date": null,
+    "updated": "2026-09-10",
+    "updated_source": "git:ac5ad20fb7f9de8a2759fb02583fa33160f3f2bc",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "journal/2026-09-08.md",
+    "url": "journal/2026-09-08/",
+    "section": "journal",
+    "title": "RoboSPA 与 Snipaste 自启排障",
+    "description": "记录 RoboSPA 空间推理的阅读发现，以及 Snipaste 开机自启问题的排查与修复。",
+    "tags": [
+      "空间推理",
+      "Windows"
+    ],
+    "date": "2026-09-08",
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "journal/2026-09-07.md",
+    "url": "journal/2026-09-07/",
+    "section": "journal",
+    "title": "论文速记与 WSL 网络配置",
+    "description": "记录 DroneCATS、MINERVA 等论文线索，以及 WSL 环境中的 Git 网络配置问题。",
+    "tags": [
+      "论文阅读",
+      "WSL"
+    ],
+    "date": "2026-09-07",
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "journal/2026-09-04.md",
+    "url": "journal/2026-09-04/",
+    "section": "journal",
+    "title": "具身智能阅读周记：数据、空间表示与动作生成",
+    "description": "回顾 ALOHA、DP3、OpenVLA 与 Octo 的阅读线索，记录一周的机器人学习思考。",
+    "tags": [
+      "具身智能",
+      "论文阅读"
+    ],
+    "date": "2026-09-04",
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "engineering/tensor-inplace.md",
+    "url": "engineering/tensor-inplace/",
+    "section": "engineering",
+    "title": "Tensor 原地操作与内存",
+    "description": "整理 PyTorch 原地操作、对象引用与内存分配的差异，并通过代码观察张量存储的变化。",
+    "tags": [
+      "PyTorch",
+      "内存管理"
+    ],
+    "date": null,
+    "updated": "2026-03-09",
+    "updated_source": "git:2f882eb0384d6130f6efce4741cfed0cab8abc52",
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "papers/spot-notes.md",
+    "url": "papers/spot-notes/",
+    "section": "papers",
+    "title": "SPOT：概念与阅读随记",
+    "description": "记录 SPOT 阅读过程中的概念、方法线索与问题，并连接到完整的深度阅读笔记。",
+    "tags": [
+      "人类演示",
+      "阅读随记"
+    ],
+    "date": null,
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": "SPOT"
+  },
+  {
+    "source": "papers/robotok.md",
+    "url": "papers/robotok/",
+    "section": "papers",
+    "title": "RoboTok：互联网示范检索",
+    "description": "理解 RoboTok 的相对三维手部轨迹表示，以及从互联网视频检索可用于灵巧操作的示范。",
+    "tags": [
+      "示范检索",
+      "三维轨迹"
+    ],
+    "date": null,
+    "updated": null,
+    "updated_source": null,
+    "pdf": "assets/papers/RoboTok.pdf",
+    "method": "RoboTok"
+  },
+  {
+    "source": "papers/pi0.md",
+    "url": "papers/pi0/",
+    "section": "papers",
+    "title": "π₀：Flow Matching 与机器人控制",
+    "description": "沿着视觉语言模型、Flow Matching 与连续动作生成，整理 π₀ 的多机器人控制方法。",
+    "tags": [
+      "VLA",
+      "Flow Matching"
+    ],
+    "date": null,
+    "updated": null,
+    "updated_source": null,
+    "pdf": "assets/papers/pi0.pdf",
+    "method": "π₀"
+  },
+  {
+    "source": "papers/lit.md",
+    "url": "papers/lit/",
+    "section": "papers",
+    "title": "LIT：视觉—动作分布外泛化",
+    "description": "分析空间目标动作先验和受监督视觉接口，如何减少视觉—动作捷径并改善分布外泛化。",
+    "tags": [
+      "VLA",
+      "分布外泛化"
+    ],
+    "date": null,
+    "updated": null,
+    "updated_source": null,
+    "pdf": "assets/papers/LIT.pdf",
+    "method": "LIT"
+  },
+  {
+    "source": "engineering/tensor-operations.md",
+    "url": "engineering/tensor-operations/",
+    "section": "engineering",
+    "title": "张量维度与求和",
+    "description": "解释 PyTorch 张量的维度、求和与 keepdim，以及维度压缩对广播计算的影响。",
+    "tags": [
+      "PyTorch",
+      "张量运算"
+    ],
+    "date": null,
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "engineering/image-to-arkts.md",
+    "url": "engineering/image-to-arkts/",
+    "section": "engineering",
+    "title": "Image-to-ArkTS 项目记录",
+    "description": "记录 Image-to-ArkTS 项目中 Coding Agent 与 Test Agent 的接口、编译验证和环境配置问题。",
+    "tags": [
+      "Agent",
+      "ArkTS",
+      "编译测试"
+    ],
+    "date": null,
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  },
+  {
+    "source": "deep-learning/base.md",
+    "url": "deep-learning/base/",
+    "section": "deep-learning",
+    "title": "PyTorch 中的模块、参数与设备",
+    "description": "整理 PyTorch 模块、参数、序列化与设备管理，补齐构建和维护深度学习模型的基础。",
+    "tags": [
+      "PyTorch",
+      "模型管理"
+    ],
+    "date": null,
+    "updated": null,
+    "updated_source": null,
+    "pdf": null,
+    "method": null
+  }
+]

@@ -1,0 +1,30 @@
+/* Article outlines, wide math, metadata and captions. */
+.reader-kicker { margin: 8px 0 0; }
+.article-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: -4px 0 16px; font-size: var(--font-label); color: var(--md-default-fg-color--light); }
+.md-typeset details.mobile-toc { display: none; }
+.chapter-contents { margin: 24px 0; }
+.md-typeset .mobile-toc, .md-typeset .chapter-contents { background: var(--note-surface); border: 1px solid var(--note-border); box-shadow: none; }
+.md-typeset .mobile-toc summary, .md-typeset .chapter-contents summary { padding: 12px 16px; min-height: 48px; line-height: 1.7; color: var(--md-default-fg-color); font-size: var(--font-small); background: none; cursor: pointer; }
+.md-typeset .mobile-toc summary::before, .md-typeset .mobile-toc summary::after, .md-typeset .chapter-contents summary::before, .md-typeset .chapter-contents summary::after { display: none; }
+.mobile-toc summary span { float: right; color: var(--md-default-fg-color--light); font-size: var(--font-label); }
+.mobile-toc nav { padding: 0 16px 12px; }
+.mobile-toc ul { padding-left: 16px; margin: 0; list-style: none; }
+.mobile-toc nav > ul { padding-left: 0; }
+.mobile-toc li { margin: 0; }
+.mobile-toc a { display: block; min-height: 44px; padding: 8px 0; line-height: 1.65; }
+.mobile-toc a[aria-current] { font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+.chapter-contents > h2, .chapter-contents > ul { margin: 16px !important; }
+.md-typeset div.arithmatex { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+.md-typeset .md-typeset__scrollwrap { overflow-x: auto; }
+.md-typeset img + em, .md-typeset p > em:only-child { font-size: var(--font-small); line-height: 1.75; }
+.md-typeset :target { scroll-margin-top: 88px; }
+.md-typeset a:has(> img[alt="Open in Colab"]) { display: inline-flex; align-items: center; min-height: 44px; }
+@media (max-width: 959px) {
+  .md-typeset details.mobile-toc { display: block; margin: 12px 0 20px; }
+  .chapter-contents { display: none; }
+  .chapter-contents[data-anchor-reveal] { display: block; }
+}
+@media (max-width: 650px) {
+  .md-typeset span.arithmatex { display: inline-block; max-width: 100%; overflow-x: auto; overflow-y: hidden; vertical-align: middle; }
+}
+@media print { .mobile-toc { display: none !important; } .chapter-contents { display: block; } }

@@ -1,0 +1,3886 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="解析 RACE 如何用一步辅助去噪预测技能切换时机并调制动作生成，核对长片段成功率、推理开销、机器人空闲时间及消融证据。">
+      
+      
+        <meta name="author" content="LoTusY">
+      
+      
+        <link rel="canonical" href="https://jxtzz.github.io/papers/race/">
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../ghost/">
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>RACE：让 VLA 更可靠地执行长动作片段 - LoTusY</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  <meta name="site-version" content="6878e2f7caf2f4babaae03be1a6b5709d106207e">
+  <link rel="stylesheet" href="../../stylesheets/extra.css?v=6878e2f7caf2f4babaae03be1a6b5709d106207e">
+  
+    <link rel="stylesheet" href="../../stylesheets/reader.css?v=6878e2f7caf2f4babaae03be1a6b5709d106207e">
+    <script defer src="../../javascripts/reader.js?v=6878e2f7caf2f4babaae03be1a6b5709d106207e"></script>
+  
+  
+  
+    <script src="../../javascripts/mathjax.js?v=6878e2f7caf2f4babaae03be1a6b5709d106207e"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+  
+  
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2026-racepreprint" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="LoTusY" class="md-header__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <a class="md-ellipsis header-home-link" href="../.." aria-label="LoTusY · 回到首页" title="LoTusY · 回到首页">
+            LoTusY
+          </a>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              RACE：让 VLA 更可靠地执行长动作片段
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../translations/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  课程翻译
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  论文阅读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deep-learning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  理论基础
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../engineering/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工程实践
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../journal/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  学习日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LoTusY" class="md-nav__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    LoTusY
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../translations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    课程翻译
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            课程翻译
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../translations/robotic-manipulation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    机器人操作 · 中文讲义
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            机器人操作 · 中文讲义
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    全书目录与前言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 1 章 · 引言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 2 章 · 先给你准备一个机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/pick-and-place/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 3 章 · 基本的抓取与放置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/pose-estimation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 4 章 · 基于几何的位姿估计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/bin-picking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 5 章 · 箱内抓取
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/motion-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 6 章 · 运动规划
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/mobile-manipulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 7 章 · 移动操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/manipulator-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 8 章 · 机械臂控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/object-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 9 章 · 物体检测与分割
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/deep-perception/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 10 章 · 面向操作任务的深度感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 11 章 · 强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/soft-robots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 12 章 · 软体机器人与触觉感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/spatial-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 A · 空间代数
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/drake/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 B · Drake
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/drakegym/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 C · DrakeGym 环境
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/manipulation-station/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 D · 搭建自己的机器人操作工作站
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/miscellaneous/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 E · 其他事项
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    RACE：让 VLA 更可靠地执行长动作片段
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    RACE：让 VLA 更可靠地执行长动作片段
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-switch-reliable-action-chunk-extension-for-vision-language-action-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      RACE
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 研究意义
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 研究意义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 研究背景：所描述的场景、背景
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 问题及挑战：核心、重要、未解决的问题是什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 研究现状
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 研究现状">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术，着重一个技术分类
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 问题的现状：针对以上技术，这些技术有哪些不足之处
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 技术路线
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 技术路线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 问题与技术映射：针对上述问题，采用了哪些技术手段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 技术详述：对每个技术方法进行详细介绍
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. 技术详述：对每个技术方法进行详细介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 区分预测长度、执行长度和去噪步骤
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 从演示动作提取切换点，并生成软标签
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 一步辅助动作前向：获取与未来动作位置对应的特征
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 预测头：融合场景语义与粗动作信息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑤ 条件动作生成：对每个动作 token 注入时机信息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑥ 训练：时机监督与动作生成共同优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑦ 参数与训练成本
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. 创新之处：你认为的上述方法中，最关键的技术是什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 实验分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 实验分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 实验数据：论文中使用了哪些实验数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 对比实验：与其他算法对比，突出数值的变化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. 对比实验：与其他算法对比，突出数值的变化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 同长度比较：平均成功率稳定优于普通微调
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vla" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 与其他 VLA 和效率方法比较
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 单次延迟与训练成本：收益来自减少调用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 真实机器人：空闲减少约 5 倍，成功率优于同长度微调
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. 消融实验：与自己对比，突出数值的变化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="c. 消融实验：与自己对比，突出数值的变化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 表示监督与条件生成：两者贡献可区分
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 标签与输入来源：随机边界不能替代有意义的结构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 推理时扰动先验：时机位置确实影响执行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 门控、软标签与训练条件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑤ 扩展极限、骨干泛化和冻结策略
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      d. 实验总结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 不足之处
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 基于本文扩展到的其他论文
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 基于本文扩展到的其他论文">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pi_05-race" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① \(\pi_{0.5}\)：理解 RACE 的预训练骨干
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-real-time-chunking" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② Real-Time Chunking：理解异步缓冲和新片段衔接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pace" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ PACE：切换附近提前重规划的另一条路线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cotpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ CoTPC：无监督子技能发现与预测控制
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ghost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GHOST：单目视频中的手与物体交互重建
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../egoinfinity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EgoInfinity：互联网视频到机器人动作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../orion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ORION：单视频开放世界模仿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openvla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenVLA：视觉语言动作模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../octo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octo：通用机器人策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dp3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3D Diffusion Policy：三维策略学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：从人类演示学习物体轨迹
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aloha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ALOHA Unleashed：双臂灵巧操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spot-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：概念与阅读随记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../robotok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboTok：互联网示范检索
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pi0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    π₀：Flow Matching 与机器人控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LIT：视觉—动作分布外泛化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文资料库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../deep-learning/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    理论基础
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            理论基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Linear_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Softmax_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Softmax 回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/MLP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多层感知机
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Computational_Graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算图与反向传播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Weight_Decay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    权重衰减
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Dropout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dropout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    注意力机制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深度学习计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/cv-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机视觉学习路线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../engineering/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    工程实践
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            工程实践
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/tensor-inplace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tensor 原地操作与内存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/tensor-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    张量维度与求和
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/image-to-arkts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Image-to-ArkTS 项目记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../journal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    学习日志
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            学习日志
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-10-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub 克隆失败排查：从认证报错定位到地址重写
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从关节角到末端位姿：正运动学与标准 DH 参数法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ReWeight 与 OpenResearch 阅读记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WSL 离线安装与 Miniconda 初始化记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从语义动作到对象交互：Show-Harness 与 ORION
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python 堆与 heapq：怎样维护当前最值
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboSPA 与 Snipaste 自启排障
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文速记与 WSL 网络配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    具身智能阅读周记：数据、空间表示与动作生成
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    关于
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-switch-reliable-action-chunk-extension-for-vision-language-action-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      RACE
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 研究意义
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 研究意义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 研究背景：所描述的场景、背景
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 问题及挑战：核心、重要、未解决的问题是什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 研究现状
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 研究现状">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术，着重一个技术分类
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 问题的现状：针对以上技术，这些技术有哪些不足之处
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 技术路线
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 技术路线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 问题与技术映射：针对上述问题，采用了哪些技术手段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 技术详述：对每个技术方法进行详细介绍
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. 技术详述：对每个技术方法进行详细介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 区分预测长度、执行长度和去噪步骤
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 从演示动作提取切换点，并生成软标签
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 一步辅助动作前向：获取与未来动作位置对应的特征
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 预测头：融合场景语义与粗动作信息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑤ 条件动作生成：对每个动作 token 注入时机信息
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑥ 训练：时机监督与动作生成共同优化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑦ 参数与训练成本
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. 创新之处：你认为的上述方法中，最关键的技术是什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 实验分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 实验分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 实验数据：论文中使用了哪些实验数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 对比实验：与其他算法对比，突出数值的变化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. 对比实验：与其他算法对比，突出数值的变化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 同长度比较：平均成功率稳定优于普通微调
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-vla" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 与其他 VLA 和效率方法比较
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 单次延迟与训练成本：收益来自减少调用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-5" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 真实机器人：空闲减少约 5 倍，成功率优于同长度微调
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. 消融实验：与自己对比，突出数值的变化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="c. 消融实验：与自己对比，突出数值的变化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 表示监督与条件生成：两者贡献可区分
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 标签与输入来源：随机边界不能替代有意义的结构
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 推理时扰动先验：时机位置确实影响执行
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 门控、软标签与训练条件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑤ 扩展极限、骨干泛化和冻结策略
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      d. 实验总结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 不足之处
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 基于本文扩展到的其他论文
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 基于本文扩展到的其他论文">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-pi_05-race" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① \(\pi_{0.5}\)：理解 RACE 的预训练骨干
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-real-time-chunking" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② Real-Time Chunking：理解异步缓冲和新片段衔接
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pace" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ PACE：切换附近提前重规划的另一条路线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-cotpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ CoTPC：无监督子技能发现与预测控制
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="2026-racepreprint">2026 RACE（Preprint）<a class="headerlink" href="#2026-racepreprint" title="Permanent link">&para;</a></h1><div class="article-meta"><time datetime="2026-10-14">记录 2026-10-14</time><span class="article-tag">VLA</span><span class="article-tag">动作分块</span><span class="article-tag">技能切换</span></div><details class="mobile-toc"><summary>本页目录<span aria-hidden="true">展开 / 收起</span></summary><nav aria-label="本页目录"><ul><li><a href="#when-to-switch-reliable-action-chunk-extension-for-vision-language-action-models">RACE</a></li><li><a href="#1">1. 研究意义</a><ul><li><a href="#a">a. 研究背景：所描述的场景、背景</a></li><li><a href="#b">b. 问题及挑战：核心、重要、未解决的问题是什么</a></li></ul></li><li><a href="#2">2. 研究现状</a><ul><li><a href="#a_1">a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术，着重一个技术分类</a></li><li><a href="#b_1">b. 问题的现状：针对以上技术，这些技术有哪些不足之处</a></li></ul></li><li><a href="#3">3. 技术路线</a><ul><li><a href="#a_2">a. 问题与技术映射：针对上述问题，采用了哪些技术手段</a></li><li><a href="#b_2">b. 技术详述：对每个技术方法进行详细介绍</a><ul><li><a href="#1_1">① 区分预测长度、执行长度和去噪步骤</a></li><li><a href="#2_1">② 从演示动作提取切换点，并生成软标签</a></li><li><a href="#3_1">③ 一步辅助动作前向：获取与未来动作位置对应的特征</a></li><li><a href="#4">④ 预测头：融合场景语义与粗动作信息</a></li><li><a href="#5-token">⑤ 条件动作生成：对每个动作 token 注入时机信息</a></li><li><a href="#6">⑥ 训练：时机监督与动作生成共同优化</a></li><li><a href="#7">⑦ 参数与训练成本</a></li></ul></li><li><a href="#c">c. 创新之处：你认为的上述方法中，最关键的技术是什么</a></li></ul></li><li><a href="#4_1">4. 实验分析</a><ul><li><a href="#a_3">a. 实验数据：论文中使用了哪些实验数据</a></li><li><a href="#b_3">b. 对比实验：与其他算法对比，突出数值的变化</a><ul><li><a href="#1_2">① 同长度比较：平均成功率稳定优于普通微调</a></li><li><a href="#2-vla">② 与其他 VLA 和效率方法比较</a></li><li><a href="#3_2">③ 单次延迟与训练成本：收益来自减少调用</a></li><li><a href="#4-5">④ 真实机器人：空闲减少约 5 倍，成功率优于同长度微调</a></li></ul></li><li><a href="#c_1">c. 消融实验：与自己对比，突出数值的变化</a><ul><li><a href="#1_3">① 表示监督与条件生成：两者贡献可区分</a></li><li><a href="#2_2">② 标签与输入来源：随机边界不能替代有意义的结构</a></li><li><a href="#3_3">③ 推理时扰动先验：时机位置确实影响执行</a></li><li><a href="#4_2">④ 门控、软标签与训练条件</a></li><li><a href="#5">⑤ 扩展极限、骨干泛化和冻结策略</a></li></ul></li><li><a href="#d">d. 实验总结</a></li></ul></li><li><a href="#5_1">5. 不足之处</a></li><li><a href="#6_1">6. 基于本文扩展到的其他论文</a><ul><li><a href="#1-pi_05-race">① \(\pi_{0.5}\)：理解 RACE 的预训练骨干</a></li><li><a href="#2-real-time-chunking">② Real-Time Chunking：理解异步缓冲和新片段衔接</a></li><li><a href="#3-pace">③ PACE：切换附近提前重规划的另一条路线</a></li><li><a href="#4-cotpc">④ CoTPC：无监督子技能发现与预测控制</a></li></ul></li></ul></nav></details>
+<h1 id="when-to-switch-reliable-action-chunk-extension-for-vision-language-action-models">When to Switch: Reliable Action-Chunk Extension for Vision-Language-Action Models<a class="headerlink" href="#when-to-switch-reliable-action-chunk-extension-for-vision-language-action-models" title="Permanent link">&para;</a></h1>
+<p><strong>作者与机构</strong>：Seonghoon Yu、Dongwon Kim、HyungRok Jung、Yoonjae Baek、Byung-kwan Lee、Suha Kwak、Jeany Son；作者来自 <strong>KAIST、GIST、NVIDIA、POSTECH</strong>。</p>
+<p><strong>发表信息</strong>：<a href="https://arxiv.org/abs/2610.05719v1">arXiv:2610.05719v1</a>，发布于 <strong>2026 年 10 月 5 日</strong>，原文标注为 <strong>Preprint</strong>。本文依据本地 PDF 的主文与附录整理，不将其标为已经录用的会议论文。</p>
+<p><strong>原文与实现</strong>：<a href="../../assets/papers/RACE.pdf">本地原文 PDF</a> · <a href="https://github.com/Seonghoon-Yu/RACE-VLA">官方仓库与机器人演示</a>。截至本文整理时，官方 README 标注代码将发布，仓库已有演示，但不能据此声称训练代码和权重已经完整公开。</p>
+<h1 id="1">1. 研究意义<a class="headerlink" href="#1" title="Permanent link">&para;</a></h1>
+<h2 id="a">a. 研究背景：所描述的场景、背景<a class="headerlink" href="#a" title="Permanent link">&para;</a></h2>
+<p>RACE（Reliable Action-Chunk Extension）研究如何让视觉语言动作模型（VLA）更可靠地执行长动作片段。</p>
+<p>VLA 通常根据图像、机器人状态及语言指令产生动作。模型较大时，一次推理需要时间。如果机器人已经执行完上一批动作、下一批动作却尚未生成，就会停下来等待，形成反复启动、暂停的 stop-and-go 运动。</p>
+<p>Action chunking 通过一次预测多个连续动作缓解这一问题。例如，一次预测接近物体、闭合夹爪、抬起物体的一段动作，比每个控制步都调用模型更省推理。但片段越长，机器人越久不能根据新观测修正动作，执行误差也更容易积累。</p>
+<p>论文进一步观察到：长片段中的误差不只随预测距离逐渐增加，还会集中在<strong>子技能切换点</strong>，例如从“接近”切换到“抓握”、从“抓握”切换到“抬起”。如果夹爪闭合晚了几步，后面的抬起动作即使方向正确，也可能没有真正抓住物体。</p>
+<p>因此，RACE 在动作生成前预测片段内“什么时候应该切换”，再把这一信息注入生成过程，使模型能够在更少的策略调用下维持较好的成功率。它关注的是<strong>片段内部的切换时机</strong>，不是用自然语言输出一套新的任务规划。</p>
+<h2 id="b">b. 问题及挑战：核心、重要、未解决的问题是什么<a class="headerlink" href="#b" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>推理延迟与执行连续性之间存在冲突。</strong> 频繁重规划提供更及时的反馈，但增加策略调用和等待；少调用模型可以减少等待，却要求模型可靠地预测更远的动作。</p>
+</li>
+<li>
+<p><strong>长片段跨越技能边界时更难预测。</strong> 平移中的小偏差和“何时闭合夹爪、何时开始抬起”的错误具有不同结构。只把预测长度加大，可能在这些边界产生更明显的误差峰值。</p>
+</li>
+<li>
+<p><strong>演示没有人工子技能标签。</strong> 数据通常有图像和动作，却没有逐帧注明“接近结束、抓握开始”。需要从动作序列自动提取训练信号，同时容忍检测边界的不确定性。</p>
+</li>
+<li>
+<p><strong>推理时无法访问未来演示动作。</strong> 训练可以从完整轨迹提取切换点，部署时只能根据当前观测和模型特征预测。因此标签生成与在线预测必须分开，不能把真实未来边界泄漏到推理中。</p>
+</li>
+<li>
+<p><strong>附加模块不能抵消减少调用的收益。</strong> 为预测切换时机再完整运行一次大型 VLM 或多步动作生成，可能使单次调用变得更慢。RACE 复用 VLM 缓存，仅增加一步辅助动作前向和预测头。</p>
+</li>
+<li>
+<p><strong>切换建模不能替代环境反馈。</strong> 即使时机预测更准，长时间开环执行仍可能因物体滑动、环境变化和执行偏差失败。论文目标是缓解长片段的一类误差，不是消除全部开环漂移。</p>
+</li>
+</ul>
+<h1 id="2">2. 研究现状<a class="headerlink" href="#2" title="Permanent link">&para;</a></h1>
+<h2 id="a_1">a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术，着重一个技术分类<a class="headerlink" href="#a_1" title="Permanent link">&para;</a></h2>
+<p>可以按“减少一次调用的成本”“减少调用次数”“让等待与执行重叠”区分效率方法，再看技能结构如何参与策略学习。</p>
+<table>
+<thead>
+<tr>
+<th>技术路线</th>
+<th>代表方法</th>
+<th>核心思路</th>
+<th>与 RACE 的区别或联系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>连续动作片段生成</td>
+<td>ACT、Diffusion Policy、<span class="arithmatex">\(\pi_{0.5}\)</span></td>
+<td>一次预测多个连续动作</td>
+<td>提供基本生成机制，但长片段可靠性仍需处理</td>
+</tr>
+<tr>
+<td>自适应执行长度</td>
+<td>AutoHorizon、PACE</td>
+<td>根据可靠性或阶段边界，只执行预测片段的一部分</td>
+<td>主要决定何时提前重规划；RACE 改善片段内动作以支持更长执行</td>
+</tr>
+<tr>
+<td>强化学习优化效率</td>
+<td>PolicyTrim</td>
+<td>用强化学习优化任务执行与策略调用</td>
+<td>需要在线 rollout 和额外训练成本</td>
+</tr>
+<tr>
+<td>异步执行</td>
+<td>Real-Time Chunking、VLASH</td>
+<td>执行当前动作时生成下一片段</td>
+<td>隐藏推理延迟，与片段可靠性改善互补</td>
+</tr>
+<tr>
+<td>单次推理加速</td>
+<td>token pruning、Latent Bridge、VLA-Cache</td>
+<td>减少视觉 token 或复用计算</td>
+<td>降低每次调用成本，与减少调用次数是不同方向</td>
+</tr>
+<tr>
+<td>显式子技能结构</td>
+<td>CoTPC、阶段或进度条件策略</td>
+<td>从演示提取阶段、子目标或进度信息</td>
+<td>RACE 使用片段内切换位置的软分数，不需要预测子技能类别</td>
+</tr>
+</tbody>
+</table>
+<p>RACE 的主要实现建立在 <span class="arithmatex">\(\pi_{0.5}\)</span> 的 flow-matching 动作专家上。附录另外研究 GR00T-N1.6 与 OpenVLA-OFT，因此其思想并非只评估在一个骨干上，但不同生成架构需要不同注入方式。</p>
+<h2 id="b_1">b. 问题的现状：针对以上技术，这些技术有哪些不足之处<a class="headerlink" href="#b_1" title="Permanent link">&para;</a></h2>
+<p><strong>直接扩展片段，可能只获得速度收益却损失可靠性。</strong> 模型需要在没有中间反馈的情况下预测更远，接近、抓握、抬起等阶段的边界可能错位。普通同长度微调是论文最重要的控制基线。</p>
+<p><strong>提前截断可以规避风险，却没有直接修复边界附近的动作。</strong> PACE 等方法在可能的阶段边界附近缩短执行区间；RACE 则训练动作专家理解这些边界，并在生成时提供切换先验。这是不同的干预位置，不代表自适应重规划没有价值。</p>
+<p><strong>异步执行并非在所有设置下都能完全隐藏延迟。</strong> 若剩余动作的执行时间短于下一次调用延迟，机器人仍会停下来。更长片段提供更大的执行缓冲，但需要先保证这些动作足够可靠。</p>
+<p><strong>单次推理更快，不等于调用次数更少。</strong> token pruning 或缓存降低每次调用开销；RACE 的额外辅助前向反而会略微增加单次延迟，其整体收益来自更长执行区间。这两种效率来源需要分别测量。</p>
+<p><strong>阶段语义与切换时机是不同监督目标。</strong> RACE 不需要知道某一段叫“抓握”还是“抬起”，它学习的是动作片段各位置接近切换边界的程度。原文图 7 的子技能名称只用于示意，不用于训练。</p>
+<h1 id="3">3. 技术路线<a class="headerlink" href="#3" title="Permanent link">&para;</a></h1>
+<h2 id="a_2">a. 问题与技术映射：针对上述问题，采用了哪些技术手段<a class="headerlink" href="#a_2" title="Permanent link">&para;</a></h2>
+<p>整体流程是<strong>自动提取切换标签 → 一步辅助前向预测切换先验 → 使用先验调制完整动作生成</strong>。</p>
+<p><img alt="RACE 的一步辅助切换预测与条件动作生成流程，原文图 3" src="../assets/race-pipeline.png" width="1010" height="325" loading="lazy" decoding="async"></p>
+<p><em>原文图 3：冻结的 VLM 提取缓存特征；辅助动作前向预测切换先验，完整去噪从同一噪声重新开始。图片截取自原文，版权归原作者。</em></p>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>技术手段</th>
+<th>作用位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>没有人工技能边界</td>
+<td>对演示动作使用 PELT 变点检测</td>
+<td>离线标签生成</td>
+</tr>
+<tr>
+<td>检测点存在偏差，切换可能跨越数步</td>
+<td>将硬边界转为邻域 Gaussian 软标签</td>
+<td>时机预测监督</td>
+</tr>
+<tr>
+<td>仅视觉语义不足以定位未来动作切换</td>
+<td>融合 VLM 缓存和一步辅助动作特征</td>
+<td>切换预测头</td>
+</tr>
+<tr>
+<td>动作专家缺少切换结构</td>
+<td>切换 BCE 损失反传到动作专家</td>
+<td>表示学习</td>
+</tr>
+<tr>
+<td>不同动作位置、去噪步骤需不同先验强度</td>
+<td>token-wise 自适应归一化偏移与逐步可学习门控</td>
+<td>完整动作生成</td>
+</tr>
+<tr>
+<td>训练初期预测先验不准</td>
+<td>teacher forcing 和时机抖动</td>
+<td>训练条件构造</td>
+</tr>
+<tr>
+<td>附加推理开销需受控</td>
+<td>复用 VLM 缓存，只增加一步辅助动作前向</td>
+<td>每次策略调用</td>
+</tr>
+</tbody>
+</table>
+<h2 id="b_2">b. 技术详述：对每个技术方法进行详细介绍<a class="headerlink" href="#b_2" title="Permanent link">&para;</a></h2>
+<h3 id="1_1">① 区分预测长度、执行长度和去噪步骤<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>记预测片段长度为 <span class="arithmatex">\(H\)</span>，每次调用执行的长度为 <span class="arithmatex">\(H_{\mathrm{exec}}\)</span>，去噪步骤数为 <span class="arithmatex">\(K\)</span>。这三个量不是一回事。</p>
+<p>论文仿真中的 RACE 和同配方微调模型使用 <span class="arithmatex">\(H=H_{\mathrm{exec}}\)</span>，即预测并执行完整片段。官方 <span class="arithmatex">\(\pi_{0.5}\)</span> 基线则预测 10 个动作、执行前 5 个。</p>
+<p>真实机器人采用异步 Real-Time Chunking，使用 <span class="arithmatex">\(H=2H_{\mathrm{exec}}\)</span>。其中 <span class="arithmatex">\(H_{\mathrm{exec}}\)</span> 是<strong>配置的重规划间隔</strong>：执行前半片段后请求下一片段，后半片段用来覆盖推理延迟。新片段到达时，会跳过对应已流逝时间的前部动作，所以实际每次调用执行的数量不总是恰好等于这个配置值。</p>
+<p>本节先解释主实现的 flow-matching 生成，采用 <span class="arithmatex">\(K=10\)</span>。</p>
+<h3 id="2_1">② 从演示动作提取切换点，并生成软标签<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<p>每个仿真动作包含位姿增量与夹爪命令。论文对位姿增量取一阶差分，角度差规约到 <span class="arithmatex">\([-\pi,\pi)\)</span>，并加入夹爪命令作为输入信号；随后在每条演示内部，逐维标准化，避免平移、旋转、夹爪量纲差异主导变点检测。</p>
+<p>PELT 在标准化序列中寻找分段边界。其目标是各段代价与新增变点惩罚之和：</p>
+<div class="arithmatex">\[
+\min_{\mathcal{C}}\left[
+\sum_{i=0}^{m}
+\operatorname{cost}(\tilde a_{c_i:c_{i+1}})
++\beta m
+\right],
+\]</div>
+<p>其中 <span class="arithmatex">\(\mathcal{C}=\{c_1,\ldots,c_m\}\)</span>，每个 <span class="arithmatex">\(c_i\)</span> 是新段的起点，序列末端边界不计为切换标签。段代价使用 Gaussian 核，主设置为 <span class="arithmatex">\(\beta=4\)</span>；核带宽使用每条演示的距离中位数启发式。</p>
+<p>PELT 得到的点只是<strong>动作动力学变化的伪标签</strong>，不等于人工标注的完整语义技能边界。论文使用 VLABench 的脚本生成器边界验证其相关性，但这些参考边界只用于评价，不作为训练输入。</p>
+<p>对动作位置 <span class="arithmatex">\(t+j\)</span>，令 <span class="arithmatex">\(d_{t+j}\)</span> 为它到最近切换点的距离。按照附录式（10），软目标为：</p>
+<div class="arithmatex">\[
+p_{t+j}
+=\exp\left(-\frac{d_{t+j}^{2}}{2\sigma_p^{2}}\right),
+\qquad \sigma_p=1.
+\]</div>
+<p>距离超过 <span class="arithmatex">\(R=3\)</span> 步的分数置零，因此每个切换点最多影响 7 个位置。超过演示结尾的动作位置用最后动作补齐，但切换分数设为零。</p>
+<p>这种标签不是整个片段只能有一个“正确切换索引”的分类。<span class="arithmatex">\(\mathbf p_t\in[0,1]^H\)</span> 为每个动作位置提供分数，允许一个片段包含多个切换点。</p>
+<h3 id="3_1">③ 一步辅助动作前向：获取与未来动作位置对应的特征<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<p>每次策略调用先缓存观测与语言特征：</p>
+<div class="arithmatex">\[
+z_t=\operatorname{VLM}(o_t,\ell).
+\]</div>
+<p>然后采样初始噪声 <span class="arithmatex">\(A_t^0\sim\mathcal N(0,I)\)</span>。在尚未注入切换先验时，动作专家进行一次辅助去噪前向，取得最终层动作 token 隐藏状态：</p>
+<div class="arithmatex">\[
+F_t=(f_t,\ldots,f_{t+H-1})
+\in\mathbb R^{H\times d_a}.
+\]</div>
+<p>这些特征既依赖当前场景和指令，又与未来片段中各动作位置对应。辅助前向的速度场还接受 <span class="arithmatex">\(\mathcal L_{\mathrm{aux}}\)</span> 监督，使这次前向具有动作预测意义。</p>
+<p><strong>辅助结果不作为完整生成的第一步继续向后执行。</strong> 它用于预测先验；完整去噪随后从同一个 <span class="arithmatex">\(A_t^0\)</span> 重新开始。推理时，先验只预测一次，不在每个去噪步骤重新预测。</p>
+<h3 id="4">④ 预测头：融合场景语义与粗动作信息<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<p>预测头先把动作特征投影到 VLM 最终层缓存特征 <span class="arithmatex">\(\hat z_t\)</span> 的维度，再用 cross-attention 融合观测上下文，用 self-attention 建模片段内部关系：</p>
+<div class="arithmatex">\[
+\hat F_t=F_tW_f,
+\]</div>
+<div class="arithmatex">\[
+\bar F_t
+=\hat F_t+
+\operatorname{CrossAttn}(\hat F_t,\hat z_t,\hat z_t),
+\]</div>
+<div class="arithmatex">\[
+\tilde F_t
+=\bar F_t+\operatorname{SelfAttn}(\bar F_t),
+\qquad
+\hat{\mathbf p}_t
+=\operatorname{sigmoid}(\tilde F_tw_p).
+\]</div>
+<p>输出 <span class="arithmatex">\(\hat{\mathbf p}_t\in[0,1]^H\)</span> 表示各位置接近切换点的程度。原文主实现给出 <span class="arithmatex">\(d_a=1024\)</span>、<span class="arithmatex">\(d_z=256\)</span>。</p>
+<p>预测头使用 <span class="arithmatex">\(\operatorname{BCE}(\hat{\mathbf p}_t,\mathbf p_t)\)</span> 训练。该损失不仅训练预测头，还通过 <span class="arithmatex">\(F_t\)</span> <strong>反向传播到动作专家</strong>，使它的内部表示更关注即将发生的切换；主实验冻结 VLM。</p>
+<h3 id="5-token">⑤ 条件动作生成：对每个动作 token 注入时机信息<a class="headerlink" href="#5-token" title="Permanent link">&para;</a></h3>
+<p>第 <span class="arithmatex">\(k\)</span> 个去噪步骤构造切换特征：</p>
+<div class="arithmatex">\[
+U_t^k
+=\alpha^k\hat{\mathbf p}_t\otimes e_{\mathrm{trans}}
+\in\mathbb R^{H\times d_a}.
+\]</div>
+<p><span class="arithmatex">\(e_{\mathrm{trans}}\)</span> 是可学习切换 embedding，<span class="arithmatex">\(\otimes\)</span> 是外积，<span class="arithmatex">\(\alpha^k\in(0,1)\)</span> 是该去噪步骤的 sigmoid 门控，初始化为 0.5。</p>
+<p>每层将 <span class="arithmatex">\(U_t^k\)</span> 映射为 adaptive RMSNorm 的 scale、shift 和 residual gate 偏移：</p>
+<div class="arithmatex">\[
+[\Delta\Gamma_\ell,\Delta B_\ell,\Delta G_\ell]
+=U_t^kW_\ell.
+\]</div>
+<p>这些偏移加在原动作专家的调制参数上，使不同动作位置得到不同条件。其作用可以写为：</p>
+<div class="arithmatex">\[
+\tilde X_\ell
+=(1+\Gamma_\ell)\odot\operatorname{RMSNorm}(X_\ell)
++B_\ell,
+\]</div>
+<div class="arithmatex">\[
+X_{\ell+1}
+=X_\ell+G_\ell\odot
+\operatorname{Module}_\ell(\tilde X_\ell).
+\]</div>
+<p>这里 <span class="arithmatex">\(\operatorname{Module}_\ell\)</span> 为 attention 或 feed-forward 模块。<span class="arithmatex">\(W_\ell\)</span> 零初始化且无 bias，因此训练初始保持原模型调制；若先验为零，额外偏移也为零。</p>
+<p>完整生成按照原文式（1）更新：</p>
+<div class="arithmatex">\[
+A_t^k=A_t^{k-1}
++\frac{1}{K}v_\theta
+\left(A_t^{k-1},z_t,\alpha^k\hat{\mathbf p}_t\right),
+\qquad k=1,\ldots,K.
+\]</div>
+<p>上式按主文省略 flow time；附录算法 2 明确第 <span class="arithmatex">\(k\)</span> 步输入时间为 <span class="arithmatex">\((k-1)/K\)</span>。最终输出 <span class="arithmatex">\(A_t^K\)</span>。</p>
+<p>直观上，“即将抓握”的动作位置在每一步生成中获得边界提示，但模型仍根据观测决定实际动作，并不是机械地在先验峰值处强制切换。附录中先验移动一步，生成的夹爪切换平均只移动约四分之一步，也体现了这种共同决定关系。</p>
+<h3 id="6">⑥ 训练：时机监督与动作生成共同优化<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<p>训练目标为：</p>
+<div class="arithmatex">\[
+\mathcal L
+=\mathcal L_{\mathrm{full}}
++0.1\mathcal L_{\mathrm{aux}}
++0.05\mathcal L_{\mathrm{timing}}.
+\]</div>
+<p>若 <span class="arithmatex">\(\epsilon\)</span> 是初始噪声、<span class="arithmatex">\(A_t\)</span> 是真实动作，完整训练前向采样连续 flow time <span class="arithmatex">\(s\)</span>，构造 <span class="arithmatex">\(A_t^s=(1-s)\epsilon+sA_t\)</span>，回归速度目标 <span class="arithmatex">\(A_t-\epsilon\)</span>。辅助前向则在 <span class="arithmatex">\(s=0\)</span>、无调制条件下回归同一目标。训练不是每个样本都运行完整的 10 步推理循环。</p>
+<p>完整训练前向使用软标签 <span class="arithmatex">\(\mathbf p_t\)</span>，而非当前预测 <span class="arithmatex">\(\hat{\mathbf p}_t\)</span>，即 teacher forcing；同时以 0.5 的概率将条件标签随机偏移一步，提高对不准先验的容忍。预测头 BCE 的监督目标保持原标签不变。</p>
+<p>因此需要区分：</p>
+<ul>
+<li><strong>训练条件</strong>：抖动后的目标 <span class="arithmatex">\(\tilde{\mathbf p}_t\)</span>。</li>
+<li><strong>预测头监督</strong>：未抖动的 <span class="arithmatex">\(\mathbf p_t\)</span>。</li>
+<li><strong>部署条件</strong>：在线预测的 <span class="arithmatex">\(\hat{\mathbf p}_t\)</span>。</li>
+</ul>
+<p>连续训练时间 <span class="arithmatex">\(s\)</span> 使用所在区间对应的门控 <span class="arithmatex">\(\alpha^k\)</span>；推理则在离散去噪步骤中分别使用各门控。</p>
+<h3 id="7">⑦ 参数与训练成本<a class="headerlink" href="#7" title="Permanent link">&para;</a></h3>
+<p>仿真主设置使用 4 张 RTX A6000、全局 batch size 64、AdamW 和余弦学习率，从 <span class="arithmatex">\(5\times10^{-5}\)</span> 衰减至 <span class="arithmatex">\(5\times10^{-6}\)</span>。VLABench 后训练 40K 步，其余仿真基准为 20K 步。</p>
+<p>附录表 16 中，VLABench 的普通微调为 <strong>693M 可训练参数、28 小时</strong>，RACE 为 <strong>811M、36 小时</strong>。所以“轻量后训练”是相对完整 VLM 更新或高成本强化学习而言，不能把 RACE 说成无需训练或仅训练一个很小的预测头：动作专家也会更新，增加的可训练参数约为 118M。</p>
+<h2 id="c">c. 创新之处：你认为的上述方法中，最关键的技术是什么<a class="headerlink" href="#c" title="Permanent link">&para;</a></h2>
+<p>我认为关键是把“长片段不可靠”进一步定位为<strong>片段内部切换时机难以预测</strong>，再同时从训练表示和生成条件两方面处理。</p>
+<p>仅附加一次动作损失，改进很小；仅让动作专家接受切换监督，不注入先验，也已经有效；显式条件生成又带来额外收益。这个区分使 RACE 的论证比“增加一个模块后平均成功率提高”更具体。</p>
+<p>第二个有价值的设计是<strong>先用一次共享动作专家的辅助前向获得动作位置特征，再复用同一 VLM 缓存进行完整生成</strong>。它让时机预测具有动作上下文，同时把额外推理控制在主测量设置的约 4%。</p>
+<p>这里的“什么时候切换”仍由当前观测推断，不能等同于执行中的事件触发闭环。RACE 改善的是预测动作片段，不是额外安装一个实时接触监测器。</p>
+<h1 id="4_1">4. 实验分析<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h1>
+<h2 id="a_3">a. 实验数据：论文中使用了哪些实验数据<a class="headerlink" href="#a_3" title="Permanent link">&para;</a></h2>
+<p>按照附录 E.5 与 E.1：</p>
+<table>
+<thead>
+<tr>
+<th>数据或平台</th>
+<th>训练数据</th>
+<th>评估规模与口径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VLABench</td>
+<td>10 个任务，每任务 500 条脚本演示，共 5000 条</td>
+<td>每任务、每 track 50 次，共 2500 次；先平均任务再平均 5 个 track</td>
+</tr>
+<tr>
+<td>RoboCasa-H50</td>
+<td>25 个厨房任务，每任务 50 条人类遥操作演示，共 1250 条</td>
+<td>每任务 50 次，共 1250 次；8 个类别的整体均值按任务数加权</td>
+</tr>
+<tr>
+<td>LIBERO</td>
+<td>Spatial、Object、Goal、Long 共 40 个任务，每任务 50 条演示，共 2000 条</td>
+<td>每任务 50 次，共 2000 次；报告各 suite 与整体均值</td>
+</tr>
+<tr>
+<td>AgileX PiPER 真实机械臂</td>
+<td>一项碗到盘子的抓取放置任务，30 条演示</td>
+<td>每方法 50 次，使用相同的一组初始摆放</td>
+</tr>
+</tbody>
+</table>
+<p>真实平台是带夹爪的 6 自由度 PiPER，使用腕部相机和前方相机，30 Hz 采集与执行。真实动作训练使用相对片段起始状态的关节位移，夹爪为绝对命令，部署前转换回绝对关节目标；不能把仿真的末端位姿增量设置直接套到真实机器人上。</p>
+<p>论文主要指标是：</p>
+<ul>
+<li><strong>SR</strong>：完整任务成功率。</li>
+<li><strong>PS</strong>：VLABench 已完成子任务的比例，允许区分部分完成与全部成功。</li>
+<li><strong>Spd</strong>：每段任务累计策略推理时间相对基线的加速，<strong>不包含仿真器执行时间</strong>。</li>
+<li><strong>Time、Idle</strong>：真实机器人任务完成时间与未接收到新动作命令的总空闲时间，均仅对成功试次求平均。</li>
+</ul>
+<p>按附录式（11），仿真速度指标为：</p>
+<div class="arithmatex">\[
+\operatorname{Spd}_\theta
+=\frac{\ell_{\pi_{0.5}}\bar N_{\pi_{0.5}}}
+{\ell_\theta\bar N_\theta},
+\]</div>
+<p>其中 <span class="arithmatex">\(\ell\)</span> 为单次调用延迟，<span class="arithmatex">\(\bar N\)</span> 为平均调用次数；主比较在被比较模型与基线<strong>共同成功</strong>的任务上计算。不能把 Spd 写成机器人端到端任务速度。附录另检验了所有试次等统计集合，但其数值与主表口径不同。</p>
+<p>原文动作误差分析使用演示状态上的归一化 7 维动作 MSE，不是在实际 rollout 状态上获得的真实最优动作误差。这一限制会影响对失败成因的解释。</p>
+<h2 id="b_3">b. 对比实验：与其他算法对比，突出数值的变化<a class="headerlink" href="#b_3" title="Permanent link">&para;</a></h2>
+<h3 id="1_2">① 同长度比较：平均成功率稳定优于普通微调<a class="headerlink" href="#1_2" title="Permanent link">&para;</a></h3>
+<p>以下汇总原文表 1、表 2、附录表 9。成功率单位为 %，Spd 相对各基准的官方 <span class="arithmatex">\(\pi_{0.5}\)</span> 基线。</p>
+<table>
+<thead>
+<tr>
+<th>基准</th>
+<th style="text-align: right;"><span class="arithmatex">\(H_{\mathrm{exec}}\)</span></th>
+<th style="text-align: right;">普通微调 SR</th>
+<th style="text-align: right;">RACE SR</th>
+<th style="text-align: right;">增益（百分点）</th>
+<th style="text-align: right;">微调 Spd</th>
+<th style="text-align: right;">RACE Spd</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VLABench</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">32.2</td>
+<td style="text-align: right;"><strong>34.4</strong></td>
+<td style="text-align: right;">+2.2</td>
+<td style="text-align: right;">2.01×</td>
+<td style="text-align: right;">1.92×</td>
+</tr>
+<tr>
+<td>VLABench</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">30.0</td>
+<td style="text-align: right;"><strong>33.4</strong></td>
+<td style="text-align: right;">+3.4</td>
+<td style="text-align: right;">2.83×</td>
+<td style="text-align: right;">2.71×</td>
+</tr>
+<tr>
+<td>VLABench</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">28.1</td>
+<td style="text-align: right;"><strong>33.0</strong></td>
+<td style="text-align: right;">+4.9</td>
+<td style="text-align: right;">3.82×</td>
+<td style="text-align: right;">3.68×</td>
+</tr>
+<tr>
+<td>RoboCasa-H50</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">65.0</td>
+<td style="text-align: right;"><strong>66.8</strong></td>
+<td style="text-align: right;">+1.8</td>
+<td style="text-align: right;">1.96×</td>
+<td style="text-align: right;">1.91×</td>
+</tr>
+<tr>
+<td>RoboCasa-H50</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">64.2</td>
+<td style="text-align: right;"><strong>67.3</strong></td>
+<td style="text-align: right;">+3.1</td>
+<td style="text-align: right;">2.94×</td>
+<td style="text-align: right;">2.91×</td>
+</tr>
+<tr>
+<td>RoboCasa-H50</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">60.8</td>
+<td style="text-align: right;"><strong>64.0</strong></td>
+<td style="text-align: right;">+3.2</td>
+<td style="text-align: right;">3.84×</td>
+<td style="text-align: right;">3.77×</td>
+</tr>
+<tr>
+<td>LIBERO</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">97.10</td>
+<td style="text-align: right;"><strong>98.65</strong></td>
+<td style="text-align: right;">+1.55</td>
+<td style="text-align: right;">1.98×</td>
+<td style="text-align: right;">1.95×</td>
+</tr>
+<tr>
+<td>LIBERO</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">96.95</td>
+<td style="text-align: right;"><strong>98.35</strong></td>
+<td style="text-align: right;">+1.40</td>
+<td style="text-align: right;">2.96×</td>
+<td style="text-align: right;">2.86×</td>
+</tr>
+<tr>
+<td>LIBERO</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">94.35</td>
+<td style="text-align: right;"><strong>96.70</strong></td>
+<td style="text-align: right;">+2.35</td>
+<td style="text-align: right;">3.91×</td>
+<td style="text-align: right;">3.78×</td>
+</tr>
+</tbody>
+</table>
+<p>这是最直接的控制比较：训练配方与长度对齐后，RACE 改善平均成功率，但同长度下的累计推理加速略小于普通微调，因为它有额外前向开销。</p>
+<p>VLABench 官方基线为 <strong>24.6%</strong>。RACE 执行 20 个动作时为 <strong>33.0%</strong>，比基线高 <strong>8.4 个百分点</strong>，但与同长度微调相比的净增益是 <strong>4.9 个百分点</strong>，两种比较不能混用。</p>
+<p>RoboCasa-H50 官方基线为 <strong>60.4%</strong>，RACE 的 20 动作设置为 <strong>64.0%</strong>。LIBERO 官方基线为 <strong>96.96%</strong>，RACE 的 20 动作设置为 <strong>96.70%</strong>，略低 <strong>0.26 个百分点</strong>；不能说四倍执行长度在所有基准都超过原基线。</p>
+<p>改善也不是每个类别都成立。例如 VLABench 的 10 动作设置中，commonsense SR 为 23.2%，低于微调的 24.0%；RoboCasa 的 20 动作设置中，Stove 为 34.0%，低于微调的 38.0%。表中结论是平均表现。</p>
+<h3 id="2-vla">② 与其他 VLA 和效率方法比较<a class="headerlink" href="#2-vla" title="Permanent link">&para;</a></h3>
+<p>VLABench 表 1 中，RACE 的 10 动作设置达到 <strong>34.4% SR、49.3% PS、1.92× Spd</strong>。ACoT-VLA 的 20 动作设置为 <strong>33.1% SR、52.8% PS、2.36× Spd</strong>。RACE 的 SR 更高，但 PS 和 Spd 在这两个不同长度设置中并不占优。</p>
+<p>在相同 20 动作设置下，RACE 为 <strong>33.0% SR、47.8% PS、3.68× Spd</strong>：SR 与 ACoT-VLA 的 33.1% 相近，PS 更低，推理加速更高。这比“全面超过所有方法”更准确。</p>
+<p>RoboCasa-H50 的 20 动作 RACE 为 <strong>64.0% SR、3.77× Spd</strong>；PACE 为 <strong>64.2% SR、1.63× Spd</strong>，平均执行 8.11 个动作。此处 RACE 成功率略低，但累计推理加速约为 PACE 的 2.31 倍。</p>
+<p>LIBERO 的 10 动作 RACE 为 <strong>98.65% SR、1.95× Spd</strong>，高于表中 PolicyTrim 的 <strong>97.10% SR</strong>；但 PolicyTrim 的 Spd 为 <strong>4.85×</strong>，并且它分别训练四个 suite 的策略。不能声称 RACE 在该表中具有最高速度。</p>
+<p>附录 B.1 明确部分 LIBERO 基线成功率取自各原论文，Spd 则在作者设置中测量；这不是所有方法都由作者在同一完整训练流程下重新复现的比较。</p>
+<h3 id="3_2">③ 单次延迟与训练成本：收益来自减少调用<a class="headerlink" href="#3_2" title="Permanent link">&para;</a></h3>
+<p>原文附录表 15，在单张 RTX A6000 上：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align: right;">单次延迟</th>
+<th style="text-align: right;">相对基线</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\pi_{0.5}\)</span></td>
+<td style="text-align: right;">84.3 ms</td>
+<td style="text-align: right;">1.00×</td>
+</tr>
+<tr>
+<td>ACoT-VLA</td>
+<td style="text-align: right;">120.6 ms</td>
+<td style="text-align: right;">1.43×</td>
+</tr>
+<tr>
+<td>RACE</td>
+<td style="text-align: right;">87.6 ms</td>
+<td style="text-align: right;">1.04×</td>
+</tr>
+</tbody>
+</table>
+<p>RACE 增加 <strong>3.3 ms</strong>，约 <strong>3.9%</strong>；其中一步辅助前向约 3.0 ms，预测头约 0.3 ms。因此它没有降低单次推理延迟。</p>
+<p>附录表 17 在 LIBERO 上报告 RACE 训练 <strong>17 小时</strong>，普通微调 <strong>14 小时</strong>；PolicyTrim 每个 suite <strong>457 小时</strong>，四个 suite 总计 <strong>1828 小时是估算值</strong>。这说明各方法的训练预算不同，但不能把预算差异当作严格等预算算法比较。</p>
+<h3 id="4-5">④ 真实机器人：空闲减少约 5 倍，成功率优于同长度微调<a class="headerlink" href="#4-5" title="Permanent link">&para;</a></h3>
+<p>原文表 6，每方法 50 次：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align: right;">配置 <span class="arithmatex">\(H_{\mathrm{exec}}\)</span></th>
+<th style="text-align: right;">SR</th>
+<th style="text-align: right;">成功次数</th>
+<th style="text-align: right;">Time</th>
+<th style="text-align: right;">Idle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\pi_{0.5}\)</span> 微调</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">36%</td>
+<td style="text-align: right;">18/50</td>
+<td style="text-align: right;">12.6 s</td>
+<td style="text-align: right;">2.11 s</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\pi_{0.5}\)</span> 微调</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">48%</td>
+<td style="text-align: right;">24/50</td>
+<td style="text-align: right;"><strong>11.6 s</strong></td>
+<td style="text-align: right;"><strong>0.40 s</strong></td>
+</tr>
+<tr>
+<td>RACE</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;"><strong>66%</strong></td>
+<td style="text-align: right;"><strong>33/50</strong></td>
+<td style="text-align: right;">11.8 s</td>
+<td style="text-align: right;">0.41 s</td>
+</tr>
+</tbody>
+</table>
+<p>成功次数根据 50 次试验与表中成功率换算。三种方法都使用异步执行，长片段设置预测 <span class="arithmatex">\(H=40\)</span>，短片段设置预测 <span class="arithmatex">\(H=10\)</span>。</p>
+<p>相较短片段微调，RACE 的 Idle 从 2.11 s 降至 0.41 s，约缩短 <strong>5.15 倍</strong>、减少 <strong>80.6%</strong>；Time 从 12.6 s 降至 11.8 s，仅减少约 <strong>6.3%</strong>。不能将 5 倍理解为任务完成速度。</p>
+<p>相较同长度微调，RACE 成功率提高 <strong>18 个百分点</strong>，但 Time 多 0.2 s、Idle 多 0.01 s。因此减少等待主要是<strong>扩展片段</strong>的作用，RACE 的额外价值是提高长片段的可靠性。</p>
+<p>附录表 28 报告真实部署的单次总延迟为 <strong>271 / 285 / 372 ms</strong>，包含相机采集、网络与服务端；RACE 当时未使用 CUDA graphs，服务器开销更高。这组值不能与表 15 的纯模型基准延迟混在一起。</p>
+<p>20 动作设置下，执行缓冲足够覆盖调用延迟，首次调用后的暂停约为零，剩余 Idle 主要来自启动与控制循环。论文结果依赖具体相机、网络和控制频率，并非所有部署都只需 20 动作即可消除中途等待。</p>
+<h2 id="c_1">c. 消融实验：与自己对比，突出数值的变化<a class="headerlink" href="#c_1" title="Permanent link">&para;</a></h2>
+<p>除另行说明，以下消融均为 <strong>VLABench、<span class="arithmatex">\(H_{\mathrm{exec}}=20\)</span></strong>，SR 单位为 %。</p>
+<h3 id="1_3">① 表示监督与条件生成：两者贡献可区分<a class="headerlink" href="#1_3" title="Permanent link">&para;</a></h3>
+<p>原文表 3：</p>
+<table>
+<thead>
+<tr>
+<th>配置</th>
+<th><span class="arithmatex">\(\mathcal L_{\mathrm{full}}\)</span></th>
+<th><span class="arithmatex">\(\mathcal L_{\mathrm{aux}}\)</span></th>
+<th><span class="arithmatex">\(\mathcal L_{\mathrm{timing}}\)</span></th>
+<th style="text-align: right;">SR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>普通微调</td>
+<td>是</td>
+<td>否</td>
+<td>否</td>
+<td style="text-align: right;">28.1</td>
+</tr>
+<tr>
+<td>仅增加辅助动作监督，无预测头</td>
+<td>是</td>
+<td>是</td>
+<td>否</td>
+<td style="text-align: right;">28.4</td>
+</tr>
+<tr>
+<td>有预测头，先验不注入动作生成</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+<td style="text-align: right;">30.6</td>
+</tr>
+<tr>
+<td>有预测头与条件生成，无辅助动作监督</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+<td style="text-align: right;">32.4</td>
+</tr>
+<tr>
+<td>完整 RACE</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+<td style="text-align: right;"><strong>33.0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>有预测头的配置始终进行辅助前向；不使用 <span class="arithmatex">\(\mathcal L_{\mathrm{aux}}\)</span> 只是不给它单独的动作去噪监督，不能写成“取消辅助前向”。</p>
+<p>单加辅助动作监督只提高 <strong>0.3 个百分点</strong>。切换监督使动作专家表征受益，达到 30.6%；再注入条件达到 32.4%；辅助动作监督进一步提高到 33.0%。这是顺序消融的增益，不应当作各组件在任意组合中都独立可加的效果。</p>
+<h3 id="2_2">② 标签与输入来源：随机边界不能替代有意义的结构<a class="headerlink" href="#2_2" title="Permanent link">&para;</a></h3>
+<p>原文表 4：</p>
+<table>
+<thead>
+<tr>
+<th>比较因素</th>
+<th>配置</th>
+<th style="text-align: right;">SR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标签来源</td>
+<td>随机切换</td>
+<td style="text-align: right;">28.5</td>
+</tr>
+<tr>
+<td>标签来源</td>
+<td>速度谷值</td>
+<td style="text-align: right;">31.2</td>
+</tr>
+<tr>
+<td>标签来源</td>
+<td>PELT</td>
+<td style="text-align: right;"><strong>33.0</strong></td>
+</tr>
+<tr>
+<td>预测头输入</td>
+<td>仅 VLM 特征</td>
+<td style="text-align: right;">31.6</td>
+</tr>
+<tr>
+<td>预测头输入</td>
+<td>仅动作特征</td>
+<td style="text-align: right;">32.5</td>
+</tr>
+<tr>
+<td>预测头输入</td>
+<td>两者融合</td>
+<td style="text-align: right;"><strong>33.0</strong></td>
+</tr>
+</tbody>
+</table>
+<p>随机标签的调制偏移范数约为 0.30–0.35，而 PELT 为 3.67–4.12，模型倾向忽略无信息先验。速度谷值的偏移更大，却没有获得更高 SR，因此调制强度大并不直接等于效果好。</p>
+<p>附录表 8 在额外生成、未用于训练的 <strong>300 条 VLABench 演示</strong>上对照脚本生成器参考边界，允许 <span class="arithmatex">\(\pm3\)</span> 步偏差：PELT precision / recall 为 <strong>0.82 / 0.70</strong>，速度谷值为 <strong>0.40 / 0.21</strong>，随机标签为 <strong>0.30 / 0.28</strong>。这是按切换统计、跨 episode 汇总且不做一对一匹配的评价，不等于逐帧分类准确率。</p>
+<h3 id="3_3">③ 推理时扰动先验：时机位置确实影响执行<a class="headerlink" href="#3_3" title="Permanent link">&para;</a></h3>
+<p>原文表 5，保持训练后模型不变：</p>
+<table>
+<thead>
+<tr>
+<th>推理先验</th>
+<th style="text-align: right;">SR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>随机峰值</td>
+<td style="text-align: right;">23.5</td>
+</tr>
+<tr>
+<td>全零，取消额外调制</td>
+<td style="text-align: right;">31.8</td>
+</tr>
+<tr>
+<td>预测先验</td>
+<td style="text-align: right;"><strong>33.0</strong></td>
+</tr>
+<tr>
+<td>预测先验提前一步</td>
+<td style="text-align: right;">30.2</td>
+</tr>
+<tr>
+<td>预测先验推迟一步</td>
+<td style="text-align: right;">30.7</td>
+</tr>
+</tbody>
+</table>
+<p>全零先验仍优于普通微调的 28.1%，与训练阶段已学到切换结构相符；在线条件本身又带来 <strong>1.2 个百分点</strong>。错移一步比取消调制更差，说明模型依赖先验的具体位置，而不是只需要“额外多一个输入”。</p>
+<p>这里的全零推理是对<strong>完整训练模型</strong>的干预，与表 3 中重新训练“无条件生成”模型不是同一实验。</p>
+<h3 id="4_2">④ 门控、软标签与训练条件<a class="headerlink" href="#4_2" title="Permanent link">&para;</a></h3>
+<p>附录表 19–22：</p>
+<table>
+<thead>
+<tr>
+<th>因素</th>
+<th style="text-align: right;">对照配置 SR</th>
+<th style="text-align: right;">采用配置 SR</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>逐去噪步门控</td>
+<td style="text-align: right;">固定 <span class="arithmatex">\(\alpha^k=1\)</span>：30.7</td>
+<td style="text-align: right;">可学习：33.0</td>
+<td>提高 2.3 个百分点</td>
+</tr>
+<tr>
+<td>标签形状</td>
+<td style="text-align: right;">硬标签：32.3</td>
+<td style="text-align: right;">软标签：33.0</td>
+<td>提高 0.7 个百分点</td>
+</tr>
+<tr>
+<td>teacher forcing</td>
+<td style="text-align: right;">不使用：32.9</td>
+<td style="text-align: right;">使用：33.0</td>
+<td>主评估差异很小</td>
+</tr>
+<tr>
+<td>时机抖动</td>
+<td style="text-align: right;">不使用：32.8</td>
+<td style="text-align: right;">使用：33.0</td>
+<td>主评估差异很小，较大先验偏移下更稳健</td>
+</tr>
+<tr>
+<td>PELT 惩罚 <span class="arithmatex">\(\beta\)</span></td>
+<td style="text-align: right;"><span class="arithmatex">\(\beta=2\)</span>：33.1；<span class="arithmatex">\(\beta=8\)</span>：32.8</td>
+<td style="text-align: right;"><span class="arithmatex">\(\beta=4\)</span>：33.0</td>
+<td>所测范围内较稳定</td>
+</tr>
+</tbody>
+</table>
+<p>图 5c 显示训练后的门控在较早去噪步更强；图 6 显示 RACE 的相邻动作 token 在切换点较早形成特征差异。它们支持结构解释，但不是对所有去噪模型都成立的理论保证。</p>
+<h3 id="5">⑤ 扩展极限、骨干泛化和冻结策略<a class="headerlink" href="#5" title="Permanent link">&para;</a></h3>
+<p>附录表 10，RACE 在 VLABench 的执行长度从 <strong>10 → 20 → 30 → 40</strong> 时，SR 为 <strong>34.4 → 33.0 → 28.5 → 24.0%</strong>，Spd 为 <strong>1.92 → 3.68 → 5.11 → 6.82×</strong>。40 动作设置已低于官方基线 24.6%，说明收益不是随长度一直增长。</p>
+<p>附录表 14：GR00T-N1.6 在 16 动作设置中，RACE <strong>99.3%</strong>，高于微调 <strong>98.4%</strong> 和 8 动作原基线 <strong>98.1%</strong>。OpenVLA-OFT 在 16 动作设置中，RACE <strong>96.5%</strong>，高于微调 <strong>96.1%</strong>，却低于原基线 <strong>97.1%</strong>。对非去噪回归架构的收益较小，而且需要改为两次动作 token 前向和 RMSNorm 注入，不能直接照搬逐去噪步门控。</p>
+<p>附录表 11、表 12 中，联合更新 VLM 将 SR 从 <strong>33.0 提升至 38.9%</strong>，但训练从 <strong>36 增至 96 小时</strong>，每 GPU 峰值显存从 <strong>18 增至 40 GB</strong>。主实验冻结 VLM 是成本选择，并非方法只能冻结 VLM。</p>
+<h2 id="d">d. 实验总结<a class="headerlink" href="#d" title="Permanent link">&para;</a></h2>
+<p>RACE 的主要证据链是：演示状态上的动作误差集中在切换附近；自动边界比随机标签更有效；切换监督和条件生成分别贡献；移动先验会改变夹爪切换并降低任务成功率；最终在多个基准及真实任务中改善同长度微调。</p>
+<p><img alt="技能切换附近的动作误差及 RACE 的改善，原文图 2" src="../assets/race-transition-errors.png" width="1010" height="400" loading="lazy" decoding="async"></p>
+<p><em>原文图 2：切换点附近出现误差峰，长片段更明显；RACE 降低这些峰值。误差在演示状态上测量，图片版权归原作者。</em></p>
+<p>附录表 18 对 VLABench 的 20 动作 RACE 进行了 <strong>3 个训练随机种子</strong>，平均 SR 为 <strong>33.3±0.5%（均值±标准差）</strong>。同长度微调只训练一次，因此不能把这一表解释为所有基线和消融都完成了多种子显著性检验。</p>
+<p>附录表 27 在 held-out 演示上，夹爪在正确时刻 <span class="arithmatex">\(\pm1\)</span> 步内切换的比例从 <strong>86.9% 提升至 91.5%</strong>，配对差异的 95% bootstrap 区间为 <strong>[1.9, 7.1] 个百分点</strong>；精确单步命中率差异的区间 <strong>[-1.2, 7.6]</strong> 包含零。应区分邻域切换改善与精确时刻改善的统计证据。</p>
+<p>总体上，论文支持<strong>以少量额外单次开销，换取更可靠的长片段和更少的调用</strong>。真实机器人“少等待”和“长片段成功率更高”有证据，但没有显示相较同长度微调更快完成任务。</p>
+<h1 id="5_1">5. 不足之处<a class="headerlink" href="#5_1" title="Permanent link">&para;</a></h1>
+<p><strong>① 伪标签并非完整的真实技能边界。</strong> PELT 检测动作分布变化，可能漏掉静止中的语义切换，或把动态变化当成边界。脚本边界验证只在 VLABench 上进行，其他人类演示基准没有相同参考标签。</p>
+<p><strong>② 切换预测仍有漏检，长片段上更明显。</strong> 附录表 23 中，held-out、20 动作设置的单峰定位在 <span class="arithmatex">\(\pm1\)</span> 步内准确率只有 <strong>50.6%</strong>；多峰定位在 <span class="arithmatex">\(\pm3\)</span> 步内 precision <strong>94.1%</strong>，recall <strong>58.1%</strong>。高精度并不等于覆盖所有切换，两种定位指标也不能混为一谈。</p>
+<p><strong>③ 预测评估主要发生在演示状态。</strong> 论文没有在任意 rollout 状态上提供真实正确动作或边界标签。误差峰及变点相关性支持研究动机，但不足以将所有执行失败归因于切换时机。附录表 31 还说明，匹配片段位置与局部动作变化后，切换误差仍高于对照，但并未完全消除混杂因素。</p>
+<p><strong>④ 长开环执行的漂移和反应延迟仍然存在。</strong> 40 动作设置已退化，模型也不能在片段内凭新增观测立即修正意外变化。若用于需要快速反应的接触操作，应另行评估反馈频率、紧急重规划和执行监测；这些不是当前切换先验自动提供的能力。</p>
+<p><strong>⑤ 对生成架构与部署实现有依赖。</strong> 逐步调制适合迭代去噪；OpenVLA-OFT 的收益更小。真实实现没有 CUDA graphs 时，RACE 延迟高于纯模型基准中的约 4% 开销，需要分别报告算法额外计算与系统实现成本。</p>
+<p><strong>⑥ 真实验证范围较窄。</strong> 只有一项抓取放置任务、30 条训练演示、每方法 50 次评估，尚不能推导出复杂装配、双臂协作或多任务真实部署效果。成功试次的时间均值也对应不同的成功集合，不能视作所有试次上严格配对的完成时间比较。</p>
+<p><strong>⑦ 比较预算和统计覆盖不完全相同。</strong> 部分 LIBERO 成功率来自他文，PolicyTrim 分 suite 训练且使用强化学习，ACoT-VLA 更新范围与 batch 不同；只有部分设置提供多种子或配对置信区间。应把这些条件与平均分数一起阅读。</p>
+<p><strong>⑧ 后续复现仍受代码发布状态限制。</strong> 官方仓库在本文整理时提供演示并注明代码待发布，论文虽然有训练、推理伪代码和详细附录，但未完成本地复现。此处结果均是原文报告值，不是本博客重新训练得到的结果。</p>
+<h1 id="6_1">6. 基于本文扩展到的其他论文<a class="headerlink" href="#6_1" title="Permanent link">&para;</a></h1>
+<h2 id="1-pi_05-race">① <span class="arithmatex">\(\pi_{0.5}\)</span>：理解 RACE 的预训练骨干<a class="headerlink" href="#1-pi_05-race" title="Permanent link">&para;</a></h2>
+<p><a href="https://arxiv.org/abs/2504.16054"><span class="arithmatex">\(\pi_{0.5}\)</span>: a Vision-Language-Action Model with Open-World Generalization</a>。</p>
+<p>该工作提供 RACE 主实验所用的 VLA 基础。阅读时可以关注 VLM 上下文、连续动作专家和预训练知识如何进入控制。RACE 的贡献是在已有骨干上后训练切换结构，不是从零建立新的通用视觉语言模型。</p>
+<h2 id="2-real-time-chunking">② Real-Time Chunking：理解异步缓冲和新片段衔接<a class="headerlink" href="#2-real-time-chunking" title="Permanent link">&para;</a></h2>
+<p><a href="https://arxiv.org/abs/2506.07339">Real-Time Execution of Action Chunking Flow Policies</a>。</p>
+<p>该工作研究在机器人执行时生成下一动作片段，并利用已有执行计划约束后续生成。它帮助解释 RACE 真实实验为何预测长度是配置重规划间隔的两倍，以及为何需要跳过延迟期间已流逝的动作。</p>
+<p>异步执行处理“推理与执行如何重叠”，RACE 处理“长片段如何更可靠”。二者组合也不能消除首次推理和所有系统开销。</p>
+<h2 id="3-pace">③ PACE：切换附近提前重规划的另一条路线<a class="headerlink" href="#3-pace" title="Permanent link">&para;</a></h2>
+<p><a href="https://arxiv.org/abs/2606.00537">PACE: Phase-Aware Chunk Execution for Robot Policies with Action Chunking</a>。</p>
+<p>PACE 从预测动作的速度曲线中寻找阶段边界，在测试时选择执行长度，不需要重新训练策略。与 RACE 的主要区别是：PACE 利用边界控制重规划，RACE 用边界监督和先验改善动作生成。</p>
+<p>后续可研究把 RACE 的切换置信度用于自适应执行长度，在不确定时及时获取新观测。但这是阅读后的组合设想，原文没有证明该组合比各自单独使用更有效。</p>
+<h2 id="4-cotpc">④ CoTPC：无监督子技能发现与预测控制<a class="headerlink" href="#4-cotpc" title="Permanent link">&para;</a></h2>
+<p><a href="https://proceedings.mlr.press/v235/jia24c.html">Chain-of-Thought Predictive Control</a>，<strong>ICML 2024</strong>。</p>
+<p>CoTPC 从演示发现子技能分解，将边界观测形成的子目标链用于预测控制。RACE 借鉴动作变点发现，但其条件是片段内逐位置的时机分数，而不是完整的子目标链。</p>
+<p>两者共同提示：机器人策略可以利用演示中的阶段结构；需要进一步区分“预测下一子目标”“预测当前阶段”和“预测未来片段内切换时机”，这些监督对象不是同一问题。</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="上一页: 论文阅读">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                论文阅读
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../ghost/" class="md-footer__link md-footer__link--next" aria-label="下一页: GHOST：单目视频中的手与物体交互重建">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                GHOST：单目视频中的手与物体交互重建
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/JXTZZ" target="_blank" rel="noopener" title="LoTusY on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/version-sync.js"></script>
+      
+    
+  </body>
+</html>

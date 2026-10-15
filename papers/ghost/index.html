@@ -1,0 +1,3700 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="解析 GHOST 如何通过几何先验检索、抓握感知对齐与 2D Gaussian Splatting，从单目 RGB 视频重建手与物体，并核对其速度、几何和渲染实验。">
+      
+      
+        <meta name="author" content="LoTusY">
+      
+      
+        <link rel="canonical" href="https://jxtzz.github.io/papers/ghost/">
+      
+      
+        <link rel="prev" href="../race/">
+      
+      
+        <link rel="next" href="../egoinfinity/">
+      
+      
+      <link rel="icon" href="../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>GHOST：单目视频中的手与物体交互重建 - LoTusY</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  <meta name="site-version" content="6878e2f7caf2f4babaae03be1a6b5709d106207e">
+  <link rel="stylesheet" href="../../stylesheets/extra.css?v=6878e2f7caf2f4babaae03be1a6b5709d106207e">
+  
+    <link rel="stylesheet" href="../../stylesheets/reader.css?v=6878e2f7caf2f4babaae03be1a6b5709d106207e">
+    <script defer src="../../javascripts/reader.js?v=6878e2f7caf2f4babaae03be1a6b5709d106207e"></script>
+  
+  
+  
+    <script src="../../javascripts/mathjax.js?v=6878e2f7caf2f4babaae03be1a6b5709d106207e"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+  
+  
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2026-ghostcvpr-findings" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="LoTusY" class="md-header__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <a class="md-ellipsis header-home-link" href="../.." aria-label="LoTusY · 回到首页" title="LoTusY · 回到首页">
+            LoTusY
+          </a>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GHOST：单目视频中的手与物体交互重建
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../translations/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  课程翻译
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  论文阅读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../deep-learning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  理论基础
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../engineering/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工程实践
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../journal/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  学习日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="LoTusY" class="md-nav__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    LoTusY
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../translations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    课程翻译
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            课程翻译
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../translations/robotic-manipulation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    机器人操作 · 中文讲义
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            机器人操作 · 中文讲义
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    全书目录与前言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 1 章 · 引言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 2 章 · 先给你准备一个机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/pick-and-place/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 3 章 · 基本的抓取与放置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/pose-estimation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 4 章 · 基于几何的位姿估计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/bin-picking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 5 章 · 箱内抓取
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/motion-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 6 章 · 运动规划
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/mobile-manipulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 7 章 · 移动操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/manipulator-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 8 章 · 机械臂控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/object-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 9 章 · 物体检测与分割
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/deep-perception/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 10 章 · 面向操作任务的深度感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 11 章 · 强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/soft-robots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 12 章 · 软体机器人与触觉感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/spatial-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 A · 空间代数
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/drake/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 B · Drake
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/drakegym/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 C · DrakeGym 环境
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/manipulation-station/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 D · 搭建自己的机器人操作工作站
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../translations/robotic-manipulation/miscellaneous/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 E · 其他事项
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../race/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RACE：让 VLA 更可靠地执行长动作片段
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    GHOST：单目视频中的手与物体交互重建
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    GHOST：单目视频中的手与物体交互重建
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ghost-fast-category-agnostic-hand-object-interaction-reconstruction-from-rgb-videos-using-gaussian-splatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      GHOST
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 研究意义
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 研究意义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 研究背景：所描述的场景、背景
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 问题及挑战：核心、重要、未解决的问题是什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 研究现状
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 研究现状">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术，着重一个技术分类
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 问题的现状：针对以上技术，这些技术有哪些不足之处
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 技术路线
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 技术路线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 问题与技术映射：针对上述问题，采用了哪些技术手段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 技术详述：对每个技术方法进行详细介绍
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. 技术详述：对每个技术方法进行详细介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-rgb" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 预处理：从 RGB 视频获得分割、物体几何与手部初始化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 几何先验检索：用类似物体补充看不到的表面
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 抓握检测与手物对齐：先解决尺度和接触关系
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-2d-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 物体重建：使用 2D Gaussian 圆盘表示表面
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-gaussians-mano" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑤ 手部重建：将 Gaussians 绑定到 MANO 面片
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑥ 优化设置
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. 创新之处：你认为的上述方法中，最关键的技术是什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 实验分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 实验分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 实验数据：论文中使用了哪些实验数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 对比实验：与其他算法对比，突出数值的变化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. 对比实验：与其他算法对比，突出数值的变化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ghost" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 三维交互与手部误差：GHOST 的主要优势是相对对齐
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ghost-bigs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 物体表面重建：GHOST 没有全面超过 BIGS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-arctic-ho3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 二维渲染：ARCTIC 与 HO3D 的优势不同
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 优化时间：显著加速，但仍是离线重建
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. 消融实验：与自己对比，突出数值的变化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="c. 消融实验：与自己对比，突出数值的变化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-sfm" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① SfM 与几何一致性损失：性能依赖初始化和阈值
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 遮挡处理、先验补全与手部初始化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 每个手部面片的 Gaussian 数量
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      d. 实验总结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 不足之处
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 基于本文扩展到的其他论文
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 基于本文扩展到的其他论文">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hold" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① HOLD：类别无关手物重建的隐式表示路线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-bigs-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② BIGS：双手 Gaussian 重建与生成先验
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-2d-gaussian-splatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 2D Gaussian Splatting：理解表面圆盘表示
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ SPOT：从交互感知走向物体轨迹策略
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../egoinfinity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EgoInfinity：互联网视频到机器人动作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../orion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ORION：单视频开放世界模仿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../openvla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenVLA：视觉语言动作模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../octo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octo：通用机器人策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dp3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3D Diffusion Policy：三维策略学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：从人类演示学习物体轨迹
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../aloha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ALOHA Unleashed：双臂灵巧操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spot-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：概念与阅读随记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../robotok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboTok：互联网示范检索
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pi0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    π₀：Flow Matching 与机器人控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LIT：视觉—动作分布外泛化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文资料库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../deep-learning/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    理论基础
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            理论基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Linear_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Softmax_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Softmax 回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/MLP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多层感知机
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Computational_Graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算图与反向传播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Weight_Decay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    权重衰减
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/Dropout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dropout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    注意力机制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深度学习计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../deep-learning/cv-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机视觉学习路线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../engineering/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    工程实践
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            工程实践
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/tensor-inplace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tensor 原地操作与内存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/tensor-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    张量维度与求和
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../engineering/image-to-arkts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Image-to-ArkTS 项目记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../journal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    学习日志
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            学习日志
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-10-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub 克隆失败排查：从认证报错定位到地址重写
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从关节角到末端位姿：正运动学与标准 DH 参数法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ReWeight 与 OpenResearch 阅读记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WSL 离线安装与 Miniconda 初始化记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从语义动作到对象交互：Show-Harness 与 ORION
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python 堆与 heapq：怎样维护当前最值
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboSPA 与 Snipaste 自启排障
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文速记与 WSL 网络配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../journal/2026-09-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    具身智能阅读周记：数据、空间表示与动作生成
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    关于
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ghost-fast-category-agnostic-hand-object-interaction-reconstruction-from-rgb-videos-using-gaussian-splatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      GHOST
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. 研究意义
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 研究意义">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 研究背景：所描述的场景、背景
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 问题及挑战：核心、重要、未解决的问题是什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. 研究现状
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 研究现状">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术，着重一个技术分类
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 问题的现状：针对以上技术，这些技术有哪些不足之处
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. 技术路线
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 技术路线">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 问题与技术映射：针对上述问题，采用了哪些技术手段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 技术详述：对每个技术方法进行详细介绍
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. 技术详述：对每个技术方法进行详细介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-rgb" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 预处理：从 RGB 视频获得分割、物体几何与手部初始化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 几何先验检索：用类似物体补充看不到的表面
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 抓握检测与手物对齐：先解决尺度和接触关系
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-2d-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 物体重建：使用 2D Gaussian 圆盘表示表面
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-gaussians-mano" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑤ 手部重建：将 Gaussians 绑定到 MANO 面片
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⑥ 优化设置
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. 创新之处：你认为的上述方法中，最关键的技术是什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. 实验分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 实验分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      a. 实验数据：论文中使用了哪些实验数据
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      b. 对比实验：与其他算法对比，突出数值的变化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="b. 对比实验：与其他算法对比，突出数值的变化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ghost" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① 三维交互与手部误差：GHOST 的主要优势是相对对齐
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-ghost-bigs" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 物体表面重建：GHOST 没有全面超过 BIGS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-arctic-ho3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 二维渲染：ARCTIC 与 HO3D 的优势不同
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ 优化时间：显著加速，但仍是离线重建
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      c. 消融实验：与自己对比，突出数值的变化
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="c. 消融实验：与自己对比，突出数值的变化">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-sfm" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① SfM 与几何一致性损失：性能依赖初始化和阈值
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② 遮挡处理、先验补全与手部初始化
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 每个手部面片的 Gaussian 数量
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d" class="md-nav__link">
+    <span class="md-ellipsis">
+      d. 实验总结
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. 不足之处
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. 基于本文扩展到的其他论文
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 基于本文扩展到的其他论文">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-hold" class="md-nav__link">
+    <span class="md-ellipsis">
+      ① HOLD：类别无关手物重建的隐式表示路线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-bigs-gaussian" class="md-nav__link">
+    <span class="md-ellipsis">
+      ② BIGS：双手 Gaussian 重建与生成先验
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-2d-gaussian-splatting" class="md-nav__link">
+    <span class="md-ellipsis">
+      ③ 2D Gaussian Splatting：理解表面圆盘表示
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-spot" class="md-nav__link">
+    <span class="md-ellipsis">
+      ④ SPOT：从交互感知走向物体轨迹策略
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="2026-ghostcvpr-findings">2026 GHOST（CVPR Findings）<a class="headerlink" href="#2026-ghostcvpr-findings" title="Permanent link">&para;</a></h1><div class="article-meta"><time datetime="2026-10-14">记录 2026-10-14</time><span class="article-tag">手物交互</span><span class="article-tag">三维重建</span><span class="article-tag">Gaussian Splatting</span></div><details class="mobile-toc"><summary>本页目录<span aria-hidden="true">展开 / 收起</span></summary><nav aria-label="本页目录"><ul><li><a href="#ghost-fast-category-agnostic-hand-object-interaction-reconstruction-from-rgb-videos-using-gaussian-splatting">GHOST</a></li><li><a href="#1">1. 研究意义</a><ul><li><a href="#a">a. 研究背景：所描述的场景、背景</a></li><li><a href="#b">b. 问题及挑战：核心、重要、未解决的问题是什么</a></li></ul></li><li><a href="#2">2. 研究现状</a><ul><li><a href="#a_1">a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术，着重一个技术分类</a></li><li><a href="#b_1">b. 问题的现状：针对以上技术，这些技术有哪些不足之处</a></li></ul></li><li><a href="#3">3. 技术路线</a><ul><li><a href="#a_2">a. 问题与技术映射：针对上述问题，采用了哪些技术手段</a></li><li><a href="#b_2">b. 技术详述：对每个技术方法进行详细介绍</a><ul><li><a href="#1-rgb">① 预处理：从 RGB 视频获得分割、物体几何与手部初始化</a></li><li><a href="#2_1">② 几何先验检索：用类似物体补充看不到的表面</a></li><li><a href="#3_1">③ 抓握检测与手物对齐：先解决尺度和接触关系</a></li><li><a href="#4-2d-gaussian">④ 物体重建：使用 2D Gaussian 圆盘表示表面</a></li><li><a href="#5-gaussians-mano">⑤ 手部重建：将 Gaussians 绑定到 MANO 面片</a></li><li><a href="#6">⑥ 优化设置</a></li></ul></li><li><a href="#c">c. 创新之处：你认为的上述方法中，最关键的技术是什么</a></li></ul></li><li><a href="#4">4. 实验分析</a><ul><li><a href="#a_3">a. 实验数据：论文中使用了哪些实验数据</a></li><li><a href="#b_3">b. 对比实验：与其他算法对比，突出数值的变化</a><ul><li><a href="#1-ghost">① 三维交互与手部误差：GHOST 的主要优势是相对对齐</a></li><li><a href="#2-ghost-bigs">② 物体表面重建：GHOST 没有全面超过 BIGS</a></li><li><a href="#3-arctic-ho3d">③ 二维渲染：ARCTIC 与 HO3D 的优势不同</a></li><li><a href="#4_1">④ 优化时间：显著加速，但仍是离线重建</a></li></ul></li><li><a href="#c_1">c. 消融实验：与自己对比，突出数值的变化</a><ul><li><a href="#1-sfm">① SfM 与几何一致性损失：性能依赖初始化和阈值</a></li><li><a href="#2_2">② 遮挡处理、先验补全与手部初始化</a></li><li><a href="#3-gaussian">③ 每个手部面片的 Gaussian 数量</a></li></ul></li><li><a href="#d">d. 实验总结</a></li></ul></li><li><a href="#5">5. 不足之处</a></li><li><a href="#6_1">6. 基于本文扩展到的其他论文</a><ul><li><a href="#1-hold">① HOLD：类别无关手物重建的隐式表示路线</a></li><li><a href="#2-bigs-gaussian">② BIGS：双手 Gaussian 重建与生成先验</a></li><li><a href="#3-2d-gaussian-splatting">③ 2D Gaussian Splatting：理解表面圆盘表示</a></li><li><a href="#4-spot">④ SPOT：从交互感知走向物体轨迹策略</a></li></ul></li></ul></nav></details>
+<h1 id="ghost-fast-category-agnostic-hand-object-interaction-reconstruction-from-rgb-videos-using-gaussian-splatting">GHOST: Fast Category-agnostic Hand-Object Interaction Reconstruction from RGB Videos using Gaussian Splatting<a class="headerlink" href="#ghost-fast-category-agnostic-hand-object-interaction-reconstruction-from-rgb-videos-using-gaussian-splatting" title="Permanent link">&para;</a></h1>
+<p><strong>作者与机构</strong>：Ahmed Tawfik Aboukhadra、Marcel Rogge、Nadia Robertini、Abdalla Arafa、Jameel Malik、Ahmed Elhayek、Didier Stricker；作者来自 <strong>RPTU、DFKI-AV Kaiserslautern、UPM Saudi Arabia、NUST-SEECS Pakistan</strong>。</p>
+<p><strong>发表信息</strong>：作者<a href="https://ataboukhadra.github.io/ghost/">项目页</a>标注为 <strong>CVPR Findings 2026</strong>，注意区别于 CVPR 主会。本文的技术与实验整理依据本地 PDF，即 <a href="https://arxiv.org/abs/2603.18912v1">arXiv:2603.18912v1</a>，发布于 <strong>2026 年 3 月 19 日</strong>，包含主文与补充材料。</p>
+<p><strong>原文与实现</strong>：<a href="../../assets/papers/GHOST.pdf">本地原文 PDF</a> · <a href="https://github.com/ATAboukhadra/GHOST">官方代码</a></p>
+<h1 id="1">1. 研究意义<a class="headerlink" href="#1" title="Permanent link">&para;</a></h1>
+<h2 id="a">a. 研究背景：所描述的场景、背景<a class="headerlink" href="#a" title="Permanent link">&para;</a></h2>
+<p>GHOST（Gaussian Hand-Object SplaTting）研究如何从一段单目 RGB 视频中，重建人手与物体交互的三维形状、相对位置和外观。例如，一个人用双手搬动盒子，或者握住电钻并转动它：系统不仅需要恢复手指姿态，还需要恢复被手掌遮挡的物体表面，并让三维中的手真正贴近物体，而不是悬空或者出现明显错位。</p>
+<p>二维图像中“看起来握住了物体”，不代表三维重建中的接触关系正确。单目条件下，手和物体可能以不同尺度被重建，沿相机深度方向也可能存在偏差。这样的结果即使从原始视角看起来合理，换一个视角后仍会暴露手物分离、表面缺失等问题。</p>
+<p>论文因此同时关注三个目标：<strong>三维手物关系可信、物体表面尽量完整、重建外观可以从新视角渲染。</strong> 手部表示还应随姿态变化而运动，形成可驱动的 Gaussian 手部模型。这些能力可用于 AR/VR、动作捕捉，以及机器人学习中的人类演示感知。</p>
+<p>与 SPOT 的位置不同，GHOST 的输出是<strong>交互重建结果</strong>，不是机器人动作或者操作策略。它没有训练机器人控制器，也没有报告机器人任务成功率。把重建用于机器人学习，需要另行解决动作表示、运动重定向、可达性和执行控制。</p>
+<h2 id="b">b. 问题及挑战：核心、重要、未解决的问题是什么<a class="headerlink" href="#b" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>遮挡使物体表面缺少观测。</strong> 手掌与手指会长期挡住物体，物体自身也有背面和凹陷。仅依赖可见像素的重建容易留下孔洞；若把“物体掩码之外”一概判为背景，还可能错误删除实际存在、但被手遮住的部分。</p>
+</li>
+<li>
+<p><strong>单目尺度与深度歧义破坏接触。</strong> SfM 恢复的物体点云与 HaMeR 估计的手部网格来自不同流程，两者尺度和全局位置并不天然一致。单独优化二维外观，无法充分约束三维中的接触。</p>
+</li>
+<li>
+<p><strong>物体形状多样，不能预先为每个实例提供精确模板。</strong> 固定类别或预扫描模板的方法适用范围有限。但没有精确模板时，如何补全未见表面又成为难题。GHOST 使用从通用三维数据库检索的近似形状作为先验，而不是假定已经知道目标物体的精确模型。</p>
+</li>
+<li>
+<p><strong>手是非刚性的，初始化还会抖动。</strong> 遮挡会使逐帧手部预测出现异常姿态和位置跳变。若直接将这些结果用于 Gaussian 绑定与渲染，后续优化可能把错误的几何当成基础。</p>
+</li>
+<li>
+<p><strong>逐视频重建成本高。</strong> 既有方法需要长时间优化，限制了大规模处理人类视频的实用性。GHOST 希望显著缩短优化时间，但其“快”是相对已有离线重建方法而言，并不等于实时在线重建。</p>
+</li>
+</ul>
+<h1 id="2">2. 研究现状<a class="headerlink" href="#2" title="Permanent link">&para;</a></h1>
+<h2 id="a_1">a. 领域的现状：针对上述问题及挑战，当前有哪些方法和技术，着重一个技术分类<a class="headerlink" href="#a_1" title="Permanent link">&para;</a></h2>
+<p>可以沿“如何表示物体”和“如何处理手物关系”理解相关技术。</p>
+<table>
+<thead>
+<tr>
+<th>技术路线</th>
+<th>代表方法</th>
+<th>主要思路</th>
+<th>与 GHOST 的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>物体模板与网格优化</td>
+<td>Hasson 等方法、gSDF</td>
+<td>利用已知物体形状，结合接触、轮廓或光度约束恢复姿态</td>
+<td>精确模板有帮助，但难覆盖未知物体</td>
+</tr>
+<tr>
+<td>学习通用形状表示</td>
+<td>THOR-Net、ShapeGraformer</td>
+<td>用共享拓扑或图网络表达不同物体</td>
+<td>尝试摆脱固定类别模板；输入与监督条件需分别比较</td>
+</tr>
+<tr>
+<td>隐式场重建</td>
+<td>HOLD</td>
+<td>从视频联合恢复可分离的手和物体隐式表示</td>
+<td>类别无关，但逐序列优化昂贵</td>
+</tr>
+<tr>
+<td>Gaussian 交互重建</td>
+<td>BIGS</td>
+<td>用 3D Gaussians 表示双手和未知物体，结合生成先验补全遮挡区域</td>
+<td>显式表示方便渲染，但仍存在对齐与优化成本问题</td>
+</tr>
+<tr>
+<td>参数网格驱动的 Gaussian 模型</td>
+<td>GaussianAvatars 等</td>
+<td>将 Gaussians 绑定到参数化网格，以网格变形驱动外观</td>
+<td>为 GHOST 的可驱动手部表示提供基础</td>
+</tr>
+</tbody>
+</table>
+<p>表中的 ShapeGraformer 采用单张深度图，因此不能与单目 RGB 视频方法混为同一种输入设置；这里将其列为通用形状表示的相关路线。</p>
+<p>另一条基础技术线是单目手部重建，如 HaMeR、HandOccNet、WiLoR 等。它们解决“图像中的手如何变成三维网格”，但单独使用手部重建网络，并不能保证物体尺度、手物接触和被遮挡物体的完整性。</p>
+<p>GHOST 将这些问题拆开处理：利用现有模型取得分割和初始手部几何，再显式优化手物对齐，最后通过 2D Gaussian Splatting 恢复外观与表面。它是组合多种预训练工具和几何约束的逐视频优化流程。</p>
+<h2 id="b_1">b. 问题的现状：针对以上技术，这些技术有哪些不足之处<a class="headerlink" href="#b_1" title="Permanent link">&para;</a></h2>
+<p><strong>已知模板的方法受物体覆盖范围约束。</strong> 如果需要事先扫描电钻或者只支持训练集中的固定模型，就难以处理普通视频里新的工具、包装和日用品。</p>
+<p><strong>类别无关不代表完全不需要先验。</strong> HOLD 使用手部模型和视频几何，BIGS 引入生成先验；GHOST 则使用 MANO 手模型与可选的检索物体先验。因此，“category-agnostic”应理解为不局限于预先指定的小型物体类别或实例模板集合，而不是没有结构假设和外部数据。</p>
+<p><strong>渲染正确与几何正确不是同一个目标。</strong> 只用光度损失拟合输入视角，可能获得不错的二维图像，却留下尺度错误、手物错位和看不到的孔洞。GHOST 因而分别加入抓握对齐、遮挡处理和先验几何约束。</p>
+<p><strong>Gaussian 表示也不自动消除计算瓶颈。</strong> BIGS 已经采用 Gaussian Splatting，但本文表 3 的优化时间仍为 13 小时。GHOST 的速度改善来自整体表示和优化设计，不能简单解释为“把 NeRF 换成 Gaussian 就足够了”。</p>
+<h1 id="3">3. 技术路线<a class="headerlink" href="#3" title="Permanent link">&para;</a></h1>
+<h2 id="a_2">a. 问题与技术映射：针对上述问题，采用了哪些技术手段<a class="headerlink" href="#a_2" title="Permanent link">&para;</a></h2>
+<p>整体流程分为<strong>预处理 → 手物对齐 → Gaussian 重建</strong>三个阶段。</p>
+<p><img alt="GHOST 方法流程与几何先验检索流程，原文图 2" src="../assets/ghost-pipeline.png" width="1300" height="515" loading="lazy" decoding="async"></p>
+<p><em>原文图 2：上方是完整流程；下方展示文本描述、Objaverse 候选检索和轮廓对齐。图片截取自原文，版权归原作者。</em></p>
+<table>
+<thead>
+<tr>
+<th>要解决的问题</th>
+<th>技术手段</th>
+<th>产生的中间结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>找出视频中的手和物体</td>
+<td>SAM2 分割与跟踪；RTMPose 检测手部区域</td>
+<td>每帧物体、左手、右手掩码</td>
+</tr>
+<tr>
+<td>恢复物体几何与相对视角</td>
+<td>HLoc + COLMAP 或 VGGSfM</td>
+<td>相机参数与稀疏物体点云</td>
+</tr>
+<tr>
+<td>补充未观测到的物体形状</td>
+<td>文本描述 + OpenShape + Objaverse 检索与对齐</td>
+<td>对齐后的近似物体几何先验</td>
+</tr>
+<tr>
+<td>初始化并稳定手部姿态</td>
+<td>HaMeR + MANO，异常帧剔除与插值</td>
+<td>连贯的手部网格与关节</td>
+</tr>
+<tr>
+<td>修正手物位置和尺度</td>
+<td>抓握检测 + 接触、重投影、时序损失</td>
+<td>手部平移与物体全局尺度</td>
+</tr>
+<tr>
+<td>恢复物体外观与遮挡表面</td>
+<td>2D Gaussians + 手感知背景损失 + 几何一致性损失</td>
+<td>物体 Gaussian 表示</td>
+</tr>
+<tr>
+<td>生成可驱动手部外观</td>
+<td>将 Gaussians 绑定到 MANO 面片并优化</td>
+<td>可随网格变形的手部 Gaussian 模型</td>
+</tr>
+</tbody>
+</table>
+<h2 id="b_2">b. 技术详述：对每个技术方法进行详细介绍<a class="headerlink" href="#b_2" title="Permanent link">&para;</a></h2>
+<h3 id="1-rgb">① 预处理：从 RGB 视频获得分割、物体几何与手部初始化<a class="headerlink" href="#1-rgb" title="Permanent link">&para;</a></h3>
+<p>输入为 <span class="arithmatex">\(T\)</span> 帧单目 RGB 视频 <span class="arithmatex">\(\{I_t\}_{t=1}^{T}\)</span>。SAM2 跟踪物体，得到逐帧掩码 <span class="arithmatex">\(M_t^o\)</span>，再在物体区域进行 SfM，估计相机内参 <span class="arithmatex">\(K\)</span>、相对相机位姿 <span class="arithmatex">\((R_t^c,T_t^c)\)</span> 和稀疏物体点云 <span class="arithmatex">\(P_{\mathrm{sfm}}\)</span>。</p>
+<p>这里使用视频中物体与相机的相对视角变化来恢复几何。它需要可用的特征匹配和足够的视角信息，不能把“输入只有 RGB”理解成任何拍摄方式都能可靠重建。</p>
+<p>手部方面，RTMPose 提供检测框，HaMeR 预测 MANO 的姿态 <span class="arithmatex">\(\theta_t\)</span>、形状 <span class="arithmatex">\(\beta_t\)</span> 和全局方向等参数，得到左右手网格和关节。SAM2 同时跟踪手部掩码，并根据检测框裁掉前臂。</p>
+<p>为处理遮挡引起的异常，论文检查相邻帧的姿态、方向与平移跳变，以及形状异常、检测置信度、检测框面积和双手重叠情况。异常预测被剔除后，用平移的线性插值、旋转的球面插值等方式补齐。补充材料图 10a 展示了这种处理对手部初始化的改善。</p>
+<p>该流程并非完全没有人工输入。补充材料图 8a 使用种子像素初始化手与物体的 SAM2 分割；文本描述也可以直接由用户提供。应将它理解为借助现有模型和少量提示完成预处理，而不是无需提示的端到端模型。</p>
+<h3 id="2_1">② 几何先验检索：用类似物体补充看不到的表面<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<p>首先从少量视频帧获得物体文本描述，可使用 InternVL，也可直接输入“盒子”等描述。OpenShape 将文本与 Objaverse 中的物体模型映射到共同特征空间，通过最近邻搜索返回 <span class="arithmatex">\(k\)</span> 个候选网格。</p>
+<p>候选不一定与视频中的实例完全相同，也没有统一的方向和尺度。论文对每个候选优化旋转 <span class="arithmatex">\(R_p\)</span>、平移 <span class="arithmatex">\(T_p\)</span> 和三维缩放 <span class="arithmatex">\(S_p\)</span>，使投影后的轮廓尽量匹配物体掩码。按原文式（1），目标可以写为：</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\mathrm{IoU}}
+=1-\operatorname{IoU}\!\left(
+\Pi_t\!\left([R_p\mid T_p][S_p\cdot O_p]\right),
+M_t^o
+\right).
+\]</div>
+<p>其中 <span class="arithmatex">\(\Pi_t\)</span> 表示在第 <span class="arithmatex">\(t\)</span> 帧的投影，IoU 比较的是候选渲染轮廓与分割掩码。最终选取损失最小的对齐候选作为先验 <span class="arithmatex">\(O\)</span>；顶点过少时，在表面补采样。</p>
+<p><strong>先验的作用是提供合理形状约束，而不是提供真实不可见表面的测量。</strong> 若检索到的杯子把手、包装厚度或者工具轮廓与真实实例不同，补全就可能引入偏差。后续实验也只在取得高质量先验的序列上使用几何一致性损失。</p>
+<h3 id="3_1">③ 抓握检测与手物对齐：先解决尺度和接触关系<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<p>HaMeR 手网格与 SfM 物体点云可能存在尺度和位置不一致，因此 GHOST 优化每帧手部全局平移 <span class="arithmatex">\(T_t^h\)</span> 和物体全局尺度 <span class="arithmatex">\(S_o\)</span>。优化后的尺度也应用于 SfM 点云和相机平移，使它们保持一致。</p>
+<p>论文通过运动方向判断哪只手参与抓握：计算物体中心和手部在相邻帧间的平移变化，投影到 <span class="arithmatex">\(x,y\)</span> 平面，再比较归一化方向的余弦相似度：</p>
+<div class="arithmatex">\[
+c_h=\widehat{\Delta T^o_{xy}}\cdot
+\widehat{\Delta T^h_{xy}}.
+\]</div>
+<p>若双手的分数均超过 <span class="arithmatex">\(\tau_{\mathrm{sim}}=0.5\)</span>，标记为双手抓握；否则取相似度更高的手作为交互手。直观上，抓住盒子搬动时，手与盒子的平移方向应接近。</p>
+<p>这是一种运动启发式，而不是接触力传感器或完整接触识别模型。纯旋转、物体近乎静止、双手共同运动但并未实际接触等情况，仍需要额外判断。</p>
+<p>随后联合使用三个损失：</p>
+<ul>
+<li><strong>接触损失 <span class="arithmatex">\(\mathcal{L}_{\mathrm{contact}}\)</span></strong>：在抓握帧中，计算交互手网格与缩放、变换后的物体先验之间的 Chamfer Distance，促进二者靠近；双手抓握时，两只手都参与。</li>
+<li><strong>二维重投影损失 <span class="arithmatex">\(\mathcal{L}_{\mathrm{proj}}\)</span></strong>：约束平移后的三维手部关节投影接近 HaMeR 的二维关节预测，避免为满足三维接触而破坏二维位置。小检测框对应的不可靠预测会被排除。</li>
+<li><strong>时序损失 <span class="arithmatex">\(\mathcal{L}_{\mathrm{temp}}\)</span></strong>：惩罚相邻帧手部平移的变化，减少位置跳动。</li>
+</ul>
+<p>原文式（5）—（6）为：</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\mathrm{temp}}
+=\frac{1}{T-1}\sum_{t=1}^{T-1}
+\left\|T_{t+1}^h-T_t^h\right\|_2^2,
+\]</div>
+<div class="arithmatex">\[
+\mathcal{L}_{\mathrm{align}}
+=10^3\mathcal{L}_{\mathrm{contact}}
++10^{-1}\mathcal{L}_{\mathrm{proj}}
++10\mathcal{L}_{\mathrm{temp}}.
+\]</div>
+<p>这里将原文总损失 <span class="arithmatex">\(\mathcal{L}\)</span> 标为 <span class="arithmatex">\(\mathcal{L}_{\mathrm{align}}\)</span>，以区别于后续 Gaussian 优化。本文中的“物理一致”主要体现为这种几何对齐与接触改善；该损失不是摩擦、接触力或碰撞动力学求解器，也没有给出严格的不穿透保证。</p>
+<h3 id="4-2d-gaussian">④ 物体重建：使用 2D Gaussian 圆盘表示表面<a class="headerlink" href="#4-2d-gaussian" title="Permanent link">&para;</a></h3>
+<p>2D Gaussian Splatting 中的“2D”指<strong>位于三维空间中、具有方向的二维 Gaussian 圆盘</strong>，不是二维图片贴片。物体由一组中心、旋转、二维尺度、不透明度和球谐颜色参数表示：</p>
+<div class="arithmatex">\[
+\mathcal{G}_o=\{c_o,r_o,s_o,\alpha_o,\mathrm{SH}_o\}.
+\]</div>
+<p>通过可微光栅化渲染 RGB，再使用包含 <span class="arithmatex">\(L_1\)</span> 和 D-SSIM 的光度损失拟合输入图像。物体阶段允许增密和剪枝，调整 Gaussian 数量。</p>
+<p>GHOST 在这一基础上增加两个针对手物交互的约束。</p>
+<p><strong>手感知背景损失 <span class="arithmatex">\(\mathcal{L}_{\mathrm{bkg},h}\)</span>。</strong> 传统背景损失会抑制物体掩码之外的 Gaussians，但手挡住物体时，那些区域并不一定是背景。GHOST 将物体掩码与双手掩码合并，避免把手覆盖的物体部分直接删掉。</p>
+<p>这不是把手部像素当成真实物体纹理，而是在背景判定时为可能被遮挡的区域保留余地。其有效性依赖跨帧可见性变化：当手换位置或视角变化后，真正的背景应被其他帧排除。若手始终覆盖同一区域，这个假设可能不成立。</p>
+<p><strong>几何一致性损失 <span class="arithmatex">\(\mathcal{L}_{\mathrm{geo}}\)</span>。</strong> 一方面，不允许 Gaussian 中心离先验表面过远；另一方面，不允许先验表面离最近的 Gaussian 中心过远，从而填补孔洞。</p>
+<p>为明确原文式（8）中的双向距离，定义 <span class="arithmatex">\(C\)</span> 为 Gaussian 中心集合，<span class="arithmatex">\(d(x,A)=\min_{a\in A}\|x-a\|_2\)</span>。按原文文字解释，可将两个逐点惩罚写为：</p>
+<div class="arithmatex">\[
+\ell_{\mathrm{out}}(c)
+=\left[\max\!\left(0,d(c,O)-\tau_{\mathrm{out}}\right)\right]^2,
+\]</div>
+<div class="arithmatex">\[
+\ell_{\mathrm{fill}}(o)
+=\left[\max\!\left(0,d(o,C)-\tau_{\mathrm{fill}}\right)\right]^2.
+\]</div>
+<p>将逐点项汇总得到 <span class="arithmatex">\(\mathcal{L}_{\mathrm{out}}\)</span> 与 <span class="arithmatex">\(\mathcal{L}_{\mathrm{fill}}\)</span> 后，使用：</p>
+<div class="arithmatex">\[
+\mathcal{L}_{\mathrm{geo}}
+=5\left(\mathcal{L}_{\mathrm{out}}
++\mathcal{L}_{\mathrm{fill}}\right).
+\]</div>
+<p>以上是对原文紧凑记号的解释性展开，没有额外指定原文未明确写出的求和或平均方式。两个方向分别对应“不要漂离先验”和“不要让先验表面出现未覆盖的空洞”。阈值决定约束的强度，但先验错误时，强约束也可能把 Gaussians 拉向错误位置。</p>
+<h3 id="5-gaussians-mano">⑤ 手部重建：将 Gaussians 绑定到 MANO 面片<a class="headerlink" href="#5-gaussians-mano" title="Permanent link">&para;</a></h3>
+<p>手会随关节姿态发生形变，不能直接当作刚性物体。GHOST 借鉴 GaussianAvatars，在规范姿态的 MANO 网格上，为每个三角面片绑定 <span class="arithmatex">\(m\)</span> 个 Gaussians。</p>
+<p>每一帧根据对应面片在规范姿态和变形姿态下的局部基，建立局部仿射映射；Gaussian 中心随面片变形移动，方向通过仿射变换的极分解提取。这样，改变 MANO 姿态就可以带动 Gaussian 手部外观，而无需逐帧重新建立一套无关联的点。</p>
+<p>论文使用的 MANO 网格含 <strong>778 个顶点、1538 个面片</strong>。取 <span class="arithmatex">\(m=55\)</span> 时，每只手约有 <span class="arithmatex">\(1538\times55=84{,}590\)</span> 个 Gaussians，即约 8.4 万个。</p>
+<p>优化顺序是<strong>先训练物体，再加载已经训练的物体表示优化手部</strong>。手部阶段优化 Gaussian 尺度、不透明度和球谐颜色，以及手部平移；中心和旋转由网格驱动，保持固定的绑定关系。手物组合阶段关闭 Gaussian 增密和剪枝。</p>
+<p>因此，虽然整套系统生成联合手物场景，其优化并不是所有几何、姿态和外观参数始终同时自由更新。手部形变仍主要依赖初始化和处理后的 MANO 网格。</p>
+<h3 id="6">⑥ 优化设置<a class="headerlink" href="#6" title="Permanent link">&para;</a></h3>
+<p>补充材料附录 B 给出以下设置，便于理解逐序列成本：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>优化器</th>
+<th>学习率</th>
+<th>迭代次数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>候选几何先验对齐</td>
+<td>AdamW</td>
+<td><span class="arithmatex">\(10^{-2}\)</span></td>
+<td>1500</td>
+</tr>
+<tr>
+<td>手物尺度与平移对齐</td>
+<td>Adam</td>
+<td>0.05</td>
+<td>500</td>
+</tr>
+<tr>
+<td>物体 Gaussian 重建</td>
+<td>Adam</td>
+<td>补充材料未统一列出</td>
+<td>30,000</td>
+</tr>
+<tr>
+<td>手物组合中的手部优化</td>
+<td>Adam</td>
+<td>补充材料未统一列出</td>
+<td>30,000</td>
+</tr>
+</tbody>
+</table>
+<p>这些是论文配置，不能据此推断每一段输入视频都耗时完全相同，也不能将一小时的报告时间直接当作包含全部预处理的端到端运行时间。</p>
+<h2 id="c">c. 创新之处：你认为的上述方法中，最关键的技术是什么<a class="headerlink" href="#c" title="Permanent link">&para;</a></h2>
+<p>我认为关键是<strong>把“缺少观测”和“手物关系错误”分成不同问题，再用不同约束解决</strong>。</p>
+<p>几何检索回答“被挡住的部分可能长什么样”；手感知背景损失回答“哪些不可见区域不应该被删除”；抓握对齐回答“手与物体在三维中应该如何靠近”。三者互补，仅靠更快的 Gaussian 渲染并不能替代这些约束。</p>
+<p>其中，手感知背景损失尤其直接：它纠正了“物体掩码之外都是背景”这一不适合交互场景的假设。几何先验则为遮挡补全提供结构，但也引入了检索和对齐误差。论文的价值因此同时包含一套有效的设计，以及明确的先验依赖与失败条件。</p>
+<h1 id="4">4. 实验分析<a class="headerlink" href="#4" title="Permanent link">&para;</a></h1>
+<h2 id="a_3">a. 实验数据：论文中使用了哪些实验数据<a class="headerlink" href="#a_3" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>数据来源</th>
+<th>论文中的使用方式</th>
+<th>可以支持的结论</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARCTIC Bi-CAIR</td>
+<td>9 段双手与不同物体交互的视频；进行三维、二维与消融评估</td>
+<td>双手场景中的交互对齐和重建性能</td>
+</tr>
+<tr>
+<td>HO3D</td>
+<td>评估严重手部遮挡下的物体重建和二维渲染；补充图 11 对 5 段序列分析几何损失</td>
+<td>在所选序列上的表现和先验效果</td>
+</tr>
+<tr>
+<td>自采集 GoPro 视频</td>
+<td>主文列出 Drill、Book 两段序列，用于定性展示</td>
+<td>对基准之外视频的示例性适用性</td>
+</tr>
+</tbody>
+</table>
+<p>这里以所读 PDF 为准，不把后续代码仓库扩展的数据规模回填为论文实验规模。主文没有完整列出 HO3D 二维指标使用的所有序列及汇总权重，因此不能将表 3 解读为整个 HO3D 数据集的全量统一评测。</p>
+<p>三维指标遵循 HOLD 发布的 ARCTIC Bi-CAIR 协议：</p>
+<ul>
+<li><strong>Root-aligned MPJPE</strong>：在手根对齐后计算关节位置误差，单位 <strong>mm</strong>；因此它本身不衡量手部全局平移是否正确。</li>
+<li><strong><span class="arithmatex">\(CD_r\)</span>、<span class="arithmatex">\(CD_l\)</span>、<span class="arithmatex">\(CD_h\)</span></strong>：以右手或左手根为参考评估物体，<span class="arithmatex">\(CD_h\)</span> 为两者平均，反映相对位置、尺度和表面误差，不做额外刚性对齐。</li>
+<li><strong><span class="arithmatex">\(CD_{\mathrm{ICP}}\)</span></strong>：先使用 ICP 对齐预测与真实物体，再计算 Chamfer 指标，侧重对齐后的物体表面质量。它与 <span class="arithmatex">\(CD_h\)</span> 的评估目的不同。</li>
+<li><strong><span class="arithmatex">\(F_{10\mathrm{mm}}\)</span>、<span class="arithmatex">\(F_{5\mathrm{mm}}\)</span></strong>：表 2 报告对应距离阈值下的 F-score，越高越好。</li>
+</ul>
+<p>论文表 1、表 2 将 <strong>CD 指标的单位统一标为 <span class="arithmatex">\(\mathrm{cm}^2\)</span></strong>，这里保留这一口径，不能将其数值直接称为“平均误差多少厘米”。二维评估使用 PSNR、SSIM、LPIPS。</p>
+<p>速度比较使用<strong>单张 NVIDIA RTX A6000、含 300 帧的 ARCTIC 双手交互序列</strong>。报告的是优化时间；正文没有分阶段列出所有预处理成本，也没有报告机器人执行实验。</p>
+<h2 id="b_3">b. 对比实验：与其他算法对比，突出数值的变化<a class="headerlink" href="#b_3" title="Permanent link">&para;</a></h2>
+<h3 id="1-ghost">① 三维交互与手部误差：GHOST 的主要优势是相对对齐<a class="headerlink" href="#1-ghost" title="Permanent link">&para;</a></h3>
+<p>下表来自原文表 2。MPJPE 单位为 mm，CD 单位为 <span class="arithmatex">\(\mathrm{cm}^2\)</span>，均越低越好。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align: right;">MPJPE 双手均值</th>
+<th style="text-align: right;">MPJPE 左手</th>
+<th style="text-align: right;">MPJPE 右手</th>
+<th style="text-align: right;"><span class="arithmatex">\(CD_r\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(CD_l\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(CD_h\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HOLD</td>
+<td style="text-align: right;">25.91</td>
+<td style="text-align: right;">27.13</td>
+<td style="text-align: right;">24.70</td>
+<td style="text-align: right;">123.54</td>
+<td style="text-align: right;">105.92</td>
+<td style="text-align: right;">114.73</td>
+</tr>
+<tr>
+<td>BIGS</td>
+<td style="text-align: right;">24.49</td>
+<td style="text-align: right;"><strong>24.63</strong></td>
+<td style="text-align: right;">24.35</td>
+<td style="text-align: right;">31.28</td>
+<td style="text-align: right;">46.11</td>
+<td style="text-align: right;">38.69</td>
+</tr>
+<tr>
+<td>GHOST</td>
+<td style="text-align: right;"><strong>24.07</strong></td>
+<td style="text-align: right;">25.42</td>
+<td style="text-align: right;"><strong>22.71</strong></td>
+<td style="text-align: right;"><strong>13.40</strong></td>
+<td style="text-align: right;"><strong>23.41</strong></td>
+<td style="text-align: right;"><strong>18.40</strong></td>
+</tr>
+</tbody>
+</table>
+<p>相较 BIGS，<span class="arithmatex">\(CD_h\)</span> 从 <strong>38.69 降到 18.40</strong>，绝对下降 <strong>20.29 <span class="arithmatex">\(\mathrm{cm}^2\)</span></strong>，按该指标计算约下降 <strong>52.4%</strong>；相较 HOLD 约下降 <strong>84.0%</strong>。这是最明显的改进，支持手物相对对齐得到改善。</p>
+<p>双手平均 MPJPE 相较 BIGS 仅下降 <strong>0.42 mm</strong>，约 <strong>1.7%</strong>；左手误差反而从 24.63 增加到 25.42 mm。不能把结果描述为“两只手的所有误差都更低”。</p>
+<h3 id="2-ghost-bigs">② 物体表面重建：GHOST 没有全面超过 BIGS<a class="headerlink" href="#2-ghost-bigs" title="Permanent link">&para;</a></h3>
+<p>仍来自原文表 2，<span class="arithmatex">\(CD_{\mathrm{ICP}}\)</span> 越低越好，F-score 越高越好。</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align: right;"><span class="arithmatex">\(CD_{\mathrm{ICP}}\)</span>（<span class="arithmatex">\(\mathrm{cm}^2\)</span>）</th>
+<th style="text-align: right;"><span class="arithmatex">\(F_{10\mathrm{mm}}\)</span>（%）</th>
+<th style="text-align: right;"><span class="arithmatex">\(F_{5\mathrm{mm}}\)</span>（%）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HOLD</td>
+<td style="text-align: right;">2.07</td>
+<td style="text-align: right;">63.92</td>
+<td style="text-align: right;">37.13</td>
+</tr>
+<tr>
+<td>BIGS</td>
+<td style="text-align: right;"><strong>1.36</strong></td>
+<td style="text-align: right;"><strong>81.78</strong></td>
+<td style="text-align: right;"><strong>56.41</strong></td>
+</tr>
+<tr>
+<td>GHOST</td>
+<td style="text-align: right;">2.26</td>
+<td style="text-align: right;">60.88</td>
+<td style="text-align: right;">34.67</td>
+</tr>
+</tbody>
+</table>
+<p>GHOST 的 <span class="arithmatex">\(CD_{\mathrm{ICP}}\)</span> 高于两个基线，F-score 也低于两个基线。相比 BIGS，<span class="arithmatex">\(F_{10\mathrm{mm}}\)</span> 下降 <strong>20.90 个百分点</strong>，<span class="arithmatex">\(F_{5\mathrm{mm}}\)</span> 下降 <strong>21.74 个百分点</strong>。</p>
+<p>这说明<strong>相对接触与尺度更合理，不等于对齐后的物体表面更准确</strong>。检索先验可以补孔洞，但近似形状也可能降低细节准确性。这是对表格结果的解释，并非论文已经用独立实验确认的唯一原因。</p>
+<h3 id="3-arctic-ho3d">③ 二维渲染：ARCTIC 与 HO3D 的优势不同<a class="headerlink" href="#3-arctic-ho3d" title="Permanent link">&para;</a></h3>
+<p>下表来自原文表 3。PSNR 单位为 dB；PSNR、SSIM 越高越好，LPIPS 越低越好。</p>
+<table>
+<thead>
+<tr>
+<th>数据</th>
+<th>方法</th>
+<th style="text-align: right;">PSNR</th>
+<th style="text-align: right;">SSIM</th>
+<th style="text-align: right;">LPIPS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARCTIC</td>
+<td>HOLD</td>
+<td style="text-align: right;">12.83</td>
+<td style="text-align: right;">0.66</td>
+<td style="text-align: right;">0.32</td>
+</tr>
+<tr>
+<td>ARCTIC</td>
+<td>BIGS</td>
+<td style="text-align: right;">24.87</td>
+<td style="text-align: right;"><strong>0.96</strong></td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr>
+<td>ARCTIC</td>
+<td>GHOST</td>
+<td style="text-align: right;"><strong>25.93</strong></td>
+<td style="text-align: right;">0.88</td>
+<td style="text-align: right;"><strong>0.02</strong></td>
+</tr>
+<tr>
+<td>HO3D</td>
+<td>HOLD</td>
+<td style="text-align: right;">16.20</td>
+<td style="text-align: right;">0.74</td>
+<td style="text-align: right;">0.21</td>
+</tr>
+<tr>
+<td>HO3D</td>
+<td>BIGS</td>
+<td style="text-align: right;"><strong>24.51</strong></td>
+<td style="text-align: right;"><strong>0.92</strong></td>
+<td style="text-align: right;">0.07</td>
+</tr>
+<tr>
+<td>HO3D</td>
+<td>GHOST</td>
+<td style="text-align: right;">21.37</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;"><strong>0.03</strong></td>
+</tr>
+</tbody>
+</table>
+<p>ARCTIC 上，相较 BIGS，GHOST 的 PSNR 提高 <strong>1.06 dB</strong>，LPIPS 降低 <strong>0.03</strong>，但 SSIM 降低 <strong>0.08</strong>。HO3D 上，GHOST 的 LPIPS 降低 <strong>0.04</strong>，但 PSNR 低 <strong>3.14 dB</strong>，SSIM 低 <strong>0.17</strong>。</p>
+<p>因此，原文“更好的渲染质量”应按指标和数据集理解。GHOST 对 HOLD 的提升较稳定，但对 BIGS 并不是所有二维指标都占优。</p>
+<h3 id="4_1">④ 优化时间：显著加速，但仍是离线重建<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align: right;">原文表 3 的优化时间</th>
+<th style="text-align: right;">相对 GHOST 的耗时</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HOLD</td>
+<td style="text-align: right;">16 h</td>
+<td style="text-align: right;">16 倍</td>
+</tr>
+<tr>
+<td>BIGS</td>
+<td style="text-align: right;">13 h</td>
+<td style="text-align: right;">13 倍</td>
+</tr>
+<tr>
+<td>GHOST</td>
+<td style="text-align: right;"><strong>1 h</strong></td>
+<td style="text-align: right;">1 倍</td>
+</tr>
+</tbody>
+</table>
+<p>按表中取整时间，GHOST 相比 BIGS 约 <strong>13 倍加速</strong>、耗时减少约 <strong>92.3%</strong>；相比 HOLD 约 <strong>16 倍加速</strong>。这些结果属于上述 GPU 与序列设置，不能推导出实时帧率，也不能保证任意序列具有相同比例的加速。</p>
+<h2 id="c_1">c. 消融实验：与自己对比，突出数值的变化<a class="headerlink" href="#c_1" title="Permanent link">&para;</a></h2>
+<h3 id="1-sfm">① SfM 与几何一致性损失：性能依赖初始化和阈值<a class="headerlink" href="#1-sfm" title="Permanent link">&para;</a></h3>
+<p>下表完整整理自原文表 1。<span class="arithmatex">\(\tau_{\mathrm{fill}}\)</span> 单位是 <strong>mm</strong>，<span class="arithmatex">\(\tau_{\mathrm{out}}\)</span> 单位是 <strong>cm</strong>，CD 指标单位是 <span class="arithmatex">\(\mathrm{cm}^2\)</span>；“—”表示论文未报告，不代表零。</p>
+<table>
+<thead>
+<tr>
+<th>SfM</th>
+<th>使用 <span class="arithmatex">\(\mathcal{L}_{\mathrm{geo}}\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(\tau_{\mathrm{fill}}\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(\tau_{\mathrm{out}}\)</span></th>
+<th style="text-align: right;"><span class="arithmatex">\(CD_h\)</span> ↓</th>
+<th style="text-align: right;"><span class="arithmatex">\(CD_{\mathrm{ICP}}\)</span> ↓</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HLoc + COLMAP</td>
+<td>否</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">8.18</td>
+</tr>
+<tr>
+<td>HLoc + COLMAP</td>
+<td>是</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">4.86</td>
+</tr>
+<tr>
+<td>VGGSfM</td>
+<td>否</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">18.32</td>
+<td style="text-align: right;">2.78</td>
+</tr>
+<tr>
+<td>VGGSfM</td>
+<td>是</td>
+<td style="text-align: right;">1.0</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;"><strong>18.21</strong></td>
+<td style="text-align: right;">3.66</td>
+</tr>
+<tr>
+<td>VGGSfM</td>
+<td>是</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">18.42</td>
+<td style="text-align: right;">2.33</td>
+</tr>
+<tr>
+<td>VGGSfM</td>
+<td>是</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: right;">18.37</td>
+<td style="text-align: right;">2.83</td>
+</tr>
+<tr>
+<td>VGGSfM</td>
+<td>是</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">18.40</td>
+<td style="text-align: right;"><strong>2.26</strong></td>
+</tr>
+</tbody>
+</table>
+<p>不加几何损失时，使用 VGGSfM 的 <span class="arithmatex">\(CD_{\mathrm{ICP}}\)</span> 为 2.78，低于 HLoc 配置的 8.18；论文据此说明 SfM 对下游结果有很大影响。但 VGGSfM 在 HO3D 和自采视频上没有表现出同样稳定的优势，不能得出“一律换成 VGGSfM 最好”的结论。</p>
+<p>HLoc 配置加几何损失后，<span class="arithmatex">\(CD_{\mathrm{ICP}}\)</span> 从 <strong>8.18 降至 4.86</strong>，约下降 <strong>40.6%</strong>。VGGSfM 最后一行配置从无损失的 <strong>2.78 降至 2.26</strong>，约下降 <strong>18.7%</strong>；不过 <span class="arithmatex">\(CD_h\)</span> 从 18.32 增至 18.40。</p>
+<p>还有些阈值配置会使表面指标恶化，例如 1.0 mm / 5.0 cm 配置的 <span class="arithmatex">\(CD_{\mathrm{ICP}}\)</span> 为 3.66。<strong>先验和几何损失不是无条件有效，不同评价目标也未必同步改善。</strong></p>
+<h3 id="2_2">② 遮挡处理、先验补全与手部初始化<a class="headerlink" href="#2_2" title="Permanent link">&para;</a></h3>
+<p>原文图 3a 对比有无手感知背景损失：引入该项后，被手指遮挡的物体区域不再轻易出现手指形孔洞。原文图 5 展示几何损失使 Gaussian 中心更贴近先验并补齐缺失区域。</p>
+<p>补充材料图 11 在 <strong>5 段 HO3D 序列</strong>上对比有无 <span class="arithmatex">\(\mathcal{L}_{\mathrm{geo}}\)</span>，正文指出其中 <strong>3 段</strong>的 <span class="arithmatex">\(CD_r\)</span> 改善；图中没有逐项数字标注，不把目测柱高写成精确数值。</p>
+<p>补充图 10a 展示异常帧处理后的手部网格更稳定。但论文未给出完整的“去掉接触损失、去掉重投影、去掉时序、去掉异常帧处理”独立数值消融矩阵，因此不能为这些组件分别编造误差下降幅度。</p>
+<h3 id="3-gaussian">③ 每个手部面片的 Gaussian 数量<a class="headerlink" href="#3-gaussian" title="Permanent link">&para;</a></h3>
+<p>原文图 7 的横轴标出 <span class="arithmatex">\(m=6,15,28,55\)</span>，还展示一个更高密度但未标出具体横轴数值的点。在固定 <strong>30,000 次</strong>手部阶段训练迭代下，<span class="arithmatex">\(m=55\)</span> 表现最好，继续增加密度并没有继续提高渲染质量。</p>
+<p>论文将其解释为：更大的参数集合在固定迭代预算下更难充分拟合。这支持在其设置中选择约 8.4 万个 Gaussians/手，但不支持把 55 当作所有视频、所有计算预算下的通用最优值。曲线没有标注精确数值，本文仅保留趋势判断。</p>
+<h2 id="d">d. 实验总结<a class="headerlink" href="#d" title="Permanent link">&para;</a></h2>
+<p>实验最强的证据是：<strong>在 ARCTIC 的报告设置中，GHOST 显著降低手物相对几何误差，并大幅缩短逐序列优化时间。</strong> ARCTIC 的 PSNR、两个数据集的 LPIPS 也优于表中基线。</p>
+<p>同时应保留三个边界：物体 ICP 对齐后的几何指标没有全面领先；SSIM 和 HO3D 的 PSNR 不如 BIGS；先验损失和 SfM 的收益依赖数据及参数。论文支持的是速度、交互对齐与部分渲染指标上的取舍，而不是在所有重建目标上统一胜出。</p>
+<h1 id="5">5. 不足之处<a class="headerlink" href="#5" title="Permanent link">&para;</a></h1>
+<p><strong>① 几何先验可能检索错误，也可能对齐错误。</strong> 文字语义相似不保证实例形状一致。先验若存在错误把手、厚度或轮廓，几何损失可能把原本合理的 Gaussian 中心拉到错误位置。补充材料图 9、图 12b 给出了这类例子，正文也明确只在高质量先验可用时使用该项。</p>
+<p><strong>② 手感知背景损失依赖跨帧可见性变化。</strong> 若手从头到尾一直覆盖同一个区域，系统可能无法区分“真正的物体”与“被手掩码放行的非物体区域”，从而在手部区域生成多余 Gaussians。补充图 12a 展示了这一失败情况。</p>
+<p><img alt="GHOST 的两类失败案例：固定手部遮挡与错误几何先验对齐，原文补充图 12" src="../assets/ghost-limitations.png" width="600" height="275" loading="lazy" decoding="async"></p>
+<p><em>原文补充图 12：（a）接触区域不变时，手感知背景损失可能保留多余 Gaussians；（b）先验对齐不准时，几何损失可能把中心拉向错误区域。图片版权归原作者。</em></p>
+<p><strong>③ “接触合理”仍是几何层面的改善。</strong> 抓握检测依赖平移方向，接触损失使用几何距离；没有显式恢复接触力、摩擦或稳定抓握条件。纯旋转、静止抓持、滑动接触等场景值得单独验证。这个方向是阅读后的分析，论文没有提供完整的针对性实验。</p>
+<p><strong>④ 对预处理有较强依赖。</strong> SAM2 掩码、SfM、HaMeR、检索先验和异常帧阈值的误差都会影响后续结果。插值可减少孤立抖动，但不能保证长时间遮挡下的手指姿态正确；手部 Gaussian 优化也不能任意修正网格形变。</p>
+<p><strong>⑤ 刚性物体假设限制任务范围。</strong> 主流程将物体建模为统一的刚性几何。论文把可变形物体和关节物体列为未来工作，因此不能声称当前方法已完整支持布料变形或开合物体的关节运动。</p>
+<p><strong>⑥ 完整性和真实性之间仍有取舍。</strong> 补齐一个合理表面，不等于恢复真实的未见表面。表 2 的物体表面指标不如 BIGS，也提示应分别评价可见区域、不可见区域、细小结构和接触关系，不能仅靠视觉效果判断几何准确性。</p>
+<p><strong>⑦ 速度与泛化的证据范围有限。</strong> 一小时优化仍不是实时，且未给出完整预处理分解；ARCTIC 只有 9 段评估视频，自采视频主要是定性例子，没有跨物体、跨操作者、跨拍摄条件的大规模统计，也没有给出置信区间。</p>
+<p><strong>⑧ 机器人应用仍需后续验证。</strong> 论文没有证明重建的接触和外观改善能直接提高模仿学习成功率。若用于人类演示迁移，还需要把三维信息变成机器人可执行轨迹，并验证重定向、遮挡跟踪与闭环控制。</p>
+<h1 id="6_1">6. 基于本文扩展到的其他论文<a class="headerlink" href="#6_1" title="Permanent link">&para;</a></h1>
+<h2 id="1-hold">① HOLD：类别无关手物重建的隐式表示路线<a class="headerlink" href="#1-hold" title="Permanent link">&para;</a></h2>
+<p><a href="https://openaccess.thecvf.com/content/CVPR2024/html/Fan_HOLD_Category-agnostic_3D_Reconstruction_of_Interacting_Hands_and_Objects_from_CVPR_2024_paper.html">HOLD: Category-agnostic 3D Reconstruction of Interacting Hands and Objects from Video</a>，<strong>CVPR 2024</strong>。</p>
+<p>HOLD 从单目交互视频联合重建手与物体，采用可分离的关节化隐式表示，不要求预扫描物体模板。阅读它有助于理解 GHOST 继承的视频几何流程，以及为什么手物约束不能只依赖二维拟合。</p>
+<p>建议比较两者的表示、接触约束和逐序列优化成本，特别注意“输入无需三维手物标注”与“完全不使用预训练模型先验”是不同概念。</p>
+<h2 id="2-bigs-gaussian">② BIGS：双手 Gaussian 重建与生成先验<a class="headerlink" href="#2-bigs-gaussian" title="Permanent link">&para;</a></h2>
+<p><a href="https://openaccess.thecvf.com/content/CVPR2025/html/On_BIGS_Bimanual_Category-agnostic_Interaction_Reconstruction_from_Monocular_Videos_via_3D_CVPR_2025_paper.html">BIGS: Bimanual Category-agnostic Interaction Reconstruction from Monocular Videos via 3D Gaussian Splatting</a>，<strong>CVPR 2025</strong>。</p>
+<p>BIGS 是最直接的比较对象：用 3D Gaussians 表示双手和未知物体，通过预训练扩散模型的 SDS 损失补充未见部分，并考虑手物对齐。GHOST 则采用 2D Gaussians、检索几何先验及针对遮挡的损失。</p>
+<p>值得比较的是“生成式补全”和“检索式几何约束”的代价与偏差。本文所有 BIGS 对比数值均取自 <strong>GHOST 表 2、表 3</strong>，不与 BIGS 原文中可能不同的评估行混合。</p>
+<h2 id="3-2d-gaussian-splatting">③ 2D Gaussian Splatting：理解表面圆盘表示<a class="headerlink" href="#3-2d-gaussian-splatting" title="Permanent link">&para;</a></h2>
+<p><a href="https://arxiv.org/abs/2403.17888">2D Gaussian Splatting for Geometrically Accurate Radiance Fields</a>，<strong>SIGGRAPH 2024</strong>。</p>
+<p>该工作以三维空间中的有向 Gaussian 圆盘建模表面，强调多视角几何一致性。它有助于理解 GHOST 为什么使用二维尺度、表面方向和可微渲染，以及 2DGS 与体积式 3DGS 的表示差异。</p>
+<p>需要注意：2DGS 是基础表面表示，GHOST 的抓握检测、手感知背景处理与检索先验并不由 2DGS 自动提供。</p>
+<h2 id="4-spot">④ SPOT：从交互感知走向物体轨迹策略<a class="headerlink" href="#4-spot" title="Permanent link">&para;</a></h2>
+<p><a href="../spot/">SPOT 阅读笔记</a>研究从人类演示学习物体位姿轨迹，并将预测轨迹转换为机器人执行。它与 GHOST 的研究阶段不同：GHOST 关注如何从视频获得几何可信的手物表示，SPOT 关注如何从演示中的物体运动学习操作策略。</p>
+<p>一种后续研究设想是，用更好的视频重建增强演示轨迹与接触标注，再评估是否能改善物体轨迹学习。但 GHOST 的单目尺度恢复、先验误差和离线成本，以及 SPOT 的观测与执行要求，都需要另行解决。<strong>这只是阅读后的延伸方向，两个方法的现有实验没有证明这种组合有效。</strong></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../race/" class="md-footer__link md-footer__link--prev" aria-label="上一页: RACE：让 VLA 更可靠地执行长动作片段">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                RACE：让 VLA 更可靠地执行长动作片段
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../egoinfinity/" class="md-footer__link md-footer__link--next" aria-label="下一页: EgoInfinity：互联网视频到机器人动作">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                EgoInfinity：互联网视频到机器人动作
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/JXTZZ" target="_blank" rel="noopener" title="LoTusY on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../javascripts/version-sync.js"></script>
+      
+    
+  </body>
+</html>
