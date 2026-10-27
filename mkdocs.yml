@@ -90,6 +90,24 @@ nav:
       - 附录 C · DrakeGym 环境: translations/robotic-manipulation/drakegym.md
       - 附录 D · 搭建自己的机器人操作工作站: translations/robotic-manipulation/manipulation-station.md
       - 附录 E · 其他事项: translations/robotic-manipulation/miscellaneous.md
+    - CS146S · 现代软件开发者:
+      - translations/cs146s/index.md
+      - 课程说明与环境准备: translations/cs146s/overview.md
+      - 第 1 周 · 调用轨迹分析:
+        - 作业说明: translations/cs146s/week1/assignment.md
+        - 作答模板: translations/cs146s/week1/writeup.md
+      - 第 2 周 · MCP 服务器:
+        - 作业说明: translations/cs146s/week2/assignment.md
+        - 作答模板: translations/cs146s/week2/writeup.md
+      - 第 3 周 · 编写 Skill:
+        - 作业说明: translations/cs146s/week3/assignment.md
+        - 作答模板: translations/cs146s/week3/writeup.md
+      - 第 4 周 · 仓库指引:
+        - 作业说明: translations/cs146s/week4/assignment.md
+        - 作答模板: translations/cs146s/week4/writeup.md
+      - 第 5 周 · Agent 就绪度:
+        - 作业说明: translations/cs146s/week5/assignment.md
+        - 作答模板: translations/cs146s/week5/writeup.md
   - 论文阅读:
     - papers/index.md
     - 论文资料库: papers/library.md

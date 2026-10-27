@@ -125,7 +125,7 @@ try {
     return state;
   }
   if(option('--only')!=='interaction') {
-  for(const width of [320,390,768,1440])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/papers/library/','/papers/orion/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
+  for(const width of [320,390,768,1440])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/papers/library/','/translations/','/translations/cs146s/','/papers/orion/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
     const state=await load(route,width,theme);
     if(route==='/'){
       assert(await evaluate(()=>!document.querySelector('.home-recent,.recent-notes,.home-threads,.reading-note') && document.querySelectorAll('.topic-card').length===3),'Homepage must omit removed reading/update modules');
@@ -158,6 +158,12 @@ try {
       if(width===320 || width===1440)await capture('library-'+width+'-'+theme);
     }
     if(route==='/papers/orion/' && width===1440 && theme==='default')await capture('paper-outline-1440');
+    if(route==='/translations/'){
+      assert(await evaluate(()=>{const cards=[...document.querySelectorAll('.translation-shelf')];return cards.length>=2 && cards.every(a=>a.querySelector('.shelf-cover') && a.querySelector('.shelf-copy')) && ['robotic-manipulation/','cs146s/'].every(href=>cards.some(a=>a.getAttribute('href')===href));}),'Translation shelves must link complete course cards');
+    }
+    if(route==='/translations/cs146s/'){
+      assert(await evaluate(()=>{const links=new Set([...document.querySelectorAll('.course-chapter')].map(a=>a.getAttribute('href')));return [1,2,3,4,5].every(week=>['assignment','writeup'].every(kind=>links.has('week'+week+'/'+kind+'/'))) && !!document.querySelector('.course-preface[href="overview/"]');}),'CS146S course must link its README and five assignment/template pairs');
+    }
     if(route.includes('pick-and-place')){
       if(width<960){
         await evaluate(()=>document.querySelector('.mobile-toc summary').focus());await send('Page.bringToFront');
