@@ -3,13 +3,25 @@ title: 关于我
 description: LoTusY，南京大学软件工程硕士研究生，记录从深度学习到具身智能的学习过程。
 layout: collection
 ---
-# 关于我
+<div class="collection-intro" markdown>
+
+# 关于我 { #_1 }
 
 你好，我是 **LoTusY**，南京大学软件工程硕士研究生。
 
+</div>
+
+<div class="about-intro" markdown>
+
 这个博客记录我的学习过程：从深度学习与 PyTorch 基础，逐渐走向具身智能、机器人学习和视觉语言动作模型（VLA）。我希望把论文里的方法讲清楚，也把写代码时遇到的具体问题留下来。
 
-## 这里有什么
+[在 GitHub 找到我](https://github.com/JXTZZ){ .md-button }
+
+</div>
+
+## 这里有什么 { #_2 }
+
+<div class="about-contents" markdown>
 
 - **论文阅读**：围绕任务、方法、实验与局限整理的阅读笔记。
 - **课程翻译**：[MIT《机器人操作》中文讲义](translations/robotic-manipulation/index.md)与[斯坦福 CS146S 课程作业](translations/cs146s/index.md)，随学习逐步更新。
@@ -17,9 +29,13 @@ layout: collection
 - **工程实践**：开发中的细节、问题定位与项目记录。
 - **学习日志**：日常阅读、工具使用和阶段复盘。
 
+</div>
+
+<div class="collection-brief" markdown>
+
 文章记录的是阅读与实践当时的理解，会随着学习继续修订。论文笔记不替代原文，实验结论与引用请以论文对应版本为准。
 
-[在 GitHub 找到我 ↗](https://github.com/JXTZZ){ .md-button }
+</div>
 
 ---
 

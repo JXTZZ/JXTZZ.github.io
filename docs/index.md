@@ -10,51 +10,60 @@ layout: home
 
 <div class="home-hero" markdown>
 <div class="home-intro" markdown>
-<span class="eyebrow">学习与研究笔记</span>
 
-# 让好奇心，<br><span class="gradient-text">走得更远。</span>
+# 理解方法，<br>记录实践。 { #_1 }
 
-从读懂一篇论文，到让机器人迈出一步。<br>记录学习的轨迹，也连接每一个新的发现。
+我是 LoTusY，南京大学软件工程硕士研究生，在这里记录具身智能与机器人学习。
 
 <div class="hero-actions" markdown>
-[探索笔记 →](papers/index.md){ .md-button .md-button--primary }
-[关于我 ↗](about.md){ .quiet-link }
+[阅读论文笔记](papers/index.md){ .md-button .md-button--primary }
+[关于我](about.md){ .quiet-link }
 </div>
-<div class="hero-caption">南京大学 · 软件工程 / 具身智能 · 机器人学习</div>
 </div>
-<div class="research-atlas" data-research-atlas>
-<div class="atlas-heading"><span>RESEARCH ATLAS</span></div>
-<div class="atlas-stage">
-<img class="atlas-fallback" src="assets/research-atlas.svg" alt="OpenVLA、DP3、SPOT、Diffusion 等研究关键词拼成 LoTusY 的文字图案" width="680" height="440">
-<canvas class="atlas-canvas" aria-hidden="true"></canvas>
-</div>
-<div class="atlas-caption"><span class="atlas-status" aria-hidden="true"></span><span>从感知世界，到生成行动。</span><span class="atlas-hint"><span class="atlas-hint--mouse">移动鼠标 · 汇聚想法</span><span class="atlas-hint--touch">横向滑动 · 汇聚想法</span></span></div>
+<div class="research-paths" aria-label="论文阅读路径">
+<h2 id="research-paths-title">从感知世界，到生成行动。</h2>
+<a href="papers/spot/"><span class="path-topic">人类演示</span><strong>SPOT</strong><span>物体轨迹如何成为机器人动作</span></a>
+<a href="papers/dp3/"><span class="path-topic">三维表示</span><strong>3D Diffusion Policy</strong><span>点云与扩散策略</span></a>
+<a href="papers/openvla/"><span class="path-topic">通用策略</span><strong>OpenVLA</strong><span>视觉、语言与动作的连接</span></a>
+<a class="paths-all" href="papers/">全部论文阅读笔记</a>
 </div>
 </div>
 
-<div class="featured-course" markdown>
+<section class="featured-course" aria-labelledby="_2" markdown>
 <div class="feature-copy" markdown>
-<span class="feature-label" id="_3">完整中文译稿 · 课程翻译</span>
 
-## Robotic Manipulation<br>现在，用中文读。 { #_2 }
+## Robotic Manipulation { #_2 }
 
-MIT《Robotic Manipulation》<br>从感知、规划到控制，理解机器人与世界的交互。
+<span id="_3"></span>
+Russ Tedrake 的 MIT 机器人操作讲义。沿着感知、规划与控制，系统学习机器人与真实世界的交互。
 
 <div class="feature-actions" markdown>
-[打开中文讲义 →](translations/robotic-manipulation/index.md){ .md-button .md-button--primary }
+[打开中文讲义](translations/robotic-manipulation/index.md){ .md-button .md-button--primary }
 [浏览课程目录](translations/robotic-manipulation/preface.md#all-chapters){ .quiet-link }
 </div>
-<span class="feature-detail">RUSS TEDRAKE · 12 章正文与 5 篇附录</span>
 </div>
-<div class="feature-visual"><span class="visual-edition" aria-hidden="true">MANIPULATION</span><img src="assets/robot-arm.svg" alt="银色机械臂在蓝紫色工作台上抓取半透明立方体的立体示意图" width="640" height="520"><div class="visual-caption"><span>PERCEPTION</span><span>PLANNING</span><span>CONTROL</span></div></div>
+<div class="course-outline" markdown>
+
+### 按原书顺序阅读 { #course-reading-order }
+
+12 章正文与 5 篇附录，保留原文版本、参考文献与示例代码入口。
+
+[从前言开始](translations/robotic-manipulation/preface.md#preface)
+
+[浏览全部课程翻译](translations/index.md)
+
 </div>
+</section>
 
-<div class="section-heading home-collection-heading"><h2>沿着兴趣，找到一条线索。</h2><p>理解方法，补齐基础，把想法付诸实践。</p></div>
-
+<section class="home-collections" aria-labelledby="collections-title">
+<div class="section-heading"><h2 id="collections-title">学习笔记</h2><p>补齐基础，也留下具体问题的解法。</p></div>
 <div class="topic-grid">
-<a class="topic-card" href="papers/"><img class="topic-illustration" src="assets/topic-research.svg" alt="" width="112" height="80"><h3>论文阅读</h3><p>从 ALOHA、DP3 到 OpenVLA，拆解机器人策略的任务、方法与边界。</p><span class="card-foot">具身智能 · 论文精读 <span aria-hidden="true">→</span></span></a>
-<a class="topic-card" href="deep-learning/"><img class="topic-illustration" src="assets/topic-foundations.svg" alt="" width="112" height="80"><h3>理论基础</h3><p>用数学推导和代码，串起回归、神经网络、正则化与注意力机制。</p><span class="card-foot">深度学习 · 数学直觉 <span aria-hidden="true">→</span></span></a>
-<a class="topic-card" href="engineering/"><img class="topic-illustration" src="assets/topic-practice.svg" alt="" width="112" height="80"><h3>工程实践</h3><p>记录 Tensor 的细节、开发中的问题，以及从想法到实现的过程。</p><span class="card-foot">PyTorch · 开发手记 <span aria-hidden="true">→</span></span></a>
+<a class="topic-card" href="papers/"><h3>论文阅读</h3><p>围绕任务、方法、实验与局限，阅读具身智能和机器人策略。</p><span class="card-foot">ALOHA Unleashed / DP3 / OpenVLA</span></a>
+<a class="topic-card" href="deep-learning/"><h3>理论基础</h3><p>把数学推导、模型直觉和代码实现放在一起。</p><span class="card-foot">回归 / 神经网络 / 注意力机制</span></a>
+<a class="topic-card" href="engineering/"><h3>工程实践</h3><p>记录 Tensor 的细节、问题定位与代码实践。</p><span class="card-foot">PyTorch / 开发手记</span></a>
 </div>
+</section>
 
-<div class="home-signoff"><span>一点点理解，一点点构建。</span><span>LEARN. BUILD. UNDERSTAND.</span></div>
+<div class="home-signoff" markdown>
+[学习日志](journal/index.md)中保留日常阅读、工具使用和阶段复盘。文章会随着理解继续修订。
+</div>

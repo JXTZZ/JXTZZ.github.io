@@ -3,7 +3,9 @@
 {% block extrahead %}
   {{ super() }}
   <meta name="site-version" content="{{ config.extra.site_version }}">
+  <link rel="stylesheet" href="{{ 'stylesheets/tokens.css' | url }}?v={{ config.extra.site_version }}">
   <link rel="stylesheet" href="{{ 'stylesheets/extra.css' | url }}?v={{ config.extra.site_version }}">
+  <script defer src="{{ 'javascripts/navigation.js' | url }}?v={{ config.extra.site_version }}"></script>
   {% if page and page.meta.layout == 'article' %}
     <link rel="stylesheet" href="{{ 'stylesheets/reader.css' | url }}?v={{ config.extra.site_version }}">
     <script defer src="{{ 'javascripts/reader.js' | url }}?v={{ config.extra.site_version }}"></script>
@@ -17,6 +19,33 @@
   {% endif %}
   {% if page and page.is_homepage %}
     <link rel="stylesheet" href="{{ 'stylesheets/home-atlas.css' | url }}?v={{ config.extra.site_version }}">
-    <script defer src="{{ 'javascripts/home-atlas.js' | url }}?v={{ config.extra.site_version }}"></script>
   {% endif %}
+{% endblock %}
+
+{% block content %}
+  <noscript>
+    <nav class="noscript-nav" aria-label="全站导航">
+      <a href="{{ '' | url }}">首页</a>
+      <a href="{{ 'translations/' | url }}">课程翻译</a>
+      <a href="{{ 'papers/' | url }}">论文阅读</a>
+      <a href="{{ 'deep-learning/' | url }}">理论基础</a>
+      <a href="{{ 'engineering/' | url }}">工程实践</a>
+      <a href="{{ 'journal/' | url }}">学习日志</a>
+      <a href="{{ 'about/' | url }}">关于</a>
+    </nav>
+  </noscript>
+  {{ super() }}
+{% endblock %}
+
+{% block footer %}
+  <div class="site-colophon md-grid">
+    <strong>LoTusY</strong>
+    <span>学习与研究笔记</span>
+    <nav aria-label="页脚导航">
+      <a href="{{ 'papers/' | url }}">论文阅读</a>
+      <a href="{{ 'translations/' | url }}">课程翻译</a>
+      <a href="{{ 'about/' | url }}">关于我</a>
+    </nav>
+  </div>
+  {{ super() }}
 {% endblock %}

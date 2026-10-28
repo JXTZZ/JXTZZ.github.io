@@ -56,6 +56,9 @@ def outline(items):
 
 
 def on_post_page(output, page, config, **kwargs):
+    layout = page.meta.get('layout', 'collection')
+    output = output.replace('<article class="md-content__inner md-typeset">',
+                            f'<article class="md-content__inner md-typeset" data-page-layout="{escape(layout, quote=True)}">', 1)
     # The upstream header has no title sub-block. Replace just its first title span,
     # rather than copying the complete header and owning its search/palette controls.
     home = get_relative_url('', page.url)

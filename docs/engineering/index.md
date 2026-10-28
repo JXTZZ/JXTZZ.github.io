@@ -6,14 +6,22 @@ hide:
 layout: collection
 ---
 
-# 工程实践
+<div class="collection-intro" markdown>
+
+# 工程实践 { #_1 }
 
 记录代码中的细节，也记录问题被定位和解决的过程。
 
-## PyTorch 开发笔记
+</div>
+
+## PyTorch 开发笔记 { #pytorch }
 
 <!-- article-list: engineering -->
 
-## 项目与工具
+<div class="collection-brief" markdown>
+
+## 项目与工具 { #_2 }
 
 工具使用与排障过程按发生日期整理在[学习日志](../journal/index.md)，包括 WSL、Conda、Snipaste 与 Python 数据结构。
+
+</div>

@@ -22,8 +22,12 @@ resources:
   pdf: assets/papers/pld.pdf
 ---
 
-# 论文资料库
+<div class="collection-intro" markdown>
+
+# 论文资料库 { #_1 }
 
 阅读时使用的论文 PDF 与相关笔记。原文版权归各作者及出版方所有；引用时请以论文原文为准。
+
+</div>
 
 <!-- resource-list -->

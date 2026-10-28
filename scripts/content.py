@@ -1,5 +1,6 @@
 """Metadata-driven lists and navigation, using MkDocs' included YAML dependency."""
 from datetime import date, datetime
+from collections import Counter
 from html import escape
 from pathlib import Path
 import re
@@ -114,6 +115,17 @@ def resource_html(page, config):
 
 
 def expand_lists(markdown, page, config):
+    if '<!-- paper-directory -->' in markdown:
+        papers = [r for r in CATALOG if r['section'] == 'papers']
+        methods = Counter(r['method'] for r in papers)
+        links = []
+        for record in papers:
+            label = record['method'] if methods[record['method']] == 1 else record['title']
+            href = get_relative_url(record['url'], page.file.url)
+            links.append(f'<li><a href="{escape(href, quote=True)}" aria-label="{escape(record["title"], quote=True)}">{escape(label)}</a></li>')
+        directory = ('<details class="collection-directory"><summary>按篇名定位<span>展开 / 收起</span></summary>'
+                     '<nav aria-label="论文篇名索引"><ul>' + ''.join(links) + '</ul></nav></details>')
+        markdown = markdown.replace('<!-- paper-directory -->', directory)
     def replace(match):
         section = match[1]
         records = [r for r in CATALOG if r['section'] == section]

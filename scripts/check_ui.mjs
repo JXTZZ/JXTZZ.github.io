@@ -7,7 +7,7 @@ import path from 'node:path';
 
 const option = name => process.argv.find(a => a.startsWith(name + '='))?.slice(name.length + 1);
 const site = path.resolve(option('--site-dir') || '.build/site');
-const artifacts = path.resolve('.build/ui');
+const artifacts = path.resolve(option('--artifacts') || '.build/ui');
 const serverTransfers=[];
 await mkdir(artifacts, { recursive: true });
 const mime = {'.html':'text/html','.css':'text/css','.js':'text/javascript','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.JPG':'image/jpeg','.woff2':'font/woff2','.pdf':'application/pdf'};
@@ -65,7 +65,7 @@ try {
     await send('Network.setCacheDisabled',{cacheDisabled:!homeTransfer && route==='/'});
     network.clear();
     serverTransfers.length=0;
-    await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:width<650});
+    await send('Emulation.setDeviceMetricsOverride',{width,height:width===1280?800:width===1920?1080:900,deviceScaleFactor:1,mobile:width<650});
     await send('Emulation.setTouchEmulationEnabled',{enabled:width<650});
     await send('Emulation.setEmulatedMedia',{media:'screen',features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
     await send('Page.navigate',{url:root+route});
@@ -104,7 +104,7 @@ try {
         rows:[...article.querySelectorAll('.article-row')].map(n=>n.dataset.section),
         auxiliaryFonts:[...article.querySelectorAll('.article-row__meta,.article-row__description,.article-tag,.hero-caption,.atlas-caption,.atlas-hint,.visual-caption')].filter(visible).map(n=>parseFloat(getComputedStyle(n).fontSize)),
         images:[...article.querySelectorAll('img')].map(img=>({dimensions:img.hasAttribute('width') && img.hasAttribute('height'),loaded:img.complete && img.naturalWidth>0,lazy:img.loading==='lazy'})),
-        contrast:[ratio('--md-default-fg-color','--md-default-bg-color'),ratio('--md-default-fg-color--light','--note-surface'),ratio('--md-typeset-a-color','--md-default-bg-color')],
+        contrast:[ratio('--md-default-fg-color','--md-default-bg-color'),ratio('--md-default-fg-color--light','--note-surface'),ratio('--md-typeset-a-color','--md-default-bg-color'),ratio('--button-ink','--button-fill'),ratio('--button-ink','--button-hover')],
         brand:document.querySelector('.header-home-link').href,loadedMath:!!document.querySelector('script[src*="tex-mml-chtml"]')};
     });
     assert(state.width===width && state.scrollWidth<=width+1,route+' overflow: '+JSON.stringify(state));
@@ -130,37 +130,44 @@ try {
     return state;
   }
   if(option('--only')!=='interaction') {
-  for(const width of [320,390,768,1440])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/papers/library/','/translations/','/translations/cs146s/','/papers/orion/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
+  for(const width of [320,390,768,1280,1440,1920])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/papers/library/','/translations/','/translations/cs146s/','/translations/robotic-manipulation/','/deep-learning/','/engineering/','/journal/','/about/','/deep-learning/Linear_Regression/','/papers/orion/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
     const state=await load(route,width,theme);
+    // The keyword canvas was replaced by accessible links into real paper notes.
+    // Preserve discovery, touch scrolling, anchors, course entry and sticky branding.
     if(route==='/'){
-      assert(await evaluate(()=>!document.querySelector('.home-recent,.recent-notes,.home-threads,.reading-note') && document.querySelectorAll('.topic-card').length===3),'Homepage must omit removed reading/update modules');
+      assert(await evaluate(()=>!document.querySelector('.home-recent,.recent-notes,.home-threads,.reading-note') && document.querySelectorAll('.topic-card').length===3),'Homepage collection coverage changed');
       assert(!state.loadedMath,'MathJax must not load on home');
-      assert(await evaluate(()=>!document.querySelector('.atlas-motion')),'Animation pause control must be removed');
-      assert(await evaluate(()=>document.querySelector('[data-word="LoTusY"]') && !document.querySelector('article').innerText.includes('FIG.') && document.querySelector('.visual-edition').innerText==='MANIPULATION'),'Word atlas/figure labels incorrect');
+      assert(await evaluate(()=>document.querySelectorAll('.research-paths > a').length===4 && !document.querySelector('canvas')),'Research paths must be usable without a canvas');
       assert(await evaluate(()=>!!document.querySelector('.featured-course a.md-button') && document.querySelector('.featured-course h2').innerText.includes('Robotic Manipulation')),'Course title/links did not render');
       assert(await evaluate(()=>document.getElementById('_2')?.closest('.featured-course') && document.getElementById('_3')?.closest('.featured-course')),'Home bookmark anchors changed');
-      const home=await evaluate(()=>({stage:document.querySelector('.atlas-stage').getBoundingClientRect().height,ready:document.querySelector('.research-atlas').hasAttribute('data-ready')}));
-      assert(home.ready && (width>=650 || home.stage<=170),'Mobile research atlas too large: '+JSON.stringify(home));
-      if(width===320 || width===1440)await capture('home-'+width+'-'+theme);
+      if([320,390,1280,1440,1920].includes(width))await capture('home-'+width+'-'+theme);
       if(width===320 && theme==='default') {
-        const drag=await evaluate(()=>{const r=document.querySelector('.atlas-stage').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};});
+        const drag=await evaluate(()=>{const r=document.querySelector('.home-intro').getBoundingClientRect();return {x:r.left+r.width/2,y:r.bottom-20};});
         await send('Page.bringToFront');
-        await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[drag]});await delay(40);
+        await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[drag]});
         for(const offset of [35,70,110]){await send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:drag.x,y:drag.y-offset}]});await delay(40);}
         await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(300);
-        const vertical=await evaluate(()=>({scroll:scrollY,hidden:document.hidden,touchAction:getComputedStyle(document.querySelector('.atlas-stage')).touchAction}));
-        assert(vertical.scroll>30,'Word atlas must preserve vertical touch scrolling: '+JSON.stringify(vertical));
+        assert(await evaluate(()=>scrollY>30),'Homepage must preserve vertical touch scrolling');
       }
-      await evaluate(()=>document.querySelector('.feature-visual img').scrollIntoView({block:'center'}));
-      await evaluate(()=>document.querySelector('.feature-visual img').decode());
-      await delay(300); // Allow the sticky header/scroll transition to settle.
-      assert(await evaluate(()=>{const a=document.querySelector('.header-home-link'),r=a.getBoundingClientRect(),s=getComputedStyle(a.parentElement);return s.opacity==='1' && s.pointerEvents!=='none' && r.width>0 && r.left>=0 && r.top>=0;}),'Homepage brand must stay visible and clickable after scrolling');
+      await evaluate(()=>document.querySelector('.featured-course').scrollIntoView({block:'center'}));await delay(300);
+      assert(await evaluate(()=>{const a=document.querySelector('.header-home-link'),r=a.getBoundingClientRect(),s=getComputedStyle(a.parentElement);return s.opacity==='1' && s.pointerEvents!=='none' && r.width>0 && r.left>=0 && r.top>=0;}),'Homepage brand must remain clickable after scrolling');
       if(width===320 || width===1440)await capture('home-course-'+width+'-'+theme);
     }
+    if([390,1440].includes(width))await capture(route.replaceAll('/','-').replace(/^-|-$/g,'')+'-'+width+'-'+theme);
     if(route==='/papers/library/'){
       const library=await evaluate(()=>{const content=document.querySelector('.md-content'),r=content.getBoundingClientRect();return {center:Math.abs((r.left+r.right)/2-innerWidth/2),width:r.width,emptySidebar:[...document.querySelectorAll('.md-sidebar')].some(n=>{const b=n.getBoundingClientRect();return getComputedStyle(n).display!=='none' && b.right>1 && b.left<innerWidth;}),rows:document.querySelectorAll('.resource-row').length};});
       assert(library.rows>0 && !library.emptySidebar && (width<960 || (library.center<15 && library.width<=1041)),'PDF library centering: '+JSON.stringify(library));
       if(width===320 || width===1440)await capture('library-'+width+'-'+theme);
+    }
+    if(route==='/papers/') {
+      assert(await evaluate(()=>{const all=[...document.querySelectorAll('.article-list .article-row')].map(a=>a.getAttribute('href'));const quick=[...document.querySelectorAll('.collection-directory a')].map(a=>a.getAttribute('href'));return all.length>0 && all.length===quick.length && all.every(href=>quick.includes(href));}),'Quick paper directory must cover every public paper note');
+      if(width===1440 && theme==='default') {
+        await evaluate(()=>document.querySelector('.collection-directory summary').focus());
+        await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'});
+        await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+        assert(await evaluate(()=>document.querySelector('.collection-directory').open),'Paper directory keyboard disclosure failed');
+        await capture('paper-quick-directory-1440');
+      }
     }
     if(route==='/papers/orion/' && width===1440 && theme==='default')await capture('paper-outline-1440');
     if(route==='/translations/'){
@@ -236,45 +243,14 @@ try {
     const button=await evaluate(()=>{const n=document.querySelector('.hero-actions .md-button--primary'),r=n.getBoundingClientRect();window.__buttonFrames=new Promise(resolve=>{const frames=[],start=performance.now();const sample=()=>{const s=getComputedStyle(n);frames.push({background:s.backgroundColor,image:s.backgroundImage,color:s.color});performance.now()-start<350?requestAnimationFrame(sample):resolve(frames);};sample();});return {x:r.left+r.width/2,y:r.top+r.height/2};});
     await send('Input.dispatchMouseEvent',{type:'mouseMoved',...button});
     const frames=await evaluate(()=>window.__buttonFrames);
-    assert(frames.length>3 && frames.every(f=>f.background==='rgb(7, 95, 208)' && f.image.includes('linear-gradient') && f.color==='rgb(255, 255, 255)'),'Primary button background flashes during hover: '+JSON.stringify(frames));
+    assert(frames.length>3 && frames.every(f=>f.background!=='rgba(0, 0, 0, 0)' && f.image==='none' && f.color!==f.background),'Primary button must keep an opaque, contrasting surface during hover');
     await evaluate(()=>document.querySelector('.hero-actions .md-button--primary').focus());
-    assert(await evaluate(()=>getComputedStyle(document.activeElement).backgroundImage.includes('linear-gradient')),'Focused button lost its gradient');
+    assert(await evaluate(()=>parseFloat(getComputedStyle(document.activeElement).outlineWidth)>=2),'Primary action keyboard focus is missing');
     await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:10,y:80});
   }
-  await evaluate(()=>document.querySelector('input[data-md-color-scheme="default"]').click());await delay(100);
-  await evaluate(()=>document.querySelector('.atlas-stage').addEventListener('pointermove',e=>{window.__atlasTestPointer=e.pointerType;},{once:true}));
-  const sphere=await evaluate(()=>{const r=document.querySelector('.atlas-stage').getBoundingClientRect();return {x:r.left+r.width*.75,y:r.top+r.height*.3};});
-  const beforePointer=await evaluate(()=>document.querySelector('canvas').toDataURL());
-  await send('Input.dispatchMouseEvent',{type:'mouseMoved',...sphere});
-  const motion=await evaluate(before=>new Promise(resolve=>{
-    const start=Date.now();const poll=()=>{
-      if(document.querySelector('canvas').toDataURL()!==before)return resolve({changed:true,pointer:window.__atlasTestPointer});
-      if(Date.now()-start>2500)return resolve({changed:false,pointer:window.__atlasTestPointer,hidden:document.hidden,media:matchMedia('(hover: hover) and (pointer: fine)').matches});
-      setTimeout(poll,80);
-    };poll();
-  }),[beforePointer]);
-  assert(motion.changed && motion.pointer==='mouse','Pointer-driven star map did not respond: '+JSON.stringify(motion));
-  await delay(1000);
-  assert(await evaluate(()=>new Promise(resolve=>{const c=document.querySelector('canvas'),a=c.toDataURL();setTimeout(()=>resolve(a===c.toDataURL()),180);})), 'Star map must settle when the pointer stops');
-  assert(await evaluate(()=>{const value=Number(document.querySelector('[data-research-atlas]').dataset.formation);return value>.7 && value<.8;}),'Pointer position must control word formation');
-  await send('Emulation.setTouchEmulationEnabled',{enabled:true});
-  const beforeTouch=await evaluate(()=>Number(document.querySelector('[data-research-atlas]').dataset.formation));
-  await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[sphere]});
-  await send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:sphere.x+40,y:sphere.y}]});
-  await send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await delay(1000);
-  assert(await evaluate(before=>Number(document.querySelector('[data-research-atlas]').dataset.formation)>before+.05,[beforeTouch]),'Horizontal swipe must gather the words');
-  await send('Emulation.setTouchEmulationEnabled',{enabled:false});
-  const assemble=await evaluate(()=>{const r=document.querySelector('.atlas-stage').getBoundingClientRect();return {x:r.left+r.width*.98,y:r.top+r.height*.5};});
-  await send('Input.dispatchMouseEvent',{type:'mouseMoved',...assemble});await delay(1000);
-  assert(await evaluate(()=>Number(document.querySelector('[data-research-atlas]').dataset.formation)>.95),'Words must assemble into the full blog name');
-  await capture('word-atlas-assembled');
   await send('Emulation.setEmulatedMedia',{media:'screen',features:[{name:'prefers-reduced-motion',value:'reduce'}]});
-  // Reload to test the OS preference at startup, avoiding CDP's delayed media-change
-  // repaint in headless tabs. Pointer response and settling are tested above.
   await send('Page.navigate',{url:root+'/'});await delay(700);
-  const staticSphere=await evaluate(()=>document.querySelector('canvas').toDataURL());
-  await send('Input.dispatchMouseEvent',{type:'mouseMoved',x:sphere.x-80,y:sphere.y+40});await delay(200);
-  assert(await evaluate(before=>document.querySelector('canvas').toDataURL()===before,[staticSphere]),'Reduced-motion star map must remain static');
+  assert(await evaluate(()=>!document.querySelector('canvas') && [...document.querySelectorAll('article *')].every(n=>getComputedStyle(n).animationName==='none')),'Reduced motion must keep reading paths still');
   await evaluate(()=>{document.getElementById('__search').click();const q=document.querySelector('[data-md-component=search-query]');q.focus();q.value='空间代数';q.dispatchEvent(new KeyboardEvent('keyup',{bubbles:true,key:'数'}));});
   await evaluate(()=>new Promise((resolve,reject)=>{const start=Date.now();const poll=()=>{if(document.querySelector('[data-md-component=search-result]').innerText.includes('附录 A'))return resolve();if(Date.now()-start>8000)return reject(Error('Search failed'));setTimeout(poll,150);};poll();}));
   await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
@@ -289,16 +265,38 @@ try {
   await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'});
   await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
   await delay(600);
-  assert(await evaluate(()=>location.pathname==='/' && !!document.querySelector('.research-atlas')),'Header keyboard link failed');
+  assert(await evaluate(()=>location.pathname==='/' && !!document.querySelector('.research-paths')),'Header keyboard link failed');
   await send('Emulation.setScriptExecutionDisabled',{value:true});await send('Page.navigate',{url:root+'/'});await delay(600);
-  assert(await evaluate(()=>getComputedStyle(document.querySelector('.atlas-fallback')).visibility==='visible' && document.querySelectorAll('.topic-card').length===3),'No-script fallback failed');
+  assert(await evaluate(()=>document.querySelectorAll('.research-paths > a').length===4 && document.querySelectorAll('.topic-card').length===3 && document.querySelector('.research-paths > a').getBoundingClientRect().height>=44 && document.querySelectorAll('.noscript-nav a').length===7),'No-script fallback failed');
   await send('Emulation.setDeviceMetricsOverride',{width:390,height:900,deviceScaleFactor:1,mobile:true});
   await send('Page.navigate',{url:root+'/translations/robotic-manipulation/introduction/'});await delay(650);
   assert(await evaluate(()=>getComputedStyle(document.querySelector('.mobile-toc')).display!=='none' && !document.querySelector('.mobile-toc').open),'Native no-script outline failed');
   await send('Emulation.setScriptExecutionDisabled',{value:false});
+  await load('/engineering/tensor-inplace/',390);
+  await send('Browser.grantPermissions',{origin:root,permissions:['clipboardReadWrite','clipboardSanitizedWrite']});
+  await evaluate(()=>document.querySelector('.md-clipboard').scrollIntoView({block:'center'}));
+  const copy=await evaluate(()=>{const b=document.querySelector('.md-clipboard'),r=b.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};});
+  await send('Input.dispatchMouseEvent',{type:'mousePressed',...copy,button:'left',clickCount:1});
+  await send('Input.dispatchMouseEvent',{type:'mouseReleased',...copy,button:'left',clickCount:1});await delay(200);
+  const clipboard=await evaluate(async()=>{const b=document.querySelector('.md-clipboard'),source=document.querySelector(b.dataset.clipboardTarget);return {actual:(await navigator.clipboard.readText()).trim(),expected:source.innerText.trim(),target:b.dataset.clipboardTarget};});
+  assert(clipboard.actual.replace(/\r\n/g,'\n')===clipboard.expected.replace(/\r\n/g,'\n'),'Code copy clipboard contents differ: '+JSON.stringify(clipboard));
+  await load('/',390);
+  await evaluate(()=>document.querySelector('label[for="__drawer"] .header-control-focus').focus());
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'});
+  await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});await delay(300);
+  const drawerState=await evaluate(()=>({checked:document.getElementById('__drawer').checked,hasPaper:[...document.querySelectorAll('.md-sidebar--primary a')].some(a=>a.innerText.includes('论文阅读')),active:document.activeElement.outerHTML.slice(0,300)}));
+  assert(drawerState.checked && drawerState.hasPaper,'Mobile navigation did not open: '+JSON.stringify(drawerState));
+  await capture('mobile-navigation-390');
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Escape',code:'Escape',windowsVirtualKeyCode:27});
+  assert(await evaluate(()=>!document.getElementById('__drawer').checked),'Mobile navigation did not close');
+  await evaluate(()=>document.querySelector('label[for="__palette_1"] .header-control-focus').focus());
+  await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'});
+  await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});await delay(100);
+  assert(await evaluate(()=>document.body.dataset.mdColorScheme==='slate' && document.activeElement.closest('label').htmlFor==='__palette_0'),'Keyboard theme control failed');
   assert(!errors.length,'Browser exceptions: '+errors.join(','));
   await rm(path.join(artifacts,'failure.txt'),{force:true});
-  await writeFile(path.join(artifacts,'report.json'),JSON.stringify({checks,homeTransfer,keyboard:true,search:true,themeControl:true,pointerMotion:true,idleStatic:true,touchFormation:true,buttonHover:true,reducedMotion:true,noScript:true,verticalTouchScroll:option('--only')!=='interaction',errors},null,2));
+  await writeFile(path.join(artifacts,'report.json'),JSON.stringify({checks,homeTransfer,keyboard:true,search:true,themeControl:true,codeCopy:true,mobileNav:true,researchPaths:true,idleStatic:true,buttonHover:true,reducedMotion:true,noScript:true,verticalTouchScroll:option('--only')!=='interaction',errors},null,2));
   console.log('PASS: real-browser layout, TOC, math, table, themes, images, search and fallbacks.');
   await send('Target.closeTarget',{targetId:target.id});
 }catch(error){await writeFile(path.join(artifacts,'failure.txt'),String(error.stack));throw error;}

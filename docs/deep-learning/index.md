@@ -5,11 +5,17 @@ hide:
 - toc
 layout: collection
 ---
-# 理论基础
+<div class="collection-intro" markdown>
+
+# 理论基础 { #_1 }
 
 把公式、直觉和代码放在一起。从回归开始，逐步建立理解神经网络与大模型的基础。
 
-## 一条学习路径
+</div>
+
+## 一条学习路径 { #_2 }
+
+<div class="learning-path" markdown>
 
 1. [线性回归](Linear_Regression.md)：模型、损失函数与训练循环。
 2. [Softmax 回归](Softmax_Regression.md)：从预测数值走向分类。
@@ -19,8 +25,14 @@ layout: collection
 6. [注意力机制](attention.md)：理解信息的选择与聚合。
 7. [深度学习计算](base.md)：补齐模块、参数、序列化与设备管理。
 
-## 延伸与实践
+</div>
+
+<div class="collection-brief" markdown>
+
+## 延伸与实践 { #_3 }
 
 - [计算机视觉学习路线](cv-roadmap.md)：从 2D 基础走到 3D、视频、多模态与具身视觉，并用短项目试方向。
 - [张量维度与求和](../engineering/tensor-operations.md)：补充代码中的形状与运算细节。
 - [Tensor 原地操作与内存](../engineering/tensor-inplace.md)：理解 PyTorch 中的对象与存储。
+
+</div>
