@@ -110,4 +110,4 @@ TODO
 
 ---
 
-**继续阅读**：[课程目录](../index.md) · [返回本周作业说明](assignment.md)
+**继续阅读**：[本周作业说明](assignment.md) · [课程目录](../index.md) · [下一周：编写一个 Skill](../week3/assignment.md)

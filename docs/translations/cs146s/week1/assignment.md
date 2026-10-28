@@ -179,4 +179,4 @@ mitmweb --listen-host 127.0.0.1 --listen-port 58888 \
 
 ---
 
-**继续阅读**：[课程目录](../index.md) · [本周作答模板](writeup.md) · [下一周：构建 MCP 服务器](../week2/assignment.md)
+**继续阅读**：[本周作答模板](writeup.md) · [课程目录](../index.md) · [下一周：构建 MCP 服务器](../week2/assignment.md)

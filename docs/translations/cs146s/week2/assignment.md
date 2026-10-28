@@ -101,4 +101,4 @@ date: '2026-10-27'
 
 ---
 
-**继续阅读**：[课程目录](../index.md) · [本周作答模板](writeup.md) · [下一周：编写一个 Skill](../week3/assignment.md)
+**继续阅读**：[本周作答模板](writeup.md) · [课程目录](../index.md) · [下一周：编写一个 Skill](../week3/assignment.md)

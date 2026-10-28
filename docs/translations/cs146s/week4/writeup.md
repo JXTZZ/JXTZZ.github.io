@@ -78,4 +78,4 @@ date: '2026-10-27'
 
 ---
 
-**继续阅读**：[课程目录](../index.md) · [返回本周作业说明](assignment.md)
+**继续阅读**：[本周作业说明](assignment.md) · [课程目录](../index.md) · [下一周：评估 Agent 就绪度](../week5/assignment.md)

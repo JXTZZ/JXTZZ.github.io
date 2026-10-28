@@ -106,4 +106,4 @@ date: '2026-10-27'
 
 ---
 
-**继续阅读**：[课程目录](../index.md) · [本周作答模板](writeup.md) · [下一周：评估 Agent 就绪度](../week5/assignment.md)
+**继续阅读**：[本周作答模板](writeup.md) · [课程目录](../index.md) · [下一周：评估 Agent 就绪度](../week5/assignment.md)

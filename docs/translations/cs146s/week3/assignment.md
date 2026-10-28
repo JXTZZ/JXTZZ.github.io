@@ -112,4 +112,4 @@ Skill 用来保存可重复执行的流程，也就是那些你原本每次都�
 
 ---
 
-**继续阅读**：[课程目录](../index.md) · [本周作答模板](writeup.md) · [下一周：让仓库适合 Agent 使用](../week4/assignment.md)
+**继续阅读**：[本周作答模板](writeup.md) · [课程目录](../index.md) · [下一周：让仓库适合 Agent 使用](../week4/assignment.md)
