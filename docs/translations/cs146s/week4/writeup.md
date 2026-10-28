@@ -16,7 +16,7 @@ date: '2026-10-27'
 <div class="translation-meta" markdown>
 **课程** [CS146S · The Modern Software Developer](https://themodernsoftware.dev)
 
-**原文版本** [df18839](https://github.com/mihail911/modern-software-dev-assignments/tree/df18839a8174ca57edad89c03948bd295459c9c0)
+**原文版本** [对应版本](https://github.com/mihail911/modern-software-dev-assignments/tree/df18839a8174ca57edad89c03948bd295459c9c0)
 
 **对照阅读** [英文作答模板](https://github.com/mihail911/modern-software-dev-assignments/blob/df18839a8174ca57edad89c03948bd295459c9c0/week4/writeup.md)
 

@@ -26,6 +26,7 @@ Desktop.ini
 
 # Unpublished notes (also excluded from the site in mkdocs.yml)
 /docs/journal/idea/
+/docs/journal/2026-10-27.md
 /docs/papers/human-depth-ambiguity.md
 
 # Local research tooling

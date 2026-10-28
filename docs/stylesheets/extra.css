@@ -2,7 +2,7 @@
 :root {
   --md-text-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
   --md-code-font: "SFMono-Regular", "Cascadia Code", Consolas, monospace;
-  --font-body: 17px; --font-small: 14px; --font-label: 12px;
+  --font-body: 17px; --font-small: 16px; --font-label: 14px;
   --space-1: 6px; --space-2: 12px; --space-3: 20px; --space-4: 32px;
   --radius-small: 12px; --radius-card: 24px;
 }
@@ -24,7 +24,7 @@
 }
 .md-header { color: var(--md-default-fg-color); background: var(--header-surface); backdrop-filter: blur(20px); box-shadow: none; border-bottom: 1px solid var(--note-border); }
 .md-header__inner { height: 64px; }
-.md-header__topic { font-weight: 650; letter-spacing: -.02em; }
+.md-header__topic { font-weight: 600; letter-spacing: -.01em; }
 .header-home-link { color: inherit; }
 .header-home-link:hover { color: var(--md-typeset-a-color); }
 .md-header__button { min-width: 44px; min-height: 44px; margin: 0; padding: 10px; }
@@ -44,7 +44,7 @@
 .md-sidebar--secondary { order: -1; }
 .md-content__inner { padding-bottom: 48px; }
 .md-typeset { font-size: var(--font-body); line-height: 1.85; }
-.md-typeset h1, .md-typeset h2, .md-typeset h3 { color: var(--md-default-fg-color); font-weight: 650; letter-spacing: -.025em; }
+.md-typeset h1, .md-typeset h2, .md-typeset h3 { color: var(--md-default-fg-color); font-weight: 600; letter-spacing: -.015em; }
 .md-typeset h1 { font-size: 36px; line-height: 1.4; margin: 20px 0; }
 .md-typeset h2 { font-size: 28px; line-height: 1.45; margin-top: 1.8em; }
 .md-typeset h3 { font-size: 22px; line-height: 1.5; }
@@ -70,7 +70,7 @@
 .md-typeset .md-button--primary:active { filter: brightness(.9); }
 .quiet-link, .text-link { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--font-small); font-weight: 500; }
 .quiet-link:hover, .text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
-.eyebrow, .reader-kicker { display: inline-block; font-size: var(--font-label); font-weight: 600; letter-spacing: .12em; color: var(--md-default-fg-color--light); line-height: 1.6; }
+.eyebrow, .reader-kicker { display: inline-block; font-size: var(--font-label); font-weight: 600; letter-spacing: .04em; color: var(--md-default-fg-color--light); line-height: 1.6; }
 .gradient-text { color: var(--gradient-start); background: linear-gradient(100deg,var(--gradient-start),var(--gradient-end)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .hero-actions p { display: flex; gap: 20px; align-items: center; justify-content: center; flex-wrap: wrap; }
 .section-heading { margin: 28px 0 16px; }

@@ -77,7 +77,7 @@ layout: collection
 <div class="translation-note" markdown>
 ### 关于这份翻译
 
-由 LoTusY 整理的个人中文译稿，课程与作业版权归原作者所有。译文依据原作业仓库的 `df18839` 版本，保留命令、评分标准和作答模板；正式选课和提交要求以课程方发布的内容为准。
+由 LoTusY 整理的个人中文译稿，课程与作业版权归原作者所有。译文依据原作业仓库整理，保留命令、评分标准和作答模板；正式选课和提交要求以课程方发布的内容为准。
 
 [课程主页](https://themodernsoftware.dev) · [原作业仓库](https://github.com/mihail911/modern-software-dev-assignments) · [对应原文版本](https://github.com/mihail911/modern-software-dev-assignments/tree/df18839a8174ca57edad89c03948bd295459c9c0) · [译稿问题反馈](https://github.com/JXTZZ/JXTZZ.github.io/issues)
 </div>

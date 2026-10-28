@@ -5,6 +5,7 @@ site_author: LoTusY
 site_dir: .build/site
 exclude_docs: |
   /journal/idea/
+  /journal/2026-10-27.md
   /papers/human-depth-ambiguity.md
 hooks:
   - scripts/site_hooks.py
