@@ -1,6 +1,0 @@
-/* Keep the course outline with the article instead of at the edge of the screen. */
-@media (min-width: 960px) {
-  .md-sidebar--secondary { display: none !important; }
-  .md-content__inner { max-width: 860px; margin-inline: auto; }
-  .md-typeset details.mobile-toc { display: block; margin: 12px 0 24px; }
-}

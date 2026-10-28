@@ -6,9 +6,6 @@
   <link rel="stylesheet" href="{{ 'stylesheets/extra.css' | url }}?v={{ config.extra.site_version }}">
   {% if page and page.meta.layout == 'article' %}
     <link rel="stylesheet" href="{{ 'stylesheets/reader.css' | url }}?v={{ config.extra.site_version }}">
-    {% if page.file.src_uri.startswith('translations/cs146s/') %}
-      <link rel="stylesheet" href="{{ 'stylesheets/cs146s-reader.css' | url }}?v={{ config.extra.site_version }}">
-    {% endif %}
     <script defer src="{{ 'javascripts/reader.js' | url }}?v={{ config.extra.site_version }}"></script>
   {% endif %}
   {% if page and page.url.startswith('translations/') %}

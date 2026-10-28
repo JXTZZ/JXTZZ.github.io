@@ -110,7 +110,7 @@ try {
     assert(state.contrast.every(ratio=>ratio>=4.5),'Reading colors below WCAG AA: '+JSON.stringify(state.contrast));
     assert(state.images.every(img=>img.dimensions && (img.loaded || img.lazy)),'Image dimensions/decoding: '+route);
     assert(state.brand===root+'/','Header name must return home');
-    const inlineToc=width<960 || (route.startsWith('/translations/cs146s/') && route!=='/translations/cs146s/');
+    const inlineToc=width<960;
     if(state.tocHeight!==undefined)assert(inlineToc?state.mobileToc && !state.tocOpen && state.tocAfterTitle && state.tocHeight<=64 && !state.desktopToc:!state.mobileToc && state.desktopToc && state.tocLeft,'Outline layout: '+JSON.stringify(state));
     checks.push({route,width,theme,...state});
     if(route==='/' && !homeTransfer) {
@@ -190,16 +190,23 @@ try {
     }
   }
   await load('/translations/robotic-manipulation/spatial-algebra/',390);
-  for(const width of [320,1440]) {
-    await load('/translations/cs146s/week1/assignment/',width);
-    const inline=await evaluate(()=>{const toc=document.querySelector('.mobile-toc'),article=document.querySelector('article'),r=toc.getBoundingClientRect(),a=article.getBoundingClientRect();return {inside:r.left>=a.left-1 && r.right<=a.right+1,links:toc.querySelectorAll('a').length};});
-    assert(inline.inside && inline.links>0,'CS146S outline must sit inside the article: '+JSON.stringify(inline));
-    await evaluate(()=>document.querySelector('.mobile-toc summary').focus());await send('Page.bringToFront');
-    await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'});
-    await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
-    assert(await evaluate(()=>document.querySelector('.mobile-toc').open),'CS146S outline must open by keyboard');
-    const hash=await evaluate(()=>{const link=document.querySelector('.mobile-toc a');const hash=link.hash;link.click();return hash;});await delay(180);
-    assert(await evaluate(hash=>location.hash===hash && !document.querySelector('.mobile-toc').open && document.activeElement.id===decodeURIComponent(hash.slice(1)),[hash]),'CS146S outline navigation failed');
+  const cs146sArticles=['overview/',...[1,2,3,4,5].flatMap(week=>['assignment','writeup'].map(kind=>'week'+week+'/'+kind+'/'))];
+  for(const article of cs146sArticles)for(const width of [320,959,960,1440])for(const theme of ['default','slate']) {
+    await load('/translations/cs146s/'+article,width,theme);
+    if(width<960) {
+      const inline=await evaluate(()=>{const toc=document.querySelector('.mobile-toc'),article=document.querySelector('article'),r=toc.getBoundingClientRect(),a=article.getBoundingClientRect();return {inside:r.left>=a.left-1 && r.right<=a.right+1,links:toc.querySelectorAll('a').length};});
+      assert(inline.inside && inline.links>0,'CS146S mobile outline must sit inside the article: '+JSON.stringify(inline));
+      await evaluate(()=>document.querySelector('.mobile-toc summary').focus());await send('Page.bringToFront');
+      await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'});
+      await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+      assert(await evaluate(()=>document.querySelector('.mobile-toc').open),'CS146S mobile outline must open by keyboard');
+      const hash=await evaluate(()=>{const link=document.querySelector('.mobile-toc a');const hash=link.hash;link.click();return hash;});await delay(180);
+      assert(await evaluate(hash=>location.hash===hash && !document.querySelector('.mobile-toc').open && document.activeElement.id===decodeURIComponent(hash.slice(1)),[hash]),'CS146S mobile outline navigation failed');
+    } else {
+      const hash=await evaluate(()=>{const link=document.querySelector('.md-sidebar--secondary a[href^="#"]');const hash=link.hash;link.click();return hash;});
+      assert(await evaluate(hash=>location.hash===hash && !!document.getElementById(decodeURIComponent(hash.slice(1))),[hash]),'CS146S left outline navigation failed');
+    }
+    if(['overview/','week1/assignment/'].includes(article) && [320,1440].includes(width) && theme==='default')await capture('cs146s-'+article.replaceAll('/','-')+width);
   }
   await load('/translations/robotic-manipulation/introduction/',390);
   await evaluate(()=>document.querySelector('.plate-sequence img').scrollIntoView());
