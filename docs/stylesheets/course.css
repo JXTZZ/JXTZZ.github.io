@@ -31,11 +31,13 @@
 .course-chapter__number { flex: 0 0 24px; font-size: var(--font-label); color: var(--md-typeset-a-color); font-variant-numeric: tabular-nums; }
 .course-chapter__title { min-width: 0; font-size: var(--font-small); line-height: 1.65; font-weight: 500; }
 .course-chapter__arrow { margin-left: auto; color: var(--md-typeset-a-color); }
-.md-typeset h2.course-week-title { font-size: 22px; line-height: 1.5; margin: 40px 0 8px; }
-.course-week-title + p { margin: 0 0 16px; color: var(--md-default-fg-color--light); }
-.course-catalog--weekly { max-width: 640px; }
-.course-catalog--weekly .course-chapter { min-height: 52px; padding: 12px 16px; }
-.course-catalog--weekly .course-chapter__title { font-weight: 500; }
+.course-catalog--weeks { margin-top: 24px; }
+.course-week { display: flex; flex-direction: column; min-width: 0; padding: 20px; border-radius: var(--radius-small); background: var(--note-surface); }
+.course-week__heading { display: flex; align-items: baseline; gap: 16px; }
+.md-typeset .course-week h2 { margin: 0; font-size: 18px; line-height: 1.5; }
+.course-week p { margin: 8px 0 16px 40px; font-size: var(--font-small); line-height: 1.7; color: var(--md-default-fg-color--light); }
+.course-week__links { display: flex; gap: 24px; margin: auto 0 0 40px; }
+.course-week__links a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: var(--font-small); font-weight: 500; }
 .translation-note { max-width: 860px; margin: 48px 0 0; padding-top: 24px; border-top: 1px solid var(--note-border); text-align: left; }
 .translation-note h3 { font-size: 20px; }
 .translation-note p { font-size: var(--font-small); color: var(--md-default-fg-color--light); }
@@ -61,7 +63,6 @@
   .course-facts > div { padding-inline: 12px; }
   .course-facts > div:nth-child(3) { border-left: 0; }
   .course-catalog { grid-template-columns: 1fr; }
-  .course-catalog--weekly { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .course-preface { padding: 20px; gap: 16px; }
   .plate-sequence { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .translation-meta { gap: 12px; padding: 16px; }

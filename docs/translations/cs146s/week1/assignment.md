@@ -74,7 +74,7 @@ mitmweb --listen-host 127.0.0.1 --listen-port 58888 \
 }
 ```
 
-> ⚠️ **不要将这段配置写入 `~/.claude/settings.json`！** 否则，机器上所有 Claude Code 会话都会进入捕获记录；停止 `mitmweb` 后，这些会话也会无法正常连接。
+> **注意：不要将这段配置写入 `~/.claude/settings.json`！** 否则，机器上所有 Claude Code 会话都会进入捕获记录；停止 `mitmweb` 后，这些会话也会无法正常连接。
 
 ### 4. 验证配置
 
@@ -104,7 +104,7 @@ mitmweb --listen-host 127.0.0.1 --listen-port 58888 \
 
 如果 mitmweb 会话中断，可以通过 `mitmweb -r session.flows` 重新打开已保存的 `session.flows` 文件，继续分析。
 
-### ⚠️ 引用前先脱敏
+### 引用前先脱敏 { #_5 }
 
 捕获记录中包含你的源代码、文件路径和凭据。除了你有意选取、写入 `writeup.md` 的引用片段，其他内容都不应进入仓库。
 

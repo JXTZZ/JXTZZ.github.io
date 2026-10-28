@@ -110,7 +110,8 @@ try {
     assert(state.contrast.every(ratio=>ratio>=4.5),'Reading colors below WCAG AA: '+JSON.stringify(state.contrast));
     assert(state.images.every(img=>img.dimensions && (img.loaded || img.lazy)),'Image dimensions/decoding: '+route);
     assert(state.brand===root+'/','Header name must return home');
-    if(state.tocHeight!==undefined)assert(width<960?state.mobileToc && !state.tocOpen && state.tocAfterTitle && state.tocHeight<=64:!state.mobileToc && state.desktopToc && state.tocLeft,'Outline layout: '+JSON.stringify(state));
+    const inlineToc=width<960 || (route.startsWith('/translations/cs146s/') && route!=='/translations/cs146s/');
+    if(state.tocHeight!==undefined)assert(inlineToc?state.mobileToc && !state.tocOpen && state.tocAfterTitle && state.tocHeight<=64 && !state.desktopToc:!state.mobileToc && state.desktopToc && state.tocLeft,'Outline layout: '+JSON.stringify(state));
     checks.push({route,width,theme,...state});
     if(route==='/' && !homeTransfer) {
       await delay(500);
@@ -162,7 +163,7 @@ try {
       assert(await evaluate(()=>{const cards=[...document.querySelectorAll('.translation-shelf')];return cards.length>=2 && cards.every(a=>a.querySelector('.shelf-cover') && a.querySelector('.shelf-copy')) && ['robotic-manipulation/','cs146s/'].every(href=>cards.some(a=>a.getAttribute('href')===href));}),'Translation shelves must link complete course cards');
     }
     if(route==='/translations/cs146s/'){
-      assert(await evaluate(()=>{const links=new Set([...document.querySelectorAll('.course-chapter')].map(a=>a.getAttribute('href')));return [1,2,3,4,5].every(week=>['assignment','writeup'].every(kind=>links.has('week'+week+'/'+kind+'/'))) && !!document.querySelector('.course-preface[href="overview/"]');}),'CS146S course must link its README and five assignment/template pairs');
+      assert(await evaluate(()=>{const links=new Set([...document.querySelectorAll('.course-week__links a')].map(a=>a.getAttribute('href')));return [1,2,3,4,5].every(week=>['assignment','writeup'].every(kind=>links.has('week'+week+'/'+kind+'/'))) && !!document.querySelector('.course-preface[href="overview/"]');}),'CS146S course must link its README and five assignment/template pairs');
     }
     if(route.includes('pick-and-place')){
       if(width<960){
@@ -184,6 +185,17 @@ try {
     }
   }
   await load('/translations/robotic-manipulation/spatial-algebra/',390);
+  for(const width of [320,1440]) {
+    await load('/translations/cs146s/week1/assignment/',width);
+    const inline=await evaluate(()=>{const toc=document.querySelector('.mobile-toc'),article=document.querySelector('article'),r=toc.getBoundingClientRect(),a=article.getBoundingClientRect();return {inside:r.left>=a.left-1 && r.right<=a.right+1,links:toc.querySelectorAll('a').length};});
+    assert(inline.inside && inline.links>0,'CS146S outline must sit inside the article: '+JSON.stringify(inline));
+    await evaluate(()=>document.querySelector('.mobile-toc summary').focus());await send('Page.bringToFront');
+    await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Enter',code:'Enter',windowsVirtualKeyCode:13,text:'\r'});
+    await send('Input.dispatchKeyEvent',{type:'keyUp',key:'Enter',code:'Enter',windowsVirtualKeyCode:13});
+    assert(await evaluate(()=>document.querySelector('.mobile-toc').open),'CS146S outline must open by keyboard');
+    const hash=await evaluate(()=>{const link=document.querySelector('.mobile-toc a');const hash=link.hash;link.click();return hash;});await delay(180);
+    assert(await evaluate(hash=>location.hash===hash && !document.querySelector('.mobile-toc').open && document.activeElement.id===decodeURIComponent(hash.slice(1)),[hash]),'CS146S outline navigation failed');
+  }
   await load('/translations/robotic-manipulation/introduction/',390);
   await evaluate(()=>document.querySelector('.plate-sequence img').scrollIntoView());
   await evaluate(()=>Promise.all([...document.querySelectorAll('.plate-sequence img')].map(img=>img.decode())));
