@@ -33,10 +33,14 @@ try {
     const profile=path.join(artifacts,'chrome-'+process.pid+'-'+Date.now());
     await mkdir(profile,{recursive:true});
     const executable=process.env.CHROME_BIN || (process.platform==='win32'?'C:/Program Files/Google/Chrome/Application/chrome.exe':'google-chrome');
-    browser=spawn(executable,['--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--remote-debugging-port=0','--user-data-dir='+profile,...(process.platform==='linux'?['--no-sandbox']:[]),'about:blank'],{stdio:'ignore',windowsHide:true});
-    let launchError;browser.on('error',error=>{launchError=error;});
-    for(let i=0;i<100;i++){if(launchError)throw launchError;try{cdp='http://127.0.0.1:'+(await readFile(path.join(profile,'DevToolsActivePort'),'utf8')).split('\n')[0];break;}catch{await delay(100);}}
-    assert(cdp,'Chrome did not start. Set CHROME_BIN to the executable.');
+    browser=spawn(executable,['--headless=new','--disable-gpu','--no-first-run','--no-default-browser-check','--remote-debugging-port=0','--user-data-dir='+profile,...(process.platform==='linux'?['--no-sandbox','--disable-dev-shm-usage']:[]),'about:blank'],{stdio:['ignore','ignore','pipe'],windowsHide:true});
+    let launchError,launchOutput='';browser.on('error',error=>{launchError=error;});
+    browser.stderr.on('data',data=>{launchOutput=(launchOutput+data.toString()).slice(-16000);});
+    for(let i=0;i<300;i++){
+      if(launchError || browser.exitCode!==null || browser.signalCode!==null)break;
+      try{cdp='http://127.0.0.1:'+(await readFile(path.join(profile,'DevToolsActivePort'),'utf8')).split('\n')[0];break;}catch{await delay(100);}
+    }
+    assert(cdp,'Chrome failed to start within 30s: '+executable+'\n'+(launchError?.message || (browser.exitCode!==null?'Exit code: '+browser.exitCode:browser.signalCode || 'DevToolsActivePort was not created'))+'\n'+launchOutput);
   }
   target=await(await fetch(cdp+'/json/new?about:blank',{method:'PUT'})).json();
   socket=new WebSocket(target.webSocketDebuggerUrl);

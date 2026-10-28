@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+      - uses: browser-actions/setup-chrome@v2
+        id: chrome
+        with:
+          chrome-version: stable
+          install-dependencies: true
       - run: node scripts/check_ui.mjs
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
