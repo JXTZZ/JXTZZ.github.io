@@ -33,29 +33,24 @@ layout: collection
 
 <div class="course-catalog course-catalog--weeks">
 <section class="course-week" aria-labelledby="1-claude-code">
-<div class="course-week__heading"><span class="course-chapter__number" aria-hidden="true">01</span><h2 id="1-claude-code" aria-label="第 1 周 · 剖析 Claude Code 调用轨迹">剖析 Claude Code 调用轨迹</h2></div>
-<p>捕获并阅读一次真实会话，分析系统提示词、工具设计、错误恢复与上下文管理。</p>
-<div class="course-week__links"><a href="week1/assignment/" aria-label="第 1 周作业说明">作业说明 <span aria-hidden="true">→</span></a><a href="week1/writeup/" aria-label="第 1 周作答模板">作答模板 <span aria-hidden="true">→</span></a></div>
+<h2 id="1-claude-code">第 1 周 · 剖析 Claude Code 调用轨迹</h2>
+<div class="course-week__links"><a class="course-chapter" href="week1/assignment/" aria-label="第 1 周作业说明">作业说明 <span class="course-chapter__arrow" aria-hidden="true">→</span></a><a class="course-chapter" href="week1/writeup/" aria-label="第 1 周作答模板">作答模板 <span class="course-chapter__arrow" aria-hidden="true">→</span></a></div>
 </section>
 <section class="course-week" aria-labelledby="2-mcp">
-<div class="course-week__heading"><span class="course-chapter__number" aria-hidden="true">02</span><h2 id="2-mcp" aria-label="第 2 周 · 构建 MCP 服务器">构建 MCP 服务器</h2></div>
-<p>为第三方 API 设计可串联的工具，处理 OAuth，并观察 Agent 如何使用接口。</p>
-<div class="course-week__links"><a href="week2/assignment/" aria-label="第 2 周作业说明">作业说明 <span aria-hidden="true">→</span></a><a href="week2/writeup/" aria-label="第 2 周作答模板">作答模板 <span aria-hidden="true">→</span></a></div>
+<h2 id="2-mcp">第 2 周 · 构建 MCP 服务器</h2>
+<div class="course-week__links"><a class="course-chapter" href="week2/assignment/" aria-label="第 2 周作业说明">作业说明 <span class="course-chapter__arrow" aria-hidden="true">→</span></a><a class="course-chapter" href="week2/writeup/" aria-label="第 2 周作答模板">作答模板 <span class="course-chapter__arrow" aria-hidden="true">→</span></a></div>
 </section>
 <section class="course-week" aria-labelledby="3-skill">
-<div class="course-week__heading"><span class="course-chapter__number" aria-hidden="true">03</span><h2 id="3-skill" aria-label="第 3 周 · 编写一个 Skill">编写一个 Skill</h2></div>
-<p>把包含判断环节的重复工作整理成 Skill，检验触发条件与端到端执行。</p>
-<div class="course-week__links"><a href="week3/assignment/" aria-label="第 3 周作业说明">作业说明 <span aria-hidden="true">→</span></a><a href="week3/writeup/" aria-label="第 3 周作答模板">作答模板 <span aria-hidden="true">→</span></a></div>
+<h2 id="3-skill">第 3 周 · 编写一个 Skill</h2>
+<div class="course-week__links"><a class="course-chapter" href="week3/assignment/" aria-label="第 3 周作业说明">作业说明 <span class="course-chapter__arrow" aria-hidden="true">→</span></a><a class="course-chapter" href="week3/writeup/" aria-label="第 3 周作答模板">作答模板 <span class="course-chapter__arrow" aria-hidden="true">→</span></a></div>
 </section>
 <section class="course-week" aria-labelledby="4-agent">
-<div class="course-week__heading"><span class="course-chapter__number" aria-hidden="true">04</span><h2 id="4-agent" aria-label="第 4 周 · 让仓库适合 Agent 使用">让仓库适合 Agent 使用</h2></div>
-<p>探索陌生代码库，编写有针对性的 AGENTS.md 或 CLAUDE.md，并在真实任务中试用。</p>
-<div class="course-week__links"><a href="week4/assignment/" aria-label="第 4 周作业说明">作业说明 <span aria-hidden="true">→</span></a><a href="week4/writeup/" aria-label="第 4 周作答模板">作答模板 <span aria-hidden="true">→</span></a></div>
+<h2 id="4-agent">第 4 周 · 让仓库适合 Agent 使用</h2>
+<div class="course-week__links"><a class="course-chapter" href="week4/assignment/" aria-label="第 4 周作业说明">作业说明 <span class="course-chapter__arrow" aria-hidden="true">→</span></a><a class="course-chapter" href="week4/writeup/" aria-label="第 4 周作答模板">作答模板 <span class="course-chapter__arrow" aria-hidden="true">→</span></a></div>
 </section>
 <section class="course-week" aria-labelledby="5-agent">
-<div class="course-week__heading"><span class="course-chapter__number" aria-hidden="true">05</span><h2 id="5-agent" aria-label="第 5 周 · 评估 Agent 就绪度">评估 Agent 就绪度</h2></div>
-<p>对照三个开源仓库的评估结果，分析改进方向，以及评估框架本身的局限。</p>
-<div class="course-week__links"><a href="week5/assignment/" aria-label="第 5 周作业说明">作业说明 <span aria-hidden="true">→</span></a><a href="week5/writeup/" aria-label="第 5 周作答模板">作答模板 <span aria-hidden="true">→</span></a></div>
+<h2 id="5-agent">第 5 周 · 评估 Agent 就绪度</h2>
+<div class="course-week__links"><a class="course-chapter" href="week5/assignment/" aria-label="第 5 周作业说明">作业说明 <span class="course-chapter__arrow" aria-hidden="true">→</span></a><a class="course-chapter" href="week5/writeup/" aria-label="第 5 周作答模板">作答模板 <span class="course-chapter__arrow" aria-hidden="true">→</span></a></div>
 </section>
 </div>
 

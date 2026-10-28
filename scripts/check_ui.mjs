@@ -164,6 +164,11 @@ try {
     }
     if(route==='/translations/cs146s/'){
       assert(await evaluate(()=>{const links=new Set([...document.querySelectorAll('.course-week__links a')].map(a=>a.getAttribute('href')));return [1,2,3,4,5].every(week=>['assignment','writeup'].every(kind=>links.has('week'+week+'/'+kind+'/'))) && !!document.querySelector('.course-preface[href="overview/"]');}),'CS146S course must link its README and five assignment/template pairs');
+      assert(await evaluate(()=>[...document.querySelectorAll('.course-week')].length===5 && [...document.querySelectorAll('.course-week')].every(week=>{
+        const links=week.querySelector('.course-week__links'),buttons=[...links.querySelectorAll('a')];
+        const container=links.getBoundingClientRect(),article=week.closest('article').getBoundingClientRect(),a=buttons[0]?.getBoundingClientRect(),b=buttons[1]?.getBoundingClientRect();
+        return !week.querySelector('p') && buttons.length===2 && Math.abs(container.width-article.width)<2 && Math.abs(a.width-b.width)<2 && Math.abs(a.left-container.left)<2 && Math.abs(b.right-container.right)<2 && Math.abs(a.top-b.top)<2;
+      })),'CS146S weekly links must fill the row equally without descriptions');
     }
     if(route.includes('pick-and-place')){
       if(width<960){
