@@ -1,6 +1,6 @@
 /* Article outlines, wide math, metadata and captions. */
 .reader-kicker { margin: 8px 0 0; }
-.article-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: -4px 0 16px; font-size: var(--font-label); color: var(--md-default-fg-color--light); }
+.article-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: -4px 0 24px; font-size: var(--font-label); line-height: 1.6; color: var(--md-default-fg-color--light); }
 .md-typeset details.mobile-toc { display: none; }
 .chapter-contents { margin: 24px 0; }
 .md-typeset .mobile-toc, .md-typeset .chapter-contents { background: var(--note-surface); border: 1px solid var(--note-border); box-shadow: none; }
@@ -12,7 +12,7 @@
 .mobile-toc nav > ul { padding-left: 0; }
 .mobile-toc li { margin: 0; }
 .mobile-toc a { display: block; min-height: 44px; padding: 8px 0; line-height: 1.65; }
-.mobile-toc a[aria-current] { font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+.mobile-toc a[aria-current] { font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .chapter-contents > h2, .chapter-contents > ul { margin: 16px !important; }
 .md-typeset div.arithmatex { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
 .md-typeset .md-typeset__scrollwrap { overflow-x: auto; }

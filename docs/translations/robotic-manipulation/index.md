@@ -8,9 +8,9 @@ hide:
 ---
 
 <div class="course-hero" markdown>
-<span class="eyebrow">MIT / ROBOTIC MANIPULATION</span>
+<span class="eyebrow">麻省理工学院 · Robotic Manipulation</span>
 
-# 机器人操作。<br><span class="gradient-text">从理解，到行动。</span>
+# 机器人操作
 
 <p class="course-subtitle">感知、规划与控制 · 中文讲义</p>
 
@@ -24,7 +24,7 @@ hide:
 
 <div class="course-facts"><div><span>原著作者</span><strong>Russ Tedrake</strong></div><div><span>课程</span><strong>MIT 6.4210 / 6.4212</strong></div><div><span>全书中文译稿</span><strong>12 章正文 · 5 篇附录</strong></div><div><span>原文版本范围</span><strong>2026.09–10</strong></div></div>
 
-<div class="section-heading"><span class="eyebrow">READ IN CHINESE</span><h2>全书，现在用中文读。</h2><p>前言、12 章正文与 5 篇附录，按原书顺序阅读。</p></div>
+<div class="section-heading"><h2>课程内容</h2><p>前言、12 章正文与 5 篇附录，按原书顺序阅读。</p></div>
 
 <a class="course-preface" href="preface/"><span class="chapter-number">00</span><span><strong>全书目录与前言</strong><small>了解全书脉络，或直接跳转到各章的主要小节。</small></span><span class="course-chapter__arrow" aria-hidden="true">→</span></a>
 

@@ -91,9 +91,9 @@ def list_html(records, page, *, name='文章列表'):
         tags = ''.join(f'<span class="article-tag">{escape(tag)}</span>' for tag in record['tags'][:3])
         rows.append(
             f'<li><a class="article-row" data-section="{record["section"]}" href="{escape(href, quote=True)}">'
-            f'<div class="article-row__meta"><span class="article-section">{SECTIONS[record["section"]]}</span>{time}</div>'
             f'<span class="article-row__title">{escape(record["title"])}</span>'
             f'<span class="article-row__description">{escape(record["description"])}</span>'
+            f'<div class="article-row__meta"><span class="article-section">{SECTIONS[record["section"]]}</span>{time}</div>'
             f'<span class="article-row__tags">{tags}</span><span class="article-row__arrow" aria-hidden="true">↗</span></a></li>'
         )
     return f'<ul class="article-list" aria-label="{escape(name, quote=True)}">' + ''.join(rows) + '</ul>'
