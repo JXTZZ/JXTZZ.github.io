@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="710" height="226" viewBox="0 0 710 226">
+<rect width="710" height="226" rx="10" fill="#fff"/>
+<rect x="180" y="20" width="220" height="186" rx="8" fill="#edf4fa" stroke="#294b68" stroke-width="2"/>
+<text x="290.0" y="119.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="18" fill="#18334a">GraspSelector</text>
+<text x="128" y="52.0" text-anchor="end" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#263746">cloud0_W</text>
+<path d="M138 47.0 H172" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M180 47.0 L171 42.0 L171 52.0 Z" fill="#294b68"/>
+<text x="128" y="96.0" text-anchor="end" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#263746">cloud1_W</text>
+<path d="M138 91.0 H172" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M180 91.0 L171 86.0 L171 96.0 Z" fill="#294b68"/>
+<text x="128" y="140.0" text-anchor="end" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#263746">cloud2_W</text>
+<path d="M138 135.0 H172" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M180 135.0 L171 130.0 L171 140.0 Z" fill="#294b68"/>
+<text x="128" y="184.0" text-anchor="end" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#263746">body_poses</text>
+<path d="M138 179.0 H172" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M180 179.0 L171 174.0 L171 184.0 Z" fill="#294b68"/>
+<text x="452" y="118.0" text-anchor="start" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#263746">grasp_selection (cost, X_WG)</text>
+<path d="M400 113.0 H434" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M442 113.0 L433 108.0 L433 118.0 Z" fill="#294b68"/>
+</svg>

@@ -1,0 +1,4049 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Hello-Agents 学习笔记。怎样保留经历，并从文档中取回证据？">
+      
+      
+        <meta name="author" content="LoTusY">
+      
+      
+        <link rel="canonical" href="https://jxtzz.github.io/engineering/hello-agents/memory-and-retrieval/">
+      
+      
+        <link rel="prev" href="../build-your-own-framework/">
+      
+      
+        <link rel="next" href="../context-engineering/">
+      
+      
+      <link rel="icon" href="../../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>第 8 章 · 记忆与检索 - LoTusY</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  <meta name="site-version" content="a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+  <link rel="stylesheet" href="../../../stylesheets/tokens.css?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+  <link rel="stylesheet" href="../../../stylesheets/extra.css?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+  <script defer src="../../../javascripts/navigation.js?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d"></script>
+  
+    <link rel="stylesheet" href="../../../stylesheets/reader.css?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+    <script defer src="../../../javascripts/reader.js?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d"></script>
+  
+  
+  
+  
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#8" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="LoTusY" class="md-header__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <a class="md-ellipsis header-home-link" href="../../.." aria-label="LoTusY · 回到首页" title="LoTusY · 回到首页">
+            LoTusY
+          </a>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第 8 章 · 记忆与检索
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../translations/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  课程翻译
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../papers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  论文阅读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../deep-learning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  理论基础
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工程实践
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../journal/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  学习日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="LoTusY" class="md-nav__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../../assets/logo.svg" alt="logo">
+
+    </a>
+    LoTusY
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../translations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    课程翻译
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            课程翻译
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../translations/robotic-manipulation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    机器人操作 · 中文讲义
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            机器人操作 · 中文讲义
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    全书目录与前言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 1 章 · 引言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 2 章 · 先给你准备一个机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/pick-and-place/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 3 章 · 基本的抓取与放置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/pose-estimation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 4 章 · 基于几何的位姿估计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/bin-picking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 5 章 · 箱内抓取
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/motion-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 6 章 · 运动规划
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/mobile-manipulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 7 章 · 移动操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/manipulator-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 8 章 · 机械臂控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/object-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 9 章 · 物体检测与分割
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/deep-perception/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 10 章 · 面向操作任务的深度感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 11 章 · 强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/soft-robots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 12 章 · 软体机器人与触觉感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/spatial-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 A · 空间代数
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/drake/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 B · Drake
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/drakegym/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 C · DrakeGym 环境
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/manipulation-station/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 D · 搭建自己的机器人操作工作站
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/robotic-manipulation/miscellaneous/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 E · 其他事项
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../translations/cs146s/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    CS146S · 现代软件开发者
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            CS146S · 现代软件开发者
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    课程说明与环境准备
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 1 周 · 调用轨迹分析
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            第 1 周 · 调用轨迹分析
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week1/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week1/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_4" id="__nav_2_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 2 周 · MCP 服务器
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            第 2 周 · MCP 服务器
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week2/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week2/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_5" id="__nav_2_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 3 周 · 编写 Skill
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            第 3 周 · 编写 Skill
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week3/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week3/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_6" id="__nav_2_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 4 周 · 仓库指引
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            第 4 周 · 仓库指引
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week4/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week4/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_7" id="__nav_2_3_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 5 周 · Agent 就绪度
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            第 5 周 · Agent 就绪度
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week5/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../translations/cs146s/week5/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../papers/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/action100m/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Action100M：亿级层次视频动作数据
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/race/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RACE：让 VLA 更可靠地执行长动作片段
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/ghost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GHOST：单目视频中的手与物体交互重建
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/egoinfinity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EgoInfinity：互联网视频到机器人动作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/orion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ORION：单视频开放世界模仿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/openvla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenVLA：视觉语言动作模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/octo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octo：通用机器人策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/dp3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3D Diffusion Policy：三维策略学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/spot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：从人类演示学习物体轨迹
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/aloha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ALOHA Unleashed：双臂灵巧操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/spot-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：概念与阅读随记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/robotok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboTok：互联网示范检索
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/pi0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    π₀：Flow Matching 与机器人控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/lit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LIT：视觉—动作分布外泛化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文资料库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../deep-learning/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    理论基础
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            理论基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Linear_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Softmax_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Softmax 回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/MLP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多层感知机
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Computational_Graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算图与反向传播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Weight_Decay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    权重衰减
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Dropout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dropout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    注意力机制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深度学习计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/cv-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机视觉学习路线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    工程实践
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            工程实践
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tensor-inplace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tensor 原地操作与内存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tensor-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    张量维度与求和
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../image-to-arkts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Image-to-ArkTS 项目记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Hello-Agents 学习笔记
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Hello-Agents 学习笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 1 章 · 初识智能体
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 2 章 · 智能体发展史
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 3 章 · 大语言模型基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classic-agent-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 4 章 · 智能体经典范式构建
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../low-code-platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 5 章 · 低代码平台
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agent-frameworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 6 章 · 框架开发实践
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-your-own-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 7 章 · 构建智能体框架
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    第 8 章 · 记忆与检索
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 8 章 · 记忆与检索
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      引言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#81-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.1 记忆与 RAG 分别补上什么
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.1 记忆与 RAG 分别补上什么">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#811" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.1.1 信息保存在哪里，决定了怎样再次使用
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#82" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2 记忆需要添加，也需要整理和遗忘
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.2 记忆需要添加，也需要整理和遗忘">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#821-memorytool-memorymanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2.1 MemoryTool 与 MemoryManager
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#822" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2.2 四类记忆为什么使用不同存储
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#823" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2.3 记忆条目不应只有正文
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#83-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3 RAG 有两条不同的工作流程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.3 RAG 有两条不同的工作流程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#831" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3.1 先把文档整理成可检索的片段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#832" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3.2 再根据问题取回材料
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#833" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3.3 相似检索究竟返回了什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#84" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.4 查询写法不一致时怎么办
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.4 查询写法不一致时怎么办">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#841" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.4.1 查询扩展怎样合并结果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#842-hyde" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.4.2 HyDE 为什么先写一段假设材料
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#85" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.5 示例：一个能保留学习记录的文档助手
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.5 示例：一个能保留学习记录的文档助手">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#851" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.5.1 文档问答助手怎样形成学习回顾
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      参考资料
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../context-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 9 章 · 上下文工程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../communication-protocols/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 10 章 · 智能体通信协议
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../agentic-rl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 11 章 · Agentic-RL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 12 章 · 智能体性能评估
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../travel-assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 13 章 · 智能旅行助手
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 14 章 · 深度研究智能体
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cyber-town/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 15 章 · 构建赛博小镇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project-delivery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 16 章 · 项目交付
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../journal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    学习日志
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            学习日志
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-10-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub 克隆失败排查：从认证报错定位到地址重写
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从关节角到末端位姿：正运动学与标准 DH 参数法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ReWeight 与 OpenResearch 阅读记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WSL 离线安装与 Miniconda 初始化记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从语义动作到对象交互：Show-Harness 与 ORION
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python 堆与 heapq：怎样维护当前最值
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboSPA 与 Snipaste 自启排障
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文速记与 WSL 网络配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    具身智能阅读周记：数据、空间表示与动作生成
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    关于
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      引言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#81-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.1 记忆与 RAG 分别补上什么
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.1 记忆与 RAG 分别补上什么">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#811" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.1.1 信息保存在哪里，决定了怎样再次使用
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#82" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2 记忆需要添加，也需要整理和遗忘
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.2 记忆需要添加，也需要整理和遗忘">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#821-memorytool-memorymanager" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2.1 MemoryTool 与 MemoryManager
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#822" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2.2 四类记忆为什么使用不同存储
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#823" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.2.3 记忆条目不应只有正文
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#83-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3 RAG 有两条不同的工作流程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.3 RAG 有两条不同的工作流程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#831" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3.1 先把文档整理成可检索的片段
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#832" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3.2 再根据问题取回材料
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#833" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.3.3 相似检索究竟返回了什么
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#84" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.4 查询写法不一致时怎么办
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.4 查询写法不一致时怎么办">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#841" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.4.1 查询扩展怎样合并结果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#842-hyde" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.4.2 HyDE 为什么先写一段假设材料
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#85" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.5 示例：一个能保留学习记录的文档助手
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8.5 示例：一个能保留学习记录的文档助手">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#851" class="md-nav__link">
+    <span class="md-ellipsis">
+      8.5.1 文档问答助手怎样形成学习回顾
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      参考资料
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" data-page-layout="article">
+                
+  <noscript>
+    <nav class="noscript-nav" aria-label="全站导航">
+      <a href="../../..">首页</a>
+      <a href="../../../translations/">课程翻译</a>
+      <a href="../../../papers/">论文阅读</a>
+      <a href="../../../deep-learning/">理论基础</a>
+      <a href="../../">工程实践</a>
+      <a href="../../../journal/">学习日志</a>
+      <a href="../../../about/">关于</a>
+    </nav>
+  </noscript>
+  
+                  
+
+
+  
+  
+
+
+<h1 id="8">第 8 章　记忆与检索<a class="headerlink" href="#8" title="Permanent link">&para;</a></h1><div class="article-meta"><span>日期未注明</span><span class="article-tag">Hello-Agents</span><span class="article-tag">智能体</span></div><details class="mobile-toc"><summary>本页目录<span aria-hidden="true">展开 / 收起</span></summary><nav aria-label="本页目录"><ul><li><a href="#_1">引言</a></li><li><a href="#81-rag">8.1 记忆与 RAG 分别补上什么</a><ul><li><a href="#811">8.1.1 信息保存在哪里，决定了怎样再次使用</a></li></ul></li><li><a href="#82">8.2 记忆需要添加，也需要整理和遗忘</a><ul><li><a href="#821-memorytool-memorymanager">8.2.1 MemoryTool 与 MemoryManager</a></li><li><a href="#822">8.2.2 四类记忆为什么使用不同存储</a></li><li><a href="#823">8.2.3 记忆条目不应只有正文</a></li></ul></li><li><a href="#83-rag">8.3 RAG 有两条不同的工作流程</a><ul><li><a href="#831">8.3.1 先把文档整理成可检索的片段</a></li><li><a href="#832">8.3.2 再根据问题取回材料</a></li><li><a href="#833">8.3.3 相似检索究竟返回了什么</a></li></ul></li><li><a href="#84">8.4 查询写法不一致时怎么办</a><ul><li><a href="#841">8.4.1 查询扩展怎样合并结果</a></li><li><a href="#842-hyde">8.4.2 HyDE 为什么先写一段假设材料</a></li></ul></li><li><a href="#85">8.5 示例：一个能保留学习记录的文档助手</a><ul><li><a href="#851">8.5.1 文档问答助手怎样形成学习回顾</a></li></ul></li><li><a href="#_2">参考资料</a></li></ul></nav></details>
+<p><em>Hello-Agents：从零开始构建智能体 · 章节学习笔记</em></p>
+<p><strong>原作</strong>：Datawhale Hello-Agents 项目及贡献者<br />
+<strong>原文章节</strong>：<a href="https://github.com/datawhalechina/hello-agents/blob/36f583c233ea5cee4537ef93455702b55053af18/docs/chapter8/%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E8%AE%B0%E5%BF%86%E4%B8%8E%E6%A3%80%E7%B4%A2.md">第 8 章正文</a>  </p>
+<hr />
+<p><a id="introduction"></a></p>
+<h2 id="_1">引言<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>假设用户已经告诉助手自己喜欢历史文化，下一次推荐时却还要重新说明；或者文档已经上传，模型回答时仍只依赖旧知识。两种情况都与“信息怎样保留并再次使用”有关，却需要不同处理。</p>
+<p>本章将记忆和检索增强生成分别封装成工具。前者关注交互中积累了什么，后者帮助从外部材料里找到当前问题需要的内容。</p>
+<p><a id="section-8-1"></a></p>
+<h2 id="81-rag">8.1　记忆与 RAG 分别补上什么<a class="headerlink" href="#81-rag" title="Permanent link">&para;</a></h2>
+<p>模型请求可以使用对话历史，但普通调用不会自动保存全部经历。应用需要决定哪些信息留下来，怎样检索，又在什么时候把它们提供给模型。</p>
+<p>记忆系统记录偏好、事件和已有经验；RAG（Retrieval-Augmented Generation，检索增强生成）则从文档等外部知识中取得材料，再辅助回答。两者都涉及检索，但信息来源与管理目标不完全相同。</p>
+<p>例如，“用户上次问过哪个概念”属于交互记录；“上传教材怎样解释这个概念”来自外部文档。把二者结合，才可能既接得上对话，又能引用具体资料。</p>
+<p><a id="section-8-1-1"></a></p>
+<h3 id="811">8.1.1　信息保存在哪里，决定了怎样再次使用<a class="headerlink" href="#811" title="Permanent link">&para;</a></h3>
+<p>参数知识来自模型训练，当前上下文来自这次请求，外部记忆来自应用保存的记录。RAG 的文档索引又提供另一类可查询材料。这几种位置都能影响回答，但更新方式不同。</p>
+<p>用户告诉助手一个新偏好，应用可以保存并在下次检索，不需要重新训练模型。一本教材修订以后，则需要更新文档与索引。若只是把新资料留在磁盘上，既未检索也未放进上下文，模型并不会自动获得它。</p>
+<p>因此，记忆不是单一的“保存聊天”功能，而是一组写入、归属、检索和使用规则。设计时需要沿着信息再次出现的路径反向检查。</p>
+<p><a id="section-8-2"></a></p>
+<h2 id="82">8.2　记忆需要添加，也需要整理和遗忘<a class="headerlink" href="#82" title="Permanent link">&para;</a></h2>
+<p>本章借用认知科学中的分类帮助设计软件。这里是一种工程组织方式，不要求软件完全复制人类记忆。</p>
+<table>
+<thead>
+<tr>
+<th>本章实现的记忆类型</th>
+<th>主要保存什么</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>工作记忆</td>
+<td>当前任务中临时使用的信息。</td>
+<td>本次讨论的主题、最近的步骤。</td>
+</tr>
+<tr>
+<td>情景记忆</td>
+<td>发生过的事件及背景。</td>
+<td>某次查询、一次任务的结果。</td>
+</tr>
+<tr>
+<td>语义记忆</td>
+<td>整理后的事实与概念。</td>
+<td>用户确认的偏好、概念笔记。</td>
+</tr>
+<tr>
+<td>感知记忆</td>
+<td>多模态输入及有关特征。</td>
+<td>文档、图像等材料的记录与表示。</td>
+</tr>
+</tbody>
+</table>
+<p>工作记忆适合快速访问，也可以设置失效时间；长期信息需要持久化。保存时还应记录用户或会话归属、来源、时间和重要程度，否则取回一段文字后，系统可能不知道它属于谁、是否已经过时。</p>
+<p><a id="section-8-2-1"></a></p>
+<h3 id="821-memorytool-memorymanager">8.2.1　MemoryTool 与 MemoryManager<a class="headerlink" href="#821-memorytool-memorymanager" title="Permanent link">&para;</a></h3>
+<p><code>MemoryTool</code> 提供应用侧的操作入口，接收添加、检索和管理请求；<code>MemoryManager</code> 协调不同类型的记忆；具体存储再由下层实现。</p>
+<p>原文使用 Qdrant、Neo4j、SQLite 等不同后端，分别支持向量、关系和结构化记录。应用应按任务选择需要的组件，而不必因为教程展示了多个数据库，就把它们全都启用。</p>
+<p>记忆还需要整合、更新与遗忘。用户修正预算后，旧值不能一直与新值并列使用；一次未经确认的推测，也不应自动变成长期事实。</p>
+<p><a id="section-8-2-2"></a></p>
+<h3 id="822">8.2.2　四类记忆为什么使用不同存储<a class="headerlink" href="#822" title="Permanent link">&para;</a></h3>
+<p>工作记忆主要用于当前处理，内存访问快，也方便按时间清理。情景记忆关注事件及其发生背景，适合同时保存结构化字段和向量表示；原文用 SQLite 与 Qdrant 配合进行过滤和相似检索。</p>
+<p>语义记忆进一步整理实体与关系，结合图存储表达概念连接。查询“某人参与了哪些项目”，就不仅是寻找词面相近的句子，也涉及关系。原文使用 Neo4j 与向量存储组合展示这种设计。</p>
+<p>感知记忆处理不同模态。文本、图像与音频的编码器及维度可能不同，需要区分集合与检索方式。把它们都叫作向量，并不意味着可以在同一空间中直接比较；跨模态检索依赖适当的共同表示。</p>
+<p><a id="section-8-2-3"></a></p>
+<h3 id="823">8.2.3　记忆条目不应只有正文<a class="headerlink" href="#823" title="Permanent link">&para;</a></h3>
+<p>可以为一条记忆保留以下信息，帮助之后决定能否使用：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"用户更喜欢历史文化景点"</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">"user_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example_user"</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">"session_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"example_session"</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"用户明确表达"</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"confirmed"</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>这是信息组织的示意，具体字段可按实现调整。来源说明它是用户表达还是模型推测，归属避免跨用户混用，状态则有助于处理待确认与过时记录。</p>
+<p>检索时可以先限定用户与任务范围，再比较内容相关性；整合时更新冲突值，遗忘时删除过期或无用记录。这样，取回更多内容才不容易反而增加矛盾。</p>
+<p><a id="section-8-3"></a></p>
+<h2 id="83-rag">8.3　RAG 有两条不同的工作流程<a class="headerlink" href="#83-rag" title="Permanent link">&para;</a></h2>
+<p>第一条流程在准备文档时发生，第二条在用户提问时发生。把这两条分开，便容易理解为什么上传文件和提出问题不是同一项操作。</p>
+<pre class="mermaid"><code>flowchart LR
+    A[外部文档] --&gt; B[转换与分块]
+    B --&gt; C[计算嵌入并建索引]
+    D[用户问题] --&gt; E[检索相关片段]
+    C --&gt; E
+    E --&gt; F[组合上下文]
+    F --&gt; G[生成带依据的回答]</code></pre>
+<p><a id="section-8-3-1"></a></p>
+<h3 id="831">8.3.1　先把文档整理成可检索的片段<a class="headerlink" href="#831" title="Permanent link">&para;</a></h3>
+<p>本章用 MarkItDown 统一处理不同文档格式，再利用 Markdown 等结构分块。片段过大，会混入无关信息；片段过小，又可能切断完整含义。适度保留标题和相邻内容，有助于理解片段背景。</p>
+<p>随后用嵌入模型得到向量，连同原文、位置和来源一起存储。更换嵌入模型后，通常需要检查已有索引是否仍匹配，不能把不同表示随意混用。</p>
+<p>分块还需要保留文档层次。标题、段落和表格可能承担不同作用；若一个表头被切走，剩下数字就难以解释。按结构切分与保留少量重叠，分别帮助维持语义与边界连续性。</p>
+<p>每个片段最好带来源文件与位置。后续回答可以引用具体章节，开发者也能回到原文检查解析是否正确。如果只存向量而没有原文和位置，即使检索成功，也不方便验证。</p>
+<p>转换后还可以先抽查少量页面：扫描 PDF 的文字是否识别、列表是否混乱、图片内容是否需要额外处理。文档工具支持某种格式，不表示其中所有视觉信息都已经被理解。</p>
+<p><a id="section-8-3-2"></a></p>
+<h3 id="832">8.3.2　再根据问题取回材料<a class="headerlink" href="#832" title="Permanent link">&para;</a></h3>
+<p>提问时，检索器找到相近片段，系统筛选并组合内容，最后将其交给生成模型。<code>RAGTool</code> 把这些步骤放在共同入口后面。</p>
+<p>相似度高不等于答案一定存在。用户问“去年与今年的变化”，只取回今年的一段文字，就不足以比较。检索与生成应分别检查：有没有找到必要证据，回答有没有超出证据。</p>
+<p><a id="section-8-3-3"></a></p>
+<h3 id="833">8.3.3　相似检索究竟返回了什么<a class="headerlink" href="#833" title="Permanent link">&para;</a></h3>
+<p>嵌入模型把问题与片段表示成向量，再按相似度取回候选。这种分数帮助排序，却不是“片段内容为真”的概率，也不是“它一定回答了问题”的保证。</p>
+<p>用户问一个概念的限制时，定义段落可能非常相似，但缺少限制条件。可以取回相邻段落，或让检索查询更明确，再判断材料是否覆盖所需方面。</p>
+<p>检索结果数量也有取舍。太少可能遗漏，太多会把无关内容带入生成。调试时可以先检查排在前面的候选，再结合问题集选择数量与阈值，而不是只观察最后回复。</p>
+<p><a id="section-8-4"></a></p>
+<h2 id="84">8.4　查询写法不一致时怎么办<a class="headerlink" href="#84" title="Permanent link">&para;</a></h2>
+<p>用户的表述与文档用词常常不同。原文介绍多查询扩展（MQE）和假设文档嵌入（HyDE），从不同方向改善匹配。</p>
+<p>MQE 为同一个问题生成几种表述，分别检索后合并。例如，“如何开始学 Python”可以扩展为入门路线、基础学习等查询。不过，扩展也可能偏离原意，需要保留原问题并去重筛选。</p>
+<p>HyDE 先生成一段假设性的回答或文档，用它的表示来寻找真实资料。这段文字只是检索辅助，不能当作已经核实的证据。真正支持最终回答的，仍应是取回的可靠材料。</p>
+<p>这些方法会增加模型和检索开销。是否有帮助，需要在自己的问题集上测量，不宜把某个示例的提升比例当作所有文档的固定效果。</p>
+<p><a id="section-8-4-1"></a></p>
+<h3 id="841">8.4.1　查询扩展怎样合并结果<a class="headerlink" href="#841" title="Permanent link">&para;</a></h3>
+<p>多查询扩展为同一目标提供几种表达，每种表达各自检索，再按来源与片段标识去重。若四个查询各取五个片段，合并前最多可能有二十个候选，但大量重复并不罕见。</p>
+<p>最终还需要选择与预算控制。扩展查询是增加召回的一种方式，不代表每个候选都应直接进入上下文。原问题也要保留，以免几轮改写后偏离用户意图。</p>
+<p><a id="section-8-4-2"></a></p>
+<h3 id="842-hyde">8.4.2　HyDE 为什么先写一段假设材料<a class="headerlink" href="#842-hyde" title="Permanent link">&para;</a></h3>
+<p>较短问题与较长文档可能有不同表达形式。HyDE 先生成一段可能相关的说明，再用这段说明的嵌入寻找真实材料，希望缩小这种差别。</p>
+<p>但假设文本可能包含错误，因此它只承担检索辅助的角色。正确的后续过程是取回真实片段，再根据它们回答；不能把假设段落自身当作引用来源。</p>
+<p>把普通向量检索、查询扩展和 HyDE 放在同一批问题上比较，可以观察哪些问题实际受益。不同策略增加的是不同计算，应该同时记录质量与费用。</p>
+<p><a id="section-8-5"></a></p>
+<h2 id="85">8.5　示例：一个能保留学习记录的文档助手<a class="headerlink" href="#85" title="Permanent link">&para;</a></h2>
+<p>原文用 Happy-LLM 的 PDF 构建 <code>PDFLearningAssistant</code>，并通过 Gradio 提供交互界面。加载文档时执行转换和建库，提问时检索相关片段，再记录问答与学习笔记。</p>
+<p><strong>示例 8.1　从第一次提问到后续回顾</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>上传教材并建立索引
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  → 询问某个概念
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  → 检索并生成回答，保留参考来源
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  → 记录个人笔记
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  → 后续检索学习经历，生成回顾与统计
+</code></pre></div>
+<p>这个例子把两类信息接起来：教材内容保存在知识库中，用户的学习活动进入记忆。统计次数只能说明发生过哪些操作；回答是否正确，仍需回到文档核对。</p>
+<p><a id="section-8-5-1"></a></p>
+<h3 id="851">8.5.1　文档问答助手怎样形成学习回顾<a class="headerlink" href="#851" title="Permanent link">&para;</a></h3>
+<p>一次学习过程至少有两条记录：问答中用到了哪些文档片段，以及用户形成了什么个人笔记。前者支持核查知识依据，后者帮助回顾理解与疑问。</p>
+<p>例如，用户先问预训练，随后问“它与微调有什么不同”，助手需要从近期上下文理解“它”，再检索相关材料。用户确认的一条总结可以进入笔记，后续回顾则组合有关问答和笔记，而不是只统计提问次数。</p>
+<p>若更换文档版本，回顾中还应保留原来源，避免把旧教材结论直接写成当前资料。这个案例由此把文档处理、记忆归属与检索质量连接成一个完整使用过程。</p>
+<p>接下来还有一个问题：即使已经找到许多相关材料，也不能全部放进每次请求。下一章将讨论如何选择并组织真正要交给模型的上下文。</p>
+<hr />
+<p><a id="references"></a></p>
+<h2 id="_2">参考资料<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ol>
+<li>本章内容依据 Hello-Agents 的<a href="https://github.com/datawhalechina/hello-agents/blob/36f583c233ea5cee4537ef93455702b55053af18/docs/chapter8/%E7%AC%AC%E5%85%AB%E7%AB%A0%20%E8%AE%B0%E5%BF%86%E4%B8%8E%E6%A3%80%E7%B4%A2.md">第 8 章原文</a>整理，完整论述及其参考文献可从原文继续阅读。</li>
+<li>实现细节可对照原项目的<a href="https://github.com/datawhalechina/hello-agents/tree/36f583c233ea5cee4537ef93455702b55053af18/code/chapter8">第 8 章配套代码</a>。正文中的简化流程用于解释设计，不代表这些代码已在本机运行验证。</li>
+</ol>
+<hr />
+<p><strong>继续阅读</strong>：<a href="../build-your-own-framework/">上一章：构建你的智能体框架</a> · <a href="../">全书目录</a> · <a href="../context-engineering/">下一章：上下文工程</a></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+  <div class="site-colophon md-grid">
+    <strong>LoTusY</strong>
+    <span>学习与研究笔记</span>
+    <nav aria-label="页脚导航">
+      <a href="../../../papers/">论文阅读</a>
+      <a href="../../../translations/">课程翻译</a>
+      <a href="../../../about/">关于我</a>
+    </nav>
+  </div>
+  
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../build-your-own-framework/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第 7 章 · 构建智能体框架">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                第 7 章 · 构建智能体框架
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../context-engineering/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第 9 章 · 上下文工程">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第 9 章 · 上下文工程
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/JXTZZ" target="_blank" rel="noopener" title="LoTusY on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../../javascripts/version-sync.js"></script>
+      
+    
+  </body>
+</html>

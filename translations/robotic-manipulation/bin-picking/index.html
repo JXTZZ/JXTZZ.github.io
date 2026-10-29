@@ -1,0 +1,5360 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="MIT《机器人操作》中文译稿。结合接触力、抓取几何与感知，分析机器人如何从杂乱箱体中选择和抓取物体。">
+      
+      
+        <meta name="author" content="LoTusY">
+      
+      
+        <link rel="canonical" href="https://jxtzz.github.io/translations/robotic-manipulation/bin-picking/">
+      
+      
+        <link rel="prev" href="../pose-estimation/">
+      
+      
+        <link rel="next" href="../motion-planning/">
+      
+      
+      <link rel="icon" href="../../../assets/logo.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>第 5 章 · 箱内抓取 - LoTusY</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  
+  <meta name="site-version" content="a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+  <link rel="stylesheet" href="../../../stylesheets/tokens.css?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+  <link rel="stylesheet" href="../../../stylesheets/extra.css?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+  <script defer src="../../../javascripts/navigation.js?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d"></script>
+  
+    <link rel="stylesheet" href="../../../stylesheets/reader.css?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+    <script defer src="../../../javascripts/reader.js?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d"></script>
+  
+  
+    <link rel="stylesheet" href="../../../stylesheets/course.css?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d">
+  
+  
+    <script src="../../../javascripts/mathjax.js?v=a4b99e330d39aa4537228f76e2a1d0fa8b7ed25d"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
+  
+  
+
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#5" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="LoTusY" class="md-header__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <a class="md-ellipsis header-home-link" href="../../.." aria-label="LoTusY · 回到首页" title="LoTusY · 回到首页">
+            LoTusY
+          </a>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第 5 章 · 箱内抓取
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="custom"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  首页
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  课程翻译
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../papers/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  论文阅读
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../deep-learning/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  理论基础
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../engineering/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  工程实践
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../journal/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  学习日志
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="LoTusY" class="md-nav__button md-logo" aria-label="LoTusY" data-md-component="logo">
+      
+  <img src="../../../assets/logo.svg" alt="logo">
+
+    </a>
+    LoTusY
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JXTZZ/JXTZZ.github.io" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    JXTZZ / Notes
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    首页
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    课程翻译
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            课程翻译
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    机器人操作 · 中文讲义
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            机器人操作 · 中文讲义
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../preface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    全书目录与前言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 1 章 · 引言
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../robot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 2 章 · 先给你准备一个机器人
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pick-and-place/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 3 章 · 基本的抓取与放置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pose-estimation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 4 章 · 基于几何的位姿估计
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    第 5 章 · 箱内抓取
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 5 章 · 箱内抓取
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      本章目录
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 生成随机杂乱场景
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 生成随机杂乱场景">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.1 让物体落下来
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1.1 让物体落下来">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.1 二维泡沫砖堆
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.2 把箱子装满杂物
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 摩擦接触下的静力平衡
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 摩擦接触下的静力平衡">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.1 空间力
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#522" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.2 碰撞几何
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.2 碰撞几何">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.3 查看碰撞几何
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#523" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.3 碰撞刚体之间的接触力
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.3 碰撞刚体之间的接触力">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.4 查看接触力
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#524" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.4 接触坐标系
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.4 接触坐标系">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#55" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.5 半平面上的砖块
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#525" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.5 库仑摩擦锥
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.5 库仑摩擦锥">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#56" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.6 倾斜半平面上的砖块
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#526" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.6 把静力平衡写成优化问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.6 把静力平衡写成优化问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#57" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.7 高高的砖塔
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 接触仿真
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#54_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 基于模型的抓取选择
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.4 基于模型的抓取选择">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#541" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4.1 接触力旋量锥
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.4.1 接触力旋量锥">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#58" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.8 接触力旋量锥的可视化
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#542" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4.2 共线对跖抓取
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#55_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5 从点云选择抓取
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5 从点云选择抓取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#551" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5.1 点云预处理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5.1 点云预处理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#59" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.9 芥末酱瓶的点云
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#552" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5.2 估计法线与局部曲率
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5.2 估计法线与局部曲率">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#510" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.10 芥末酱瓶的法线与局部曲率
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#553" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5.3 评价一个候选抓取
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5.3 评价一个候选抓取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.11 为候选抓取打分
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#554" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5.4 生成候选抓取
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5.4 生成候选抓取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#512" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.12 生成候选抓取
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#56_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.6 容易出问题的情况
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#57_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7 任务层编程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.7 任务层编程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#571" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7.1 状态机与行为树
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#572" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7.2 任务规划
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#573" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7.3 大语言模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#574" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7.4 清理杂物的简单状态机
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.7.4 清理杂物的简单状态机">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#513" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.13 清理杂物的简单状态机
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#58_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.8 把各部分连接起来
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.8 把各部分连接起来">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#514" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.14 清理杂物：完整演示
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#59_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.9 练习
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.9 练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.1 判断静力平衡
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.2 从深度图估计法线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.3 解析求解对跖抓取
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.4 生成候选抓取
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.5 行为树
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.6 采样对跖抓取
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      参考文献
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../motion-planning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 6 章 · 运动规划
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mobile-manipulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 7 章 · 移动操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulator-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 8 章 · 机械臂控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../object-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 9 章 · 物体检测与分割
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deep-perception/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 10 章 · 面向操作任务的深度感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reinforcement-learning/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 11 章 · 强化学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../soft-robots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 12 章 · 软体机器人与触觉感知
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spatial-algebra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 A · 空间代数
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drake/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 B · Drake
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drakegym/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 C · DrakeGym 环境
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../manipulation-station/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 D · 搭建自己的机器人操作工作站
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../miscellaneous/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    附录 E · 其他事项
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../cs146s/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    CS146S · 现代软件开发者
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            CS146S · 现代软件开发者
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    课程说明与环境准备
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_3" id="__nav_2_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 1 周 · 调用轨迹分析
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            第 1 周 · 调用轨迹分析
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week1/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week1/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_4" id="__nav_2_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 2 周 · MCP 服务器
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            第 2 周 · MCP 服务器
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week2/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week2/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_5" id="__nav_2_3_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 3 周 · 编写 Skill
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            第 3 周 · 编写 Skill
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week3/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week3/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_6" id="__nav_2_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 4 周 · 仓库指引
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            第 4 周 · 仓库指引
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week4/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week4/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3_7" id="__nav_2_3_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    第 5 周 · Agent 就绪度
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            第 5 周 · Agent 就绪度
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week5/assignment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作业说明
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cs146s/week5/writeup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    作答模板
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../papers/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    论文阅读
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            论文阅读
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/action100m/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Action100M：亿级层次视频动作数据
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/race/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RACE：让 VLA 更可靠地执行长动作片段
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/ghost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GHOST：单目视频中的手与物体交互重建
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/egoinfinity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EgoInfinity：互联网视频到机器人动作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/orion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ORION：单视频开放世界模仿
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/openvla/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OpenVLA：视觉语言动作模型
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/octo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Octo：通用机器人策略
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/dp3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    3D Diffusion Policy：三维策略学习
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/spot/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：从人类演示学习物体轨迹
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/aloha/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ALOHA Unleashed：双臂灵巧操作
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/spot-notes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SPOT：概念与阅读随记
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/robotok/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboTok：互联网示范检索
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/pi0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    π₀：Flow Matching 与机器人控制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/lit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    LIT：视觉—动作分布外泛化
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../papers/library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文资料库
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../deep-learning/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    理论基础
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            理论基础
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Linear_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    线性回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Softmax_Regression/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Softmax 回归
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/MLP/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    多层感知机
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Computational_Graph/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算图与反向传播
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Weight_Decay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    权重衰减
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/Dropout/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dropout
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/attention/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    注意力机制
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/base/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    深度学习计算
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../deep-learning/cv-roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    计算机视觉学习路线
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../engineering/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    工程实践
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            工程实践
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/tensor-inplace/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tensor 原地操作与内存
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/tensor-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    张量维度与求和
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/image-to-arkts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Image-to-ArkTS 项目记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../engineering/hello-agents/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Hello-Agents 学习笔记
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            Hello-Agents 学习笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/introduction/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 1 章 · 初识智能体
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 2 章 · 智能体发展史
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/llm-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 3 章 · 大语言模型基础
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/classic-agent-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 4 章 · 智能体经典范式构建
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/low-code-platforms/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 5 章 · 低代码平台
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/agent-frameworks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 6 章 · 框架开发实践
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/build-your-own-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 7 章 · 构建智能体框架
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/memory-and-retrieval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 8 章 · 记忆与检索
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/context-engineering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 9 章 · 上下文工程
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/communication-protocols/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 10 章 · 智能体通信协议
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/agentic-rl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 11 章 · Agentic-RL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 12 章 · 智能体性能评估
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/travel-assistant/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 13 章 · 智能旅行助手
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/deep-research/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 14 章 · 深度研究智能体
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/cyber-town/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 15 章 · 构建赛博小镇
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../engineering/hello-agents/project-delivery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    第 16 章 · 项目交付
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../journal/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    学习日志
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            学习日志
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-10-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GitHub 克隆失败排查：从认证报错定位到地址重写
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从关节角到末端位姿：正运动学与标准 DH 参数法
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-16/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ReWeight 与 OpenResearch 阅读记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-15/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    WSL 离线安装与 Miniconda 初始化记录
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-11/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    从语义动作到对象交互：Show-Harness 与 ORION
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Python 堆与 heapq：怎样维护当前最值
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-08/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    RoboSPA 与 Snipaste 自启排障
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-07/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    论文速记与 WSL 网络配置
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journal/2026-09-04/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    具身智能阅读周记：数据、空间表示与动作生成
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    关于
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      本章目录
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#51" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 生成随机杂乱场景
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1 生成随机杂乱场景">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1.1 让物体落下来
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.1.1 让物体落下来">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.1 二维泡沫砖堆
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.2 把箱子装满杂物
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#52_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 摩擦接触下的静力平衡
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2 摩擦接触下的静力平衡">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#521" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.1 空间力
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#522" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.2 碰撞几何
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.2 碰撞几何">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#53" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.3 查看碰撞几何
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#523" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.3 碰撞刚体之间的接触力
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.3 碰撞刚体之间的接触力">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#54" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.4 查看接触力
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#524" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.4 接触坐标系
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.4 接触坐标系">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#55" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.5 半平面上的砖块
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#525" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.5 库仑摩擦锥
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.5 库仑摩擦锥">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#56" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.6 倾斜半平面上的砖块
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#526" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2.6 把静力平衡写成优化问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.2.6 把静力平衡写成优化问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#57" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.7 高高的砖塔
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.3 接触仿真
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#54_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4 基于模型的抓取选择
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.4 基于模型的抓取选择">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#541" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4.1 接触力旋量锥
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.4.1 接触力旋量锥">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#58" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.8 接触力旋量锥的可视化
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#542" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.4.2 共线对跖抓取
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#55_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5 从点云选择抓取
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5 从点云选择抓取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#551" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5.1 点云预处理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5.1 点云预处理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#59" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.9 芥末酱瓶的点云
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#552" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5.2 估计法线与局部曲率
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5.2 估计法线与局部曲率">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#510" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.10 芥末酱瓶的法线与局部曲率
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#553" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5.3 评价一个候选抓取
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5.3 评价一个候选抓取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#511_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.11 为候选抓取打分
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#554" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.5.4 生成候选抓取
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.5.4 生成候选抓取">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#512" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.12 生成候选抓取
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#56_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.6 容易出问题的情况
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#57_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7 任务层编程
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.7 任务层编程">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#571" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7.1 状态机与行为树
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#572" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7.2 任务规划
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#573" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7.3 大语言模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#574" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.7.4 清理杂物的简单状态机
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.7.4 清理杂物的简单状态机">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#513" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.13 清理杂物的简单状态机
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#58_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.8 把各部分连接起来
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.8 把各部分连接起来">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#514" class="md-nav__link">
+    <span class="md-ellipsis">
+      示例 5.14 清理杂物：完整演示
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#59_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.9 练习
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5.9 练习">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.1 判断静力平衡
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.2 从深度图估计法线
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.3 解析求解对跖抓取
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.4 生成候选抓取
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.5 行为树
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      练习 5.6 采样对跖抓取
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      参考文献
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" data-page-layout="article">
+                
+  <noscript>
+    <nav class="noscript-nav" aria-label="全站导航">
+      <a href="../../..">首页</a>
+      <a href="../../">课程翻译</a>
+      <a href="../../../papers/">论文阅读</a>
+      <a href="../../../deep-learning/">理论基础</a>
+      <a href="../../../engineering/">工程实践</a>
+      <a href="../../../journal/">学习日志</a>
+      <a href="../../../about/">关于</a>
+    </nav>
+  </noscript>
+  
+                  
+
+
+  
+  
+
+
+<div class="reader-kicker">ROBOTIC MANIPULATION / 中文译稿 / 05</div>
+
+<h1 id="5">第 5 章　箱内抓取<a class="headerlink" href="#5" title="Permanent link">&para;</a></h1><div class="article-meta"><time datetime="2026-10-13">站内更新 2026-10-13</time><span class="article-tag">机器人操作</span><span class="article-tag">MIT 讲义</span></div><details class="mobile-toc"><summary>本页目录<span aria-hidden="true">展开 / 收起</span></summary><nav aria-label="本页目录"><ul><li><a href="#51">5.1 生成随机杂乱场景</a><ul><li><a href="#511">5.1.1 让物体落下来</a><ul><li><a href="#51_1">示例 5.1 二维泡沫砖堆</a></li><li><a href="#52">示例 5.2 把箱子装满杂物</a></li></ul></li></ul></li><li><a href="#52_1">5.2 摩擦接触下的静力平衡</a><ul><li><a href="#521">5.2.1 空间力</a></li><li><a href="#522">5.2.2 碰撞几何</a><ul><li><a href="#53">示例 5.3 查看碰撞几何</a></li></ul></li><li><a href="#523">5.2.3 碰撞刚体之间的接触力</a><ul><li><a href="#54">示例 5.4 查看接触力</a></li></ul></li><li><a href="#524">5.2.4 接触坐标系</a><ul><li><a href="#55">示例 5.5 半平面上的砖块</a></li></ul></li><li><a href="#525">5.2.5 库仑摩擦锥</a><ul><li><a href="#56">示例 5.6 倾斜半平面上的砖块</a></li></ul></li><li><a href="#526">5.2.6 把静力平衡写成优化问题</a><ul><li><a href="#57">示例 5.7 高高的砖塔</a></li></ul></li></ul></li><li><a href="#53_1">5.3 接触仿真</a></li><li><a href="#54_1">5.4 基于模型的抓取选择</a><ul><li><a href="#541">5.4.1 接触力旋量锥</a><ul><li><a href="#58">示例 5.8 接触力旋量锥的可视化</a></li></ul></li><li><a href="#542">5.4.2 共线对跖抓取</a></li></ul></li><li><a href="#55_1">5.5 从点云选择抓取</a><ul><li><a href="#551">5.5.1 点云预处理</a><ul><li><a href="#59">示例 5.9 芥末酱瓶的点云</a></li></ul></li><li><a href="#552">5.5.2 估计法线与局部曲率</a><ul><li><a href="#510">示例 5.10 芥末酱瓶的法线与局部曲率</a></li></ul></li><li><a href="#553">5.5.3 评价一个候选抓取</a><ul><li><a href="#511_1">示例 5.11 为候选抓取打分</a></li></ul></li><li><a href="#554">5.5.4 生成候选抓取</a><ul><li><a href="#512">示例 5.12 生成候选抓取</a></li></ul></li></ul></li><li><a href="#56_1">5.6 容易出问题的情况</a></li><li><a href="#57_1">5.7 任务层编程</a><ul><li><a href="#571">5.7.1 状态机与行为树</a></li><li><a href="#572">5.7.2 任务规划</a></li><li><a href="#573">5.7.3 大语言模型</a></li><li><a href="#574">5.7.4 清理杂物的简单状态机</a><ul><li><a href="#513">示例 5.13 清理杂物的简单状态机</a></li></ul></li></ul></li><li><a href="#58_1">5.8 把各部分连接起来</a><ul><li><a href="#514">示例 5.14 清理杂物：完整演示</a></li></ul></li><li><a href="#59_1">5.9 练习</a><ul><li><a href="#51_2">练习 5.1 判断静力平衡</a></li><li><a href="#52_2">练习 5.2 从深度图估计法线</a></li><li><a href="#53_2">练习 5.3 解析求解对跖抓取</a></li><li><a href="#54_2">练习 5.4 生成候选抓取</a></li><li><a href="#55_2">练习 5.5 行为树</a></li><li><a href="#56_2">练习 5.6 采样对跖抓取</a></li></ul></li><li><a href="#_2">参考文献</a></li></ul></nav></details>
+<p><em>Robotic Manipulation: Perception, Planning, and Control</em></p>
+<div class="translation-meta">
+<p><strong>原著作者</strong> <a href="http://people.csail.mit.edu/russt/">Russ Tedrake</a></p>
+<p><strong>原文最后修改日期</strong> 2026 年 10 月 11 日</p>
+<p><strong>原文版权</strong> © Russ Tedrake, 2020–2026</p>
+<p><strong>对照阅读</strong> <a href="../pdfs/bin-picking-original.pdf">原文 PDF</a> · <a href="https://manipulation.mit.edu/clutter.html">在线原文</a></p>
+</div>
+<details class="chapter-contents"><summary>本章目录 · 章节概览</summary><h2 id="_1">本章目录<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#section1">5.1　生成随机杂乱场景</a><ul>
+<li><a href="#section1.1">5.1.1　让物体落下来</a></li>
+</ul>
+</li>
+<li><a href="#section2">5.2　摩擦接触下的静力平衡</a><ul>
+<li><a href="#spatial_force">5.2.1　空间力</a></li>
+<li><a href="#section2.2">5.2.2　碰撞几何</a></li>
+<li><a href="#section2.3">5.2.3　碰撞刚体之间的接触力</a></li>
+<li><a href="#section2.4">5.2.4　接触坐标系</a></li>
+<li><a href="#section2.5">5.2.5　库仑摩擦锥</a></li>
+<li><a href="#section2.6">5.2.6　把静力平衡写成优化问题</a></li>
+</ul>
+</li>
+<li><a href="#section3">5.3　接触仿真</a></li>
+<li><a href="#section4">5.4　基于模型的抓取选择</a><ul>
+<li><a href="#section4.1">5.4.1　接触力旋量锥</a></li>
+<li><a href="#antipodal">5.4.2　共线对跖抓取</a></li>
+</ul>
+</li>
+<li><a href="#section5">5.5　从点云选择抓取</a><ul>
+<li><a href="#section5.1">5.5.1　点云预处理</a></li>
+<li><a href="#section5.2">5.5.2　估计法线与局部曲率</a></li>
+<li><a href="#grasp_candidates">5.5.3　评价一个候选抓取</a></li>
+<li><a href="#grasp_sampler">5.5.4　生成候选抓取</a></li>
+</ul>
+</li>
+<li><a href="#section6">5.6　容易出问题的情况</a></li>
+<li><a href="#task">5.7　任务层编程</a><ul>
+<li><a href="#section7.1">5.7.1　状态机与行为树</a></li>
+<li><a href="#section7.2">5.7.2　任务规划</a></li>
+<li><a href="#section7.3">5.7.3　大语言模型</a></li>
+<li><a href="#section7.4">5.7.4　清理杂物的简单状态机</a></li>
+</ul>
+</li>
+<li><a href="#section8">5.8　把各部分连接起来</a></li>
+<li><a href="#exercises">5.9　练习</a></li>
+<li><a href="#references">参考文献</a></li>
+</ul></details>
+<hr />
+<p>本章先考虑最简单的箱内抓取：一个箱子装满随机物体，机器人只需把它们搬到另一个箱子。不关心物体是什么，也不要求在另一个箱子里的摆放位置，但希望方法能较好地适用于各种物体。这恰好是机器人学习的方便试验场：机器人可以日夜在两个箱子之间来回搬运，偶尔增减物体以提高多样性。在仿真中就更容易了！</p>
+<p>箱内抓取在物流等行业很有价值，实际需求也可能更细致，例如只抓取某一类物体，或放到指定位置以完成装箱。我们先从基本情况开始。</p>
+<p><a id="section1"></a></p>
+<h2 id="51">5.1　生成随机杂乱场景<a class="headerlink" href="#51" title="Permanent link">&para;</a></h2>
+<p>要测试各种箱内抓取情况，先得能生成多样的仿真场景。怎样把箱子装满物体？此前都在 <code>Context</code> 中仔细设置每个物体的初始位置，但这种办法难以大规模使用。</p>
+<p><a id="section1.1"></a></p>
+<h3 id="511">5.1.1　让物体落下来<a class="headerlink" href="#511" title="Permanent link">&para;</a></h3>
+<p>现实中，我们大概会把随机物体直接倒进箱子。仿真也可以这样做。只要初始条件和时间步长合理，多体仿真就应当较忠实地遵循物理规律；但若初始化 <code>Context</code> 时让多个物体占据同一片空间，物理问题就不明确了。最简单、最常见的办法，是随机生成一定数量、随机位姿的物体，并错开它们的初始高度，保证起始时互不穿透。</p>
+<p>多数先进多体仿真器的演示中，都能看到大量物体下落。这些演示有时有些误导：让很多物体从远处看起来落得像样，并不难；放大细看却常有异常。我们关心的不是下落过程，而是物体落稳后的状态，用它作为操作系统的初始条件。</p>
+<p><a id="example-1"></a></p>
+<p><a id="example1"></a></p>
+<h4 id="51_1">示例 5.1　二维泡沫砖堆<a class="headerlink" href="#51_1" title="Permanent link">&para;</a></h4>
+<p>先看二维情况。我在 plant 中放入很多块熟悉的红色泡沫砖。虽然可以利用二维物理写专门优化的仿真器，这里仍用完整三维仿真，只是通过平面关节将每块砖与世界连接。平面关节有三个自由度，这里选为 <span class="arithmatex">\(x\)</span>、<span class="arithmatex">\(z\)</span>、<span class="arithmatex">\(\theta\)</span>，把物体限制在 <span class="arithmatex">\(xz\)</span> 平面内。</p>
+<p>在 <code>Context</code> 中，把每个物体的初始水平位置和转角设为均匀随机分布，并将初始高度每隔 0.1 m 错开。仿真一秒多，砖块就能落稳，得到我们想要的“初始条件”。</p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/clutter.ipynb">在 Colab 中打开</a></p>
+<p>▶ <a href="https://manipulation.mit.edu/data/falling_bricks_2d.html?height=240px">打开原文交互内容或视频</a></p>
+<p><a href="https://manipulation.mit.edu/data/falling_bricks_2d.html">点击观看动画。</a></p>
+<p>换成其他随机物体也一样。下面仍用同一段代码，只把砖块换为从部分 YCB 物体中随机抽取的模型，见 <a href="#Calli17">参考文献 1</a>。即使物体形状有点滑稽，也能看到<a href="https://en.wikipedia.org/wiki/Central_limit_theorem">中心极限定理</a>在起作用，这让我觉得很有趣。</p>
+<p><img alt="原文插图" src="../assets/clutter/ycb_planar_clutter.png" width="1105" height="306" loading="lazy" decoding="async"></p>
+<p><a id="example-2"></a></p>
+<p><a id="example2"></a></p>
+<h4 id="52">示例 5.2　把箱子装满杂物<a class="headerlink" href="#52" title="Permanent link">&para;</a></h4>
+<p>同样的方法也适用于三维。三维均匀随机朝向的生成稍复杂，不过 Drake 提供 <code>UniformlyRandomRotationMatrix</code>，也有四元数和 roll–pitch–yaw 版本，替我们完成这项工作。</p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/falling_things.ipynb">在 Colab 中打开</a></p>
+<p><img alt="原文插图" src="../assets/clutter/ycb_clutter.png" width="432" height="288" loading="lazy" decoding="async"></p>
+<p>注意，箱子其实是特别容易随机生成的场景。要随机生成厨房，就不能把冰箱、烤面包机和凳子从独立同分布的随机位姿往下扔了。这时，设计合理的分布会有趣得多，见 <a href="#Izatt20">参考文献 2</a>；后面还会讨论生成式场景模型。</p>
+<p><a id="section2"></a></p>
+<h2 id="52_1">5.2　摩擦接触下的静力平衡<a class="headerlink" href="#52_1" title="Permanent link">&para;</a></h2>
+<p>上面的例子概念简单，物理引擎内部却做了很多工作。先从最容易理解的情况开始：所有物体落稳之后的静力学。</p>
+<p>这里不完整展开多体动力学和仿真，相关笔记<a href="http://underactuated.mit.edu/multibody.html">可以在这里阅读</a>。需要知道的是，熟悉的 <span class="arithmatex">\(f=ma\)</span> 用广义位置 <span class="arithmatex">\(q\)</span>、广义速度 <span class="arithmatex">\(v\)</span> 表达后，会变成：</p>
+<div class="arithmatex">\[
+M(q)\dot{v} + C(q,v)v = \tau_g(q) + \sum_i
+    J^T_i(q)F^{c_i}.
+\]</div>
+<p>我们已经理解 <span class="arithmatex">\(q\)</span>、<span class="arithmatex">\(v\)</span>。左侧是“质量乘加速度”的推广，包含质量矩阵 <span class="arithmatex">\(M\)</span> 和科里奥利项 <span class="arithmatex">\(C\)</span>；右侧是广义力之和，<span class="arithmatex">\(\tau_g(q)\)</span> 表示重力，<span class="arithmatex">\(F^{c_i}\)</span> 是第 <span class="arithmatex">\(i\)</span> 处接触产生的空间力。<span class="arithmatex">\(J_i(q)\)</span> 是第 <span class="arithmatex">\(i\)</span> 个接触 雅可比矩阵，把广义速度映射为第 <span class="arithmatex">\(i\)</span> 个接触坐标系的空间速度。</p>
+<p>我们想找这些微分方程稳定的稳态解，作为仿真的初始条件。稳态时 <span class="arithmatex">\(v=\dot{v}=0\)</span>，方程左侧全部为零，只剩力平衡方程：</p>
+<div class="arithmatex">\[
+\tau_g(q) =
+    - \sum_i J^T_i(q) F^{c_i}.
+\]</div>
+<p><a id="spatial_force"></a></p>
+<h3 id="521">5.2.1　空间力<a class="headerlink" href="#521" title="Permanent link">&para;</a></h3>
+<p>继续之前，先明确力的记号和空间代数。通常把力视为作用在刚体某点上的三维向量，分量为 <span class="arithmatex">\(x\)</span>、<span class="arithmatex">\(y\)</span>、<span class="arithmatex">\(z\)</span>。更一般地，用六维向量表示<a href="https://drake.mit.edu/doxygen_cxx/group__multibody__spatial__vectors.html">空间力</a>，采用 monogram 记法：</p>
+<div class="arithmatex">\[
+F^{B_p}_{{\text{name}},C} = \begin{bmatrix}
+      \tau^{B_p}_{\text{name},C} \\ f^{B_p}_{\text{name},C} \end{bmatrix} \quad
+      \text{ or, if you prefer } \quad \left[F^{B_p}_{\text{name}}\right]_C =
+      \begin{bmatrix} \left[\tau^{B_p}_{\text{name}}\right]_C \\
+      \left[f^{B_p}_{\text{name}}\right]_C \end{bmatrix}.
+\]</div>
+<p><span class="arithmatex">\(F^{B_p}_{\text{name},C}\)</span> 是作用在点或坐标系原点 <span class="arithmatex">\(B_p\)</span>、在坐标系 <span class="arithmatex">\(C\)</span> 下表达的具名空间力。Drake 推荐带括号的写法，但在笔记中我觉得略显冗长。力的名称可省略；表达坐标系未写明时，默认世界坐标系。特别是力的记号，建议在作用点 <span class="arithmatex">\(B_p\)</span> 中注明承受力的刚体 <span class="arithmatex">\(B\)</span>，因为经常会遇到大小相等、方向相反的作用力。在代码中写作 <code>Fname_Bp_C</code>。</p>
+<p>和空间速度一样，空间力包含旋转、平移两部分。<span class="arithmatex">\(\tau^{B_p}_C \in \mathbb{R}^3\)</span> 是力矩，作用于刚体 <span class="arithmatex">\(B\)</span> 的点 <span class="arithmatex">\(p\)</span>，在坐标系 <span class="arithmatex">\(C\)</span> 下表达；<span class="arithmatex">\(f^{B_p}_C \in \mathbb{R}^3\)</span> 是平移力，也就是笛卡尔力。空间力也常称为 <a href="https://en.wikipedia.org/wiki/Screw_theory#Wrench">力旋量（wrench）</a>。如果觉得“力还有旋转分量”有些奇怪，可以这样理解：接触点上也许只有笛卡尔力，但我们经常需要把多个作用在不同位置的力，汇总到同一坐标系中。把一个力的作用点换到刚体上另一点时，等效作用就需要同时包含力和力矩。</p>
+<p><a id="spatial_force_algebra"></a></p>
+<p>空间力同样满足空间代数规则：</p>
+<ul>
+<li>
+<p>作用于同一刚体、在同一坐标系下表达的空间力可以相加，例如：</p>
+<div class="arithmatex">\[
+F^{B_p}_{\text{total},C}
+          = \sum_i F^{B_p}_{i,C} .
+\]</div>
+</li>
+<li>
+<p>把作用点从 <span class="arithmatex">\(B_p\)</span> 移到 <span class="arithmatex">\(B_q\)</span>，需要使用叉积：</p>
+<p><a id="equation-eq-spatial_force_shift"></a></p>
+<div class="arithmatex">\[
+f^{B_q}_C
+          = f^{B_p}_C, \qquad \tau^{B_q}_C = \tau^{B_p}_C + {}^{B_q}p^{B_p}_C
+          \times f^{B_p}_C.
+   \tag{5.1}
+\]</div>
+</li>
+<li>
+<p>和其他空间向量一样，可用旋转改变表达坐标系：</p>
+<div class="arithmatex">\[
+f^{B_p}_D = {}^DR^C
+          f^{B_p}_C, \qquad \tau^{B_p}_D = {}^DR^C
+          \tau^{B_p}_C.
+\]</div>
+</li>
+</ul>
+<p><a id="section2.2"></a></p>
+<h3 id="522">5.2.2　碰撞几何<a class="headerlink" href="#522" title="Permanent link">&para;</a></h3>
+<p>有了这些记号，接下来要理解接触力从哪里来。</p>
+<p>机器人几何引擎，例如 Drake 的 <code>SceneGraph</code>，会区分几何在仿真中的不同<a href="https://drake.mit.edu/doxygen_cxx/group__geometry__roles.html">角色</a>。<a href="http://sdformat.org/spec">机器人描述文件</a>通常区分<a href="http://sdformat.org/spec?ver=1.8&amp;elem=link">视觉</a>与<a href="http://sdformat.org/spec?ver=1.8&amp;elem=collision">碰撞</a>几何。每个刚体可以关联多个碰撞几何，它们承担“proximity”角色。碰撞几何通常比用于显示和感知仿真的视觉几何简单：可以是更低面数的网格，也可以直接用长方体、球、圆柱等近似。这有助于提高物理引擎的速度和稳健性。</p>
+<p><a id="example-3"></a></p>
+<p><a id="example3"></a></p>
+<h4 id="53">示例 5.3　查看碰撞几何<a class="headerlink" href="#53" title="Permanent link">&para;</a></h4>
+<p>Drake 的 <code>ModelVisualizer</code> 工具能把显示几何和碰撞几何都发布到 MeshCat，参见<a href="https://drake.mit.edu/tutorials/authoring_multibody_simulation.html">多体仿真建模教程</a>。它既适合设计新模型，也能帮助理解已有模型的接触几何。</p>
+<p>前面查看各种机器人模型时，已经用过这个工具。现在再试试：在 MeshCat 控件中找到 <code>Scene &gt; drake &gt; proximity</code>，勾选复选框，显示 proximity 角色的几何。</p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/robot/inspector.ipynb">在 Colab 中打开</a></p>
+<p><img alt="原文插图" src="../assets/clutter/ur3e_collision_geo.png" width="1236" height="1096" loading="lazy" decoding="async"></p>
+<p><strong>图 5.1</strong>：UR3e 的视觉几何与碰撞几何。</p>
+<p>SceneGraph 还支持<a href="https://drake.mit.edu/doxygen_cxx/classdrake_1_1geometry_1_1_collision_filter_declaration.html">碰撞过滤器</a>。例如，可以指定 iiwa 第 5 连杆不与第 4、6 连杆碰撞。忽略这些碰撞既加快计算，也方便简化连杆的碰撞模型。否则，要用球和圆柱精确近似第 4、5 连杆，并确保它们在所有可行关节角下都不重叠，会非常困难。默认碰撞过滤设置通常已经够用，需要时也可调整。</p>
+<p>所以，接触力 <span class="arithmatex">\(f^{c_i}\)</span> 从哪里来？凡是未被过滤的碰撞几何对，都可能产生大小相等、方向相反的接触空间力。在 <code>SceneGraph</code> 中，<a href="https://drake.mit.edu/doxygen_cxx/classdrake_1_1geometry_1_1_scene_graph_inspector.html#a79b84ada25718e2a38fd2d13adb4d839"><code>GetCollisionCandidates</code></a> 方法返回所有这些接触。下面把每个碰撞对的两个刚体称为“刚体 A”和“刚体 B”。</p>
+<p><a id="section2.3"></a></p>
+<h3 id="523">5.2.3　碰撞刚体之间的接触力<a class="headerlink" href="#523" title="Permanent link">&para;</a></h3>
+<p>理想数学模型中，两个物体不会占据同一空间，但数值积分的仿真很难完全避免穿透。多数仿真器把两个相接触或重叠物体之间的作用，近似为一个或多个接触点上的笛卡尔力。不要低估这一步的难度！</p>
+<p>代码要正确处理大量几何情况，开源工具在这里出现错误十分常见。下面的简单界面也能说明：用单点笛卡尔力概括两个深度穿透物体的作用，非常危险。移动物体时，会遇到许多不连续变化；这也是刚体仿真有时突然“炸开”的原因。改用多个接触点看似自然，一些仿真器也这样做，但若算法只依赖当前几何位形，要让相邻时间步的接触点选择保持一致，并不容易。</p>
+<p>Drake 擅长复杂接触仿真的一项关键改进，是摆脱了点接触模型。启用 <a href="https://drake.mit.edu/doxygen_cxx/group__hydroelastic__user__guide.html">Drake 的 hydroelastic 接触</a> 后，两个穿透刚体之间的空间力，来自对“hydroelastic 表面”的积分，它推广了接触斑的概念，见 <a href="#Elandt19">参考文献 3</a>。截至原文写作时，Drake 仍需手动启用 hydroelastic，见 <a href="https://drake.mit.edu/tutorials/hydroelastic_contact_basics.html">hydroelastic 教程</a>；我正在逐步把本书示例都改为这种模型。</p>
+<p><a id="example-4"></a></p>
+<p><a id="example4"></a></p>
+<h4 id="54">示例 5.4　查看接触力<a class="headerlink" href="#54" title="Permanent link">&para;</a></h4>
+<p>我做了一个简单界面，可以选择任意两种基本几何体，让它们相互穿透，并查看计算得到的 hydroelastic 接触信息。</p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/contact_inspector.ipynb">在 Colab 中打开</a></p>
+<p><a id="section2.4"></a></p>
+<h3 id="524">5.2.4　接触坐标系<a class="headerlink" href="#524" title="Permanent link">&para;</a></h3>
+<p>还需要确定空间力的大小、方向，为此先指定力所使用的接触坐标系。例如，<a href="https://drake.mit.edu/doxygen_cxx/classdrake_1_1multibody_1_1_point_pair_contact_info.html">可以用</a> <span class="arithmatex">\(C_B\)</span> 表示刚体 <span class="arithmatex">\(B\)</span> 上的接触坐标系，力作用在其原点。</p>
+<p>虽然我强烈推荐仿真使用 hydroelastic，解释原理时仍先用点接触模型。碰撞引擎给出一些接触点后，该怎样定义坐标系？</p>
+<p>约定 <span class="arithmatex">\(z\)</span> 轴正方向与接触法线一致，正的法向力阻止穿透。法线的定义也要谨慎，例如长方体角点的法线是什么？取两个物体之间符号距离函数的<a href="https://en.wikipedia.org/wiki/Subderivative">次</a>梯度，能得到可靠、也适用于广义坐标的定义。接触坐标系的 <span class="arithmatex">\(x\)</span>、<span class="arithmatex">\(y\)</span> 轴，可取切平面内任意一组正交基。更多图示和说明见 <a href="https://underactuated.csail.mit.edu/multibody.html#contact">这里</a>。</p>
+<p><a id="example-5"></a></p>
+<p><a id="example5"></a></p>
+<h4 id="55">示例 5.5　半平面上的砖块<a class="headerlink" href="#55" title="Permanent link">&para;</a></h4>
+<p>用泡沫砖放在地上的简单例子，逐步理清这些细节。地面焊接到世界，没有自由度，所以可以忽略作用于地面的力，只看砖块。</p>
+<p>接触点和接触坐标系在哪里？如果只用长方体之间的碰撞几何，面与面接触时，接触力位置并不唯一；三维中更是如此，三个力就可能足够。先假设引擎选择砖块两端角点作为两个接触点。使用点接触模型时，我们有时会<a href="https://manipulation.mit.edu/data/foam_brick_contact_geometry.html">在长方体八个角上添加小球碰撞几何</a>，帮助引擎稳定选择接触点；hydroelastic 不需要这么做。下图把两个接触坐标系标为 <span class="arithmatex">\(C_1\)</span>、<span class="arithmatex">\(C_2\)</span>。</p>
+<p><img alt="原文插图" src="../assets/clutter/brick_on_half_plane.jpg" width="1625" height="1000" loading="lazy" decoding="async"></p>
+<p>静力平衡要求砖块上的力与力矩都平衡。这里考虑三个力：<span class="arithmatex">\(F_{g}, F_1,\)</span>、<span class="arithmatex">\(F_2\)</span>，分别用重力、接触 1、接触 2 的缩写命名。重力自然应在世界坐标系下表达，作用于质心：</p>
+<div class="arithmatex">\[
+F_{g, W}^B = \begin{bmatrix} 0, 0, 0, 0, 0, -mg
+      \end{bmatrix}^T.
+\]</div>
+<p>。接触力则适合在接触坐标系下表达，例如 </p>
+<div class="arithmatex">\[
+f_{1, C_1,z}^{B_{c_1}} \ge
+      0,
+\]</div>
+<p>，因为接触力不能把地面往上拉。写平衡方程时，要用空间代数，把各空间力变换到同一表达坐标系、同一作用点。</p>
+<p>例如，先改变接触力 1 的表达坐标系：</p>
+<div class="arithmatex">\[
+F_{1,B}^{B_{c_1}} = {}^B R^{C_1}
+      F_{1,C_{1}}^{B_{c_1}}.
+\]</div>
+<p>，再移动作用点：</p>
+<div class="arithmatex">\[
+f_{1,B}^B = f_{1,B}^{B_{c_1}}, \qquad \tau_{1,B}^B =
+      \tau_{1,B}^{B_{C_1}} + {}^Bp_B^{B_{C_1}} \times f_{1,B}^{B_{c_1}}.
+\]</div>
+<p>。现在可以写力平衡：</p>
+<div class="arithmatex">\[
+F_{1,B}^B + F_{2,B}^B + F_{g,B}^B
+      = 0,
+\]</div>
+<p>三维有六个方程，二维只有三个。平移分量给出 </p>
+<div class="arithmatex">\[
+f_{1,B}^B + f_{2,B}^B =
+      \begin{bmatrix}0 \\ 0 \\ mg\end{bmatrix},
+\]</div>
+<p>；而 <span class="arithmatex">\(y\)</span> 中的力矩分量说明：若质心到两接触点的距离相等，则 <span class="arithmatex">\(f_{1,B_z}\)</span>、<span class="arithmatex">\(f_{2,B_z}\)</span> 也必须相等。</p>
+<p>水平力目前只知道要彼此平衡，接下来进一步分析。</p>
+<p><a id="section2.5"></a></p>
+<h3 id="525">5.2.5　库仑摩擦锥<a class="headerlink" href="#525" title="Permanent link">&para;</a></h3>
+<p>接触力的规则逐渐清楚了。首先不能隔空施力，用 <span class="arithmatex">\(\phi_i(q)\)</span> 表示位形 <span class="arithmatex">\(q\)</span> 下两个物体之间的距离，有 </p>
+<div class="arithmatex">\[
+\phi(q) &gt; 0 \Rightarrow f^{c_i} = 0.
+\]</div>
+<p>。其次，法向力只能阻止穿透，不能把物体拉到一起：</p>
+<div class="arithmatex">\[
+f^{c_i}_{C_z} \ge 0.
+\]</div>
+<p>。刚性接触模型求满足非穿透约束的最小法向力，称为最小约束原理；柔性接触模型则将力定义为穿透深度和速度的函数。</p>
+<p>切向力来自摩擦。最常用的是库仑摩擦模型：</p>
+<div class="arithmatex">\[
+\sqrt{{f^{c_i}_{C_x}}^2 + {f^{c_i}_{C_y}}^2} \le \mu f^{c_i}_{C_z},
+\]</div>
+<p>，其中 <span class="arithmatex">\(\mu\)</span> 为非负摩擦系数。通常分别定义静摩擦系数 <span class="arithmatex">\(\mu_{static}\)</span>，用于切向速度为零的情况，以及动摩擦系数 <span class="arithmatex">\(\mu_{dynamic}\)</span>，用于切向速度非零的情况。库仑模型选择摩擦锥内使能量耗散最大的切向接触力。</p>
+<p>这些约束共同定义了允许接触力的一个<a href="https://en.wikipedia.org/wiki/Convex_cone">锥</a>，也就是著名的“摩擦锥”，后面会经常用到。</p>
+<p>把力写成一个集合似乎有点奇怪：现实最终只会施加一个力，怎么会施加整组力？摩擦锥描述的是可能的范围。库仑模型中，实际选取的力会在接触 x–y 平面内阻止相对运动；若锥内没有任何力能完全阻止，就发生滑动，此时取耗散最大的力。圆锥形摩擦锥中，它与滑动速度方向相反。虽然实际只选一个力，分析整个集合仍有意义，因为它告诉我们摩擦能完全抵抗哪些外力。例如，如果锥内存在恰好抵消重力的力，砖块就能保持不动。</p>
+<p><a id="example-6"></a></p>
+<p><a id="example6"></a></p>
+<h4 id="56">示例 5.6　倾斜半平面上的砖块<a class="headerlink" href="#56" title="Permanent link">&para;</a></h4>
+<p>把前面的桌面倾斜，水平力就重要了。先不看方程，凭直觉想想：两端角点的接触力大小还一样吗？还是低处的角点更大？</p>
+<p><img alt="原文插图" src="../assets/clutter/brick_incline.jpg" width="1437" height="1000" loading="lazy" decoding="async"></p>
+<p>图中接触坐标系已经旋转，<span class="arithmatex">\(z\)</span> 轴仍与接触法线对齐。深、浅绿色表示两种摩擦系数对应的摩擦锥。较小的 <span class="arithmatex">\(\mu\)</span>，即深绿色锥，不包含竖直方向，因此无法完全抵消重力；砖块会滑动，这个位形不存在静力平衡。</p>
+<p>把静摩擦系数提高到浅绿色锥的范围，就能找到平衡接触力。本题要存在平衡，确实需要一定摩擦，详见<a href="https://manipulation.mit.edu/#static_equilibrium">练习</a>。此外，质心沿竖直方向投影到斜面上的点，必须位于两个接触点之间，否则砖块会绕下方边缘翻倒。这也能从力、力矩平衡看出来。假设质心在砖块中心，长度 <span class="arithmatex">\(l\)</span>、高度 <span class="arithmatex">\(h\)</span>，将力的作用点和表达坐标系都选为刚体坐标系 B：</p>
+<div class="arithmatex">\[
+\begin{gathered} f^{B}_{1, B_x} + f^{B}_{2, B_x} =
+      -mg\sin\gamma \\ f^{B}_{1,B_z}  + f^{B}_{2,B_z} = mg\cos\gamma \\ -h
+      f^{B}_{1,B_x} + l f^{B}_{1,B_z} = h f^{B}_{2,B_x} + l f^{B}_{2, B_z} \\
+      f^{B}_{1, B_z} \ge 0, \quad f^{B}_{2, B_z} \ge 0 \\ |f^{B}_{1, B_x}| \le
+      \mu f^{B}_{1, B_z}, \quad |f^{B}_{2, B_x}| \le \mu f^{B}_{2, B_z}
+      \end{gathered}
+\]</div>
+<p>所以两接触力究竟是否相等？把第一个方程代入第三个，得到：</p>
+<div class="arithmatex">\[
+f^{B}_{2, B_z}
+      = f^{B}_{1, B_z} + \frac{mgh}{l}\sin\gamma.
+\]</div>
+<p><a id="section2.6"></a></p>
+<h3 id="526">5.2.6　把静力平衡写成优化问题<a class="headerlink" href="#526" title="Permanent link">&para;</a></h3>
+<p>除了让物体随机下落，也许可以用优化直接求已达静力平衡的初始条件。Drake 的 <a href="https://drake.mit.edu/doxygen_cxx/classdrake_1_1multibody_1_1_static_equilibrium_problem.html"><code>StaticEquilbriumProblem</code></a> 把上面的约束收集为：</p>
+<div class="arithmatex">\[
+\begin{aligned} \operatorname{find}_q \quad \text{subject to} \quad&amp; \tau_g(q) = - \sum_i
+    J^T_i(q) f^{c_i} &amp; \\ &amp; f^{c_i}_{C_z} \ge 0 &amp; \forall i, \\ &amp;
+    |f^{c_i}_{C_{x,y}}|_2 \le \mu f^{c_i}_{C_z} &amp; \forall i, \\ &amp; \phi_i(q)
+    \ge 0 &amp; \forall i, \\ &amp; \phi(q) = 0 \textbf{ or } f^{c_i}_{C_z} = 0
+    &amp;\forall i, \\ &amp; \text{joint limits}.\end{aligned}
+\]</div>
+<p>这是非线性优化，包含上一章讨论的非凸非穿透约束。倒数第二个“或”约束尤其有趣：<span class="arithmatex">\(x \ge 0, y \ge 0, x =0 \textbf{ or } y = 0\)</span> 这类约束称为互补约束，常写成 <span class="arithmatex">\(x \ge 0, y \ge 0,
+    xy = 0\)</span>。将等式松弛为 <span class="arithmatex">\(0 \le \phi(q) f^{c_i}_{C_z} \le
+    \text{tol}\)</span>，能给优化器提供可用的梯度，使求解更容易，代价是允许少量隔空作用力。</p>
+<p>还可以方便地加入其他代价和约束。例如初始化时，可让目标函数鼓励 <span class="arithmatex">\(q\)</span> 靠近最初在构型空间采样的位形。</p>
+<p><a id="example-7"></a></p>
+<p><a id="example7"></a></p>
+<h4 id="57">示例 5.7　高高的砖塔<a class="headerlink" href="#57" title="Permanent link">&para;</a></h4>
+<p>这个方法效果如何呢？</p>
+<p><a id="section3"></a></p>
+<h2 id="53_1">5.3　接触仿真<a class="headerlink" href="#53_1" title="Permanent link">&para;</a></h2>
+<p>静力平衡展示了接触仿真的一些难点。当机器人或场景中的物体开始运动，问题就更有意思了！</p>
+<p>（原文此节后续内容尚待补充。）</p>
+<p><a id="section4"></a></p>
+<h2 id="54_1">5.4　基于模型的抓取选择<a class="headerlink" href="#54_1" title="Permanent link">&para;</a></h2>
+<p>什么是好的抓取？机器人领域已经研究了几十年，早期重点是让可能具有灵巧操作能力的手与已知物体交互。<a href="#Prattichizzo08">参考文献 4</a> 是一篇很好的综述，这里只介绍几个关键思路。</p>
+<p>如果抓取的目标是让物体在手中保持稳定，那么一种“好抓取”的定义，就是能够抵抗施加在物体上的“对抗性”力旋量扰动。</p>
+<p><a id="section4.1"></a></p>
+<h3 id="541">5.4.1　接触力旋量锥<a class="headerlink" href="#541" title="Permanent link">&para;</a></h3>
+<p>前面用摩擦锥描述摩擦为抵抗运动能产生的力。用于抓取规划时，将锥内各力取反，就得到接触点能抵抗的全部“对抗性”力。要了解多个接触点共同抵抗物体运动的能力，还需把它们的作用加起来。好在空间力的代数规则，不仅适用于单个向量，也能推广到整个空间力集合。</p>
+<p>这里的集合是凸锥，采用常见的 <span class="arithmatex">\(\mathcal{K}\)</span> 表示六维力旋量锥。具体地，<span class="arithmatex">\(\mathcal{K}^{B_p}_{\text{name}, C}\)</span> 是 <span class="arithmatex">\(F^{B_p}_{\text{name}, C}\)</span> 对应的可能空间力锥。例如，点接触模型的库仑摩擦锥，不包含扭转摩擦，在接触坐标系中为：</p>
+<div class="arithmatex">\[
+\mathcal{K}^C_C = \left\{ \begin{bmatrix} 0 \\ 0 \\ 0 \\
+      f^{C}_{C_x} \\ f^C_{C_y} \\ f^C_{C_z} \end{bmatrix} : \sqrt{
+      \left(f^{C}_{C_x}\right)^2 + \left(f^{C}_{C_y}\right)^2 } \le \mu
+      f^C_{C_z} \right\}.
+\]</div>
+<p><a id="wrench_cone_algebra"></a></p>
+<p>空间力的代数规则可直接用于力旋量锥：</p>
+<ul>
+<li>
+<p>同一点作用、同一坐标系表达的力旋量锥相加，应得到这样一个集合：从每个锥各选一个元素，将它们相加，收集所有可能结果。这个集合运算称为<a href="https://en.wikipedia.org/wiki/Minkowski_addition">Minkowski 和</a>，记作 <span class="arithmatex">\(\oplus\)</span>，例如：</p>
+<div class="arithmatex">\[
+\mathcal{K}^{B_p}_{\text{total},C}=
+            \mathcal{K}^{B_p}_{0,C} \oplus \mathcal{K}^{B_p}_{1,C} \oplus
+            \cdots
+\]</div>
+</li>
+<li>
+<p>将力旋量锥的作用坐标系从 <span class="arithmatex">\(B_p\)</span> 移到 <span class="arithmatex">\(B_q\)</span>，是对锥的线性运算。为强调这一点，把 <a href="#equation-eq-spatial_force_shift">式 5.1</a> 写成矩阵形式：</p>
+<div class="arithmatex">\[
+\mathcal{K}^{B_q}_C = \begin{bmatrix}
+            I_{3 \times 3} &amp; \left[ {}^{B_q}p^{B_p}_C \right]_\times \\ 0_{3
+            \times 3} &amp; I_{3 \times 3} \end{bmatrix}
+            \mathcal{K}^{B_p}_C,
+\]</div>
+<p>，其中 <span class="arithmatex">\([p]_{\times}\)</span> 是叉积对应的反对称矩阵。</p>
+</li>
+<li>
+<p>可以用旋转改变表达坐标系：</p>
+<div class="arithmatex">\[
+\mathcal{K}^{B_p}_D = \begin{bmatrix} {}^DR^C
+            &amp; 0_{3 \times 3} \\ 0_{3 \times 3} &amp; {}^DR^C \end{bmatrix}
+            \mathcal{K}^{B_p}_C.
+\]</div>
+</li>
+</ul>
+<p><a id="example-8"></a></p>
+<p><a id="example8"></a></p>
+<h4 id="58">示例 5.8　接触力旋量锥的可视化<a class="headerlink" href="#58" title="Permanent link">&para;</a></h4>
+<p>我做了一个简单交互演示，帮助理解力旋量锥。空间中固定一个箱子，只考虑接触力，不画重力，并在接触点和刚体中心分别显示摩擦锥。为方便解释，本例特意关闭 hydroelastic，每个碰撞对只用一个接触点计算作用力。</p>
+<p>有一个重要限制：力旋量锥位于 <span class="arithmatex">\(\mathbb{R}^6\)</span>，但只能画 <span class="arithmatex">\(\mathbb{R}^3\)</span> 中的锥。因此采用常见做法，将六维锥投影为两个三维锥：平移部分在接触点用绿色、在刚体坐标系用红色；旋转部分在刚体坐标系用蓝色。这样可能有些误导，因为不能从两个投影集合中各自独立选取元素。</p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/contact_wrench.ipynb">在 Colab 中打开</a></p>
+<p>下面是单个接触点的力旋量锥，展示两种接触位置：</p>
+<p><img alt="原文插图" src="../assets/clutter/contact_wrench_1.png" width="1152" height="1098" loading="lazy" decoding="async"></p>
+<p><img alt="原文插图" src="../assets/clutter/contact_wrench_2.png" width="1152" height="1037" loading="lazy" decoding="async"></p>
+<p>应该马上能看出，旋转部分是低维的：叉积使其中所有向量都垂直于 <span class="arithmatex">\({}^Bp^C\)</span>。最好亲自运行 notebook，观察三维交互图。</p>
+<p>下面是两个正对着的接触点的力旋量锥：</p>
+<p><img alt="原文插图" src="../assets/clutter/contact_wrench_3.png" width="1152" height="1037" loading="lazy" decoding="async"></p>
+<p>虽然每个旋转锥都是低维的，它们张成的空间却不同。通过 Minkowski 和共同作用，看起来似乎能抵抗施加在刚体坐标系处的所有纯力矩。这个直觉有一定道理，但此处六维锥投影成两个三维锥的误导就显现了：仍有一些力旋量无法抵抗。若把锥画在两个接触点的中点，就会看到它不包含沿两点连线施加的力矩。没有扭转摩擦时，仅靠这两个接触点，无法抵抗绕该轴的力矩。</p>
+<p>实际仿真中的夹爪使用 hydroelastic，能模拟接触斑和扭转摩擦，因此可以抵抗这条轴上的力矩。具体能抵抗多大，与夹爪挤压物体的力度成正比。</p>
+<p>把各接触力旋量锥变换到共同坐标系，再相加，就得到所有接触能够共同施加的力旋量集合，即接触力旋量锥。经典抓取评价认为，锥越大，能抵抗的扰动力旋量越多，抓取越好。如果锥覆盖整个 <span class="arithmatex">\(\mathbb{R}^6\)</span>，就称这些接触实现了力封闭（force closure），见 <a href="#Prattichizzo08">参考文献 4</a>。</p>
+<p>力旋量锥的空间代数是线性的，因此也很适合纳入优化，例见 <a href="#Dai16">参考文献 5</a>。</p>
+<p><a id="antipodal"></a></p>
+<h3 id="542">5.4.2　共线对跖抓取<a class="headerlink" href="#542" title="Permanent link">&para;</a></h3>
+<p>上述分析自然导向基于模型的抓取规划：优化接触位置，使力旋量锥尽量大。不过，本章希望尽可能少地假定物体信息，暂不在物体模型表面搜索最优抓取点。即便如此，模型分析仍为未知物体提供了很好的启发式。</p>
+<p>对于双指夹爪，一个扩大接触力旋量锥的好办法，是寻找共线的“对跖”抓取点。对跖指两处接触法线，即接触坐标系的 <span class="arithmatex">\(z\)</span> 轴，方向正好相反；共线则要求它们与两接触点之间的连线重合。前面的双指可视化表明，这是一个相当有效的启发式。下面会看到，即使几乎不了解物体，也能使用它。</p>
+<p><a id="section5"></a></p>
+<h2 id="55_1">5.5　从点云选择抓取<a class="headerlink" href="#55_1" title="Permanent link">&para;</a></h2>
+<p>与其先识别箱中物体、估计位姿，不如直接在未分割的点云上寻找可抓取区域。这类几何方法实际效果可以很好，还能在仿真中用来训练深度学习抓取系统，使其用于真实世界，甚至处理不完整视野和遮挡，见 <a href="#tenPas17">参考文献 6</a>、<a href="#Mahler17">参考文献 7</a>、<a href="#Zeng18">参考文献 8</a>。</p>
+<p><a id="section5.1"></a></p>
+<h3 id="551">5.5.1　点云预处理<a class="headerlink" href="#551" title="Permanent link">&para;</a></h3>
+<p>为了看清箱内情况，需要多台 RGB-D 相机，本章示例每个箱子用三台。相机也会看到箱子、其他相机和工作空间中的杂物，因此要将多路点云合成一个只包含感兴趣区域的点云。</p>
+<p>首先裁剪点云，删除感兴趣区域外的点。这里把区域定义为已知箱子位置正上方、与坐标轴对齐的包围盒。</p>
+<p>后面许多抓取策略需要点云“法线”，即估计底层表面法向的单位向量。最好先在各台相机的点云上估计法线，利用相机位置判断方向，再合并点云。</p>
+<p>真实环境中，合并点云需要准确的相机标定，还要处理不干净的深度回波。上一章的方法都相关，因为合并也是点云配准。仿真中若深度完美、相机位置已知，就可以省掉配准，直接拼接各点云。</p>
+<p>最后，原始点云通常比抓取规划所需密得多。常见下采样方法是使用<a href="https://en.wikipedia.org/wiki/Voxel">体素</a>网格，即三维规则立方体，每个体素只保留一个代表点，参见 <a href="http://www.open3d.org/docs/latest/tutorial/Advanced/voxelization.html">Open3D 的体素化说明</a>。点云通常只占三维空间中很少的体素，所以采用稀疏数据结构。对有噪声的点云，体素化也能起到滤波作用。</p>
+<p><a id="example-9"></a></p>
+<p><a id="example9"></a></p>
+<h4 id="59">示例 5.9　芥末酱瓶的点云<a class="headerlink" href="#59" title="Permanent link">&para;</a></h4>
+<p><img alt="原文插图" src="../assets/clutter/mustard_normals.png" width="625" height="615" loading="lazy" decoding="async"></p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/point_cloud_processing.ipynb">在 Colab 中打开</a></p>
+<p>场景中三台相机对着 YCB 芥末酱瓶。先取各路点云，<code>DepthImageToPointCloud</code> 已将它们转换到世界坐标系，再裁剪掉其他相机的几何，估计法线，合并，最后下采样。顺序很重要！</p>
+<p>所有点云都已发送到 MeshCat，不过其中不少默认隐藏。用下拉菜单逐一开关，确认理解每一步的作用。如果不想运行代码，也可以直接查看<a href="https://manipulation.mit.edu/data/mustard_bottle_point_clouds.html">MeshCat 输出</a>。</p>
+<p><a id="section5.2"></a></p>
+<h3 id="552">5.5.2　估计法线与局部曲率<a class="headerlink" href="#552" title="Permanent link">&para;</a></h3>
+<p>下面的抓取策略依赖场景的局部几何，包括法线方向和曲率。从点云估计这些量，是很好的点云处理练习，也代表了许多类似算法。</p>
+<p>考虑对一组点做最小二乘平面拟合，见 <a href="#Shakarji98">参考文献 9</a>。三维平面可以用位置 <span class="arithmatex">\(p\)</span> 和单位法向量 <span class="arithmatex">\(n\)</span> 描述。点 <span class="arithmatex">\(p^i\)</span> 到平面的距离为内积绝对值 <span class="arithmatex">\(\left| (p^i - p)^T n \right|.\)</span>，所以优化问题为：</p>
+<div class="arithmatex">\[
+\min_{p, n} \quad \sum_{i=1}^N
+      \left| (p^i - p)^T n \right|^2, \quad \text{subject to} \quad |n| = 1.
+\]</div>
+<p>对拉格朗日函数关于 <span class="arithmatex">\(p\)</span> 求梯度并令其为零，得到 </p>
+<div class="arithmatex">\[
+p^* = \frac{1}{N} \sum_{i=1}^N p^i.
+\]</div>
+<p>。代回目标，可写成 </p>
+<div class="arithmatex">\[
+\min_n n^T W
+      n, \quad \text{subject to} \quad |n|=1, \quad \text{where } W = \left[ \sum_i  (p^i
+      - p^*) (p^i - p^*)^T \right].
+\]</div>
+<p>。几何上，目标是以原点为中心的二次曲面，约束为单位球面；最优解就是数据矩阵 <span class="arithmatex">\(W\)</span> 最小特征值对应的单位特征向量。若 <span class="arithmatex">\(n\)</span> 最优，反向法线 <span class="arithmatex">\(-n\)</span> 也同样最优。先任选一个，再在后处理时翻转，保证法线朝向相机原点。</p>
+<p>更有意思的是，第二、第三个特征值和特征向量也提供局部几何信息。<span class="arithmatex">\(W\)</span> 对称，特征向量相互正交，构成点云局部基。最小特征值对应法线；最大特征值对应曲率最小的方向，因为沿该方向的内积平方最大。这对抓取规划很有用；<a href="#tenPas17">参考文献 6</a> 及更早的一些工作，就把它作为生成候选抓取的主要启发式。</p>
+<p>估计点云表面的局部曲率时，可以用快速最近邻查询找到附近若干点，再拟合平面。直接处理深度图时，人们常跳过最近邻查询，用像素相邻近似点云相邻。对每个点重复这个过程即可。</p>
+<p>刚开始经常处理点云时，我以为，对稠密点云的每个点都做这种计算，肯定无法用于在线感知。结果我错了！多年前，它就已经常用于实时感知回路。与如今大规模神经网络消耗的 <a href="https://en.wikipedia.org/wiki/FLOPS">浮点运算次数（FLOPs）</a> 相比，这些运算更是不算什么。</p>
+<p><a id="normal_estimation"></a></p>
+<p><a id="example10"></a></p>
+<h4 id="510">示例 5.10　芥末酱瓶的法线与局部曲率<a class="headerlink" href="#510" title="Permanent link">&para;</a></h4>
+<p><img alt="原文插图" src="../assets/clutter/mustard_surface_estimation.png" width="1473" height="1610" loading="lazy" decoding="async"></p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/normal_estimation.ipynb">在 Colab 中打开</a></p>
+<p>我实现了基本的最小二乘表面估计：绿色是查询点，蓝色是近邻，局部拟合结果用 RGB<span class="arithmatex">\(\Leftrightarrow\)</span>XYZ 坐标系表示。拖动查询点，看看各轴如何与法线和局部曲率方向对应。</p>
+<p>想进一步读这类算法，我没有特别理想的参考。不过，Radu Rusu 是 PCL 的主要作者，见 <a href="#Rusu11">参考文献 10</a>，他的博士论文很好地整理了 2010 年前后的点云算法，见 <a href="#Rusu10">参考文献 11</a>。</p>
+<p><a id="grasp_candidates"></a></p>
+<h3 id="553">5.5.3　评价一个候选抓取<a class="headerlink" href="#553" title="Permanent link">&para;</a></h3>
+<p>点云处理完，就可以规划抓取了。分两步：先定义评价候选抓取的代价函数，再讨论如何找低代价候选。</p>
+<p>按照前面的模型分析，抓起物体，或夹爪闭合时碰巧夹住的东西，至少需要接触力抵抗其重力旋量。夹爪沿自身 <span class="arithmatex">\(x\)</span> 轴闭合，但要避免物体滑落，接触摩擦锥内还必须存在抵抗重力的力。我们不知道物体重力旋量，也受手指形状限制，因此一个合理策略是在点云表面找共线对跖点，并与夹爪 <span class="arithmatex">\(x\)</span> 轴对齐。真实点云很难有完美对跖点，但找法线近乎相反的区域，就是不错的抓取策略。</p>
+<p><a id="example-11"></a></p>
+<p><a id="example11"></a></p>
+<h4 id="511_1">示例 5.11　为候选抓取打分<a class="headerlink" href="#511_1" title="Permanent link">&para;</a></h4>
+<p>橡胶指尖和物体都会变形，实际接触更接近接触斑，而非单点。因此，寻找法线方向合适的点片更合理。具体写法很多；这里先将场景点云变换到候选夹爪坐标系，仅保留指尖之间包围盒内的点，在 MeshCat 中标为红色。代价第一项，根据各点法线与夹爪 <span class="arithmatex">\(x\)</span> 轴的对齐程度给奖励：</p>
+<div class="arithmatex">\[
+\text{cost} = -\sum_i (n^i_{G_x})^2,
+\]</div>
+<p>，其中 <span class="arithmatex">\(n^i_{G_x}\)</span> 是裁剪后第 <span class="arithmatex">\(i\)</span> 个点的法线在夹爪坐标系下的 <span class="arithmatex">\(x\)</span> 分量。</p>
+<p><img alt="原文插图" src="../assets/clutter/grasp_candidate_evaluation.png" width="1154" height="814" loading="lazy" decoding="async"></p>
+<p>好抓取还要考虑其他因素。机械臂运动学有限，伸入箱子时，可能更喜欢某些有利的夹爪朝向。因此，代码还惩罚夹爪偏离竖直方向：奖励世界 <span class="arithmatex">\(-z\)</span> 方向向量 <span class="arithmatex">\([0, 0, -1]\)</span> 与夹爪 <span class="arithmatex">\(y\)</span> 轴变换到世界后的点积：</p>
+<div class="arithmatex">\[
+\text{cost} \mathrel{{+}{=}} -\alpha
+        \begin{bmatrix} 0 &amp; 0 &amp;-1\end{bmatrix}R^G \begin{bmatrix}0 \\ 1 \\
+        0\end{bmatrix} = \alpha R^G_{3,2},
+\]</div>
+<p>。其中 <span class="arithmatex">\(\alpha\)</span> 是相对权重，<span class="arithmatex">\(R^G_{3,2}\)</span> 是旋转矩阵第三行第二列元素。</p>
+<p>最后检查夹爪是否与箱子或点云碰撞，碰撞时直接返回无穷大代价。notebook 实现了这些项，并提供滑块，便于移动夹爪、观察代价变化。</p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/grasp_selection.ipynb">在 Colab 中打开</a></p>
+<p><a id="grasp_sampler"></a></p>
+<h3 id="554">5.5.4　生成候选抓取<a class="headerlink" href="#554" title="Permanent link">&para;</a></h3>
+<p>已有代价函数，输入场景点云、环境模型，例如箱子位置，就能评价候选位姿 <span class="arithmatex">\(X^G\)</span>。现在希望求：在满足碰撞约束时，使代价最小的 <span class="arithmatex">\(X^G\)</span>。</p>
+<p>可惜，目标和约束都高度非凸，优化很难。更麻烦的是，大多数 <span class="arithmatex">\(X^G\)</span> 下对跖项为零，因为随机 <span class="arithmatex">\(X^G\)</span> 往往根本没把任何点放到两指之间。所以文献通常不用常规数学规划求解器，而采用随机采样，并利用启发式产生合理样本。</p>
+<p>例如 <a href="#tenPas17">参考文献 6</a> 利用局部曲率提出候选，使点云法线指向掌心、手指沿最大曲率方向。沿法线移动夹爪，直到手指不再碰撞，还可对附近位置采样。我们准备了<a href="https://manipulation.mit.edu/#gpg">一道练习</a>帮助探索。不过，对 YCB 物体，这未必最好：许多物体是盒子，局部曲率提供不了多少信息。</p>
+<p>另一个办法是先找对跖点对，再采样与之对齐的夹爪位姿。许多三维库支持对体素点云做射线投射，因此可随机选点，沿其法线反方向向点云内部发射射线。如果命中体素的法线足够对跖，且距离小于夹爪宽度，就得到了合理点对。</p>
+<p><a id="grasp_sampling"></a></p>
+<p><a id="example12"></a></p>
+<h4 id="512">示例 5.12　生成候选抓取<a class="headerlink" href="#512" title="Permanent link">&para;</a></h4>
+<p>示例采用比射线投射更简单的方法：随机选一个点，以竖直朝向为起点采样夹爪方向，使夹爪 <span class="arithmatex">\(x\)</span> 轴与该点法线对齐。然后主要依靠评分中的对跖项来筛出好抓取。</p>
+<p><img alt="原文插图" src="../assets/clutter/candidate_grasp_mustard.png" width="742" height="814" loading="lazy" decoding="async"></p>
+<p>还有一个调整：找到指尖之间的点后，沿夹爪 <span class="arithmatex">\(x\)</span> 轴向外移动手，使这些点在夹爪坐标系中居中。这样能减少闭合时把物体碰倒的情况。</p>
+<p>就这些！采样少量候选，画出代价最低的几个。多运行几次，会发现效果其实不错。每次运行都会重新仿真物体下落；真正的抓取评价很快。</p>
+<p><img alt="原文插图" src="../assets/clutter/grasp_candidates.png" width="968" height="762" loading="lazy" decoding="async"></p>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/grasp_selection.ipynb">在 Colab 中打开</a></p>
+<p><a id="section6"></a></p>
+<h2 id="56_1">5.6　容易出问题的情况<a class="headerlink" href="#56_1" title="Permanent link">&para;</a></h2>
+<p>试试前面的评分，会发现一些不足。有些可以通过增加代价项，用启发式轻松改善，例如加入预抓取位姿的碰撞检查。</p>
+<p>还有些场景光靠抓取解决不了。物体紧挨箱角时，夹爪可能无法绕到两侧而不碰到物体或箱壁。上述策略始终将采样法线与夹爪 <span class="arithmatex">\(x\)</span> 对齐，因此不会尝试只夹盒子角点；是否应该这样夹也不明确，尤其我们的夹爪比较大。在 TRI，我们加了简单的推移策略：如果水槽里还有点云，却找不到可行抓取，就把手伸下去，将对应区域推向箱子中央。这常常很有效！</p>
+<p>一些缺点很难靠纯几何补救，根源在于系统没有“物体”的概念。例如，两个物体靠近时，常一次抓起两个。对较重物体，靠近质心抓取更有利于在摩擦锥内抵抗重力；但这里的策略可能只夹住重锤柄的最末端。</p>
+<p>我不认为问题一定是点云信息不足，即使没有颜色。给你看同样的点云，你多半不会犯这些错误。此时学习抓取评价函数就可能有用。不需要通用人工智能，仅仅记住以前在哪里抓失败过，就足以明显改善启发式。</p>
+<p><a id="task"></a></p>
+<h2 id="57_1">5.7　任务层编程<a class="headerlink" href="#57_1" title="Permanent link">&para;</a></h2>
+<p>我们大多习惯<a href="https://hackr.io/blog/procedural-programming">过程式编程</a>：程序顺序执行，调用函数，经过 if 分支和 for、while 循环。高层机器人程序也很容易写成“只要第一个箱子里还有物体，就抓起并搬到第二个箱子……”这样当然没错。但作为机器人框架的一部分，高层程序必须在运行时与其他模块通信，包括以 100 Hz 甚至 1 kHz 运行的低层控制器。怎样编写任务层行为，让它与高速控制顺畅结合？</p>
+<p>大体可以分为三类：</p>
+<ul>
+<li>
+<p>在独立线程中运行过程式代码，通过消息、事件与机器人或仿真主线程中的模块通信。ROS 这样的多进程消息传递体系常采用这种方式。</p>
+</li>
+<li>
+<p>直接写任务策略，例如有限状态机（FSM）或行为树，在机器人、仿真循环中逐次执行。</p>
+</li>
+<li>
+<p>任务规划器根据规则，将任务行为串联起来，实现长期目标：</p>
+</li>
+<li>
+<p>最简单时，规划器输出一个计划，由主循环执行，就像前面执行夹爪轨迹一样。</p>
+</li>
+<li>
+<p>如果能在线运行，持续根据新传感器信息调整、重新规划，就可直接放进主循环。</p>
+</li>
+<li>
+<p>还有一些规划器能把计划“编译”为策略，例如 FSM。<a href="https://en.wikipedia.org/wiki/Linear_temporal_logic_to_B%C3%BCchi_automaton">这里是一个经典例子</a>。</p>
+</li>
+</ul>
+<p>各有适用场景，研究者也各有所好。Rod Brooks 在《Elephants Don't Play Chess》等文章中反对任务层规划，见 <a href="#Brooks90">参考文献 12</a>、<a href="#Brooks91">参考文献 13</a>、<a href="#Brooks91a">参考文献 14</a>，让我印象很深。他的包容架构明显属于任务策略，可看作行为树的先驱，并通过早期 Roomba 吸尘机器人证明了实用性。规划研究者则会说：复杂任务不可能让人手写覆盖所有情况的策略，真正能扩展的是规划。他们也用信念空间规划、任务与运动联合规划等方法，回应了符号落地和模型需求方面的早期批评；后面会继续讨论。</p>
+<p><a id="section7.1"></a></p>
+<h3 id="571">5.7.1　状态机与行为树<a class="headerlink" href="#571" title="Permanent link">&para;</a></h3>
+<p><a id="section7.2"></a></p>
+<h3 id="572">5.7.2　任务规划<a class="headerlink" href="#572" title="Permanent link">&para;</a></h3>
+<p>任务规划主要基于搜索，人工智能中这条路线历史很长。STRIPS，见 <a href="#Fikes71">参考文献 15</a>，是最早、最著名的表示和算法之一，用初始状态、目标状态，以及带前置条件和效果的动作描述问题。时序逻辑，如 LTL、MTL、STL，可以表达随时间变化的复杂目标与约束，例如“事件 B 后最终必须发生 A”。规划领域定义语言（PDDL），见 <a href="#Aeronautiques98">参考文献 16</a>、<a href="#Haslum19">参考文献 17</a>，扩展了 STRIPS，加入变量类型、条件效果、量词乃至时序逻辑，并成为长期、影响广泛的<a href="https://www.icaps-conference.org/competitions/">ICAPS 规划竞赛</a>所用的描述语言。这些比赛催生了 GraphPlan <a href="#Blum97">参考文献 18</a>、HSP <a href="#Bonet01">参考文献 19</a>、Fast-Forward <a href="#Hoffmann01">参考文献 20</a>、FastDownward <a href="#Helmert06">参考文献 21</a> 等高效算法，展示了启发式搜索的力量，并充分利用描述的对象结构进行因子分解，构造强有力的启发式。</p>
+<p><a id="section7.3"></a></p>
+<h3 id="573">5.7.3　大语言模型<a class="headerlink" href="#573" title="Permanent link">&para;</a></h3>
+<p>2022 年末，随着大语言模型（LLM）兴起，任务“规划”出现了新路线。很快人们就发现，GPT-4 等强模型仅凭简短自然语言描述，就能生成相当复杂的计划。通过精心设计提示词，可以让模型选择机器人确实能执行的动作；它们尤其擅长写 Python。借助 Python，甚至可以让模型<a href="https://code-as-policies.github.io/">生成策略</a>，而不只是计划，见 <a href="#Liang23">参考文献 22</a>。截至原文写作时，将相机、传感器观察到的环境自动转为自然语言提示仍是挑战，不过似乎只是时间问题。据说逐步发布的 <a href="https://openai.com/research/gpt-4v-system-card">GPT-4V(ision)</a> 在这方面表现很好。</p>
+<p>大家大致认同，语言模型让简单规划变得异常容易。传统搜索规划器可能钻描述中遗漏要求、约束的空子，LLM 却能用“常识”补上空白，给出合理计划。当前模型在需要多步推理的长期任务上仍有限制，但巧妙的提示设计已经能带来令人印象深刻的结果，见 <a href="#Yao23">参考文献 23</a>。</p>
+<p><a id="section7.4"></a></p>
+<h3 id="574">5.7.4　清理杂物的简单状态机<a class="headerlink" href="#574" title="Permanent link">&para;</a></h3>
+<p>对于当前系统框架中的清理任务，第二种方式就很合适：用简单状态机直接编写任务层策略。</p>
+<p><a id="example-13"></a></p>
+<p><a id="example13"></a></p>
+<h4 id="513">示例 5.13　清理杂物的简单状态机<a class="headerlink" href="#513" title="Permanent link">&para;</a></h4>
+<p><img alt="原文插图" src="../assets/clutter/clutter_clearing_fsm.svg" width="616" height="461" loading="lazy" decoding="async"></p>
+<p><a id="section8"></a></p>
+<h2 id="58_1">5.8　把各部分连接起来<a class="headerlink" href="#58_1" title="Permanent link">&para;</a></h2>
+<p>先把抓取选择算法封装为一个系统：读取三台相机的点云，完成包括法线估计在内的预处理，再随机采样，将选中的抓取位姿放到输出端口。</p>
+<p><img alt="系统与输入输出端口" src="../assets/clutter/system-10.svg" width="710" height="226" loading="lazy" decoding="async"></p>
+<p>这个系统会实例化两次，分别处理位于 X 轴正方向和 y 轴负方向的箱子。由于 Drake 系统框架采用拉取式架构，只有下游求输出端口值时，才会执行这项相对昂贵的采样。</p>
+<p>本例的核心是 <code>Planner</code> 系统：实现基本状态机，调用规划函数，把计划存入 <code>Context</code>，再在输出端口计算当前计划值。</p>
+<p><img alt="系统与输入输出端口" src="../assets/clutter/system-12.svg" width="580" height="226" loading="lazy" decoding="async"></p>
+<p>系统需要足够的输入、输出端口，将相关信息送入规划器，并向下游控制器发送指令。</p>
+<p><a id="clutter_clearing"></a></p>
+<p><a id="example14"></a></p>
+<h3 id="514">示例 5.14　清理杂物：完整演示<a class="headerlink" href="#514" title="Permanent link">&para;</a></h3>
+<p><strong>运行示例</strong>：<a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/clutter_clearing.ipynb">在 Colab 中打开</a></p>
+<p><a id="exercises"></a></p>
+<h2 id="59_1">5.9　练习<a class="headerlink" href="#59_1" title="Permanent link">&para;</a></h2>
+<p><a id="static_equilibrium"></a></p>
+<p><a id="exercise1"></a></p>
+<h3 id="51_2">练习 5.1　判断静力平衡<a class="headerlink" href="#51_2" title="Permanent link">&para;</a></h3>
+<p>本题采用库仑摩擦模型，满足 <span class="arithmatex">\(|f_t|
+        \le \mu f_n\)</span>。也就是说，在所需摩擦力不超过 <span class="arithmatex">\(\mu f_n\)</span> 时，它足以阻止运动；超过后则有 <span class="arithmatex">\(|f_t| = \mu f_n\)</span>。</p>
+<ol>
+<li>
+<p>质量 <span class="arithmatex">\(m\)</span> 的箱子位于倾角 <span class="arithmatex">\(\theta\)</span> 的斜面上，接触摩擦系数为 <span class="arithmatex">\(\mu\)</span>：</p>
+<p><img alt="原文插图" src="../assets/clutter/static_equilibrium_ramp.png" width="389" height="369" loading="lazy" decoding="async"></p>
+<p>。给定倾角 <span class="arithmatex">\(\theta\)</span>，箱子不下滑所需的最小摩擦系数是多少？重力加速度记为 <span class="arithmatex">\(g\)</span>。</p>
+</li>
+</ol>
+<p>考虑平地上的三个均匀实心球，半径 <span class="arithmatex">\(r\)</span>、质量 <span class="arithmatex">\(m\)</span>，球之间、球与地面的摩擦系数均为 <span class="arithmatex">\(\mu\)</span>。对下面各个位形，是否存在某些 <span class="arithmatex">\(\mu\in[0,1]\)</span>、<span class="arithmatex">\(m &gt; 0\)</span>、<span class="arithmatex">\(r &gt; 0\)</span>，使球处于静力平衡？解释原因。所有刚体都必须同时满足力和力矩平衡。</p>
+<p>我们提供 <a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/exercises/static_equilibrium.ipynb">对应 notebook</a>，便于建立直觉、检查答案。它允许设置球的位形，再用 <a href="https://drake.mit.edu/doxygen_cxx/classdrake_1_1multibody_1_1_static_equilibrium_problem.html">StaticEquilibriumProblem</a> 求静力平衡。可以借助它观察，但每个答案都需要物理解释，例如画各球的受力图，写出力与力矩能否相加为零的方程。这基本就是 StaticEquilibriumProblem 所检查的内容。</p>
+<ol>
+<li>
+<p>球竖直叠放：</p>
+<p><img alt="原文插图" src="../assets/clutter/static_equilibrium_stacked.png" width="376" height="384" loading="lazy" decoding="async"></p>
+</li>
+<li>
+<p>一个球放在另一个球上，但有偏移：</p>
+<p><img alt="原文插图" src="../assets/clutter/static_equilibrium_tilted.png" width="376" height="254" loading="lazy" decoding="async"></p>
+</li>
+<li>
+<p>球堆成金字塔：</p>
+<p><img alt="原文插图" src="../assets/clutter/static_equilibrium_pyramid.png" width="376" height="252" loading="lazy" decoding="async"></p>
+</li>
+<li>
+<p>球堆成金字塔，但下方两球相距 <span class="arithmatex">\(d\)</span>：</p>
+<p><img alt="原文插图" src="../assets/clutter/static_equilibrium_pyramid_with_space.png" width="376" height="238" loading="lazy" decoding="async"></p>
+</li>
+</ol>
+<p>最后，再回答有关这个类的概念问题：</p>
+<ol>
+<li>
+<p>为什么系统的初始猜测会影响结果？提示：这是哪一类优化问题？</p>
+</li>
+<li>
+<p>查看 Drake 的 <a href="https://drake.mit.edu/doxygen_cxx/classdrake_1_1multibody_1_1_static_equilibrium_problem.html">StaticEquilibriumProblem</a> 文档，其中列出了求平衡时使用的约束。受力图能帮助回答其中哪两项？</p>
+</li>
+</ol>
+<p><a id="exercise-2"></a></p>
+<p><a id="exercise2"></a></p>
+<h3 id="52_2">练习 5.2　从深度图估计法线<a class="headerlink" href="#52_2" title="Permanent link">&para;</a></h3>
+<p>本题考察另一种法线估计方法：利用深度图已有的空间结构，避免最近邻计算。所有工作都在 <a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/exercises/normal_estimation_depth.ipynb">对应 notebook</a> 中完成，具体包括：</p>
+<ol>
+<li>
+<p>从数学上分析，如何利用深度图中相邻点构造的数据矩阵，计算表面法线。</p>
+</li>
+<li>
+<p>实现直接从深度图估计法线的方法，不计算最近邻。</p>
+</li>
+<li>
+<p>分析在哪些场景下，这种方法的效果不如最近邻方法。</p>
+</li>
+</ol>
+<p><a id="exercise-3"></a></p>
+<p><a id="exercise3"></a></p>
+<h3 id="53_2">练习 5.3　解析求解对跖抓取<a class="headerlink" href="#53_2" title="Permanent link">&para;</a></h3>
+<p>前面用采样寻找对跖抓取。如果知道物体表面的方程，能否解析求解？本题将用符号微分和 MathematicalProgram，分析并实现一种在构造时就保证正确的对跖点搜索方法。所有工作都在 <a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/exercises/analytic_antipodal_grasps.ipynb">对应 notebook</a> 中完成，具体包括：</p>
+<ol>
+<li>
+<p>证明对跖点是定义在该形状上的某个能量函数的驻点。</p>
+</li>
+<li>
+<p>证明反过来不成立。</p>
+</li>
+<li>
+<p>用 MathematicalProgram 实现对跖点搜索。</p>
+</li>
+<li>
+<p>分析能量函数的 Hessian，以及它与对跖抓取类型的关系。</p>
+</li>
+</ol>
+<p><a id="gpg"></a></p>
+<p><a id="exercise4"></a></p>
+<h3 id="54_2">练习 5.4　生成候选抓取<a class="headerlink" href="#54_2" title="Permanent link">&para;</a></h3>
+<p>本章 notebook 用对跖启发式生成候选。本题改为考察局部曲率方法，类似 <a href="#tenPas17">参考文献 6</a> 中的方案。题目以编程为主，全部在 <a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/exercises/grasp_candidate.ipynb">对应 notebook</a> 中完成。</p>
+<p><a id="behaviorTrees"></a></p>
+<p><a id="exercise5"></a></p>
+<h3 id="55_2">练习 5.5　行为树<a class="headerlink" href="#55_2" title="Permanent link">&para;</a></h3>
+<p>先回顾行为树术语。行为树以模块化、可响应环境变化的方式切换任务。它是一棵有根有向树，内部节点管理控制流，叶节点执行动作或检查条件。例如，“抓球”是动作，可以成功或失败；“手是否为空？”是条件，为真则成功，为假则失败。每个节点会被定期触发，再触发子节点，并根据子节点状态返回成功、失败或运行中。</p>
+<p>这里只考虑两种控制流节点。<strong>顺序节点</strong>（<span class="arithmatex">\(\rightarrow\)</span>）：从左到右执行子行为，任一失败就返回失败，任一仍运行就返回运行中；可把它理解为各子行为之间的“与”。<strong>回退节点</strong>（?）：也依次执行，但任一子行为成功就返回成功，可理解为“或”。</p>
+<p>下图展示符号：顺序节点用方框中的箭头，回退节点用方框中的问号，动作放在方框内，条件放在椭圆内。</p>
+<p><img alt="原文插图" src="../assets/clutter/behaviorTree_symbols.png" width="506" height="115" loading="lazy" decoding="async"></p>
+<p>考虑一个简单任务：机器人找到球，抓起，再放入箱子。高层行为树可以写成：</p>
+<p><img alt="原文插图" src="../assets/clutter/behaviorTree_highLevel.png" width="372" height="71" loading="lazy" decoding="async"></p>
+<p>确认这棵小树表达了任务，再展开其中的“抓球”行为：</p>
+<p><img alt="原文插图" src="../assets/clutter/behaviorTree_pick.png" width="372" height="202" loading="lazy" decoding="async"></p>
+<p>先看左支。如果球已经很近，“Ball Close?” 条件成功；否则执行“Approach ball”，使球靠近。所以这部分保证球已经很近，或者通过接近动作变得很近。再看右支：如果球已经抓住，“Ball Grasped?” 成功；否则执行“Grasp Ball”。继续展开，完整行为树为：</p>
+<p><img alt="原文插图" src="../assets/clutter/behaviorTree_detail.png" width="1250" height="222" loading="lazy" decoding="async"></p>
+<p><strong>图 5.2</strong>：抓球并放置任务的行为树</p>
+<p>这里还增加了求助行为：机器人完成不了任务时，可以请好心的人帮忙。花几分钟沿树走一遍，确认它确实实现了预期。</p>
+<ol>
+<li>
+<p>我们说行为树能及时响应变化，来检验一下。机器人执行<a href="https://manipulation.mit.edu/#behaviorTree">这棵行为树</a>，正在“Approach Bin”时，有人把球打落。球滚到一个仍可见、但很远的位置。按树的逻辑，哪个条件会失败，因此又会执行哪个动作？</p>
+</li>
+<li>
+<p>有限状态机（FSM）是另一种计算模型，由状态、转移和事件构成。抓球任务也可用下面的 FSM 表达：</p>
+<p><img alt="原文插图" src="../assets/clutter/fsm_blanked.png" width="919" height="365" loading="lazy" decoding="async"></p>
+<p>。其中留下了四处状态或转移，请补齐，使其行为与行为树相同。</p>
+</li>
+</ol>
+<p>从这个简单任务就能看出，FSM 虽然常很直观，却也容易迅速变得复杂。</p>
+<ol>
+<li>
+<p>接下来，用行为树表达本章和课堂中的箱内抓取。只要箱 1 没空，就选择可行抓取、执行，并把夹住的物体搬到箱 2。如果箱 1 还有物体，却找不到可行抓取，假设可以执行摇箱动作，随机改变物体配置，希望出现新机会。</p>
+<p>条件如下：</p>
+</li>
+<li>
+<p>箱 1 是否为空？</p>
+</li>
+<li>
+<p>是否存在可行抓取？</p>
+</li>
+<li>
+<p>是否已选定抓取？</p>
+</li>
+<li>
+<p>抓住的物体是否位于箱 2 上方？</p>
+</li>
+<li>
+<p>是否已抓住物体？</p>
+</li>
+<li>
+<p>物体是否已放入箱 2？</p>
+<p>动作如下：</p>
+</li>
+<li>
+<p>把抓住的物体放入箱 2</p>
+</li>
+<li>
+<p>抓取物体</p>
+</li>
+<li>
+<p>选择抓取</p>
+</li>
+<li>
+<p>随机重排箱内物体</p>
+</li>
+<li>
+<p>把抓住的物体移到箱 2 上方</p>
+<p>请结合这些条件、动作，以及顺序和回退节点，画出实现任务的行为树。下面提供了一个草稿，但有多处错误，例如缺分支，或控制流节点、动作、条件的类型不对：</p>
+<p><img alt="原文插图" src="../assets/clutter/behaviorTreeBroken.png" width="1454" height="872" loading="lazy" decoding="async"></p>
+<p>找出全部问题，画出修正后的树。</p>
+</li>
+</ol>
+<p>行为树的模块化来自可复用的动作、条件代码，再通过树组合。例如，(c) 中的“选择抓取”可以用本章对跖抓取算法实现，“把抓住的物体移到箱 2 上方”则可以用第 3 章的抓取与放置工具。</p>
+<p>资料来源：本题 (a)、(b) 的场景与插图受 <a href="#Colledanchise18">参考文献 24</a> 中材料启发。</p>
+<p><a id="antipodal_grasp_letters"></a></p>
+<p><a id="exercise6"></a></p>
+<h3 id="56_2">练习 5.6　采样对跖抓取<a class="headerlink" href="#56_2" title="Permanent link">&para;</a></h3>
+<p>本题用自己的姓名首字母模型练习对跖抓取采样，探索如何通过射线投射寻找作为抓取基础的对跖点对。所有工作都在 <a href="https://colab.research.google.com/github/RussTedrake/manipulation/blob/master/book/clutter/exercises/6_grasp_initials.ipynb">对应 notebook</a> 中完成，具体包括：</p>
+<ol>
+<li>
+<p>从网格采样对跖点对。</p>
+</li>
+<li>
+<p>按抓取启发式筛选点对。</p>
+</li>
+<li>
+<p>利用这些启发式，在场景中操作自定义网格。</p>
+</li>
+</ol>
+<p><a id="references"></a></p>
+<h2 id="_2">参考文献<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div class="references">
+<ol>
+<li>
+<p><a id="Calli17"></a> Berk Calli and Arjun Singh and James Bruce and Aaron Walsman and Kurt Konolige and Siddhartha Srinivasa and Pieter Abbeel and Aaron M Dollar , "Yale-CMU-Berkeley dataset for robotic manipulation research" , The International Journal of Robotics Research , vol. 36, no. 3, pp. 261--268, 2017 .</p>
+</li>
+<li>
+<p><a id="Izatt20"></a> Gregory Izatt and Russ Tedrake , "Generative Modeling of Environments with Scene Grammars and Variational Inference" , Proceedings of the 2020 IEEE International Conference on Robotics and Automation (ICRA) , 2020 .
+    <a href="http://groups.csail.mit.edu/robotics-center/public_papers/Izatt20.pdf">文献链接</a></p>
+</li>
+<li>
+<p><a id="Elandt19"></a> Ryan Elandt and Evan Drumwright and Michael Sherman and Andy Ruina , "A pressure field model for fast, robust approximation of net contact force and moment between nominally rigid objects" , 
+    , pp. 8238-8245, 11, 2019 .</p>
+</li>
+<li>
+<p><a id="Prattichizzo08"></a> Domenico Prattichizzo and Jeffrey C Trinkle , "Grasping" , Springer Handbook of Robotics , pp. 671-700, 2008 .</p>
+</li>
+<li>
+<p><a id="Dai16"></a> Hongkai Dai , "Robust multi-contact dynamical motion planning using contact wrench set" , 
+    PhD thesis, Massachusetts Institute of Technology, 2016 .
+    <a href="http://groups.csail.mit.edu/robotics-center/public_papers/Dai16.pdf">文献链接</a></p>
+</li>
+<li>
+<p><a id="tenPas17"></a> Andreas ten Pas and Marcus Gualtieri and Kate Saenko and Robert Platt , "Grasp pose detection in point clouds" , The International Journal of Robotics Research , vol. 36, no. 13-14, pp. 1455--1473, 2017 .</p>
+</li>
+<li>
+<p><a id="Mahler17"></a> Jeffrey Mahler and Jacky Liang and Sherdil Niyaz and Michael Laskey and Richard Doan and Xinyu Liu and Juan Aparicio Ojea and Ken Goldberg , "Dex-net 2.0: Deep learning to plan robust grasps with synthetic point clouds and analytic grasp metrics" , arXiv preprint arXiv:1703.09312 , 2017 .</p>
+</li>
+<li>
+<p><a id="Zeng18"></a> Andy Zeng and Shuran Song and Kuan-Ting Yu and Elliott Donlon and Francois R Hogan and Maria Bauza and Daolin Ma and Orion Taylor and Melody Liu and Eudald Romo and others , "Robotic pick-and-place of novel objects in clutter with multi-affordance grasping and cross-domain image matching" , 2018 IEEE international conference on robotics and automation (ICRA) , pp. 1--8, 2018 .</p>
+</li>
+<li>
+<p><a id="Shakarji98"></a> Craig M Shakarji , "Least-squares fitting algorithms of the NIST algorithm testing system" , Journal of research of the National Institute of Standards and Technology , vol. 103, no. 6, pp. 633, 1998 .</p>
+</li>
+<li>
+<p><a id="Rusu11"></a> Radu Bogdan Rusu and Steve Cousins , "3D is here: Point Cloud Library (PCL)" , Proceedings of the IEEE International Conference on Robotics and Automation (ICRA) , May 9-13, 2011 .</p>
+</li>
+<li>
+<p><a id="Rusu10"></a> Radu Bogdan Rusu , "Semantic 3D Object Maps for Everyday Manipulation in Human Living Environments" , 
+    PhD thesis, Institut für Informatik der Technischen Universität München, 2010 .</p>
+</li>
+<li>
+<p><a id="Brooks90"></a> R. A. Brooks , "Elephants Don't Play Chess" , Robotics and Autonomous Systems , vol. 6, pp. 3--15,, 1990 .</p>
+</li>
+<li>
+<p><a id="Brooks91"></a> Rodney A. Brooks , "Intelligence Without Reason" , 
+    , no. 1293, April, 1991 .</p>
+</li>
+<li>
+<p><a id="Brooks91a"></a> Rodney A. Brooks , "Intelligence without representation" , Artificial Intelligence , vol. 47, pp. 139-159, 1991 .</p>
+</li>
+<li>
+<p><a id="Fikes71"></a> Richard E Fikes and Nils J Nilsson , "STRIPS: A new approach to the application of theorem proving to problem solving" , Artificial intelligence , vol. 2, no. 3-4, pp. 189--208, 1971 .</p>
+</li>
+<li>
+<p><a id="Aeronautiques98"></a> Constructions Aeronautiques and Adele Howe and Craig Knoblock and ISI Drew McDermott and Ashwin Ram and Manuela Veloso and Daniel Weld and David Wilkins SRI and Anthony Barrett and Dave Christianson and others , "PDDL| the planning domain definition language" , Technical Report, Tech. Rep. , 1998 .</p>
+</li>
+<li>
+<p><a id="Haslum19"></a> Patrik Haslum and Nir Lipovetzky and Daniele Magazzeni and Christian Muise and Ronald Brachman and Francesca Rossi and Peter Stone , "An introduction to the planning domain definition language" , Springer
+    , vol. 13, 2019 .</p>
+</li>
+<li>
+<p><a id="Blum97"></a> Avrim L Blum and Merrick L Furst , "Fast planning through planning graph analysis" , Artificial intelligence , vol. 90, no. 1-2, pp. 281--300, 1997 .</p>
+</li>
+<li>
+<p><a id="Bonet01"></a> Blai Bonet and Héctor Geffner , "Planning as heuristic search" , Artificial Intelligence , vol. 129, no. 1-2, pp. 5--33, 2001 .</p>
+</li>
+<li>
+<p><a id="Hoffmann01"></a> Jörg Hoffmann , "FF: The fast-forward planning system" , AI magazine , vol. 22, no. 3, pp. 57--57, 2001 .</p>
+</li>
+<li>
+<p><a id="Helmert06"></a> Malte Helmert , "The fast downward planning system" , Journal of Artificial Intelligence Research , vol. 26, pp. 191--246, 2006 .</p>
+</li>
+<li>
+<p><a id="Liang23"></a> Jacky Liang and Wenlong Huang and Fei Xia and Peng Xu and Karol Hausman and Brian Ichter and Pete Florence and Andy Zeng , "Code as policies: Language model programs for embodied control" , 2023 IEEE International Conference on Robotics and Automation (ICRA) , pp. 9493--9500, 2023 .</p>
+</li>
+<li>
+<p><a id="Yao23"></a> Shunyu Yao and Dian Yu and Jeffrey Zhao and Izhak Shafran and Thomas L Griffiths and Yuan Cao and Karthik Narasimhan , "Tree of thoughts: Deliberate problem solving with large language models" , arXiv preprint arXiv:2305.10601 , 2023 .</p>
+</li>
+<li>
+<p><a id="Colledanchise18"></a> Michele Colledanchise and Petter Ogren , "Behavior trees in robotics and AI: An introduction" , CRC Press
+    , 2018 .</p>
+</li>
+</ol>
+</div>
+<hr />
+<p><strong>继续阅读</strong>：<a href="../pose-estimation/">上一章：基于几何的位姿估计（中文）</a> · <a href="../preface/">全书目录与前言（中文）</a> · <a href="../motion-planning/">下一章：运动规划（中文）</a><br />
+<a href="https://accessibility.mit.edu/">无障碍访问</a> · © Russ Tedrake, 2026</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+  <div class="site-colophon md-grid">
+    <strong>LoTusY</strong>
+    <span>学习与研究笔记</span>
+    <nav aria-label="页脚导航">
+      <a href="../../../papers/">论文阅读</a>
+      <a href="../../">课程翻译</a>
+      <a href="../../../about/">关于我</a>
+    </nav>
+  </div>
+  
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="页脚" >
+        
+          
+          <a href="../pose-estimation/" class="md-footer__link md-footer__link--prev" aria-label="上一页: 第 4 章 · 基于几何的位姿估计">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              <div class="md-ellipsis">
+                第 4 章 · 基于几何的位姿估计
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../motion-planning/" class="md-footer__link md-footer__link--next" aria-label="下一页: 第 6 章 · 运动规划">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              <div class="md-ellipsis">
+                第 6 章 · 运动规划
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 LoTusY · 保持好奇，持续记录。
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/JXTZZ" target="_blank" rel="noopener" title="LoTusY on GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+        <script src="../../../javascripts/version-sync.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,72 @@
+/* Hallmark · shape: Index-First / Long Document · genre: editorial · theme: Studio (adapted) · redesign: full · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V4 · weakest: hierarchy, keep course sequence visible without repeated cards */
+/* Hallmark · surface: absolute · the original scientific plates retain white figure paper */
+/* Hallmark · waive 7b · surface: absolute, white scientific figure paper · Published course plates retain their original white surround to preserve scientific colours and annotations in both themes. */
+.translation-shelves { border-top: 1px solid var(--note-border); margin-bottom: var(--space-7); }
+.translation-shelf { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: var(--space-7); align-items: center; padding: var(--space-6) 0; border-bottom: 1px solid var(--note-border); color: var(--md-default-fg-color) !important; }
+.translation-shelf:hover .shelf-link { text-decoration: underline; text-underline-offset: .2em; }
+.shelf-cover { display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-7); min-width: 0; min-height: 240px; padding: var(--space-5); background: var(--note-surface); border-top: 3px solid var(--signal-color); }
+.shelf-cover--cs146s { background: var(--note-inset); border-top-color: var(--md-typeset-a-color); }
+.shelf-cover > span:first-child { font-family: var(--font-display); font-size: 26px; line-height: 1.4; overflow-wrap: break-word; }
+.cover-bottom { font-size: var(--text-label); color: var(--md-default-fg-color--light); }
+.shelf-copy { min-width: 0; }
+.md-typeset .shelf-copy h2 { margin: 0 0 var(--space-2); font-family: var(--font-display); font-size: 28px; }
+.shelf-copy p { margin: var(--space-3) 0; color: var(--md-default-fg-color--light); }
+.shelf-copy .shelf-author { font-size: var(--text-label); margin: 0 0 var(--space-4); }
+.shelf-scope { display: block; font-size: var(--text-label); color: var(--md-default-fg-color--light); }
+.shelf-link { margin-top: var(--space-3); color: var(--md-typeset-a-color); }
+.course-hero { text-align: left; padding: 0 0 var(--space-6); }
+.md-typeset .course-hero h1 { font-size: clamp(32px,4vw,44px); margin: 0 0 var(--space-3); line-height: 1.5; }
+.course-hero .course-subtitle { font-size: var(--text-small); color: var(--md-default-fg-color--light); margin: 0 0 var(--space-5); }
+.course-hero > p:not(.course-subtitle) { max-width: 44em; color: var(--md-default-fg-color--light); }
+.course-hero .hero-actions { margin-top: var(--space-5); }
+.course-facts { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--space-5); border-block: 1px solid var(--note-border); padding: var(--space-5) 0; }
+.course-facts > div { min-width: 0; }
+.course-facts span, .course-facts strong { display: block; }
+.course-facts span { font-size: var(--text-label); color: var(--md-default-fg-color--light); }
+.course-facts strong { font-size: var(--text-small); font-weight: 600; line-height: 1.7; margin-top: var(--space-2); }
+.course-preface { display: flex; align-items: center; gap: var(--space-5); padding: var(--space-5); background: var(--note-surface); color: var(--md-default-fg-color) !important; }
+.course-preface:hover { background: var(--note-inset); }
+.chapter-number { flex: 0 0 2ch; white-space: nowrap; font-size: var(--text-h3); font-variant-numeric: tabular-nums; color: var(--md-typeset-a-color); }
+.course-preface strong { display: block; font-size: var(--text-h3); font-weight: 600; line-height: 1.6; }
+.course-preface small { display: block; font-size: var(--text-small); color: var(--md-default-fg-color--light); margin-top: var(--space-1); }
+.course-catalog { display: grid; grid-template-columns: minmax(0,1fr); border-top: 1px solid var(--note-border); }
+.course-chapter { display: flex; align-items: center; gap: var(--space-5); min-width: 0; min-height: 64px; padding: var(--space-4) var(--space-2); border-bottom: 1px solid var(--note-border); color: var(--md-default-fg-color) !important; }
+.course-chapter:hover { background: var(--note-surface); color: var(--md-typeset-a-color) !important; }
+.course-chapter__number { flex: 0 0 32px; font-size: var(--text-label); color: var(--md-default-fg-color--light); font-variant-numeric: tabular-nums; }
+.course-chapter__title { min-width: 0; font-size: var(--text-body); line-height: 1.7; }
+.course-catalog--weeks { gap: var(--space-6); border-top: 0; margin-top: var(--space-5); }
+.course-week { min-width: 0; }
+.md-typeset .course-week h2 { margin: 0 0 var(--space-3); font-size: var(--text-h3); line-height: 1.6; }
+.course-week__links { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-4); }
+.course-week__links .course-chapter { border-block: 1px solid var(--note-border); }
+.translation-note { max-width: 46em; margin: var(--space-8) 0 0; padding-top: var(--space-5); border-top: 1px solid var(--note-border); }
+.translation-note h3 { margin-top: 0; }
+.translation-note p { font-size: var(--text-small); color: var(--md-default-fg-color--light); }
+.translation-meta { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-4) var(--space-5); padding: var(--space-5); background: var(--note-surface); margin: var(--space-5) 0; }
+.translation-meta p { margin: 0; font-size: var(--text-small); line-height: 1.8; }
+.translation-meta strong { display: block; font-size: var(--text-label); font-weight: 600; color: var(--md-default-fg-color--light); margin-bottom: var(--space-1); }
+.md-typeset .book-contents { line-height: 1.8; }
+.md-typeset .book-contents h3 { margin: var(--space-6) 0 var(--space-2); }
+.md-typeset .book-contents p { margin: var(--space-2) 0 var(--space-3); }
+.md-typeset .book-contents ul { margin: var(--space-2) 0 var(--space-3); padding-left: var(--space-6); list-style-type: circle; }
+.md-typeset .book-contents ul ul { margin: var(--space-1) 0; list-style-type: square; }
+.md-typeset .book-contents ul li { margin: var(--space-1) 0; }
+.plate-sequence { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: var(--space-3); margin: var(--space-5) 0 var(--space-3); }
+.plate-sequence p { margin: 0; background: var(--figure-paper); border: 1px solid var(--note-border); }
+.plate-sequence img { width: 100%; display: block; border-radius: 0; }
+@media (max-width: 650px) {
+  .translation-shelf { grid-template-columns: minmax(0,1fr); gap: var(--space-5); }
+  .shelf-cover { min-height: 180px; gap: var(--space-5); }
+  .shelf-cover > span:first-child { font-size: 28px; }
+  .md-typeset .shelf-copy h2 { font-size: 26px; }
+  .md-typeset .course-hero h1 { font-size: 32px; }
+  .course-facts { grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--space-5); }
+  .course-preface { padding: var(--space-4); gap: var(--space-4); }
+  .course-preface strong { font-size: 18px; }
+  .course-chapter { gap: var(--space-4); }
+  .course-week__links { gap: var(--space-3); }
+  .plate-sequence { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .translation-meta { grid-template-columns: minmax(0,1fr); padding: var(--space-4); }
+}
+@media print { .translation-shelf, .course-chapter { break-inside: avoid; } }

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="650" height="226" viewBox="0 0 650 226">
+<rect width="650" height="226" rx="10" fill="#fff"/>
+<rect x="250" y="20" width="220" height="186" rx="8" fill="#edf4fa" stroke="#294b68" stroke-width="2"/>
+<text x="360.0" y="119.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="18" fill="#18334a">ForceControl</text>
+<text x="198" y="52.0" text-anchor="end" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#263746">estimated_state</text>
+<path d="M208 47.0 H242" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M250 47.0 L241 42.0 L241 52.0 Z" fill="#294b68"/>
+<text x="198" y="96.0" text-anchor="end" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#263746">desired_contact_force</text>
+<path d="M208 91.0 H242" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M250 91.0 L241 86.0 L241 96.0 Z" fill="#294b68"/>
+<text x="198" y="140.0" text-anchor="end" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#7b8792">measured_accelerations</text>
+<path d="M208 135.0 H242" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M250 135.0 L241 130.0 L241 140.0 Z" fill="#294b68"/>
+<text x="198" y="184.0" text-anchor="end" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#7b8792">measured_contact_force</text>
+<path d="M208 179.0 H242" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M250 179.0 L241 174.0 L241 184.0 Z" fill="#294b68"/>
+<text x="522" y="118.0" text-anchor="start" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#263746">actuation</text>
+<path d="M470 113.0 H504" fill="none" stroke="#294b68" stroke-width="2"/>
+<path d="M512 113.0 L503 108.0 L503 118.0 Z" fill="#294b68"/>
+</svg>
