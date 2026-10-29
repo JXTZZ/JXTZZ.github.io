@@ -56,7 +56,11 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.arithmatex:
       generic: true
 extra_javascript:
@@ -125,6 +129,24 @@ nav:
     - 计算机视觉学习路线: deep-learning/cv-roadmap.md
   - 工程实践:
     - engineering/index.md
+    - Hello-Agents 学习笔记:
+      - engineering/hello-agents/index.md
+      - 第 1 章 · 初识智能体: engineering/hello-agents/introduction.md
+      - 第 2 章 · 智能体发展史: engineering/hello-agents/history.md
+      - 第 3 章 · 大语言模型基础: engineering/hello-agents/llm-foundations.md
+      - 第 4 章 · 智能体经典范式构建: engineering/hello-agents/classic-agent-patterns.md
+      - 第 5 章 · 低代码平台: engineering/hello-agents/low-code-platforms.md
+      - 第 6 章 · 框架开发实践: engineering/hello-agents/agent-frameworks.md
+      - 第 7 章 · 构建智能体框架: engineering/hello-agents/build-your-own-framework.md
+      - 第 8 章 · 记忆与检索: engineering/hello-agents/memory-and-retrieval.md
+      - 第 9 章 · 上下文工程: engineering/hello-agents/context-engineering.md
+      - 第 10 章 · 智能体通信协议: engineering/hello-agents/communication-protocols.md
+      - 第 11 章 · Agentic-RL: engineering/hello-agents/agentic-rl.md
+      - 第 12 章 · 智能体性能评估: engineering/hello-agents/evaluation.md
+      - 第 13 章 · 智能旅行助手: engineering/hello-agents/travel-assistant.md
+      - 第 14 章 · 深度研究智能体: engineering/hello-agents/deep-research.md
+      - 第 15 章 · 构建赛博小镇: engineering/hello-agents/cyber-town.md
+      - 第 16 章 · 项目交付: engineering/hello-agents/project-delivery.md
   - 学习日志:
     - journal/index.md
   - 关于: about.md

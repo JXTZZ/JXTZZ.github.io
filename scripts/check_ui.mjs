@@ -87,6 +87,31 @@ try {
         setTimeout(poll,150);
       };poll();
     }));
+    const expectedDiagrams=(await readFile(path.join(site,'.'+route,'index.html'),'utf8')).match(/<pre class="mermaid"/g)?.length || 0;
+    if(expectedDiagrams) {
+      await evaluate(expected=>new Promise((resolve,reject)=>{
+        const start=Date.now();const poll=()=>{
+          if(document.querySelectorAll('div.mermaid').length===expected)return resolve();
+          if(Date.now()-start>20000)return reject(Error('Mermaid diagram did not render'));
+          setTimeout(poll,150);
+        };poll();
+      }),[expectedDiagrams]);
+      // Material isolates diagram SVGs in closed shadow roots. CDP can inspect
+      // those trees without changing the page's rendering or encapsulation.
+      const {root:dom}=await send('DOM.getDocument',{depth:-1,pierce:true});
+      const diagrams=[];
+      const visit=node=>{
+        const attrs=node.attributes || [],index=attrs.indexOf('class');
+        if(node.nodeName==='DIV' && index>=0 && attrs[index+1].split(' ').includes('mermaid'))diagrams.push(node);
+        for(const child of [...(node.children || []),...(node.shadowRoots || [])])visit(child);
+      };
+      visit(dom);
+      const hasError=node=>{
+        const attrs=node.attributes || [],index=attrs.indexOf('class');
+        return (index>=0 && attrs[index+1].split(' ').some(name=>['error-icon','error-text'].includes(name))) || [...(node.children || []),...(node.shadowRoots || [])].some(hasError);
+      };
+      assert(diagrams.length===expectedDiagrams && diagrams.every(node=>node.shadowRoots?.some(root=>root.children?.some(child=>child.nodeName.toLowerCase()==='svg')) && !hasError(node)),'Mermaid SVGs missing or invalid: '+route);
+    }
     await delay(100);
     const state=await evaluate(()=>{
       const article=document.querySelector('article'),toc=document.querySelector('.mobile-toc'),aside=document.querySelector('.md-sidebar--secondary');
@@ -129,7 +154,7 @@ try {
     console.log('PASS',width,theme,route,'math',state.rendered);
     return state;
   }
-  if(option('--only')!=='interaction') {
+  if(!['interaction','hello-agents'].includes(option('--only'))) {
   for(const width of [320,390,768,1280,1440,1920])for(const theme of ['default','slate'])for(const route of ['/','/papers/','/papers/library/','/translations/','/translations/cs146s/','/translations/robotic-manipulation/','/deep-learning/','/engineering/','/journal/','/about/','/deep-learning/Linear_Regression/','/papers/orion/','/translations/robotic-manipulation/pick-and-place/','/papers/lit/']){
     const state=await load(route,width,theme);
     // The keyword canvas was replaced by accessible links into real paper notes.
@@ -230,6 +255,22 @@ try {
     assert(await evaluate(method=>document.querySelector('.md-sidebar--secondary [data-md-component="toc"] a')?.innerText.trim()===method,[paper.method]),'Paper method name missing: '+paper.url);
     assert(await evaluate(()=>{const toc=document.querySelector('.md-sidebar--secondary'),links=new Set([...toc.querySelectorAll('a')].map(a=>a.hash));return getComputedStyle(toc).display!=='none' && [...document.querySelectorAll('article h1,article h2,article h3,article h4')].slice(1).every(h=>links.has('#'+encodeURIComponent(h.id)) || links.has('#'+h.id));}),'Incomplete left outline: '+paper.url);
   }
+  }
+  if(option('--only')!=='interaction') {
+    const chapters=(await (await fetch(root+'/content-index.json')).json()).filter(p=>p.series==='Hello-Agents');
+    assert(chapters.length===16,'Hello-Agents must include all 16 chapters');
+    for(const width of [320,1440])for(const theme of ['default','slate']) {
+      await load('/engineering/hello-agents/',width,theme);
+      assert(await evaluate(()=>document.querySelectorAll('article table tbody tr').length===16),'Hello-Agents chapter index incomplete');
+      if(theme==='default')await capture('hello-agents-index-'+width);
+      for(const chapter of chapters) {
+        await load('/'+chapter.url,width,theme);
+        assert(await evaluate(()=>{const article=document.querySelector('article');return !article.innerText.includes('依据版本') && !article.innerText.includes('整理说明') && !article.innerText.includes('整理日期') && !![...article.querySelectorAll('a')].find(a=>a.textContent==='全书目录');}),'Hello-Agents removed labels or reading navigation incorrect');
+        if(chapter.url.endsWith('/introduction/') && theme==='default')await capture('hello-agents-reader-'+width);
+      }
+    }
+    await load('/engineering/',390);
+    assert(await evaluate(()=>!!document.querySelector('article a[href="hello-agents/"]') && document.querySelectorAll('.article-row').length===3),'Engineering must link the series without mixing chapters into the PyTorch list');
   }
   await load('/',1440);
   // Exercise the upstream switch itself as well as rendering both schemes.

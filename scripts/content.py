@@ -41,6 +41,15 @@ def sort_key(record):
     return (record.get('updated') or record.get('date') or '', record['source'])
 
 
+def nav_sources(items):
+    """Find pages already arranged inside a manually curated navigation group."""
+    if isinstance(items, str):
+        return {items}
+    if isinstance(items, dict):
+        items = items.values()
+    return {source for item in items for source in nav_sources(item)}
+
+
 def collect(files, config):
     previous_sources = {r['source'] for r in CATALOG}
     CATALOG.clear()
@@ -62,7 +71,7 @@ def collect(files, config):
                   'date': iso_date(meta.get('date'), 'date', source),
                   'updated': iso_date(meta.get('updated'), 'updated', source),
                   'updated_source': meta.get('updated_source'), 'pdf': meta.get('pdf'),
-                  'method': meta.get('method')}
+                  'method': meta.get('method'), 'series': meta.get('series')}
         if record['date'] and record['updated'] and record['updated'] < record['date']:
             raise ValueError(f'{source}: updated cannot precede date')
         CATALOG.append(record)
@@ -75,8 +84,9 @@ def collect(files, config):
             existing = entry[label]
             index = [item for item in existing if item == f'{section}/index.md']
             sources = {r['source'] for r in CATALOG if r['section'] == section} | previous_sources
-            manual = [item for item in existing if item not in index and not (isinstance(item, dict) and any(v in sources for v in item.values()))]
-            entry[label] = index + [{r['title']: r['source']} for r in CATALOG if r['section'] == section] + manual
+            manual = [item for item in existing if item not in index and not (isinstance(item, dict) and any(isinstance(v, str) and v in sources for v in item.values()))]
+            grouped = nav_sources(manual)
+            entry[label] = index + [{r['title']: r['source']} for r in CATALOG if r['section'] == section and r['source'] not in grouped] + manual
     return files
 
 
@@ -128,7 +138,7 @@ def expand_lists(markdown, page, config):
         markdown = markdown.replace('<!-- paper-directory -->', directory)
     def replace(match):
         section = match[1]
-        records = [r for r in CATALOG if r['section'] == section]
+        records = [r for r in CATALOG if r['section'] == section and not r.get('series')]
         return list_html(records, page)
     markdown = re.sub(r'<!-- article-list: (papers|engineering|journal) -->', replace, markdown)
     return markdown.replace('<!-- resource-list -->', resource_html(page, config)) if '<!-- resource-list -->' in markdown else markdown

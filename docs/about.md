@@ -26,7 +26,7 @@ layout: collection
 - **论文阅读**：围绕任务、方法、实验与局限整理的阅读笔记。
 - **课程翻译**：[MIT《机器人操作》中文讲义](translations/robotic-manipulation/index.md)与[斯坦福 CS146S 课程作业](translations/cs146s/index.md)，随学习逐步更新。
 - **理论基础**：数学推导、模型直觉与代码实现。
-- **工程实践**：开发中的细节、问题定位与项目记录。
+- **工程实践**：开发中的细节、问题定位与项目记录，以及 [Hello-Agents 智能体学习笔记](engineering/hello-agents/index.md)。
 - **学习日志**：日常阅读、工具使用和阶段复盘。
 
 </div>
