@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 520" fill="none">
+  <defs>
+    <linearGradient id="platform" x1="110" y1="326" x2="498" y2="492" gradientUnits="userSpaceOnUse"><stop stop-color="#f9fbff"/><stop offset=".48" stop-color="#e8effc"/><stop offset="1" stop-color="#c8d7f1"/></linearGradient>
+    <linearGradient id="platformSide" x1="108" y1="403" x2="534" y2="470" gradientUnits="userSpaceOnUse"><stop stop-color="#c2d1e8"/><stop offset=".5" stop-color="#e2eafa"/><stop offset="1" stop-color="#a9bcdb"/></linearGradient>
+    <linearGradient id="shell" x1="196" y1="181" x2="301" y2="323" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset=".32" stop-color="#f3f6fd"/><stop offset=".64" stop-color="#c4d1e6"/><stop offset=".85" stop-color="#e0e8f5"/><stop offset="1" stop-color="#8fa5c7"/></linearGradient>
+    <linearGradient id="forearm" x1="310" y1="139" x2="433" y2="251" gradientUnits="userSpaceOnUse"><stop stop-color="#fbfdff"/><stop offset=".43" stop-color="#d6e2f4"/><stop offset=".68" stop-color="#fcfdff"/><stop offset="1" stop-color="#96aecf"/></linearGradient>
+    <linearGradient id="joint" x1="-28" y1="-30" x2="27" y2="33" gradientUnits="userSpaceOnUse"><stop stop-color="#6c82a5"/><stop offset=".3" stop-color="#304767"/><stop offset=".75" stop-color="#142943"/><stop offset="1" stop-color="#758bae"/></linearGradient>
+    <linearGradient id="ring" x1="-25" y1="-25" x2="25" y2="25" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset=".5" stop-color="#9db5d6"/><stop offset="1" stop-color="#e7eefb"/></linearGradient>
+    <linearGradient id="base" x1="181" y1="367" x2="300" y2="420" gradientUnits="userSpaceOnUse"><stop stop-color="#8fa5c4"/><stop offset=".25" stop-color="#e9f0fb"/><stop offset=".6" stop-color="#afc3df"/><stop offset="1" stop-color="#758eaf"/></linearGradient>
+    <linearGradient id="cubeLeft" x1="438" y1="335" x2="476" y2="401" gradientUnits="userSpaceOnUse"><stop stop-color="#88b6ff" stop-opacity=".72"/><stop offset="1" stop-color="#4771da" stop-opacity=".93"/></linearGradient>
+    <linearGradient id="cubeRight" x1="476" y1="349" x2="521" y2="397" gradientUnits="userSpaceOnUse"><stop stop-color="#2569dc" stop-opacity=".8"/><stop offset="1" stop-color="#7662cd" stop-opacity=".93"/></linearGradient>
+    <radialGradient id="ambient"><stop stop-color="#88acfb" stop-opacity=".22"/><stop offset="1" stop-color="#88acfb" stop-opacity="0"/></radialGradient>
+    <filter id="shadow" x="-50%" y="-100%" width="200%" height="300%"><feGaussianBlur stdDeviation="10"/></filter>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2.5"/></filter>
+    <g id="bearing">
+      <circle r="30" fill="url(#ring)"/>
+      <circle r="27" fill="url(#joint)" stroke="#7389a9" stroke-width="1"/>
+      <circle r="20" fill="#b2c8e6" fill-opacity=".45"/>
+      <circle r="16.5" fill="url(#ring)"/>
+      <circle r="11.5" fill="#293e5b"/>
+      <circle r="5.5" fill="#90b4eb"/>
+      <path d="M-18-18a25 25 0 0 1 35 0" stroke="#fff" stroke-opacity=".9" stroke-linecap="round"/>
+      <circle cy="-23" r="1.6" fill="#e1eafa"/><circle cy="23" r="1.6" fill="#e1eafa"/>
+      <circle cx="-23" r="1.6" fill="#e1eafa"/><circle cx="23" r="1.6" fill="#e1eafa"/>
+    </g>
+  </defs>
+  <ellipse cx="333" cy="288" rx="269" ry="212" fill="url(#ambient)"/>
+  <ellipse cx="323" cy="448" rx="206" ry="29" fill="#436494" fill-opacity=".15" filter="url(#shadow)"/>
+  <!-- Raised work surface and a restrained measurement grid. -->
+  <path d="M79 392v14c0 5 4 9 10 11l213 67c10 3 20 3 30 0l220-72c7-2 11-6 11-11v-14Z" fill="url(#platformSide)"/>
+  <path d="m88 382 217-69c9-3 18-3 28 0l218 69c17 6 17 17 0 23l-218 70c-10 3-20 3-30 0l-215-70c-16-5-16-18 0-23Z" fill="url(#platform)" stroke="#aebfda" stroke-opacity=".7"/>
+  <path d="m89 382 217-69c9-3 18-3 28 0l217 69" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  <g stroke="#89a6d2" stroke-opacity=".23" stroke-width=".7">
+    <path d="m140 397 220-70m-163 89 219-71m-162 89 219-71m-163 89 218-70"/>
+    <path d="m136 367 218 72m-160-91 218 72m-161-90 218 70m-159-90 210 68"/>
+  </g>
+  <ellipse cx="245" cy="407" rx="66" ry="16" fill="#3e587f" fill-opacity=".2" filter="url(#shadow)"/>
+  <ellipse cx="475" cy="412" rx="53" ry="13" fill="#6274d7" fill-opacity=".19" filter="url(#shadow)"/>
+  <ellipse cx="475" cy="409" rx="54" ry="18" stroke="#5e82d4" stroke-opacity=".3" stroke-dasharray="3 6"/>
+  <!-- Cylindrical base, brushed housing and the cable behind the links. -->
+  <path d="M180 378v25c0 15 27 27 60 27s60-12 60-27v-25Z" fill="url(#base)" stroke="#8ca4c5"/>
+  <ellipse cx="240" cy="378" rx="60" ry="25" fill="#f0f5fe" stroke="#9eb5d4"/>
+  <ellipse cx="240" cy="378" rx="47" ry="18" fill="#bdcce3" stroke="#dce7f7"/>
+  <path d="M213 410c15 4 34 5 51 2" stroke="#628eee" stroke-width="2" stroke-linecap="round"/>
+  <path d="M232 364c-26-27-49-59-36-98 6-17 53-70 109-120 22-20 78 32 122 80" stroke="#304462" stroke-width="11" stroke-linecap="round"/>
+  <path d="M238 361 201 266" stroke="#7690b3" stroke-width="55" stroke-linecap="round"/>
+  <path d="M232 357 195 262" stroke="url(#shell)" stroke-width="47" stroke-linecap="round"/>
+  <path d="m219 355-32-84" stroke="#fff" stroke-opacity=".9" stroke-width="3" stroke-linecap="round"/>
+  <path d="M204 263 317 143" stroke="#7d96b9" stroke-width="48" stroke-linecap="round"/>
+  <path d="M197 258 311 138" stroke="url(#shell)" stroke-width="41" stroke-linecap="round"/>
+  <path d="m188 250 111-118" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="m213 258 102-109" stroke="#91a6c5" stroke-opacity=".5" stroke-width="1.4"/>
+  <path d="M317 143 430 224" stroke="#7b96b9" stroke-width="35" stroke-linecap="round"/>
+  <path d="M312 138 424 219" stroke="url(#forearm)" stroke-width="29" stroke-linecap="round"/>
+  <path d="m327 138 93 67" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+  <g transform="translate(197 260)"><use href="#bearing"/></g>
+  <g transform="translate(312 138) scale(.93)"><use href="#bearing"/></g>
+  <g transform="translate(425 220) scale(.72)"><use href="#bearing"/></g>
+  <g transform="translate(232 357) scale(.55)"><use href="#bearing"/></g>
+  <!-- Wrist tool, parallel fingers and the lifted glass object. -->
+  <path d="m438 234 22 26" stroke="#5f779a" stroke-width="20" stroke-linecap="round"/>
+  <path d="m435 231 22 27" stroke="url(#forearm)" stroke-width="13" stroke-linecap="round"/>
+  <path d="m453 257 30 9 7 20-33 8-18-17Z" fill="#314966" stroke="#9bb3d5"/>
+  <path d="m453 257 30 9-16 11-28-4Z" fill="#a3b7d3"/>
+  <path d="m448 288-16 18 9 29m41-49 20 14 4 33" stroke="#728eb4" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m440 334 7-3m59 2-7-3" stroke="#243c5b" stroke-width="7" stroke-linecap="round"/>
+  <path d="M477 291v24" stroke="#5f87e9" stroke-opacity=".7" stroke-dasharray="2 4"/>
+  <path d="m439 338 38 23v43l-38-23Z" fill="url(#cubeLeft)" stroke="#c2d5ff" stroke-width="1"/>
+  <path d="m477 361 38-23v43l-38 23Z" fill="url(#cubeRight)" stroke="#9cbbf6" stroke-width="1"/>
+  <path d="m439 338 38-22 38 22-38 23Z" fill="#c7ddff" fill-opacity=".8" stroke="#eff6ff" stroke-width="1.5"/>
+  <path d="m447 343 30 18 29-18m-29 18v33" stroke="#e6eeff" stroke-opacity=".72"/>
+  <path d="m458 328 19 11 19-11m-19 11v20" stroke="#fff" stroke-opacity=".42" stroke-dasharray="2 3"/>
+  <circle cx="477" cy="378" r="11" fill="#adbdff" fill-opacity=".24" filter="url(#glow)"/>
+  <!-- Fine engineering details keep the illustration useful at larger sizes. -->
+  <path d="m261 190 9 9m-4-14 9 9m-4-14 9 9" stroke="#5e7fab" stroke-opacity=".6" stroke-width="1.2"/>
+  <path d="m372 166 7 5m-3-10 7 5m-3-10 7 5" stroke="#6685b0" stroke-opacity=".6" stroke-width="1.2"/>
+  <g fill="#5d88e1"><circle cx="151" cy="385" r="2"/><circle cx="336" cy="452" r="2"/><circle cx="495" cy="395" r="2"/></g>
+</svg>

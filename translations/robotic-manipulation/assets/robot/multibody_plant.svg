@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1146" height="446" viewBox="0 0 1146 446">
+<!-- Port names and connections reproduced from the original chapter; layout adjusted to avoid PDF clipping. -->
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#46566a"/></marker></defs>
+<rect width="1146" height="446" fill="white"/>
+<rect x="378.0" y="18" width="205" height="410" rx="5" fill="#f6f9fc" stroke="#46566a" stroke-width="2"/>
+<text x="480.5" y="42" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#173f5f">MultibodyPlant</text>
+<text x="336.0" y="66" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">applied_generalized_force</text>
+<path d="M 342.0 61 H 375.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="336.0" y="100" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">applied_spatial_force</text>
+<path d="M 342.0 95 H 375.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="336.0" y="134" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">model_instance_name[i]_actuation</text>
+<path d="M 342.0 129 H 375.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="336.0" y="168" text-anchor="end" font-family="monospace" font-size="15" fill="#277a37">geometry_query</text>
+<path d="M 342.0 163 H 375.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<path d="M 585.0 61 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="66" font-family="monospace" font-size="15" fill="#273444">continuous_state</text>
+<path d="M 585.0 95 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="100" font-family="monospace" font-size="15" fill="#273444">body_poses</text>
+<path d="M 585.0 129 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="134" font-family="monospace" font-size="15" fill="#273444">body_spatial_velocities</text>
+<path d="M 585.0 163 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="168" font-family="monospace" font-size="15" fill="#273444">body_spatial_accelerations</text>
+<path d="M 585.0 197 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="202" font-family="monospace" font-size="15" fill="#273444">generalized_acceleration</text>
+<path d="M 585.0 231 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="236" font-family="monospace" font-size="15" fill="#273444">reaction_forces</text>
+<path d="M 585.0 265 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="270" font-family="monospace" font-size="15" fill="#273444">contact_results</text>
+<path d="M 585.0 299 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="304" font-family="monospace" font-size="15" fill="#273444">model_instance_name[i]_continuous_state</text>
+<path d="M 585.0 333 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="338" font-family="monospace" font-size="15" fill="#273444">model_instance_name[i]_generalized_acceleration</text>
+<path d="M 585.0 367 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="372" font-family="monospace" font-size="15" fill="#273444">model_instance_name[i]_generalized_contact_forces</text>
+<path d="M 585.0 401 H 627.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="635.0" y="406" font-family="monospace" font-size="15" fill="#277a37">geometry_pose</text>
+</svg>

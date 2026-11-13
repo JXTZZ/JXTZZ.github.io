@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 440" fill="none">
+  <defs>
+    <radialGradient id="halo"><stop stop-color="#9894e7" stop-opacity=".12"/><stop offset="1" stop-color="#9894e7" stop-opacity="0"/></radialGradient>
+    <linearGradient id="ink" x1="70" y1="220" x2="610" y2="220" gradientUnits="userSpaceOnUse"><stop stop-color="#2865c8"/><stop offset=".55" stop-color="#6f66c6"/><stop offset="1" stop-color="#995ab9"/></linearGradient>
+    <clipPath id="logo"><text x="340" y="265" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="166">LoTusY</text></clipPath>
+    <pattern id="words" width="190" height="19" patternUnits="userSpaceOnUse">
+      <g font-family="Consolas,monospace" font-size="6.7">
+        <text x="0" y="7" fill="#2865c8">OpenVLA DP3 SPOT Diffusion Drake ACT SE(3)</text>
+        <text x="0" y="17" fill="#8355bb">ALOHA ORION LIT 3D Control Planning Octo</text>
+      </g>
+    </pattern>
+  </defs>
+  <ellipse cx="340" cy="220" rx="324" ry="206" fill="url(#halo)"/>
+  <g stroke-width=".7" stroke-opacity=".12">
+    <path d="M34 220c100-148 203-114 306 0s206 150 306 0" stroke="#2865c8"/>
+    <path d="M34 220c100 148 203 114 306 0s206-150 306 0" stroke="#8355bb"/>
+  </g>
+  <text x="340" y="265" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="166" fill="url(#ink)" fill-opacity=".04">LoTusY</text>
+  <rect width="680" height="440" fill="url(#words)" clip-path="url(#logo)"/>
+  <g font-family="Consolas,monospace" font-size="14" text-anchor="middle" fill-opacity=".8">
+    <text x="122" y="62" fill="#2865c8">OpenVLA</text>
+    <text x="503" y="75" fill="#8355bb">Diffusion</text>
+    <text x="612" y="185" fill="#2b85a5">SE(3)</text>
+    <text x="88" y="326" fill="#2865c8">Drake</text>
+    <text x="523" y="370" fill="#8355bb">SPOT</text>
+    <text x="292" y="402" fill="#2b85a5">3D Perception</text>
+  </g>
+</svg>

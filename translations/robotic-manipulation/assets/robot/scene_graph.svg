@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="690" height="174" viewBox="0 0 690 174">
+<!-- Port names and connections reproduced from the original chapter; layout adjusted to avoid PDF clipping. -->
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#46566a"/></marker></defs>
+<rect width="690" height="174" fill="white"/>
+<rect x="226.0" y="18" width="205" height="138" rx="5" fill="#f6f9fc" stroke="#46566a" stroke-width="2"/>
+<text x="328.5" y="42" text-anchor="middle" font-family="sans-serif" font-size="17" font-weight="bold" fill="#173f5f">SceneGraph</text>
+<text x="184.0" y="66" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">source_pose{0}</text>
+<path d="M 190.0 61 H 223.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="184.0" y="100" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">...</text>
+<path d="M 190.0 95 H 223.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="184.0" y="134" text-anchor="end" font-family="monospace" font-size="15" fill="#273444">source_pose{N-1}</text>
+<path d="M 190.0 129 H 223.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<path d="M 433.0 61 H 475.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="483.0" y="66" font-family="monospace" font-size="15" fill="#273444">lcm_visualization</text>
+<path d="M 433.0 95 H 475.0" stroke="#46566a" stroke-width="1.4" fill="none" marker-end="url(#arrow)"/>
+<text x="483.0" y="100" font-family="monospace" font-size="15" fill="#273444">query</text>
+</svg>

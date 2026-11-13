@@ -1,0 +1,49 @@
+/* Hallmark · shape: Index-First · genre: editorial · theme: Studio (adapted) · redesign: full · hero: Banner · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V4 · weakest: hierarchy, use real paper routes as the first-screen signature */
+.home-hero { display: grid; grid-template-columns: minmax(0,1.12fr) minmax(0,1fr); gap: var(--space-8); align-items: center; padding: var(--space-7) 0 var(--space-8); border-bottom: 2px solid var(--md-default-fg-color); }
+.md-typeset .home-intro h1 { font-size: clamp(40px,4.8vw,64px); line-height: 1.45; margin: 0 0 var(--space-5); }
+.home-intro .headerlink { display: none; }
+.home-intro > p { max-width: 28em; color: var(--md-default-fg-color--light); margin: 0 0 var(--space-6); }
+.home-intro .hero-actions p { margin: 0; }
+.research-paths { min-width: 0; padding-left: var(--space-6); border-left: 1px solid var(--note-border); }
+.md-typeset .research-paths h2 { font-size: 20px; margin: 0 0 var(--space-5); }
+.research-paths > a:not(.paths-all) { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--space-1); padding: var(--space-4) 0; border-top: 1px solid var(--note-border); color: var(--md-default-fg-color); }
+.research-paths > a:hover strong { color: var(--md-typeset-a-color); }
+.research-paths strong { font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 1.45; }
+.research-paths .path-topic, .research-paths a > span:last-child { font-size: var(--text-label); color: var(--md-default-fg-color--light); }
+.research-paths .path-topic { grid-row: 2; }
+.research-paths .path-topic + strong { grid-row: 1; }
+.research-paths a > span:last-child { grid-row: 2; justify-self: end; }
+.paths-all { display: inline-flex; align-items: center; min-height: 44px; font-size: var(--text-label); margin-top: var(--space-2); }
+.featured-course { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: var(--space-8); align-items: start; padding: var(--space-7); margin-top: var(--space-8); background: var(--note-surface); }
+.md-typeset .feature-copy h2 { font-family: var(--font-display); font-size: clamp(28px,3vw,38px); margin: 0 0 var(--space-5); }
+.feature-copy > p { color: var(--md-default-fg-color--light); }
+.feature-copy .feature-actions p { margin-bottom: 0; }
+.course-outline { border-left: 1px solid var(--note-border); padding-left: var(--space-6); font-size: var(--text-small); }
+.md-typeset .course-outline h3 { margin: 0 0 var(--space-4); font-size: 18px; }
+.course-outline p { margin-block: var(--space-4); }
+.home-collections { margin-top: var(--space-8); }
+.home-collections .section-heading { display: flex; gap: var(--space-5); align-items: baseline; justify-content: space-between; margin-top: 0; }
+.topic-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: var(--space-6); }
+.topic-card { display: flex; flex-direction: column; border-top: 1px solid var(--md-default-fg-color); padding-block: var(--space-5); color: var(--md-default-fg-color) !important; }
+.md-typeset .topic-card h3 { font-size: 23px; margin: 0 0 var(--space-3); }
+.topic-card p { font-size: var(--text-small); color: var(--md-default-fg-color--light); margin: 0 0 var(--space-5); }
+.topic-card:hover h3 { color: var(--md-typeset-a-color); }
+.card-foot { font-size: var(--text-label); color: var(--md-default-fg-color--light); margin-top: auto; }
+.home-signoff { margin-top: var(--space-7); padding-top: var(--space-5); border-top: 1px solid var(--note-border); color: var(--md-default-fg-color--light); font-size: var(--text-small); }
+@media (max-width: 960px) {
+  .home-hero { gap: var(--space-6); padding-top: var(--space-5); }
+  .featured-course { gap: var(--space-6); padding: var(--space-6); }
+}
+@media (max-width: 650px) {
+  .home-hero { grid-template-columns: minmax(0,1fr); gap: var(--space-7); padding: var(--space-4) 0 var(--space-7); }
+  .md-typeset .home-intro h1 { font-size: 40px; }
+  .home-intro .hero-actions p { gap: var(--space-5); }
+  .research-paths { border-left: 0; padding-left: 0; }
+  .research-paths a > span:last-child { grid-row: 3; justify-self: start; }
+  .featured-course { grid-template-columns: minmax(0,1fr); margin-top: var(--space-7); padding: var(--space-5); gap: var(--space-6); }
+  .course-outline { border-left: 0; border-top: 1px solid var(--note-border); padding: var(--space-5) 0 0; }
+  .home-collections .section-heading { display: block; }
+  .topic-grid { grid-template-columns: minmax(0,1fr); gap: var(--space-2); }
+  .home-collections { margin-top: var(--space-7); }
+}
